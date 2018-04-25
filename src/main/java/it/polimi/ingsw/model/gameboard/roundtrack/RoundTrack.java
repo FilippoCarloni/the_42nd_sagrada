@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface RoundTrack extends Iterable<Die> {
 
+    List<Die> getVisibleDice();
     int getTotalScore();
     void put(Die die);
     void put(List<Die> dice);

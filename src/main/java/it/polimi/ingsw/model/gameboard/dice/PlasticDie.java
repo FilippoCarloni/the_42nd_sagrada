@@ -23,22 +23,27 @@ public class PlasticDie implements Die {
         this.shade = die.shade;
     }
 
+    @Override
     public void throwDie() {
         this.shade = Shade.values()[new Random().nextInt(Shade.values().length)];
     }
 
+    @Override
     public Color getColor() {
         return color;
     }
 
+    @Override
     public Shade getShade() {
         return shade;
     }
 
+    @Override
     public void setColor(Color color) {
         this.color = color;
     }
 
+    @Override
     public void setShade(Shade shade) {
         this.shade = shade;
     }
