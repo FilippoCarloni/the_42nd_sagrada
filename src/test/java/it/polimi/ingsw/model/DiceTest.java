@@ -22,11 +22,17 @@ class DiceTest {
         b.setColor(Color.BLUE);
         a.setShade(Shade.LIGHT);
         b.setShade(Shade.LIGHT);
+
         assertNotEquals(a, b);
+
         Die c = new PlasticDie((PlasticDie) b);
+
         assertNotEquals(a, c);
         assertEquals(b, c);
         assertEquals(a.getColor(), Color.BLUE);
         assertEquals(a.getShade(), Shade.LIGHT);
+        assertEquals(a.hashCode(), 0);
+
+        System.out.println("Die test: " + b + " = " + c);
     }
 }

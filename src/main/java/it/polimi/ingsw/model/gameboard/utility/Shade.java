@@ -24,6 +24,13 @@ public enum Shade {
         return null;
     }
 
+    public static Shade findByID(String s) {
+        for (Shade shade : Shade.values())
+            if (("" + shade.value).equals(s))
+                return shade;
+        return null;
+    }
+
     public String getLabel() {
         return label;
     }

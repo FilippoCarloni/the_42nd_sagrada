@@ -10,6 +10,8 @@ import java.util.List;
 
 public class PaperRoundTrack implements RoundTrack {
 
+    // TODO: add functionality for adding 0 dice on a particular slot.
+
     private int currentRoundNumber;
     private final int totalNumberOfRounds;
     private ArrayList<Die> dice;
@@ -92,17 +94,17 @@ public class PaperRoundTrack implements RoundTrack {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(" ");
-        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) sb.append("___");
+        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("___");
         sb.append("_ \n| ROUND TRACK");
-        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS * 3 - 12; i++) sb.append(" ");
+        for (int i = 0; i < totalNumberOfRounds * 3 - 12; i++) sb.append(" ");
         sb.append(" |\n|");
-        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) sb.append("---");
+        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("---");
         sb.append("-|\n|");
         for (Die d : getVisibleDice()) sb.append(d);
-        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS - getVisibleDice().size(); i++)
+        for (int i = 0; i < totalNumberOfRounds - getVisibleDice().size(); i++)
             sb.append("[").append(getVisibleDice().size() + i + 1).append("]");
         sb.append("|\n|");
-        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) sb.append("___");
+        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("___");
         sb.append("_|");
         return sb.toString();
     }
