@@ -39,6 +39,15 @@ class UtilityTest {
         assertEquals(Shade.DARKER, Shade.findByValue(5));
         assertEquals(Shade.DARKEST, Shade.findByValue(6));
 
+        assertEquals(Shade.LIGHTEST, Shade.findByID("1"));
+        assertEquals(Shade.LIGHTER, Shade.findByID("2"));
+        assertEquals(Shade.LIGHT, Shade.findByID("3"));
+        assertEquals(Shade.DARK, Shade.findByID("4"));
+        assertEquals(Shade.DARKER, Shade.findByID("5"));
+        assertEquals(Shade.DARKEST, Shade.findByID("6"));
+
+        assertEquals(null, Shade.findByID("⚀"));
+
         assertEquals(null, Shade.findByValue(-1));
 
         assertNotEquals(Shade.DARKER, Shade.findByValue(1));

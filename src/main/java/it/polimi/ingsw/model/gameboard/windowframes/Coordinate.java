@@ -9,7 +9,7 @@ public final class Coordinate {
     private final int row;
     private final int column;
 
-    Coordinate(int row, int column) {
+    public Coordinate(int row, int column) {
         if (row < 0 || column < 0 || row >= Parameters.MAX_ROWS || column >= Parameters.MAX_COLUMNS)
             throw new IllegalArgumentException("Exceeded window frame limits.");
         this.row = row;

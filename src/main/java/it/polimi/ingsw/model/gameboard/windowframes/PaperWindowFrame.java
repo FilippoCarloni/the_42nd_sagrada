@@ -16,8 +16,7 @@ public class PaperWindowFrame implements WindowFrame {
     private Map<Coordinate, Color> colorConstraints;
     private Map<Coordinate, Shade> shadeConstraints;
 
-    public PaperWindowFrame() {
-        WindowPatternGenerator generator = new WindowPatternGenerator();
+    PaperWindowFrame(WindowPatternGenerator generator) {
         name = generator.getName();
         difficulty = generator.getDifficulty();
         colorConstraints = generator.getColorConstraints();
@@ -94,12 +93,20 @@ public class PaperWindowFrame implements WindowFrame {
 
     @Override
     public String toString() {
+
+        int pixelWidth = 21;
+        int maxRows = Parameters.MAX_ROWS;
+        int maxColumns = Parameters.MAX_COLUMNS;
+        int leftEmptySide = (pixelWidth - Parameters.MAX_COLUMNS * 3) / 2;
+        int rightEmptySide = pixelWidth - maxColumns * 3 - leftEmptySide;
+
         StringBuilder sb = new StringBuilder();
         sb.append(" ");
-        for (int i = 0; i < Parameters.MAX_COLUMNS; i++) sb.append("___");
+        for (int i = 0; i < pixelWidth; i++) sb.append("_");
         sb.append(" \n|");
-        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
+        for (int i = 0; i < maxRows; i++) {
+            for (int j = 0; j < leftEmptySide; j++) sb.append(" ");
+            for (int j = 0; j < maxColumns; j++) {
                 Die d = getDie(i, j);
                 Color c = colorConstraints.get(new Coordinate(i, j));
                 Shade s = shadeConstraints.get(new Coordinate(i, j));
@@ -111,17 +118,19 @@ public class PaperWindowFrame implements WindowFrame {
                     sb.append(s);
                 else sb.append("[ ]");
             }
+            for (int j = 0; j < rightEmptySide; j++) sb.append(" ");
             sb.append("|\n|");
         }
-        for (int i = 0; i < Parameters.MAX_COLUMNS; i++) sb.append("---");
+
+        for (int i = 0; i < pixelWidth; i++) sb.append("-");
         sb.append("|\n|");
         sb.append(name);
-        for (int i = 0; i < Parameters.MAX_COLUMNS * 3 - name.length(); i++) sb.append(" ");
+        for (int i = 0; i < pixelWidth - name.length(); i++) sb.append(" ");
         sb.append("|\n|");
         for (int i = 0; i < difficulty; i++) sb.append("*");
-        for (int i = 0; i < Parameters.MAX_COLUMNS * 3 - difficulty; i++) sb.append(" ");
+        for (int i = 0; i < pixelWidth - difficulty; i++) sb.append(" ");
         sb.append("|\n|");
-        for (int i = 0; i < Parameters.MAX_COLUMNS; i++) sb.append("___");
+        for (int i = 0; i < pixelWidth; i++) sb.append("_");
         sb.append("|\n");
         return sb.toString();
     }

@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DiceBagTest {
 
-
-
     @Test
     void areDiceInTheBagCorrect() {
         DiceBag db = new ClothDiceBag();

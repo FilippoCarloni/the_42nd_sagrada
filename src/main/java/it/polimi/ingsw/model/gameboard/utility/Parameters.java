@@ -8,4 +8,6 @@ public final class Parameters {
     public static final int MAX_ROWS = 4;
     public static final int MAX_COLUMNS = 5;
     public static final int MAX_PLAYERS = 4;
+
+    public static final String WINDOW_PATTERNS_PATH = "res/window_patterns/";
 }
