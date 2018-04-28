@@ -26,7 +26,7 @@ public class PaperPrivateObjectiveCard extends AbstractCard implements PrivateOb
 
     @Override
     public int getValuePoints(WindowFrame window) {
-        if (window == null) throw new NullPointerException("Cannot evaluate points on a null map.");
+        if (window == null) throw new NullPointerException("Cannot evaluate points on a null window.");
         return StreamSupport.stream(window.spliterator(), true)
                 .filter(d -> d.getColor().equals(this.getColor()))
                 .map(Die::getShade)

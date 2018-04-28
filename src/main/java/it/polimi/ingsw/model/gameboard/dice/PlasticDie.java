@@ -14,7 +14,7 @@ public class PlasticDie implements Die {
     PlasticDie(int id) {
         this.id = id;
         this.color = Color.values()[new Random().nextInt(Color.values().length)];
-        this.throwDie();
+        this.roll();
     }
 
     public PlasticDie(PlasticDie die) {
@@ -24,7 +24,7 @@ public class PlasticDie implements Die {
     }
 
     @Override
-    public void throwDie() {
+    public void roll() {
         this.shade = Shade.values()[new Random().nextInt(Shade.values().length)];
     }
 

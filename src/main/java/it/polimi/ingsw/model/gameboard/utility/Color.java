@@ -42,6 +42,6 @@ public enum Color {
 
     @Override
     public String toString() {
-        return "[" + this.paintBG(" ") + "]";
+        return "[" + this.paint("■") + "]";
     }
 }

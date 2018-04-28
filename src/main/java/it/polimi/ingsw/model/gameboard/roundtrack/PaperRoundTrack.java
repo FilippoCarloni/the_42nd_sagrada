@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PaperRoundTrack implements RoundTrack {
 
-    // TODO: add functionality for adding 0 dice on a particular slot.
+    // TODO: add functionality for adding 0 dice on a particular slot (useful only in single player)
 
     private int currentRoundNumber;
     private final int totalNumberOfRounds;

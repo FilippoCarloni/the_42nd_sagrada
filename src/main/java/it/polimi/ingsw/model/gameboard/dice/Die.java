@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.gameboard.utility.Shade;
 
 public interface Die {
 
-    void throwDie();
+    void roll();
     Color getColor();
     Shade getShade();
     void setColor(Color c);
