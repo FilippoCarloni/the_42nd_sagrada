@@ -1,4 +1,4 @@
-package it.polimi.ingsw.MVCdemo;
+package it.polimi.ingsw.client;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -6,14 +6,11 @@ import java.util.Scanner;
 
 public class CLI extends Observable implements Runnable {
 
-    private String ID;
     private String message;
     Scanner s;
     CLI(Observer o) {
         addObserver(o);
-        s=new Scanner(System.in);
-        System.out.println("Welcome, please insert your name");
-        ID=s.nextLine();
+        s=new Scanner(System.in);;
         menu();
     }
 

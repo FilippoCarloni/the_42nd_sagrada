@@ -1,7 +1,7 @@
-package it.polimi.ingsw.MVCdemo;
+package it.polimi.ingsw.client;
 
 
-import it.polimi.ingsw.connection.rmi.ModelInt;
+import it.polimi.ingsw.connection.rmi.GameManger;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -9,13 +9,13 @@ import java.util.*;
 
 public class Controller extends UnicastRemoteObject implements RemoteObserver,Observer {
 
-    private ModelInt model;
+    private GameManger model;
     private CLI view;
-    boolean isMyturn;
-    Controller(ModelInt model) throws RemoteException {
+    private boolean isMyturn;
+    Controller(GameManger model) throws RemoteException {
         this.model = model;
         isMyturn=false;
-        view=new CLI(this);
+        view=new CLI(this );
         model.addRemoteObserver(this);
         new Thread(view).start();
         getTurn();
@@ -23,7 +23,7 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
     @Override
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
         view.update("New value: "+model.getData());
-        if(model.myTurn(this))
+       if(model.myTurn(this))
             view.update("Is your turn!");
 
     }
@@ -36,7 +36,7 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
               switch (cmd[0]) {
                   case "set":
 
-                      if(model.myTurn(this)){
+                     if(model.myTurn(this)){
                           model.setData(o.toString().split(" ")[cmd.length-1]);
                       } else {
                           view.update( "It's not your turn");

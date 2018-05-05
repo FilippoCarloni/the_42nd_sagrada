@@ -10,4 +10,8 @@ public class Settings{
      */
     public final static long serialVersionUIDSession = 1190476516911661470L;
 
+    /**
+     * The default waiting time in nanosecond to start a match with less than 4 players
+     */
+    public final static int WAITINGTIMETOMATCH=3000;
 }

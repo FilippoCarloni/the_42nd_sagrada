@@ -1,7 +1,9 @@
 package it.polimi.ingsw.connection.rmi;
 
-import it.polimi.ingsw.MVCdemo.RemoteObserver;
+import it.polimi.ingsw.client.RemoteObserver;
+import it.polimi.ingsw.connection.server.WrappedPlayer;
 
+import javax.sound.midi.SysexMessage;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Model extends Observable implements ModelInt {
+public class ConcreteGameManager extends Observable implements GameManger{
 
     private class WrappedObserver implements Observer, Serializable {
 
@@ -17,7 +19,7 @@ public class Model extends Observable implements ModelInt {
 
         private RemoteObserver ro = null;
 
-        public WrappedObserver(RemoteObserver ro) {
+        WrappedObserver(RemoteObserver ro) {
             this.ro = ro;
         }
 
@@ -30,7 +32,7 @@ public class Model extends Observable implements ModelInt {
                 o.deleteObserver(this);
             }
         }
-        public void removeRemoteObserver(Observable o){
+        void removeRemoteObserver(Observable o){
             o.deleteObserver(this);
         }
 
@@ -43,21 +45,29 @@ public class Model extends Observable implements ModelInt {
     private String data;
     private int counter;
     private List<WrappedObserver> observers;
-    public Model() {
+    private List<WrappedPlayer> players;
+    public ConcreteGameManager(List<WrappedPlayer> players) {
         counter = 0;
         data = "Hello world!";
         observers=new ArrayList<>();
+        this.players=players;
     }
     @Override
     public boolean myTurn(RemoteObserver obs)  throws RemoteException{
-        int i = counter % this.countObservers();
+        int i;
+        synchronized (this) {
+            i = counter % this.countObservers();
+        }
         return observers.get(i).equals(obs);
+
     }
     @Override
     public void setData(String data)  throws RemoteException{
 
         this.data = data;
-        counter++;
+        synchronized (this) {
+            counter++;
+        }
         setChanged();
         notifyObservers();
     }
