@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client;
 
-;
-
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManger;
-import it.polimi.ingsw.connection.rmi.ServerGame;
+import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.server.Session;
 
 import java.net.MalformedURLException;
@@ -17,12 +15,12 @@ public class  Client {
     public static void main(String args[]){
         GameManger model;
         Session session;
-        ServerGame login;
+        Lobby login;
         String name;
         Scanner s=new Scanner(System.in);
         try {
 
-            login= (ServerGame) Naming.lookup("rmi://localhost:"+Settings.PORT +"/Login");
+            login= (Lobby) Naming.lookup("rmi://localhost:"+Settings.PORT +"/Login");
             System.out.println("Insert your username and wait other player");
             name=s.nextLine();
             session = login.connect(name);
@@ -33,7 +31,7 @@ public class  Client {
             }
             model=(GameManger) login.getGame(session);
 
-            Controller controller = new Controller(model);
+            Controller controller = new Controller(model, session);
         } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

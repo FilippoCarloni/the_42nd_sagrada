@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model;
 
-public interface GameStatus {
+import it.polimi.ingsw.model.players.Player;
 
-    // definizione dei metoditilizzabili dai client, che io chiamerò da gamemanager
-   boolean myTurn();
+public interface GameStatus {
+    boolean isMyTurn(Player me);
+    void selectFromDicePool();
+    // TODO: add rules
+    void placeDie(int row, int column/*, list<Rule> rules*/);
 }

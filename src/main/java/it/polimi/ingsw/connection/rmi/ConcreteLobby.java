@@ -7,14 +7,14 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.rmi.server.UnicastRemoteObject;
-public class ConcreteServerGame extends UnicastRemoteObject implements ServerGame {
+public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 
     GameManger g;
     private List<WrappedPlayer> players;
-    ConcreteServerGame l;
+    ConcreteLobby l;
     private List<WrappedPlayer>  disconnessionRequest;
     private int counter;
-    public ConcreteServerGame()throws RemoteException{
+    public ConcreteLobby()throws RemoteException{
         counter=0;
         players=new ArrayList<>();
         disconnessionRequest=new ArrayList<>();
@@ -82,4 +82,3 @@ public class ConcreteServerGame extends UnicastRemoteObject implements ServerGam
     }
 
 }
-

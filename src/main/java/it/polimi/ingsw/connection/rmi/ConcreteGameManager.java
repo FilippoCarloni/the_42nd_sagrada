@@ -1,23 +1,26 @@
 package it.polimi.ingsw.connection.rmi;
 
 import it.polimi.ingsw.client.RemoteObserver;
+import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
+import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.GameStatus;
 
-import javax.sound.midi.SysexMessage;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.stream.Collectors;
 
-public class ConcreteGameManager extends Observable implements GameManger{
+public class ConcreteGameManager extends Observable implements GameManger {
 
-    private class WrappedObserver implements Observer, Serializable {
+    private static class WrappedObserver implements Observer, Serializable {
 
         private static final long serialVersionUID = 1L;
 
-        private RemoteObserver ro = null;
+        private RemoteObserver ro;
 
         WrappedObserver(RemoteObserver ro) {
             this.ro = ro;
@@ -32,6 +35,7 @@ public class ConcreteGameManager extends Observable implements GameManger{
                 o.deleteObserver(this);
             }
         }
+
         void removeRemoteObserver(Observable o){
             o.deleteObserver(this);
         }
@@ -42,38 +46,25 @@ public class ConcreteGameManager extends Observable implements GameManger{
         }
     }
 
-    private String data;
-    private int counter;
+    private GameStatus data;
     private List<WrappedObserver> observers;
     private List<WrappedPlayer> players;
-    public ConcreteGameManager(List<WrappedPlayer> players) {
-        counter = 0;
-        data = "Hello world!";
-        observers=new ArrayList<>();
-        this.players=players;
-    }
-    @Override
-    public boolean myTurn(RemoteObserver obs)  throws RemoteException{
-        int i;
-        synchronized (this) {
-            i = counter % this.countObservers();
-        }
-        return observers.get(i).equals(obs);
 
+    ConcreteGameManager(List<WrappedPlayer> players) {
+        data = new ConcreteGameStatus(players
+                .stream()
+                .map(WrappedPlayer::getPlayer)
+                .collect(Collectors.toList()));
+        observers = new ArrayList<>();
+        this.players = players;
     }
-    @Override
-    public void setData(String data)  throws RemoteException{
 
-        this.data = data;
-        synchronized (this) {
-            counter++;
-        }
-        setChanged();
-        notifyObservers();
-    }
     @Override
-    public String getData() throws RemoteException{
-        return data;
+    public boolean isMyTurn(Session session) {
+        for (WrappedPlayer p : players)
+            if (p.getSession().equals(session))
+                return data.isMyTurn(p.getPlayer());
+        return true;
     }
 
     @Override
@@ -83,8 +74,8 @@ public class ConcreteGameManager extends Observable implements GameManger{
         observers.add(mo);
         System.out.println("Added observer:" + mo);
     }
+
     public void removeRemoteObserver(RemoteObserver obs) throws RemoteException {
-        int i=0;
         for (WrappedObserver x : observers) {
             if (x.equals(obs)) {
                 x.removeRemoteObserver(this);
@@ -94,7 +85,6 @@ public class ConcreteGameManager extends Observable implements GameManger{
                 System.out.println("Removed observer:" + x);
                 return;
             }
-            i++;
         }
         throw new RemoteException("Error occurred removing an observer!");
     }

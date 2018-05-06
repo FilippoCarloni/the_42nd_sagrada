@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.connection.rmi.GameManger;
+import it.polimi.ingsw.connection.server.Session;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -12,7 +13,10 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
     private GameManger model;
     private CLI view;
     private boolean isMyturn;
-    Controller(GameManger model) throws RemoteException {
+    private Session session;
+
+    Controller(GameManger model, Session session) throws RemoteException {
+        this.session = session;
         this.model = model;
         isMyturn=false;
         view=new CLI(this );
@@ -20,10 +24,11 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
         new Thread(view).start();
         getTurn();
     }
+
     @Override
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
-        view.update("New value: "+model.getData());
-       if(model.myTurn(this))
+        //view.update("New value: "+model.getData());
+       if(model.isMyTurn(session))
             view.update("Is your turn!");
 
     }
@@ -36,14 +41,14 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
               switch (cmd[0]) {
                   case "set":
 
-                     if(model.myTurn(this)){
-                          model.setData(o.toString().split(" ")[cmd.length-1]);
+                     if(model.isMyTurn(session)){
+                          //model.setData(o.toString().split(" ")[cmd.length-1]);
                       } else {
                           view.update( "It's not your turn");
                       }
                       break;
                   case "view":
-                      view.update("current value: "+model.getData());
+                      //view.update("current value: "+model.getData());
                   break;
                   case "exit":
                       model.removeRemoteObserver(this);
@@ -61,7 +66,7 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver,Ob
     }
     private void getTurn() {
         try {
-            if(model.myTurn(this))
+            if(model.isMyTurn(session))
                 System.out.println("Is your turn");
             else
                 System.out.println("Is not your turn, please wait your turn");

@@ -18,11 +18,11 @@ import java.util.List;
 
 public final class GameBox {
 
-    private GameBox instance;
+    private static GameBox instance;
 
     private GameBox() {}
 
-    public GameBox open() {
+    public static GameBox open() {
         if (instance == null) instance = new GameBox();
         return instance;
     }

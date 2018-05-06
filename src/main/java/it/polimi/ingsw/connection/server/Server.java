@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 public class Server {
     public static void main(String[] args) throws AlreadyBoundException, RemoteException, MalformedURLException {
         ServerRMI server = new ServerRMI();
-        server.addSkeleton("Login", new ConcreteServerGame());
+        server.addSkeleton("Login", new ConcreteLobby());
         System.out.println("You can find the exposes object at: " + server.getURL()+"<name_of_the_object>");
     }
 }
