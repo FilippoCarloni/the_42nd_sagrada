@@ -8,71 +8,66 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class Controller extends UnicastRemoteObject implements RemoteObserver,Observer {
+public class Controller extends UnicastRemoteObject implements RemoteObserver, Observer {
 
-    private GameManger model;
+    private GameManger gameManger;
     private CLI view;
-    private boolean isMyturn;
     private Session session;
 
-    Controller(GameManger model, Session session) throws RemoteException {
+    Controller(GameManger gameManger, Session session) throws RemoteException {
         this.session = session;
-        this.model = model;
-        isMyturn=false;
-        view=new CLI(this );
-        model.addRemoteObserver(this);
+        this.gameManger = gameManger;
+        view = new CLI(this );
+        gameManger.addRemoteObserver(this);
         new Thread(view).start();
         getTurn();
     }
 
     @Override
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
-        //view.update("New value: "+model.getData());
-       if(model.isMyTurn(session))
-            view.update("Is your turn!");
-
+        view.update(gameManger.getStatus());
+        if(gameManger.isMyTurn(session))
+            view.update("It's your turn!");
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        String cmd[]=o.toString().split(" ");
-     try{
-
-              switch (cmd[0]) {
-                  case "set":
-
-                     if(model.isMyTurn(session)){
-                          //model.setData(o.toString().split(" ")[cmd.length-1]);
-                      } else {
-                          view.update( "It's not your turn");
-                      }
-                      break;
-                  case "view":
-                      //view.update("current value: "+model.getData());
-                  break;
-                  case "exit":
-                      model.removeRemoteObserver(this);
-                      view.update("Good Bye!");
-                      System.exit(0);
-                      break;
-                  default:
-                      view.update("Not supported command!");
-              }
-
+        String cmd = o.toString();
+        try{
+            switch (cmd) {
+                case "check":
+                    boolean ans = gameManger.isLegal(this.session, "");
+                    if (ans)
+                        view.update("Correct move");
+                    else view.update("Illegal move");
+                    break;
+                case "cmd":
+                    gameManger.sendCommand(this.session, "");
+                    break;
+                case "view":
+                    view.update(gameManger.getStatus());
+                    break;
+                case "exit":
+                    gameManger.removeRemoteObserver(this);
+                    view.update("Good Bye!");
+                    System.exit(0);
+                    break;
+                default:
+                    view.update("Not supported command!");
+            }
         }catch (RemoteException e) {
-
-        }
-
-    }
-    private void getTurn() {
-        try {
-            if(model.isMyTurn(session))
-                System.out.println("Is your turn");
-            else
-                System.out.println("Is not your turn, please wait your turn");
-        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
 
+    private void getTurn() {
+        try {
+            if(gameManger.isMyTurn(session))
+                System.out.println("It's your turn.");
+            else
+                System.out.println("It's not your turn, please wait.");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 }

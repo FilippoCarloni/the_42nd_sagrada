@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.players.Player;
 
 public interface GameStatus {
     boolean isMyTurn(Player me);
-    void selectFromDicePool();
-    // TODO: add rules
-    void placeDie(int row, int column/*, list<Rule> rules*/);
+    boolean isLegal(Player player, String command);
+    void execute(Player player, String command);
 }

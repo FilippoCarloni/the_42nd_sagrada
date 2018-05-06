@@ -60,17 +60,30 @@ public class ConcreteGameManager extends Observable implements GameManger {
     }
 
     @Override
-    public boolean isMyTurn(Session session) {
+    public boolean isLegal(Session session, String command) {
         for (WrappedPlayer p : players)
-            if (p.getSession().getID().equals(session.getID())) {
-                System.out.println(p.getSession().getID()+ " "+session.getID());
-                return data.isMyTurn(p.getPlayer());
-                }
+            if (p.getSession().getID().equals(session.getID()))
+                return data.isLegal(p.getPlayer(), command);
         return false;
     }
 
     @Override
-    public void addRemoteObserver(RemoteObserver o) throws RemoteException {
+    public void sendCommand(Session session, String command) {
+        for (WrappedPlayer p : players)
+            if (p.getSession().getID().equals(session.getID()))
+                data.execute(p.getPlayer(), command);
+    }
+
+    @Override
+    public boolean isMyTurn(Session session) {
+        for (WrappedPlayer p : players)
+            if (p.getSession().getID().equals(session.getID()))
+                    return data.isMyTurn(p.getPlayer());
+        return false;
+    }
+
+    @Override
+    public void addRemoteObserver(RemoteObserver o) {
         WrappedObserver mo = new WrappedObserver(o);
         addObserver(mo);
         observers.add(mo);
@@ -88,6 +101,11 @@ public class ConcreteGameManager extends Observable implements GameManger {
                 return;
             }
         }
-        throw new RemoteException("Error occurred removing an observer!");
+        throw new RemoteException("Error occurred removing an observer.");
+    }
+
+    @Override
+    public String getStatus() {
+        return "" + data;
     }
 }

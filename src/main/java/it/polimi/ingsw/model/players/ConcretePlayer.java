@@ -39,4 +39,25 @@ public class ConcretePlayer implements Player{
         if (po == null) throw new NullPointerException("Cannot play with no private objective.");
         this.po = po;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        String frame = window.toString();
+        int len = frame.indexOf('\n');
+        for (int i = 0; i < len; i++)
+            sb.append("-");
+        sb.append("\n");
+        for (int i = 0; i < (len - username.length()) / 2; i++)
+            sb.append(" ");
+        sb.append(username);
+        for (int i = 0; i < len - (len - username.length()) / 2 - 1; i++)
+            sb.append(" ");
+        sb.append("\n");
+        for (int i = 0; i < len; i++)
+            sb.append("-");
+        sb.append("\n");
+        sb.append(frame);
+        return sb.toString();
+    }
 }

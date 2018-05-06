@@ -11,4 +11,7 @@ public interface GameManger extends Remote {
     void addRemoteObserver(RemoteObserver obs) throws RemoteException;
     void removeRemoteObserver(RemoteObserver obs) throws RemoteException;
     boolean isMyTurn(Session session) throws RemoteException;
+    boolean isLegal(Session session, String command) throws RemoteException;
+    void sendCommand(Session session, String command) throws RemoteException;
+    String getStatus() throws RemoteException;
 }
