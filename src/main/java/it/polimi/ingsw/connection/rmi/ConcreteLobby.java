@@ -49,7 +49,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         throw new RemoteException("error, and it is a very big problem!");
     }
   public synchronized GameManger getGame(Session userSession) throws RemoteException {
-        if(counter == 4 )
+        if(counter == 4 || g != null)
             throw new RemoteException("multiple games are not supported! (coming soon!)");
         for (WrappedPlayer s : players)
             if (s.getSession().getID().equals(userSession.getID())) {

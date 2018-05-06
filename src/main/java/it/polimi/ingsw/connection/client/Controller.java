@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.connection.client;
 
 
 import it.polimi.ingsw.connection.rmi.GameManger;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.rmi;
 
-import it.polimi.ingsw.client.RemoteObserver;
+import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.connection.server.Session;
 
 import java.rmi.Remote;

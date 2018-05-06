@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.connection.client;
 
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManger;
@@ -29,6 +29,7 @@ public class  Client {
                 name=s.nextLine();
                 session = login.connect(name);
             }
+
             model=(GameManger) login.getGame(session);
 
             Controller controller = new Controller(model, session);
@@ -37,7 +38,7 @@ public class  Client {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
     }

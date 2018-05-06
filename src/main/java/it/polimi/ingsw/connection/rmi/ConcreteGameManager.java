@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.rmi;
 
-import it.polimi.ingsw.client.RemoteObserver;
+import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
 import it.polimi.ingsw.model.ConcreteGameStatus;
@@ -62,9 +62,11 @@ public class ConcreteGameManager extends Observable implements GameManger {
     @Override
     public boolean isMyTurn(Session session) {
         for (WrappedPlayer p : players)
-            if (p.getSession().equals(session))
+            if (p.getSession().getID().equals(session.getID())) {
+                System.out.println(p.getSession().getID()+ " "+session.getID());
                 return data.isMyTurn(p.getPlayer());
-        return true;
+                }
+        return false;
     }
 
     @Override
