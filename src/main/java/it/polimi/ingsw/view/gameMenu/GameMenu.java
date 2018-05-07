@@ -1,30 +1,41 @@
 package it.polimi.ingsw.view.gameMenu;
 
+import it.polimi.ingsw.view.viewDemo.*;
+import it.polimi.ingsw.view.viewDemo.utility.MainHelper;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 public class GameMenu extends Parent {
 
-    private VBox mainMenu, settingsMenu, difficultyMenu;
+    private VBox mainMenu, settingsMenu, difficultyMenu, startGameMenu;
     private MenuButton btnNewGame, btnResume, btnOptions, btnExit;
-    private MenuButton btnSound, btnDifficulty, btnBack;
+    private MenuButton btnSound, btnDifficulty, btnFullScren, btnBack;
     private MenuButton btnEasy, btnNormal, btnBackToOptions, btnBackToMainMenu;
+    private MenuButton btnTwoPlayers, btnThreePlayers, btnFourPlayers, btnBackMain;
+
+    private Main main;
 
     public GameMenu(){
+        main = new Main();
+
         mainMenu = setMenu();
         settingsMenu = setMenu();
         difficultyMenu = setMenu();
+        startGameMenu = setMenu();
 
         setMainMenuButtons();
         setSettingsMenuButtons();
         setDifficultyMenuButtons();
+        setStartGameMenu();
 
+        btnNewGame.setOnMouseClicked(e -> changeMenu(mainMenu, startGameMenu));
         btnOptions.setOnMouseClicked(e -> changeMenu(mainMenu, settingsMenu));
         btnExit.setOnMouseClicked(e -> System.exit(0));
 
@@ -34,11 +45,17 @@ public class GameMenu extends Parent {
         btnBackToOptions.setOnMouseClicked(e -> changeMenu(difficultyMenu, settingsMenu));
         btnBackToMainMenu.setOnMouseClicked(e -> changeMenu(difficultyMenu, mainMenu));
 
-        mainMenu.getChildren().addAll(btnNewGame, btnResume, btnOptions, btnExit);
-        settingsMenu.getChildren().addAll(btnSound, btnDifficulty, btnBack);
-        difficultyMenu.getChildren().addAll(btnEasy, btnNormal, btnBackToOptions, btnBackToMainMenu);
+        btnTwoPlayers.setOnMouseClicked(e -> launchViewDemo(2));
+        btnThreePlayers.setOnMouseClicked(e -> launchViewDemo(3));
+        btnFourPlayers.setOnMouseClicked(e -> launchViewDemo(4));
+        btnBackMain.setOnMouseClicked(e -> changeMenu(startGameMenu, mainMenu));
 
-        Rectangle bg = new Rectangle(1209, 1614);
+        mainMenu.getChildren().addAll(btnNewGame, btnResume, btnOptions, btnExit);
+        settingsMenu.getChildren().addAll(btnSound, btnDifficulty, btnFullScren, btnBack);
+        difficultyMenu.getChildren().addAll(btnEasy, btnNormal, btnBackToOptions, btnBackToMainMenu);
+        startGameMenu.getChildren().addAll(btnTwoPlayers, btnThreePlayers, btnFourPlayers, btnBackMain);
+
+        Rectangle bg = new Rectangle(1920, 1080);
         bg.setFill(Color.GRAY);
         bg.setOpacity(0.4);
 
@@ -47,7 +64,7 @@ public class GameMenu extends Parent {
 
     private VBox setMenu(){
         VBox menu = new VBox(20);
-        menu.setTranslateX(400);
+        menu.setTranslateX(720);
         menu.setTranslateY(500);
         return menu;
     }
@@ -60,13 +77,24 @@ public class GameMenu extends Parent {
     private void setSettingsMenuButtons(){
         btnSound = new MenuButton(" SOUND", "Set audio preferences");
         btnDifficulty = new MenuButton(" DIFFICULTY", "Enable/Disable rules description");
+        btnFullScren = new MenuButton(" FULLSCREEN", "Enable/Disable full screen");
         btnBack = new MenuButton(" BACK", "Go back to main menu");
     }
     private void setDifficultyMenuButtons(){
-        btnEasy = new MenuButton(" EASY", "Enable rules description");
-        btnNormal = new MenuButton(" NORMAL", "Disable rules description");
+        btnEasy = new MenuButton(" EASY", "Enable dynamic points visualisation");
+        btnNormal = new MenuButton(" NORMAL", "Disable dynamic points visualisation");
         btnBackToOptions = new MenuButton(" BACK TO SETTINGS", "Go back to settings");
         btnBackToMainMenu = new MenuButton(" BACK TO MAIN MENU", "Go back to main menu");
+    }
+    private void setStartGameMenu(){
+        btnTwoPlayers = new MenuButton(" 2 PLAYERS", "");
+        btnThreePlayers = new MenuButton(" 3 PLAYERS", "");
+        btnFourPlayers = new MenuButton(" 4 PLAYERS", "");
+        btnBackMain = new MenuButton(" BACK", "");
+    }
+
+    public MenuButton getFullScreen(){
+        return btnFullScren;
     }
 
     private void hideMenu(){
@@ -94,6 +122,15 @@ public class GameMenu extends Parent {
         tt.setOnFinished(e -> {
             getChildren().remove(menuComing);
         });
+    }
+    private void launchViewDemo(int numOfPlayers) {
+        main.setNumOfPlayers(numOfPlayers);
+        try {
+            main.start(new Stage());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

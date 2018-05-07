@@ -2,12 +2,10 @@ package it.polimi.ingsw.view.gameMenu;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -22,7 +20,8 @@ public class MenuMain extends Application {
     private Pane root;
     private ImageView imgView;
     private Scene scene;
-    private OverlayWrite startingWrite;
+    private MenuButton fullScreen;
+    //private OverlayWrite startingWrite;
 
     public static void main(String args[]){
         launch(args);
@@ -33,34 +32,46 @@ public class MenuMain extends Application {
         root = new Pane();
         scene = new Scene(root);
         gameMenu = new GameMenu();
-        gameMenu.setVisible(false);
+        gameMenu.setVisible(true);
+        primaryStage.setFullScreen(true);
 
-        startingWrite = new OverlayWrite("  Press any key to start", 510, 100, Pos.CENTER_LEFT);
+        /*startingWrite = new OverlayWrite("  Press any key to start", 510, 100, Pos.CENTER_LEFT);
         startingWrite.manageText(50, Color.WHITE);
         startingWrite.manageRectangle(0.6, Color.BLACK);
-        startingWrite.setVisible(true);
+        startingWrite.setVisible(true);*/
 
-        try (InputStream is = Files.newInputStream(Paths.get("res/images/sagrada_bg.jpg"))) {
-         imgView = new ImageView(new Image(is));
-         imgView.setFitWidth(1209);
-         imgView.setFitHeight(1614);
-        }
-        catch (IOException e) {
-            System.err.println ("Couldn't load background image");
-        }
+        loadFromFile("res/images/sagrada_menu_bg.png");
 
-        startingWrite.setTranslateX(360);
-        startingWrite.setTranslateY(900);
+        /*startingWrite.setTranslateX(720);
+        startingWrite.setTranslateY(900);*/
 
-        hideAndShowMenu(scene);
-        root.setPrefSize(1209, 1080);
-        root.getChildren().addAll(imgView, gameMenu, startingWrite);
+        fullScreen = gameMenu.getFullScreen();
+        fullScreen.setOnMouseClicked(e -> setFullScreen(primaryStage));
+
+        //hideAndShowMenu(scene);
+        root.setPrefSize(1920, 1080);
+        root.getChildren().addAll(imgView, gameMenu);
         primaryStage.setTitle("Sagrada Board Game");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    //Pressing ESC you can hide/show the main menu
+    private void loadFromFile (String path) {
+        try (InputStream is = Files.newInputStream(Paths.get(path))) {
+            imgView = new ImageView(new Image(is));
+            imgView.setFitWidth(1920);
+            imgView.setFitHeight(1080);
+        }
+        catch (IOException e) {
+            System.err.println ("Couldn't load background image");
+        }
+    }
+    private void setFullScreen(Stage stage){
+        if(stage.isFullScreen())
+            stage.setFullScreen(false);
+        else
+            stage.setFullScreen(true);
+    }
     private void hideAndShowMenu(Scene s){
         if (s == null) throw new NullPointerException();
         s.setOnKeyPressed(e -> {
@@ -71,7 +82,7 @@ public class MenuMain extends Application {
 
                 gameMenu.setVisible(true);
                 ft.play();
-                hideStartingWrite();
+                //hideStartingWrite();
             }
             else {
                 FadeTransition ft = new FadeTransition(Duration.seconds(0.5), gameMenu);
@@ -82,7 +93,7 @@ public class MenuMain extends Application {
             }
         });
     }
-    private void hideStartingWrite(){
+    /*private void hideStartingWrite(){
         if (startingWrite.isVisible()) {
             FadeTransition ft = new FadeTransition(Duration.seconds(0.6), startingWrite);
             ft.setFromValue(1);
@@ -91,5 +102,5 @@ public class MenuMain extends Application {
             startingWrite.setVisible(false);
             ft.play();
         }
-    }
+    }*/
 }

@@ -33,8 +33,7 @@ public class MenuButton extends StackPane {
 
         overlayWrite.manageText(20, Color.WHITE);
         overlayWrite.manageRectangle(0.6, Color.BLACK);
-        overlayWrite.setTranslateX(400);
-        overlayWrite.setTranslateY(800);
+        overlayWrite.setTranslateY(300);
         overlayWrite.setVisible(false);
 
         setAlignment(Pos.CENTER_LEFT);
@@ -43,11 +42,11 @@ public class MenuButton extends StackPane {
         //Mouse events when passing on the button
         this.setOnMouseEntered(e -> {
             glowAndTranslateOnMousePass();
-            overlayWrite.setVisible(true);
+            //overlayWrite.setVisible(true);
         });
         this.setOnMouseExited(e -> {
             returnNormalOnMouseExit();
-            overlayWrite.setVisible(false);
+            //overlayWrite.setVisible(false);
         });
 
         //Mouse events when pressing the button
