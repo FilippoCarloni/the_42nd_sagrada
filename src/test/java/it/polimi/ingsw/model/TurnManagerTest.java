@@ -10,8 +10,19 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TurnManagerTest {
+
+    @Test
+    void testIllegalArgument() {
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteTurnManager(null));
+        Player p = new ConcretePlayer("player");
+        ArrayList<Player> list = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteTurnManager(list));
+        list.add(p);
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteTurnManager(list));
+    }
 
     @Test
     void testTwoPlayers() {
@@ -25,8 +36,12 @@ class TurnManagerTest {
         tm.advanceTurn();
 
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
+            assertEquals(true, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(b, tm.getCurrentPlayer());
             tm.advanceTurn();
             assertEquals(b, tm.getCurrentPlayer());
@@ -39,6 +54,8 @@ class TurnManagerTest {
             tm.advanceTurn();
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(true, tm.isRoundEnding());
             assertEquals(b, tm.getCurrentPlayer());
             tm.advanceTurn();
         }
@@ -57,8 +74,12 @@ class TurnManagerTest {
         tm.advanceTurn();
 
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
+            assertEquals(true, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(b, tm.getCurrentPlayer());
             tm.advanceTurn();
             assertEquals(c, tm.getCurrentPlayer());
@@ -91,6 +112,8 @@ class TurnManagerTest {
             tm.advanceTurn();
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(true, tm.isRoundEnding());
             assertEquals(c, tm.getCurrentPlayer());
             tm.advanceTurn();
         }
@@ -112,8 +135,12 @@ class TurnManagerTest {
         tm.advanceTurn();
 
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
+            assertEquals(true, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(false, tm.isRoundEnding());
             assertEquals(b, tm.getCurrentPlayer());
             tm.advanceTurn();
             assertEquals(c, tm.getCurrentPlayer());
@@ -174,6 +201,8 @@ class TurnManagerTest {
             tm.advanceTurn();
             assertEquals(a, tm.getCurrentPlayer());
             tm.advanceTurn();
+            assertEquals(false, tm.isRoundStarting());
+            assertEquals(true, tm.isRoundEnding());
             assertEquals(d, tm.getCurrentPlayer());
             tm.advanceTurn();
         }

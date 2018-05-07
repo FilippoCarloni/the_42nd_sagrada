@@ -3,21 +3,23 @@ package it.polimi.ingsw.connection.client;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 
 public class CLI extends Observable implements Runnable {
 
-    private String message;
-    Scanner scanner;
+    private Scanner scanner;
 
     CLI(Observer o) {
         addObserver(o);
-        scanner = new Scanner(System.in);;
+        scanner = new Scanner(System.in);
         menu();
     }
 
     private void menu() {
-        System.out.println("The game is started. Here you will see the game commands.");
-
+        System.out.println("\nUSAGE:\n" +
+                "  ?     : prints how to play\n" +
+                "  view  : prints game info\n" +
+                "  exit  : disconnects from the current game\n");
     }
 
     public void update(String o) {
@@ -26,10 +28,13 @@ public class CLI extends Observable implements Runnable {
 
     @Override
     public void run() {
+        String message;
+        System.out.print("> ");
         message = scanner.nextLine();
         while (message != null) {
             setChanged();
             notifyObservers(message);
+            System.out.print("> ");
             message = scanner.nextLine();
         }
     }

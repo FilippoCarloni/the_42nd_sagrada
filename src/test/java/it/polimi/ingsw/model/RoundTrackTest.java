@@ -14,8 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class RoundTrackTest {
 
-    // TODO: add more tests
-
     @Test
     void roundTrackTest1() {
         RoundTrack rt = new PaperRoundTrack();

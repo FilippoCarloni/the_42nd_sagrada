@@ -51,7 +51,7 @@ public class ConcretePlayer implements Player{
         for (int i = 0; i < (len - username.length()) / 2; i++)
             sb.append(" ");
         sb.append(username);
-        for (int i = 0; i < len - (len - username.length()) / 2 - 1; i++)
+        for (int i = 0; i < len - username.length() - (len - username.length()) / 2; i++)
             sb.append(" ");
         sb.append("\n");
         for (int i = 0; i < len; i++)

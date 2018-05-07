@@ -110,9 +110,8 @@ public class ConcreteGameStatus implements GameStatus {
         sb.append("\n\n");
         s = "";
         for (Player p : players)
-            s = convertToHorizontal(s, p.toString(), " | ");
+            s = convertToHorizontal(s, p.toString(), "  ");
         sb.append(s);
-        sb.append("\n\n");
         return sb.toString();
     }
 }

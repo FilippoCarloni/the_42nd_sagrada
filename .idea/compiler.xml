@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/PrivateObjectiveCardTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/WindowFrameTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/TurnManagerTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/RoundTrackTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/UtilityTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/DiceTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/DiceBagTest.java" />
-      <file url="file://$PROJECT_DIR$/src/test/java/it/polimi/ingsw/model/PublicObjectiveCardTest.java" />
-    </excludeFromCompile>
     <annotationProcessing>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />

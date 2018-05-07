@@ -20,7 +20,6 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
         view = new CLI(this );
         gameManger.addRemoteObserver(this);
         new Thread(view).start();
-        getTurn();
     }
 
     @Override
@@ -35,14 +34,8 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
         String cmd = o.toString();
         try{
             switch (cmd) {
-                case "check":
-                    boolean ans = gameManger.isLegal(this.session, "");
-                    if (ans)
-                        view.update("Correct move");
-                    else view.update("Illegal move");
-                    break;
-                case "cmd":
-                    gameManger.sendCommand(this.session, "");
+                case "?":
+                    view.update("Commands still need to be added ;)");
                     break;
                 case "view":
                     view.update(gameManger.getStatus());
@@ -53,20 +46,18 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
                     System.exit(0);
                     break;
                 default:
-                    view.update("Not supported command!");
+                    if (!gameManger.isMyTurn(session))
+                        view.update("It's not your turn, please wait while the other players make their moves.");
+                    else {
+                        boolean legal = gameManger.isLegal(session, cmd);
+                        if (!legal) {
+                            view.update("Illegal command, please check if the syntax is correct.");
+                        } else {
+                            gameManger.sendCommand(session, cmd);
+                        }
+                    }
             }
         }catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getTurn() {
-        try {
-            if(gameManger.isMyTurn(session))
-                System.out.println("It's your turn.");
-            else
-                System.out.println("It's not your turn, please wait.");
-        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }

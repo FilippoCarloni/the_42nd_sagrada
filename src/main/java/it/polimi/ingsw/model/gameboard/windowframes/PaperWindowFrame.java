@@ -77,10 +77,13 @@ public class PaperWindowFrame implements WindowFrame {
     public void move(Die die, int row, int column) {
         if (die == null)
             throw new NullPointerException("There's no null die on the window frame.");
+        if (!isEmpty(row, column))
+            throw new IllegalArgumentException("The place is already occupied by another die.");
         for (Map.Entry<Coordinate, Die> entry : dice.entrySet()) {
             Coordinate c = entry.getKey();
             if (dice.get(c).equals(die)) {
                 put(dice.remove(c), row, column);
+                return;
             }
         }
         throw new IllegalArgumentException("There's no such die in the window frame.");
