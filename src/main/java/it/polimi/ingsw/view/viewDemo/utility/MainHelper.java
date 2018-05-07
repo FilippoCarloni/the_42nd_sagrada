@@ -125,7 +125,7 @@ public class MainHelper {
             Y = 100;
             X = 150;
             favorPoints.add(new FavorPoint(X, Y, "res/9-eng.jpg"));
-            Y = 1140;
+            Y = 930;
             X = 560;
             favorPoints.add(new FavorPoint(X, Y, "res/9-eng.jpg"));
             Y = 100;
