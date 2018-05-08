@@ -18,7 +18,7 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
         this.session = session;
         this.gameManger = gameManger;
         view = new CLI(this );
-        gameManger.addRemoteObserver(this);
+        gameManger.addRemoteObserver(session, this);
         new Thread(view).start();
     }
 

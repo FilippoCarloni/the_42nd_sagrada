@@ -1,21 +1,17 @@
 package it.polimi.ingsw.connection.server;
 
 import it.polimi.ingsw.connection.rmi.*;
-import it.polimi.ingsw.model.ConcreteGameStatus;
-import it.polimi.ingsw.model.GameStatus;
-import it.polimi.ingsw.model.players.ConcretePlayer;
-import it.polimi.ingsw.model.players.Player;
-
 import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.logging.Logger;
 
 
 public class Server {
     public static void main(String[] args) throws AlreadyBoundException, RemoteException, MalformedURLException {
+        Logger logger= Logger.getLogger(Server.class.getName());
         ServerRMI server = new ServerRMI();
         server.addSkeleton("Login", new ConcreteLobby());
-        System.out.println("You can find the exposes object at: " + server.getURL()+"<name_of_the_object>");
+        logger.info(() -> ("You can find the exposes object at: " + server.getURL()+"<name_of_the_object>"));
     }
 }

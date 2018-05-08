@@ -29,7 +29,6 @@ public class  Client {
                 name=s.nextLine();
                 session = login.connect(name);
             }
-
             model=(GameManger) login.getGame(session);
 
             Controller controller = new Controller(model, session);
