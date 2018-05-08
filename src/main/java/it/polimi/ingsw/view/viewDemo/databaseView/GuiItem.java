@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
 import java.io.IOException;
 

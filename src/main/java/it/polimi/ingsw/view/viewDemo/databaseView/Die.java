@@ -1,5 +1,8 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -24,8 +27,10 @@ public class Die extends Parent implements GuiItem {
     private ImageView dieImageView;
     private ImagePattern dieImagePattern;
 
-    public Die(double X, double Y, String imgPath){
-        container = setDie(X, Y);
+    public Die(double x, double y, String imgPath){
+        ConstructorHelper helper = new ConstructorHelper();
+
+        container = helper.setElement(x, y, GUIParameters.DIE_WIDTH,  GUIParameters.DIE_HEIGHT);
         name = new Text("Dice");
         stackPane = new StackPane();
         /*try {
@@ -38,8 +43,8 @@ public class Die extends Parent implements GuiItem {
 
         name.setFont(name.getFont().font(20));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -47,13 +52,6 @@ public class Die extends Parent implements GuiItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setDie(double X, double Y){
-        Rectangle container = new Rectangle(250, 80);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -66,14 +64,14 @@ public class Die extends Parent implements GuiItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

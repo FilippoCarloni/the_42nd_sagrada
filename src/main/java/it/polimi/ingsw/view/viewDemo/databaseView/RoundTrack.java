@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -24,8 +26,9 @@ public class RoundTrack extends Parent implements GuiItem {
     private ImageView roundTrackImageView;
     private ImagePattern roundTrackImagePattern;
 
-    public RoundTrack(double X, double Y, String imgPath){
-        container = setRoundTrack(X, Y);
+    public RoundTrack(double x, double y, String imgPath){
+        ConstructorHelper helper = new ConstructorHelper();
+        container = helper.setElement(x, y, GUIParameters.ROUND_TRACK_WIDTH, GUIParameters.ROUND_TRACK_HEIGHT);
         name = new Text("RoundTrack");
         stackPane = new StackPane();
         /*try {
@@ -38,8 +41,8 @@ public class RoundTrack extends Parent implements GuiItem {
 
         name.setFont(name.getFont().font(20));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -47,13 +50,6 @@ public class RoundTrack extends Parent implements GuiItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setRoundTrack(double X, double Y){
-        Rectangle container = new Rectangle(450, 150);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -66,14 +62,14 @@ public class RoundTrack extends Parent implements GuiItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

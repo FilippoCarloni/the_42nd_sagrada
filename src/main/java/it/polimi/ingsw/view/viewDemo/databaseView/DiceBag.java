@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -24,8 +26,10 @@ public class DiceBag extends Parent implements GuiItem {
     private ImageView diceBagImageView;
     private ImagePattern diceBagImagePattern;
 
-    public DiceBag(double X, double Y, String imgPath){
-        container = setDiceBag(X, Y);
+    public DiceBag(double x, double y, String imgPath){
+        ConstructorHelper helper = new ConstructorHelper();
+
+        container = helper.setElement(x, y, GUIParameters.DICE_BAG_WIDTH, GUIParameters.DICE_BAG_HEIGHT);
         name = new Text("DiceBag");
         stackPane = new StackPane();
         /*try {
@@ -38,8 +42,8 @@ public class DiceBag extends Parent implements GuiItem {
 
         name.setFont(name.getFont().font(20));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -47,13 +51,6 @@ public class DiceBag extends Parent implements GuiItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setDiceBag(double X, double Y){
-        Rectangle container = new Rectangle(350, 120);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -66,14 +63,14 @@ public class DiceBag extends Parent implements GuiItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.gameMenu;
+package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.view.gamemenu.GameMenu;
+import it.polimi.ingsw.view.gamemenu.MenuButton;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,7 +16,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class MenuMain extends Application {
+public class Main extends Application {
 
     private GameMenu gameMenu;
     private Pane root;

@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -18,15 +20,16 @@ import java.nio.file.Paths;
 public class WindowFrame extends Parent implements GuiItem {
 
     private Text name;
+    private Rectangle container;
     private StackPane stackPane;
     private Image windowImage;
     private ImageView windowFrame;
     private ImagePattern windowImagePattern;
-    private Rectangle container;
 
 
-    public WindowFrame(double X, double Y, String imgPath) {
-        container = setWindowFrame(X, Y);
+    public WindowFrame(double x, double y, String imgPath) {
+        ConstructorHelper helper = new ConstructorHelper();
+        container = helper.setElement(x, y, GUIParameters.WINDOW_FRAME_WIDTH, GUIParameters.WINDOW_FRAME_HEIGHT);
         name = new Text("WindowFrame");
         stackPane = new StackPane();
 
@@ -40,8 +43,8 @@ public class WindowFrame extends Parent implements GuiItem {
 
         name.setFont(name.getFont().font(30));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -49,13 +52,6 @@ public class WindowFrame extends Parent implements GuiItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setWindowFrame(double X, double Y) {
-        Rectangle container = new Rectangle(400, 200);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -68,14 +64,14 @@ public class WindowFrame extends Parent implements GuiItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

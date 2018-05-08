@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gameMenu;
+package it.polimi.ingsw.view.gamemenu;
 
 import javafx.geometry.Pos;
 import javafx.scene.effect.GaussianBlur;

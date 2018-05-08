@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,8 +25,9 @@ public class ToolCard extends CardItem {
     private ImageView cardImageView;
     private ImagePattern cardImagePattern;
 
-    public ToolCard(double X, double Y, String imgPath){
-        container = setToolCard(X, Y);
+    public ToolCard(double x, double y, String imgPath){
+        ConstructorHelper helper = new ConstructorHelper();
+        container = helper.setElement(x, y, GUIParameters.CARD_WIDTH, GUIParameters.CARD_HEIGHT);
         name = new Text("ToolCard");
         stackPane = new StackPane();
         /*try {
@@ -36,8 +39,8 @@ public class ToolCard extends CardItem {
         container.setFill(cardImagePattern);*/
         name.setFont(name.getFont().font(8));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -45,13 +48,6 @@ public class ToolCard extends CardItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setToolCard(double X, double Y) {
-        Rectangle container = new Rectangle(120, 50);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -64,14 +60,14 @@ public class ToolCard extends CardItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

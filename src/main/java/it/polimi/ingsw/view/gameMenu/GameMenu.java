@@ -1,7 +1,6 @@
-package it.polimi.ingsw.view.gameMenu;
+package it.polimi.ingsw.view.gamemenu;
 
-import it.polimi.ingsw.view.viewDemo.*;
-import it.polimi.ingsw.view.viewDemo.utility.MainHelper;
+import it.polimi.ingsw.view.viewdemo.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;
@@ -20,10 +19,10 @@ public class GameMenu extends Parent {
     private MenuButton btnEasy, btnNormal, btnBackToOptions, btnBackToMainMenu;
     private MenuButton btnTwoPlayers, btnThreePlayers, btnFourPlayers, btnBackMain;
 
-    private Main main;
+    private ViewStart view;
 
     public GameMenu(){
-        main = new Main();
+        view = new ViewStart();
 
         mainMenu = setMenu();
         settingsMenu = setMenu();
@@ -72,19 +71,19 @@ public class GameMenu extends Parent {
         btnNewGame = new MenuButton(" NEW GAME", "Start a new game");
         btnResume = new MenuButton(" RESUME", "Load the last game saved");
         btnOptions = new MenuButton(" SETTINGS", "Sound and difficult settings");
-        btnExit = new MenuButton(" EXIT", "Close main menu");
+        btnExit = new MenuButton(" EXIT", "Close view menu");
     }
     private void setSettingsMenuButtons(){
         btnSound = new MenuButton(" SOUND", "Set audio preferences");
         btnDifficulty = new MenuButton(" DIFFICULTY", "Enable/Disable rules description");
         btnFullScren = new MenuButton(" FULLSCREEN", "Enable/Disable full screen");
-        btnBack = new MenuButton(" BACK", "Go back to main menu");
+        btnBack = new MenuButton(" BACK", "Go back to view menu");
     }
     private void setDifficultyMenuButtons(){
         btnEasy = new MenuButton(" EASY", "Enable dynamic points visualisation");
         btnNormal = new MenuButton(" NORMAL", "Disable dynamic points visualisation");
         btnBackToOptions = new MenuButton(" BACK TO SETTINGS", "Go back to settings");
-        btnBackToMainMenu = new MenuButton(" BACK TO MAIN MENU", "Go back to main menu");
+        btnBackToMainMenu = new MenuButton(" BACK TO MAIN MENU", "Go back to view menu");
     }
     private void setStartGameMenu(){
         btnTwoPlayers = new MenuButton(" 2 PLAYERS", "");
@@ -98,7 +97,7 @@ public class GameMenu extends Parent {
     }
 
     private void hideMenu(){
-        //It hides main menu, and nothing more
+        //It hides view menu, and nothing more
         FadeTransition ft = new FadeTransition(Duration.seconds(0.5), this);
         ft.setFromValue(1);
         ft.setToValue(0);
@@ -124,9 +123,9 @@ public class GameMenu extends Parent {
         });
     }
     private void launchViewDemo(int numOfPlayers) {
-        main.setNumOfPlayers(numOfPlayers);
+        view.setNumOfPlayers(numOfPlayers);
         try {
-            main.start(new Stage());
+            view.start(new Stage());
         }
         catch (Exception e){
             e.printStackTrace();

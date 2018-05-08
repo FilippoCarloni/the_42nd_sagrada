@@ -1,5 +1,7 @@
-package it.polimi.ingsw.view.viewDemo.databaseView;
+package it.polimi.ingsw.view.viewdemo.databaseview;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -24,8 +26,9 @@ public class FavorPoint extends Parent implements GuiItem {
     private ImageView favorPointImageView;
     private ImagePattern favorPointImagePattern;
 
-    public FavorPoint(double X, double Y, String imgPath){
-        container = setFavorPoint(X, Y);
+    public FavorPoint(double x, double y, String imgPath){
+        ConstructorHelper helper = new ConstructorHelper();
+        container = helper.setElement(x, y, GUIParameters.FAVOR_POINT_WIDTH, GUIParameters.FAVOR_POINT_HEIGHT);
         name = new Text("FavorPoints");
         stackPane = new StackPane();
         /*try {
@@ -38,8 +41,8 @@ public class FavorPoint extends Parent implements GuiItem {
 
         name.setFont(name.getFont().font(8));
         name.setFill(Color.WHITE);
-        name.setTranslateX(X);
-        name.setTranslateY(Y);
+        name.setTranslateX(x);
+        name.setTranslateY(y);
 
         container.setOpacity(0.6);
         container.setFill(Color.BLACK);
@@ -47,13 +50,6 @@ public class FavorPoint extends Parent implements GuiItem {
 
         stackPane.getChildren().addAll(container, name);
         getChildren().addAll(stackPane);
-    }
-
-    private Rectangle setFavorPoint(double X, double Y) {
-        Rectangle container = new Rectangle(120, 50);
-        container.setTranslateX(X);
-        container.setTranslateY(Y);
-        return container;
     }
 
     @Override
@@ -66,14 +62,14 @@ public class FavorPoint extends Parent implements GuiItem {
     }
     @Override
     public void setGlow() {
-
+        //Will be write soon
     }
     @Override
     public void removeGlow() {
-
+        //Will be write soon
     }
     @Override
     public void zoom() {
-
+        //Will be write soon
     }
 }

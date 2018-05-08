@@ -1,15 +1,15 @@
-package it.polimi.ingsw.view.viewDemo;
+package it.polimi.ingsw.view.viewdemo;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import it.polimi.ingsw.view.viewDemo.databaseView.*;
-import it.polimi.ingsw.view.viewDemo.utility.*;
+import it.polimi.ingsw.view.viewdemo.databaseview.*;
+import it.polimi.ingsw.view.viewdemo.utility.*;
 
 import java.util.ArrayList;
 
-public class Main extends Application {
+public class ViewStart extends Application {
 
     private AnchorPane root;
     private Scene scene;
@@ -70,7 +70,7 @@ public class Main extends Application {
     }
 
     //Will be used by controller class to set num of players playing the game
-    public void setNumOfPlayers(int numOfPlayers) throws IllegalArgumentException {
+    public void setNumOfPlayers(int numOfPlayers) {
         if (numOfPlayers > 4) throw new IllegalArgumentException("Too many players");
         this.numOfPlayers = numOfPlayers;
     }
