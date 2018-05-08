@@ -1,12 +1,10 @@
 package it.polimi.ingsw.connection.rmi;
 
-import com.sun.corba.se.impl.encoding.WrapperInputStream;
 import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.GameStatus;
-import javafx.beans.value.WritableListValue;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -55,53 +53,35 @@ public class ConcreteGameManager extends Observable implements GameManger {
     }
     private static Logger logger=Logger.getLogger(ConcreteGameManager.class.getName());
     private GameStatus data;
-    private List<WrappedObserver> observers;
     private List<WrappedPlayer> players;
-
+    private List<WrappedObserver> observers;
     ConcreteGameManager(List<WrappedPlayer> players) {
         data = new ConcreteGameStatus(players
                 .stream()
                 .map(WrappedPlayer::getPlayer)
                 .collect(Collectors.toList()));
-        observers = new ArrayList<>();
         this.players = players;
+        observers=new ArrayList<>();
     }
 
     @Override
     public boolean isLegal(Session session, String command)  throws RemoteException {
-        List <WrappedPlayer> player = players.stream().filter(x -> x.getSession().getID().equals(session.getID()))
-                .collect(Collectors.toList());
-        if(player.size() != 1) {
-            logger.log(Level.SEVERE, "Hacker !!!, not playing user are tryng to enter in a match");
-            throw new RemoteException("Error, you are not playing in this game");
-        }
-        for (WrappedPlayer p : players)
-            if (p.getSession().getID().equals(session.getID()))
-                return data.isLegal(p.getPlayer(), command);
-        return false;
+        return data.isLegal(this.getPlayer(session).getPlayer(), command);
     }
 
     @Override
-    public void sendCommand(Session session, String command) {
-        for (WrappedPlayer p : players)
-            if (p.getSession().getID().equals(session.getID()))
-                data.execute(p.getPlayer(), command);
+    public void sendCommand(Session session, String command) throws RemoteException {
+        data.execute(this.getPlayer(session).getPlayer(), command);
     }
 
     @Override
     public boolean isMyTurn(Session session) throws RemoteException  {
-        for (WrappedPlayer p : players)
-            if (p.getSession().getID().equals(session.getID()))
-                    return data.isMyTurn(p.getPlayer());
-        return false;
+        return data.isMyTurn(this.getPlayer(session).getPlayer());
     }
 
     @Override
     public void addRemoteObserver(Session session, RemoteObserver o) throws RemoteException{
-        if(players.stream().filter(x -> x.getSession().getID().equals(session.getID())).count()!= 1) {
-            logger.log(Level.SEVERE, "Hacker !!!, not playing user are tryng to enter in a match");
-            throw new RemoteException("Error, you are not playing in this game");
-        }
+        this.getPlayer(session);
         WrappedObserver mo = new WrappedObserver(o);
         addObserver(mo);
         observers.add(mo);
@@ -125,5 +105,17 @@ public class ConcreteGameManager extends Observable implements GameManger {
     @Override
     public String getStatus() {
         return "" + data;
+    }
+    private WrappedPlayer getPlayer(Session session) throws RemoteException{
+        List<WrappedPlayer> player=players.stream().filter(x -> x.getSession().getID().equals(session.getID()))
+                .collect(Collectors.toList());
+        if(player.size() != 1) {
+            logger.log(Level.SEVERE, "Hacker !!!, not playing user are tryng to enter in a match");
+            throw new RemoteException("Error, you are not playing in this game");
+        }
+        return player.get(0);
+    }
+    protected boolean isPlaying(WrappedPlayer player){
+        return players.stream().filter(x-> x.equals(player)).count() == 1;
     }
 }

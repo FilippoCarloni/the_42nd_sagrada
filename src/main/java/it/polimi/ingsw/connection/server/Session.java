@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 
 public class Session implements Serializable {
-    private static final long serialVersionUID = Settings.serialVersionUIDSession;
+    private static final long serialVersionUID = Settings.SERIAL_VERSION_UID_SESSION;
     private String sessionID;
     private String error;
     public Session(String id, String error) {

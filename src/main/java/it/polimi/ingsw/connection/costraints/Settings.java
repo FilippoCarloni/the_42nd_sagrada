@@ -10,10 +10,11 @@ public class Settings{
     /**
      * Serial Version Universal Identificator for the Session object
      */
-    public static final long serialVersionUIDSession = 1190476516911661470L;
+    public static final long SERIAL_VERSION_UID_SESSION = 1190476516911661470L;
 
     /**
      * The default waiting time in nanosecond to start a match with less than 4 players
      */
     public static final int WAITINGTIMETOMATCH=3000;
+    public static final long SERIAL_VERSION_CLIENTSTATUS = 1190476517382928173L;
 }
