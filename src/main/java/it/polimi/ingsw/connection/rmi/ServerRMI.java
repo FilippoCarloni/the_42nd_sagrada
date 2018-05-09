@@ -15,7 +15,7 @@ public class ServerRMI {
     private String url = "rmi://localhost:";
     public ServerRMI()
     {
-        this.port=Settings.PORT;
+        this.port=Settings.RMI_PORT;
         setupRegistry();
     }
 

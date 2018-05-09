@@ -19,7 +19,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 
         WrappedGameManager(ConcreteGameManager game) throws RemoteException {
             this.game=game;
-            this.remoteGame= (GameManager) UnicastRemoteObject.exportObject(game, Settings.PORT);
+            this.remoteGame= (GameManager) UnicastRemoteObject.exportObject(game, Settings.RMI_PORT);
         }
 
         GameManager getRemoteGame() {

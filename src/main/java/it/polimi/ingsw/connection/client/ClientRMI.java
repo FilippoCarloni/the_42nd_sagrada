@@ -12,7 +12,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
-public class  Client {
+public class ClientRMI {
     public static void main(String args[]){
         GameManager model;
         Session session;
@@ -28,7 +28,7 @@ public class  Client {
         name=s.nextLine();
         try {
 
-            login = (Lobby) Naming.lookup("rmi://localhost:" + Settings.PORT + "/Login");
+            login = (Lobby) Naming.lookup("rmi://localhost:" + Settings.RMI_PORT + "/Login");
             try {
                 fileIn = new FileInputStream("./ClientStatus_"+name+".ser");
                 in = new ObjectInputStream(fileIn);
