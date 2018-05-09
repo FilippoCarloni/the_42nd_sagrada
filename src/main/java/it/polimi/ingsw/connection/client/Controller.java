@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.client;
 
 
-import it.polimi.ingsw.connection.rmi.GameManger;
+import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.server.Session;
 
 import java.rmi.RemoteException;
@@ -10,11 +10,11 @@ import java.util.*;
 
 public class Controller extends UnicastRemoteObject implements RemoteObserver, Observer {
 
-    private GameManger gameManger;
+    private GameManager gameManger;
     private CLI view;
     private Session session;
 
-    Controller(GameManger gameManger, Session session) throws RemoteException {
+    Controller(GameManager gameManger, Session session) throws RemoteException {
         this.session = session;
         this.gameManger = gameManger;
         view = new CLI(this );

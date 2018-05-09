@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class ConcreteGameManager extends Observable implements GameManger {
+public class ConcreteGameManager extends Observable implements GameManager {
 
     private static class WrappedObserver implements Observer, Serializable {
 
@@ -65,17 +65,17 @@ public class ConcreteGameManager extends Observable implements GameManger {
     }
 
     @Override
-    public boolean isLegal(Session session, String command)  throws RemoteException {
+    public synchronized boolean isLegal(Session session, String command)  throws RemoteException {
         return data.isLegal(this.getPlayer(session).getPlayer(), command);
     }
 
     @Override
-    public void sendCommand(Session session, String command) throws RemoteException {
+    public synchronized void sendCommand(Session session, String command) throws RemoteException {
         data.execute(this.getPlayer(session).getPlayer(), command);
     }
 
     @Override
-    public boolean isMyTurn(Session session) throws RemoteException  {
+    public synchronized boolean isMyTurn(Session session) throws RemoteException  {
         return data.isMyTurn(this.getPlayer(session).getPlayer());
     }
 
@@ -88,7 +88,8 @@ public class ConcreteGameManager extends Observable implements GameManger {
         logger.info(() -> "Added observer:" + mo);
     }
 
-    public void removeRemoteObserver(RemoteObserver obs) throws RemoteException {
+    @Override
+    public synchronized void removeRemoteObserver(RemoteObserver obs) throws RemoteException {
         for (WrappedObserver x : observers) {
             if (x.equals(obs)) {
                 x.removeRemoteObserver(this);
@@ -103,7 +104,7 @@ public class ConcreteGameManager extends Observable implements GameManger {
     }
 
     @Override
-    public String getStatus() {
+    public synchronized String getStatus() {
         return "" + data;
     }
     private WrappedPlayer getPlayer(Session session) throws RemoteException{
@@ -115,7 +116,7 @@ public class ConcreteGameManager extends Observable implements GameManger {
         }
         return player.get(0);
     }
-    protected boolean isPlaying(WrappedPlayer player){
+    boolean isPlaying(WrappedPlayer player){
         return players.stream().filter(x-> x.equals(player)).count() == 1;
     }
 }

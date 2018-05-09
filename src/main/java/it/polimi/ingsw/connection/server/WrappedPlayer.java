@@ -3,7 +3,6 @@ package it.polimi.ingsw.connection.server;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
 
-import java.util.List;
 
 public class WrappedPlayer {
 
@@ -32,5 +31,10 @@ public class WrappedPlayer {
     public boolean equals(Object obj) {
         return obj instanceof WrappedPlayer &&
                 this.getSession().getID().equals( ((WrappedPlayer) obj).getSession().getID());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

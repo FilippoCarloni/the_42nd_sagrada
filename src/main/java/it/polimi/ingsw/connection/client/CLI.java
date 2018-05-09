@@ -22,7 +22,7 @@ public class CLI extends Observable implements Runnable {
                 "  exit  : disconnects from the current game\n");
     }
 
-    public void update(String o) {
+    void update(String o) {
         System.out.println(o);
     }
 

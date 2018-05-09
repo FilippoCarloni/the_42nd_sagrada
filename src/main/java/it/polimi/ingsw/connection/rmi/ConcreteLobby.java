@@ -13,20 +13,35 @@ import java.util.stream.Collectors;
 
 public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 
-    private ConcreteGameManager gl;
-    private GameManger g;
+    private class WrappedGameManager {
+        private GameManager remoteGame;
+        private ConcreteGameManager game;
+
+        WrappedGameManager(ConcreteGameManager game) throws RemoteException {
+            this.game=game;
+            this.remoteGame= (GameManager) UnicastRemoteObject.exportObject(game, Settings.PORT);
+        }
+
+        GameManager getRemoteGame() {
+            return remoteGame;
+        }
+
+        ConcreteGameManager getGame() {
+            return game;
+        }
+    }
+
+    private List<WrappedGameManager> gl;
     private Logger logger=Logger.getLogger(ConcretePlayer.class.getName());
     private List<WrappedPlayer> players;
     private List<WrappedPlayer>  disconnectedPlayer;
     private List<WrappedPlayer> waiting;
-    private int counter;
     public ConcreteLobby()throws RemoteException{
-        counter=0;
 
         players=new ArrayList<>();
         disconnectedPlayer=new ArrayList<>();
         waiting=new ArrayList<>();
-        g=null;
+        gl=new ArrayList<>();
     }
 
     public synchronized Session connect(String username)throws RemoteException {
@@ -58,52 +73,57 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
             }
         throw new RemoteException("error, and it is a very big problem!");
     }
-  public synchronized GameManger getGame(Session userSession) throws RemoteException {
-
-        List<WrappedPlayer> player= players.stream().filter(
-                x -> x .getSession().getID().equals(userSession.getID())).collect(Collectors.toList());
-        if(player.size()!= 1) {
-
-            throw new RemoteException("You are not Logged");
+    public synchronized GameManager getGame(Session userSession) throws RemoteException {
+        List<WrappedGameManager> game;
+        int countergame=gl.size()+1;
+        List<WrappedPlayer> player = players.stream().filter(
+              x -> x.getSession().getID().equals(userSession.getID())).collect(Collectors.toList());
+        if (player.size() != 1) {
+          throw new RemoteException("You are not logged");
+        }
+        game = gl.parallelStream().filter(x -> x.getGame().isPlaying(player.get(0))).collect(Collectors.toList());
+        if (game.size() == 1) {
+          return game.get(0).getRemoteGame();
         }
 
-        if(gl!=null&&gl.isPlaying(player.get(0))) {
-            return g;
+        if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSession.getID()))) {
+          waiting.add(player.get(0));
         }
-
-        if(counter == 4 || g != null)
-            throw new RemoteException("multiple games are not supported! (coming soon!)");
-
-        if(waiting.stream().filter(x -> x.getSession().getID().equals(userSession.getID())).count()==0){
-                    waiting.add(player.get(0));
-                    counter++;
-        }
-        if (counter % 4 != 0 && counter % 4 < 2) {
-            while (counter % 4 != 0 && counter % 4 < 2) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.log(Level.SEVERE,"Fatal error!",e);
-                }
-            }
+        if (waiting.size() % 4 != 0 && waiting.size()% 4 < 2) {
+          while (waiting.size() % 4 != 0 && waiting.size() % 4 < 2) {
+              try {
+                  wait();
+              } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                  logger.log(Level.SEVERE, "Fatal error!", e);
+              }
+          }
         } else {
-            if (counter % 4 != 0)
-                try {
-                    wait(Settings.WAITINGTIMETOMATCH);
+          if (waiting.size() % 4 != 0)
+              try {
+                  wait(Settings.WAITINGTIMETOMATCH);
 
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.log(Level.SEVERE, "Fatal error!", e);
-                }
-            if (g == null) {
-                g = (GameManger) UnicastRemoteObject.exportObject(gl = new ConcreteGameManager(waiting.stream().collect(Collectors.toList())), Settings.PORT);
-                waiting.clear();
-            }
-            this.notifyAll();
-        }
-        logger.info(()-> userSession.getID() + " is entered in match n " + (counter - 1) / 4);
-        return g;
+              } catch (InterruptedException e) {
+                  Thread.currentThread().interrupt();
+                  logger.log(Level.SEVERE, "Fatal error!", e);
+              }
+              if(gl.stream().noneMatch(x -> x.getGame().isPlaying(player.get(0)))) {
+                  gl.add(new WrappedGameManager(new ConcreteGameManager(waiting.stream().collect(Collectors.toList()))));
+                  waiting.clear();
+              }
+          }
+        this.notifyAll();
+        logger.info(() -> userSession.getID() + " is entered in match n "+ countergame);
+        return gl.get(gl.size()-1).getRemoteGame();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

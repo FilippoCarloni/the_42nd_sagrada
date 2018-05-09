@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.client;
 
 import it.polimi.ingsw.connection.costraints.Settings;
-import it.polimi.ingsw.connection.rmi.GameManger;
+import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.server.Session;
 
@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class  Client {
     public static void main(String args[]){
-        GameManger model;
+        GameManager model;
         Session session;
         Lobby login;
         String name;
@@ -81,7 +81,7 @@ public class  Client {
                 }
             }
             System.out.println("Logged");
-            model=(GameManger) login.getGame(session);
+            model=(GameManager) login.getGame(session);
 
             Controller controller = new Controller(model, session);
         } catch (NotBoundException e) {

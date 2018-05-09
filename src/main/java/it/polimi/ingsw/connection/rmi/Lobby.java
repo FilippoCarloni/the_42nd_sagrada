@@ -7,6 +7,6 @@ import java.rmi.*;
 public interface Lobby extends Remote{
     Session connect(String username)throws RemoteException;
     void disconnect(Session userSession)throws RemoteException;
-    GameManger getGame(Session userSession) throws RemoteException;
+    GameManager getGame(Session userSession) throws RemoteException;
 
 }

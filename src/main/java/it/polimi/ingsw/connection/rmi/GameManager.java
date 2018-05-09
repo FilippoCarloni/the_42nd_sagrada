@@ -6,7 +6,7 @@ import it.polimi.ingsw.connection.server.Session;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface GameManger extends Remote {
+public interface GameManager extends Remote {
 
     void addRemoteObserver(Session session, RemoteObserver obs) throws RemoteException;
     void removeRemoteObserver(RemoteObserver obs) throws RemoteException;
