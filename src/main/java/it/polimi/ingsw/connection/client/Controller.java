@@ -41,7 +41,7 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
                     view.update(gameManger.getStatus());
                     break;
                 case "exit":
-                    gameManger.removeRemoteObserver(this);
+                    gameManger.removeRemoteObserver(session,this);
                     view.update("Good Bye!");
                     System.exit(0);
                     break;

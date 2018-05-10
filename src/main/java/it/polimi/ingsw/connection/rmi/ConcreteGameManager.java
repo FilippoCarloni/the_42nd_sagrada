@@ -82,22 +82,27 @@ public class ConcreteGameManager extends Observable implements GameManager {
     @Override
     public void addRemoteObserver(Session session, RemoteObserver o) throws RemoteException{
         this.getPlayer(session);
-        WrappedObserver mo = new WrappedObserver(o);
-        addObserver(mo);
-        observers.add(mo);
-        logger.info(() -> "Added observer:" + mo);
+        synchronized(observers) {
+            WrappedObserver mo = new WrappedObserver(o);
+            addObserver(mo);
+            observers.add(mo);
+            logger.info(() -> "Added observer:" + mo);
+        }
     }
 
     @Override
-    public synchronized void removeRemoteObserver(RemoteObserver obs) throws RemoteException {
-        for (WrappedObserver x : observers) {
-            if (x.equals(obs)) {
-                x.removeRemoteObserver(this);
-                observers.remove(x);
-                setChanged();
-                notifyObservers();
-                logger.info(()->"Removed observer:" + x);
-                return;
+    public  void removeRemoteObserver(Session session, RemoteObserver obs) throws RemoteException {
+        getPlayer(session);
+        synchronized(observers) {
+            for (WrappedObserver x : observers) {
+                if (x.equals(obs)) {
+                    x.removeRemoteObserver(this);
+                    observers.remove(x);
+                    //  setChanged();
+                    // notifyObservers();
+                    logger.info(() -> "Removed observer:" + x);
+                    return;
+                }
             }
         }
         throw new RemoteException("Error occurred removing an observer.");
