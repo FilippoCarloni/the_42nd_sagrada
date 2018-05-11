@@ -9,7 +9,7 @@
         <module name="the_42nd_sagrada" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="the_42nd_sagrada" target="1.8" />
     </bytecodeTargetLevel>
   </component>
