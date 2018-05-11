@@ -5,8 +5,6 @@ import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.GameStatus;
-
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,10 @@ import java.util.stream.Collectors;
 
 public class ConcreteGameManager extends Observable implements GameManager {
 
-    private static class WrappedObserver implements Observer, Serializable {
+    private static class WrappedObs implements Observer {
+        private  RemoteObserver ro;
 
-        private static final long serialVersionUID = 1L;
-        private transient RemoteObserver ro;
-
-        WrappedObserver(RemoteObserver ro) {
+        WrappedObs(RemoteObserver ro) {
             this.ro = ro;
         }
 
@@ -43,7 +39,7 @@ public class ConcreteGameManager extends Observable implements GameManager {
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof WrappedObserver && ((WrappedObserver) obj).ro.equals(ro);
+            return obj instanceof WrappedObs && ((WrappedObs) obj).ro.equals(ro);
         }
 
         @Override
@@ -52,9 +48,9 @@ public class ConcreteGameManager extends Observable implements GameManager {
         }
     }
     private static final transient Logger logger=Logger.getLogger(ConcreteGameManager.class.getName());
-    private transient final GameStatus data;
-    private transient final List<WrappedPlayer> players;
-    private transient final List<WrappedObserver> observers;
+    private final transient GameStatus data;
+    private final transient List<WrappedPlayer> players;
+    private final transient List<WrappedObs> observers;
     ConcreteGameManager(List<WrappedPlayer> players) {
         data = new ConcreteGameStatus(players
                 .stream()
@@ -83,7 +79,7 @@ public class ConcreteGameManager extends Observable implements GameManager {
     public void addRemoteObserver(Session session, RemoteObserver o) throws RemoteException{
         this.getPlayer(session);
         synchronized(observers) {
-            WrappedObserver mo = new WrappedObserver(o);
+            WrappedObs mo = new WrappedObs(o);
             addObserver(mo);
             observers.add(mo);
             logger.info(() -> "Added observer:" + mo);
@@ -94,8 +90,8 @@ public class ConcreteGameManager extends Observable implements GameManager {
     public  void removeRemoteObserver(Session session, RemoteObserver obs) throws RemoteException {
         getPlayer(session);
         synchronized(observers) {
-            for (WrappedObserver x : observers) {
-                if (x.equals(new WrappedObserver(obs))) {
+            for (WrappedObs x : observers) {
+                if (x.equals(new WrappedObs(obs))) {
                     x.removeRemoteObserver(this);
                     observers.remove(x);
                     logger.info(() -> "Removed observer:" + x);

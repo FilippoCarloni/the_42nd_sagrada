@@ -4,7 +4,6 @@ import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,11 @@ import java.util.stream.Collectors;
 
 public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 
-    private class WrappedGameManager{
+     private class WrappedGameMngr{
         private GameManager remoteGame;
         private ConcreteGameManager game;
 
-        WrappedGameManager(ConcreteGameManager game) throws RemoteException {
+        WrappedGameMngr(ConcreteGameManager game) throws RemoteException {
             this.game=game;
             this.remoteGame= (GameManager) UnicastRemoteObject.exportObject(game, Settings.RMI_PORT);
         }
@@ -32,7 +31,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         }
     }
 
-    private transient List<WrappedGameManager> gl;
+    private transient List<WrappedGameMngr> gl;
     private transient Logger logger=Logger.getLogger(ConcretePlayer.class.getName());
     private transient List<WrappedPlayer> players;
     private transient List<WrappedPlayer>  disconnectedPlayer;
@@ -75,7 +74,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         throw new RemoteException("error, and it is a very big problem!");
     }
     public synchronized GameManager getGame(Session userSession) throws RemoteException {
-        List<WrappedGameManager> game;
+        List<WrappedGameMngr> game;
         int countergame=gl.size()+1;
         List<WrappedPlayer> player = players.stream().filter(
               x -> x.getSession().getID().equals(userSession.getID())).collect(Collectors.toList());
@@ -109,7 +108,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
                   logger.log(Level.SEVERE, "Fatal error!", e);
               }
               if(gl.stream().noneMatch(x -> x.getGame().isPlaying(player.get(0)))) {
-                  gl.add(new WrappedGameManager(new ConcreteGameManager(new ArrayList<>(waiting))));
+                  gl.add(new WrappedGameMngr(new ConcreteGameManager(new ArrayList<>(waiting))));
                   waiting.clear();
               }
           }
