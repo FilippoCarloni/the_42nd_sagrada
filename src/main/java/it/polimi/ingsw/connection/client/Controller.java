@@ -10,9 +10,9 @@ import java.util.*;
 
 public class Controller extends UnicastRemoteObject implements RemoteObserver, Observer {
 
-    private GameManager gameManger;
-    private CLI view;
-    private Session session;
+    private transient GameManager gameManger;
+    private transient CLI view;
+    private transient Session session;
 
     Controller(GameManager gameManger, Session session) throws RemoteException {
         this.session = session;

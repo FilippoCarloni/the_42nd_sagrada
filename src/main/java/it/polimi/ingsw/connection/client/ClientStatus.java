@@ -6,7 +6,7 @@ import it.polimi.ingsw.connection.server.Session;
 import java.io.Serializable;
 
 class ClientStatus implements Serializable {
-    private static final long serialVersionUID = Settings.SERIAL_VERSION_UID_SESSION;
+    private static final long serialVersionUID = Settings.SERIAL_VERSION_CLIENTSTATUS;
     private String username;
     private Session sesssion;
     ClientStatus(Session session, String username){

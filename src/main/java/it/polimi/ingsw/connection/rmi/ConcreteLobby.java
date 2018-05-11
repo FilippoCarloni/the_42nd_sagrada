@@ -4,6 +4,7 @@ import it.polimi.ingsw.connection.server.Session;
 import it.polimi.ingsw.connection.server.WrappedPlayer;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 
-    private class WrappedGameManager {
+    private class WrappedGameManager{
         private GameManager remoteGame;
         private ConcreteGameManager game;
 
@@ -31,11 +32,11 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         }
     }
 
-    private List<WrappedGameManager> gl;
-    private Logger logger=Logger.getLogger(ConcretePlayer.class.getName());
-    private List<WrappedPlayer> players;
-    private List<WrappedPlayer>  disconnectedPlayer;
-    private List<WrappedPlayer> waiting;
+    private transient List<WrappedGameManager> gl;
+    private transient Logger logger=Logger.getLogger(ConcretePlayer.class.getName());
+    private transient List<WrappedPlayer> players;
+    private transient List<WrappedPlayer>  disconnectedPlayer;
+    private transient List<WrappedPlayer> waiting;
     public ConcreteLobby()throws RemoteException{
 
         players=new ArrayList<>();
@@ -55,7 +56,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
             }
         x=new WrappedPlayer(filtred);
         players.add(x);
-        logger.info(() -> filtred+" is now playing");
+        logger.info(() -> filtred+" is  now playing");
         return x.getSession();
     }
     public synchronized void disconnect(Session userSession)throws RemoteException {
@@ -108,7 +109,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
                   logger.log(Level.SEVERE, "Fatal error!", e);
               }
               if(gl.stream().noneMatch(x -> x.getGame().isPlaying(player.get(0)))) {
-                  gl.add(new WrappedGameManager(new ConcreteGameManager(waiting.stream().collect(Collectors.toList()))));
+                  gl.add(new WrappedGameManager(new ConcreteGameManager(new ArrayList<>(waiting))));
                   waiting.clear();
               }
           }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,11 +24,11 @@ public class ServerThread implements Runnable{
     private int numError;
 
     public ServerThread() throws IOException {
-        in=null;
-        client=null;
-        server=new ServerSocket(SOCKET_PORT);
-        th=Executors.newCachedThreadPool();
-        numError=0;
+        in = null;
+        client = null;
+        server = new ServerSocket(SOCKET_PORT);
+        th = Executors.newCachedThreadPool();
+        numError = 0;
     }
     @Override
     public void run() {

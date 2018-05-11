@@ -12,10 +12,10 @@ import java.util.logging.Logger;
 
 public class Server {
     public static void main(String[] args) throws  AlreadyBoundException, RemoteException, MalformedURLException,IOException {
-        Logger logger= Logger.getLogger(Server.class.getName());
+        Logger logger = Logger.getLogger(Server.class.getName());
         ServerRMI server = new ServerRMI();
         server.addSkeleton("Login", new ConcreteLobby());
-        logger.info(() -> ("You can find the exposes object at: " + server.getURL()+"<name_of_the_object>"));
+        logger.info(() -> ("You can find the exposes object at: " + server.getURL() + "<name_of_the_object>"));
         new Thread(new ServerThread()).start();
     }
 }

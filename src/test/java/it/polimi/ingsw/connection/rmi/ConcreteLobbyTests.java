@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConcreteLobbyTest {
+class ConcreteLobbyTests {
 
     @Test
     void test() throws RemoteException {
@@ -18,5 +18,6 @@ class ConcreteLobbyTest {
         assertFalse(lobby.connect(" pippo ").isValid());
         assertFalse(lobby.connect(" pippo").isValid());
         assertTrue(lobby.connect("pluto").isValid());
+        assertFalse(lobby.connect("pluto").isValid());
     }
 }
