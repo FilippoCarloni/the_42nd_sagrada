@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.viewdemo.databaseview;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
