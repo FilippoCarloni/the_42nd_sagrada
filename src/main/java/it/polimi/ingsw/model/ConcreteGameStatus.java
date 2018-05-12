@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.commands.CommandManager;
+import it.polimi.ingsw.model.commands.ConcreteCommandManager;
 import it.polimi.ingsw.model.gameboard.GameBox;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
@@ -20,7 +22,9 @@ public class ConcreteGameStatus implements GameStatus {
     private DiceBag diceBag;
     private RoundTrack roundTrack;
     private List<PublicObjectiveCard> publicObjectives;
-    private TurnManager turnManager;
+    private ConcreteTurnManager turnManager;
+    private ConcreteCommandManager commandManager;
+    private TurnStateHolder turnStateHolder;
 
     public ConcreteGameStatus(List<Player> players) {
         initialize(players);
@@ -31,30 +35,51 @@ public class ConcreteGameStatus implements GameStatus {
         if (players == null || players.size() < 2)
             throw new NullPointerException("Not enough players to start a new game.");
         GameBox gb = GameBox.open();
-        this.players = new ArrayList<>(players);
+        this.players = players;
         diceBag = gb.getDiceBag();
         dicePool = new ArrayList<>();
         roundTrack = gb.getRoundTrack();
         publicObjectives = gb.getPublicObjectives();
         List<WindowFrame> frames = gb.getWindowFrames(players.size());
         for (Player p : this.players)
-            p.setWindowFrame(frames.remove(0));
+            if (p.getWindowFrame() == null)
+                p.setWindowFrame(frames.remove(0));
         List<PrivateObjectiveCard> po = gb.getPrivateObjectives(players.size());
         for (Player p : this.players)
             p.setPrivateObjective(po.remove(0));
         turnManager = new ConcreteTurnManager(players);
+        turnStateHolder = new TurnStateHolder();
+        turnStateHolder.clear();
+        commandManager = new ConcreteCommandManager(this);
+        fillDicePool();
     }
 
-    private void fillDicePool() {
+    public void fillDicePool() {
         if (turnManager.isRoundStarting())
             dicePool = diceBag.pick(players.size() * 2 + 1);
     }
 
-    private void emptyDicePool() {
+    public void emptyDicePool() {
         if (turnManager.isRoundEnding()) {
             roundTrack.put(dicePool);
             dicePool = new ArrayList<>();
         }
+    }
+
+    public TurnManager getTurnManager() {
+        return turnManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public TurnStateHolder getTurnStateHolder() {
+        return turnStateHolder;
+    }
+
+    public List<Die> getDicePool() {
+        return dicePool;
     }
 
     @Override
@@ -64,15 +89,13 @@ public class ConcreteGameStatus implements GameStatus {
 
     @Override
     public boolean isLegal(Player player, String command) {
-        return player.equals(turnManager.getCurrentPlayer());
+        return player.equals(turnManager.getCurrentPlayer()) && commandManager.isLegal(command);
     }
 
     @Override
     public void execute(Player player, String command) {
         if (isLegal(player, command)) {
-            fillDicePool();
-            roundTrack.put(dicePool);
-            turnManager.advanceTurn();
+            commandManager.execute(command);
         }
     }
 
@@ -102,6 +125,9 @@ public class ConcreteGameStatus implements GameStatus {
         sb.append("DICE POOL: ");
         for (Die d : dicePool)
             sb.append(d);
+        sb.append("\n");
+        sb.append("PICKED DIE: ");
+        if (turnStateHolder.getDieHolder() != null) sb.append(turnStateHolder.getDieHolder());
         sb.append("\n\n");
         String s = "";
         for (PublicObjectiveCard c : publicObjectives)
