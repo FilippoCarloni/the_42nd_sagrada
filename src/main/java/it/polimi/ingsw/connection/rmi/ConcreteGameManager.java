@@ -62,7 +62,7 @@ public class ConcreteGameManager extends Observable implements GameManager {
 
     @Override
     public synchronized boolean isLegal(Session session, String command)  throws RemoteException {
-        return data.isLegal(this.getPlayer(session).getPlayer(), command);
+        return data.isLegal(this.getPlayer(session).getPlayer(), command.trim());
     }
 
     @Override
