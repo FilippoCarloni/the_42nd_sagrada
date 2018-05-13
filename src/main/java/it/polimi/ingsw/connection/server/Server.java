@@ -3,7 +3,7 @@ package it.polimi.ingsw.connection.server;
 import it.polimi.ingsw.connection.rmi.ConcreteLobby;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.rmi.ServerRMI;
-import it.polimi.ingsw.connection.socket.ServerThread;
+import it.polimi.ingsw.connection.socket.ServerSocket;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -19,6 +19,6 @@ public class Server {
         Lobby lobby;
         server.addSkeleton("Login", lobby=new ConcreteLobby());
         logger.info(() -> ("You can find the exposes object at: " + server.getURL() + "<name_of_the_object>"));
-        new Thread(new ServerThread(lobby)).start();
+        new Thread(new ServerSocket(lobby)).start();
     }
 }

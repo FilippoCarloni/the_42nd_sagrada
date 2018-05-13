@@ -14,22 +14,22 @@ import java.util.logging.Logger;
 
 public class RemoteClient implements Runnable{
     private Socket client;
-    private String line;
-    private String cmd[];
     private String action;
     private Scanner in;
     private PrintWriter out;
     private Lobby lobby;
     private GameManager game;
     private Session session;
-    private Logger logger= Logger.getLogger(ServerThread.class.getName());
-    public RemoteClient(Socket s,Lobby lobby) {
+    private String line;
+    private Logger logger= Logger.getLogger(ServerSocket.class.getName());
+    RemoteClient(Socket s,Lobby lobby) {
         client=s;
         this.lobby=lobby;
         action="";
     }
     @Override
     public void run() {
+        String cmd[];
         int i;
         try {
             in=new Scanner(client.getInputStream());
@@ -38,7 +38,6 @@ public class RemoteClient implements Runnable{
                 line=in.nextLine();
                 logger.info(() ->"Client send: "+line);
                 cmd=line.split(" ");
-
                 logger.info(line);
                 if(cmd.length>0)
                     switch (cmd[0]) {
@@ -48,7 +47,7 @@ public class RemoteClient implements Runnable{
                                     session=new Session(cmd[1]);
                                     try {
                                        session=lobby.restoreSession(session);
-                                       send("SessionID:"+session.getID());
+                                       send("new SessionID:"+session.getID());
                                     }catch(RemoteException e){
                                         send(e.getMessage());
                                         session=null;
@@ -83,20 +82,25 @@ public class RemoteClient implements Runnable{
                             else
                                 send("You are not playing");
                             break;
-                        case "command":
-                            for (i =1; i<cmd.length; i++) {
-                                action = action.concat(" " + cmd[i]);
-                            }
-                            if (!game.isMyTurn(session))
-                                send("It's not your turn, please wait while the other players make their moves.");
-                            else {
-                                boolean legal = game.isLegal(session, action.trim());
-                                if (!legal) { send("Illegal command, please check if the syntax is correct.");
-                                } else {
-                                    game.sendCommand(session, action);
+                        case "action":
+                            if(game != null) {
+                                for (i = 1; i < cmd.length; i++) {
+                                    action = action.concat(" " + cmd[i]);
                                 }
+                                if (!game.isMyTurn(session))
+                                    send("It's not your turn, please wait while the other players make their moves.");
+                                else {
+                                    boolean legal = game.isLegal(session, action.trim());
+                                    if (!legal) {
+                                        send("Illegal command, please check if the syntax is correct.");
+                                    } else {
+                                        game.sendCommand(session, action);
+                                    }
+                                }
+                                action = "";
                             }
-                            action="";
+                            else
+                                send("You are not playing");
                             break;
                         default:
                             send("Command not recognized");

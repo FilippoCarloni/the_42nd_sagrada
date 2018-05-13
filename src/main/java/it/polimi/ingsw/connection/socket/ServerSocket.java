@@ -5,7 +5,6 @@ import it.polimi.ingsw.connection.rmi.Lobby;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -15,22 +14,22 @@ import java.util.logging.Logger;
 
 import static it.polimi.ingsw.connection.costraints.Settings.SOCKET_PORT;
 
-public class ServerThread implements Runnable{
+public class ServerSocket implements Runnable{
 
-    private ServerSocket server;
+    private java.net.ServerSocket server;
     private Socket client;
     private Scanner in;
     private PrintWriter out;
     private ExecutorService th;
     private Lobby lobby;
-    private Logger logger= Logger.getLogger(ServerThread.class.getName());
+    private Logger logger= Logger.getLogger(ServerSocket.class.getName());
     private int numError;
 
-    public ServerThread(Lobby lobby) throws IOException {
+    public ServerSocket(Lobby lobby) throws IOException {
         in = null;
         client = null;
         this.lobby=lobby;
-        server = new ServerSocket(SOCKET_PORT);
+        server = new java.net.ServerSocket(SOCKET_PORT);
         th = Executors.newCachedThreadPool();
         numError = 0;
     }
