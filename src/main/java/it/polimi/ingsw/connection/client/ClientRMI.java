@@ -82,7 +82,6 @@ public class ClientRMI {
             }
             System.out.println("Logged");
             model=(GameManager) login.getGame(session);
-
             Controller controller = new Controller(model, session);
         } catch (NotBoundException e) {
             e.printStackTrace();

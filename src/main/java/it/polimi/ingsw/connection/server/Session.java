@@ -3,6 +3,7 @@ package it.polimi.ingsw.connection.server;
 import it.polimi.ingsw.connection.costraints.Settings;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 public class Session implements Serializable {
@@ -10,10 +11,14 @@ public class Session implements Serializable {
     private String sessionID;
     private String error;
     public Session(String id, String error) {
-        sessionID = id;
+        Date date=new Date();
+        sessionID = id+date.getTime()+(int)(Math.random()*10000000);
         this.error = error;
     }
-
+    public Session(String id) {
+        sessionID = id;
+        this.error = "";
+    }
     public String getID() {
         return sessionID;
     }

@@ -47,14 +47,14 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
                     break;
                 default:
                     if (!gameManger.isMyTurn(session))
-                        view.update("It's not your turn, please wait while the other players make their moves.");
-                    else {
-                        boolean legal = gameManger.isLegal(session, cmd);
-                        if (!legal) {
-                            view.update("Illegal command, please check if the syntax is correct.");
-                        } else {
-                            gameManger.sendCommand(session, cmd);
-                        }
+                            view.update("It's not your turn, please wait while the other players make their moves.");
+                        else {
+                            boolean legal = gameManger.isLegal(session, cmd);
+                            if (!legal) {
+                                view.update("Illegal command, please check if the syntax is correct.");
+                            } else {
+                                gameManger.sendCommand(session, cmd);
+                            }
                     }
             }
         }catch (RemoteException e) {

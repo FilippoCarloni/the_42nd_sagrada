@@ -50,7 +50,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         if(username.length()==0)
             throw new RemoteException("The username is not valid!");
         for (WrappedPlayer s : players)
-            if (s.getSession().getID().equals(filtred)) {
+            if (s.getPlayer().getUsername().equals(filtred)) {
                 return new Session("","Username already used");
             }
         x=new WrappedPlayer(filtred);
@@ -79,7 +79,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         List<WrappedPlayer> player = players.stream().filter(
               x -> x.getSession().getID().equals(userSession.getID())).collect(Collectors.toList());
         if (player.size() != 1) {
-          throw new RemoteException("You are not logged");
+          throw new RemoteException("You are not logged "+ userSession.getID());
         }
         game = gl.parallelStream().filter(x -> x.getGame().isPlaying(player.get(0))).collect(Collectors.toList());
         if (game.size() == 1) {
@@ -115,6 +115,17 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         this.notifyAll();
         logger.info(() -> userSession.getID() + " is entered in match n "+ countergame);
         return gl.get(gl.size()-1).getRemoteGame();
+    }
+    public Session restoreSession(Session oldSession) throws RemoteException{
+        List<WrappedPlayer> player = players.stream().filter(
+                x -> x.getSession().getID().equals(oldSession.getID())).collect(Collectors.toList());
+        Session newSession;
+        if (player.size() != 1) {
+            throw new RemoteException("You are not logged "+ oldSession.getID());
+        }
+        newSession=new Session(player.get(0).getPlayer().getUsername(),"");
+        player.get(0).setSession(newSession);
+        return newSession;
     }
 
     @Override

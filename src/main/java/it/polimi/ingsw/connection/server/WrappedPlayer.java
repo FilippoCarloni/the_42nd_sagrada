@@ -27,6 +27,10 @@ public class WrappedPlayer {
         return player;
     }
 
+    public void setSession(Session session) {
+        this.session = session;
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof WrappedPlayer &&

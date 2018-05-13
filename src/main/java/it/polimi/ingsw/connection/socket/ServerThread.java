@@ -1,6 +1,8 @@
 package it.polimi.ingsw.connection.socket;
 
 
+import it.polimi.ingsw.connection.rmi.Lobby;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -20,12 +22,14 @@ public class ServerThread implements Runnable{
     private Scanner in;
     private PrintWriter out;
     private ExecutorService th;
+    private Lobby lobby;
     private Logger logger= Logger.getLogger(ServerThread.class.getName());
     private int numError;
 
-    public ServerThread() throws IOException {
+    public ServerThread(Lobby lobby) throws IOException {
         in = null;
         client = null;
+        this.lobby=lobby;
         server = new ServerSocket(SOCKET_PORT);
         th = Executors.newCachedThreadPool();
         numError = 0;
@@ -39,7 +43,7 @@ public class ServerThread implements Runnable{
                 in = new Scanner(client.getInputStream());
                 out = new PrintWriter(client.getOutputStream());
                 logger.info("A client thread is started");
-                th.execute(new RemoteClient(client));
+                th.execute(new RemoteClient(client,lobby));
             } catch (IOException e) {
                 numError++;
                 logger.log(Level.SEVERE, "Connection of new client over sockete error", e);
