@@ -23,7 +23,7 @@ class PrivateObjectiveCardTest {
         Deck d = new PrivateObjectiveDeck();
         assertEquals(d.size(), 5);
         while (d.size() > 0)
-            System.out.println(d.draw());
+            d.draw();
         assertThrows(NoSuchElementException.class, d::draw);
     }
 
@@ -40,8 +40,5 @@ class PrivateObjectiveCardTest {
             if (d.getColor().equals(c.getColor()))
                 res += d.getShade().getValue();
         assertEquals(c.getValuePoints(w), res);
-        System.out.println(w);
-        System.out.println(c);
-        System.out.println("Value points are " + c.getValuePoints(w));
     }
 }

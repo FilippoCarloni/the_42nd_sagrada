@@ -30,8 +30,6 @@ class RoundTrackTest {
         for (Die d : rt) size++;
 
         assertEquals(size, 4);
-
-        System.out.println(rt);
     }
 
     @Test

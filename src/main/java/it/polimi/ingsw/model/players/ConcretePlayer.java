@@ -56,21 +56,18 @@ public class ConcretePlayer implements Player{
 
     @Override
     public String toString() {
-        String username = this.username + " (" + favorPoints + ")";
+        String printableUsername = username + " (FP:" + favorPoints + ")";
         StringBuilder sb = new StringBuilder();
         String frame = window.toString();
         int len = frame.indexOf('\n');
         for (int i = 0; i < len; i++)
             sb.append("-");
         sb.append("\n");
-        for (int i = 0; i < (len - username.length()) / 2; i++)
+        for (int i = 0; i < (len - printableUsername.length()) / 2; i++)
             sb.append(" ");
-        sb.append(username);
-        for (int i = 0; i < len - username.length() - (len - username.length()) / 2; i++)
+        sb.append(printableUsername);
+        for (int i = 0; i < len - printableUsername.length() - (len - printableUsername.length()) / 2; i++)
             sb.append(" ");
-        sb.append("\n");
-        for (int i = 0; i < len; i++)
-            sb.append("-");
         sb.append("\n");
         sb.append(frame);
         return sb.toString();

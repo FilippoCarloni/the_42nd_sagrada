@@ -14,20 +14,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PlayerTest {
 
     @Test
-    void basicPlayerTest() {
+    void getterAndSetterTest() {
         WindowFrame playerFrame = (WindowFrame) new WindowFrameDeck().draw();
         PrivateObjectiveCard playerObjective = (PrivateObjectiveCard) new PrivateObjectiveDeck().draw();
         String username = "foo";
         Player p = new ConcretePlayer(username);
+
         assertEquals(null, p.getWindowFrame());
         assertEquals(null, p.getPrivateObjective());
         assertThrows(NullPointerException.class, () -> p.setPrivateObjective(null));
         assertThrows(NullPointerException.class, () -> p.setWindowFrame(null));
+
         p.setPrivateObjective(playerObjective);
         p.setWindowFrame(playerFrame);
+
         assertEquals(playerObjective, p.getPrivateObjective());
         assertEquals(playerFrame, p.getWindowFrame());
         assertEquals(username, p.getUsername());
-        System.out.print(p.toString());
     }
 }

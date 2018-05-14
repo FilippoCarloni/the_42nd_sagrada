@@ -26,8 +26,6 @@ class UtilityTest {
         assertEquals(Color.findByID("Y"), Color.YELLOW);
         assertEquals(Color.findByID("G"), Color.GREEN);
         assertEquals(Color.findByID("P"), Color.PURPLE);
-
-        System.out.println(Color.PURPLE);
     }
 
     @Test

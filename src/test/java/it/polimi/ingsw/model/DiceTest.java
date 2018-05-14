@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class DiceTest {
 
     @Test
-    void dieTest() {
+    void diceEqualityTest() {
         DiceBag db = new ClothDiceBag();
         Die a = db.pick();
         Die b = db.pick();
@@ -32,7 +32,6 @@ class DiceTest {
         assertEquals(a.getColor(), Color.BLUE);
         assertEquals(a.getShade(), Shade.LIGHT);
         assertEquals(a.hashCode(), 0);
-
-        System.out.println("Die test: " + b + " = " + c);
+        assertEquals(b.hashCode(), 1);
     }
 }

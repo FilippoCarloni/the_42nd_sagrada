@@ -1,20 +1,16 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commands.CommandManager;
-import it.polimi.ingsw.model.commands.ConcreteCommandManager;
-import it.polimi.ingsw.model.gameboard.GameBox;
-import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
-import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
+import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
+import it.polimi.ingsw.model.gameboard.utility.Color;
 import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.gameboard.utility.Shade;
 import it.polimi.ingsw.model.players.Player;
-import it.polimi.ingsw.model.turns.ConcreteTurnManager;
 import it.polimi.ingsw.model.turns.TurnManager;
 
 import java.util.*;
@@ -27,45 +23,54 @@ public class ConcreteGameStatus implements GameStatus {
     private RoundTrack roundTrack;
     private List<PublicObjectiveCard> publicObjectives;
     private List<ToolCard> tools;
-    private ConcreteTurnManager turnManager;
-    private ConcreteCommandManager commandManager;
+    private TurnManager turnManager;
+    private CommandManager commandManager;
     private StateHolder stateHolder;
 
-    public ConcreteGameStatus(List<Player> players) {
-        initialize(players);
-        turnManager.advanceTurn();
+    public ConcreteGameStatus(List<Player> lobbyPlayers) {
+        GameStatusBuilder gsb = new GameStatusBuilder();
+        players = gsb.getPlayers(lobbyPlayers);
+        initialize();
     }
 
-    private void initialize(List<Player> players) {
-        if (players == null || players.size() < 2)
-            throw new NullPointerException("Not enough players to start a new game.");
-        GameBox gb = GameBox.open();
-        this.players = players;
-        diceBag = gb.getDiceBag();
+    public ConcreteGameStatus(String[] names, String[] windows, String[] toolNames) {
+        GameStatusBuilder gsb = new GameStatusBuilder();
+        players = gsb.getPlayers(names, windows);
+        initialize();
+        tools = gsb.getTools(toolNames, this);
+    }
+
+    private void initialize() {
+        if (players == null)
+            throw new NullPointerException("You must initialize players first.");
+        GameStatusBuilder gsb = new GameStatusBuilder();
         dicePool = new ArrayList<>();
-        roundTrack = gb.getRoundTrack();
-        publicObjectives = gb.getPublicObjectives();
-        List<WindowFrame> frames = gb.getWindowFrames(players.size());
-        for (Player p : this.players)
-            if (p.getWindowFrame() == null)
-                p.setWindowFrame(frames.remove(0));
-        List<PrivateObjectiveCard> po = gb.getPrivateObjectives(players.size());
-        for (Player p : this.players)
-            p.setPrivateObjective(po.remove(0));
-        tools = new ArrayList<>();
-        Deck d = new ToolDeck(this);
-        for (int i = 0; i < Parameters.TOOL_CARDS; i++)
-            tools.add((ToolCard) d.draw());
-        turnManager = new ConcreteTurnManager(players);
-        stateHolder = new StateHolder();
-        stateHolder.clear();
-        commandManager = new ConcreteCommandManager(this);
+        diceBag = gsb.getDiceBag();
+        roundTrack = gsb.getRoundTrack();
+        publicObjectives = gsb.getPublicObjectives(Parameters.PUBLIC_OBJECTIVES);
+        tools = gsb.getTools(Parameters.TOOL_CARDS, this);
+        turnManager = gsb.getTurnManager(players);
+        commandManager = gsb.getCommandManager(this);
+        stateHolder = gsb.getStateHolder();
+        turnManager.advanceTurn();
         fillDicePool();
     }
 
     public void fillDicePool() {
         if (turnManager.isRoundStarting())
             dicePool = diceBag.pick(players.size() * 2 + 1);
+    }
+
+    public void setDicePool(String serializedDicePool) {
+        List<Die> dp = new ArrayList<>();
+        DiceBag db = new ClothDiceBag();
+        for (int i = 0; i < serializedDicePool.length(); i += 2) {
+            Die d = db.pick();
+            d.setColor(Color.findByID("" + serializedDicePool.charAt(i)));
+            d.setShade(Shade.findByID("" + serializedDicePool.charAt(i + 1)));
+            dp.add(d);
+        }
+        dicePool = dp;
     }
 
     public void emptyDicePool() {
@@ -79,10 +84,6 @@ public class ConcreteGameStatus implements GameStatus {
         return turnManager;
     }
 
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
     public StateHolder getStateHolder() {
         return stateHolder;
     }
@@ -93,6 +94,10 @@ public class ConcreteGameStatus implements GameStatus {
 
     public List<ToolCard> getTools() {
         return tools;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     @Override
@@ -112,11 +117,12 @@ public class ConcreteGameStatus implements GameStatus {
         }
     }
 
-    private String convertToHorizontal(String s1, String s2, String separator) {
-        if (s1 == null || s2 == null || separator == null)
+    private String convertToHorizontal(String s1, String s2) {
+        if (s1 == null || s2 == null)
             throw new NullPointerException("Strings can't be null.");
         if (s1.length() == 0) return s2;
         if (s2.length() == 0) return s1;
+        String separator = "  ";
         StringBuilder sb = new StringBuilder();
         String[] splitS1 = s1.split("\n");
         String[] splitS2 = s2.split("\n");
@@ -135,23 +141,27 @@ public class ConcreteGameStatus implements GameStatus {
         StringBuilder sb = new StringBuilder();
         sb.append(roundTrack);
         sb.append("\n\n");
+        sb.append("DICE ON ROUND TRACK: ");
+        for (Die d : roundTrack)
+            sb.append(d);
+        sb.append("\n");
         sb.append("DICE POOL: ");
         for (Die d : dicePool)
             sb.append(d);
         sb.append("\n");
         sb.append("PICKED DIE: ");
         if (stateHolder.getDieHolder() != null) sb.append(stateHolder.getDieHolder());
-        sb.append("\n\n");
+        sb.append("\n");
         String s = "";
         for (PublicObjectiveCard c : publicObjectives)
-            s = convertToHorizontal(s, c.toString(), "  ");
+            s = convertToHorizontal(s, c.toString());
         for (ToolCard c : tools)
-            s = convertToHorizontal(s, c.toString(), "  ");
+            s = convertToHorizontal(s, c.toString());
         sb.append(s);
-        sb.append("\n\n");
+        sb.append("\n");
         s = "";
         for (Player p : players)
-            s = convertToHorizontal(s, p.toString(), "  ");
+            s = convertToHorizontal(s, p.toString());
         sb.append(s);
         return sb.toString();
     }

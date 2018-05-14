@@ -39,8 +39,7 @@ class PublicObjectiveCardTest {
         System.out.println(w);
         while (d.size() > 0) {
             PublicObjectiveCard c = (PublicObjectiveCard) d.draw();
-            System.out.println(c);
-            System.out.println("Value points : " + c.getValuePoints(w));
+            System.out.println("Value points for " + c.getName() + ": " + c.getValuePoints(w));
         }
     }
 }

@@ -52,14 +52,7 @@ class WindowFrameTest {
     }
 
     @Test
-    void printPatternTest() {
-        Deck d = new WindowFrameDeck();
-        while (d.size() > 0)
-            System.out.println(d.draw());
-    }
-
-    @Test
-    void exceptionTest() {
+    void drawTest() {
         Deck d = new WindowFrameDeck();
         assertEquals(d.size(), 24);
         d.draw(d.size());

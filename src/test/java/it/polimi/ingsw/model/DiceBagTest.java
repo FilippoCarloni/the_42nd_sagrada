@@ -18,8 +18,6 @@ class DiceBagTest {
     void areDiceInTheBagCorrect() {
         DiceBag db = new ClothDiceBag();
         ArrayList<Die> dice = new ArrayList<>(db.pick(90));
-        System.out.print("Dice bag test: ");
-        for (Die d : dice) System.out.print(d);
 
         assertEquals(18, dice.stream().
                 map(Die::getColor).filter(c -> c == Color.RED).count());
