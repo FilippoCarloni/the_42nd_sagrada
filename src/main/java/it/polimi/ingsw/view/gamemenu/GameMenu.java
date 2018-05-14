@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gamemenu;
 
 import it.polimi.ingsw.view.viewdemo.*;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Parent;

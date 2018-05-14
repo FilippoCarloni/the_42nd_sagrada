@@ -1,115 +1,114 @@
 package it.polimi.ingsw.view.viewdemo.utility;
 
 import it.polimi.ingsw.view.viewdemo.databaseview.*;
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.RowConstraints;
+
 import java.util.ArrayList;
 
 public class MainHelper {
 
-    //The final version of this methods will have an ArrayList<String> paths as parameter,
-    //to allow loading multiple images of Window Frames/privObjCard, one for each player
-    public ArrayList<WindowFrame> setWindowFrames(int numOfPlayers){
-        double x;
-        double y;
+    public ArrayList<ColumnConstraints> setColumnConstraints(){
+        ArrayList<ColumnConstraints> columnConstraints = new ArrayList<>();
+
+        for (int i = 0; i < GUIParameters.NUM_COLUMNS; i++){
+            columnConstraints.add(new ColumnConstraints());
+            columnConstraints.get(i).setPrefWidth(GUIParameters.SCREEN_WIDTH / GUIParameters.NUM_COLUMNS);
+        }
+
+        return columnConstraints;
+    }
+    public ArrayList<RowConstraints> setRowConstraints(int numOfPlayers){
+        int numRows = setNumRows(numOfPlayers);
+        ArrayList<RowConstraints> rowConstraints = new ArrayList<>();
+
+        for (int i = 0; i < numRows; i++){
+            rowConstraints.add(new RowConstraints());
+            rowConstraints.get(i).setPrefHeight(GUIParameters.SCREEN_HEIGHT / numRows);
+        }
+
+        return rowConstraints;
+    }
+    private int setNumRows(int numOfPlayers){
+        if(numOfPlayers == 2)
+            return 4;
+        else
+            return 5;
+    }
+    public void setRectangleOnGrid(GridPane root, int numOfPlayers){
+        for(int i = 0; i < setNumRows(numOfPlayers); i++){
+            for(int j = 0; j < GUIParameters.NUM_COLUMNS; j++){
+                HBox hBox = new HBox();
+                root.add(hBox, j, i);
+            }
+        }
+    }
+
+    public ArrayList<WindowFrame> setWindowFrames(int numOfPlayers, GridPane gridPane){
         ArrayList<WindowFrame> windowFrame = new ArrayList<>();
 
         if(numOfPlayers == 2) {
-            y = 460;
-            x = 10;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            x = 1510;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
+            windowFrame.add(new WindowFrame(1, 0, gridPane));
+            windowFrame.add(new WindowFrame(1, 2, gridPane));
         }
         else if (numOfPlayers == 3){
-            y = 200;
-            x = 10;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            y = 850;
-            x = 705;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            y = 200;
-            x = 1510;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
+            windowFrame.add(new WindowFrame(2, 0, gridPane));
+            windowFrame.add(new WindowFrame(4, 1, gridPane));
+            windowFrame.add(new WindowFrame(1, 2, gridPane));
         }
         else {
-            y = 260;
-            x = 10;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            y = 660;
-            x = 10;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            y = 260;
-            x = 1510;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
-            y = 660;
-            x = 1510;
-            windowFrame.add(new WindowFrame(x, y, "res/9-eng.jpg"));
+            windowFrame.add(new WindowFrame(1, 0, gridPane));
+            windowFrame.add(new WindowFrame(3, 0, gridPane));
+            windowFrame.add(new WindowFrame(0, 2, gridPane));
+            windowFrame.add(new WindowFrame(4, 2, gridPane));
         }
 
         return windowFrame;
     }
-    public ArrayList<CardItem> setPrivObjCards(int numOfPlayers){
-        double x;
-        double y;
+    public ArrayList<CardItem> setPrivObjCards(int numOfPlayers, GridPane gridPane){
         ArrayList<CardItem> privObjCards = new ArrayList<>();
 
         if(numOfPlayers == 2) {
-            y = 360;
-            x = 10;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            x = 1790;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
+            privObjCards.add(new PrivObjCard(2, 0, gridPane));
+            privObjCards.add(new PrivObjCard(0, 2, gridPane));
         }
-        else if (numOfPlayers == 3){
-            y = 100;
-            x = 10;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            y = 1000;
-            x = 560;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            y = 100;
-            x = 1790;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
+        else if (numOfPlayers == 3) {
+            privObjCards.add(new PrivObjCard(1, 0, gridPane));
+            privObjCards.add(new PrivObjCard(4, 0, gridPane));
+            privObjCards.add(new PrivObjCard(2, 2, gridPane));
         }
         else {
-            y = 160;
-            x = 10;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            y = 900;
-            x = 10;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            y = 160;
-            x = 1790;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
-            y = 900;
-            x = 1790;
-            privObjCards.add(new PrivObjCard(x, y, "res/9-eng.jpg"));
+            privObjCards.add(new PrivObjCard(0, 0, gridPane));
+            privObjCards.add(new PrivObjCard(4, 0, gridPane));
+            privObjCards.add(new PrivObjCard(1, 2, gridPane));
+            privObjCards.add(new PrivObjCard(3, 2, gridPane));
         }
 
         return privObjCards;
     }
-    //The final version of this methods will have an ArrayList<String> paths as parameter,
-    //to allow loading multiple images of PubObj/Tool Cards
-    public ArrayList<CardItem> setPubObjCards(double x, double y){
+    public ArrayList<CardItem> setPubObjCards(int numOfPlayers, GridPane gridPane){
         ArrayList<CardItem> pubObjCards = new ArrayList<>();
 
-        for (int i = 0; i < 3; i++){
-            pubObjCards.add(new PubObjCard(x, y, "res/9-eng.jpg"));
-            x += 120;
-        }
+        pubObjCards.add(new PubObjCard(3, 1, gridPane));
+
         return pubObjCards;
     }
-    public ArrayList<CardItem> setToolCards(double x, double y){
+    public ArrayList<CardItem> setToolCards(int numOfPlayers, GridPane gridPane){
         ArrayList<CardItem> toolCards = new ArrayList<>();
-
-        for (int i = 0; i < 3; i++){
-            toolCards.add(new ToolCard(x, y, "res/9-eng.jpg"));
-            x += 120;
-        }
+        toolCards.add(new ToolCard(2, 1, gridPane));
         return toolCards;
     }
-    //The total num of Favor Points depends on Window Frame difficulty; not used yet, but
-    //in the future I will implement each favor point
-    public ArrayList<FavorPoint> setFavorPoints(int numOfPlayers){
+    public ArrayList<Die> setDice(int numOfPlayers, GridPane gridPane){
+        ArrayList<Die> dice = new ArrayList<>();
+        dice.add(new Die(1, 1, gridPane));
+        return dice;
+    }
+
+    /*public ArrayList<FavorPoint> setFavorPoints(int numOfPlayers){
         double x;
         double y;
         ArrayList<FavorPoint> favorPoints = new ArrayList<>();
@@ -148,5 +147,5 @@ public class MainHelper {
         }
 
         return favorPoints;
-    }
+    }*/
 }

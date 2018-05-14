@@ -1,8 +1,14 @@
 package it.polimi.ingsw.view.viewdemo.settings;
 
+import javafx.stage.Screen;
+
 public final class GUIParameters {
 
     private GUIParameters(){}
+
+    public static final int NUM_COLUMNS = 3;
+    public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
+    public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
 
     public static final double DICE_BAG_WIDTH = 350;
     public static final double DICE_BAG_HEIGHT = 120;

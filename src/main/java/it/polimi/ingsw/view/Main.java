@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.view.gamemenu.GameMenu;
 import it.polimi.ingsw.view.gamemenu.MenuButton;
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
+
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -51,7 +53,7 @@ public class Main extends Application {
         fullScreen.setOnMouseClicked(e -> setFullScreen(primaryStage));
 
         //hideAndShowMenu(scene);
-        root.setPrefSize(1920, 1080);
+        root.setPrefSize(GUIParameters.SCREEN_WIDTH, GUIParameters.SCREEN_HEIGHT);
         root.getChildren().addAll(imgView, gameMenu);
         primaryStage.setTitle("Sagrada Board Game");
         primaryStage.setScene(scene);

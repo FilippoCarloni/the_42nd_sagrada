@@ -1,25 +1,31 @@
 package it.polimi.ingsw.view.viewdemo;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import it.polimi.ingsw.view.viewdemo.databaseview.*;
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import it.polimi.ingsw.view.viewdemo.utility.*;
 
-import java.util.ArrayList;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
+
+import java.util.List;
 
 public class ViewStart extends Application {
 
-    private AnchorPane root;
+    private GridPane root;
     private Scene scene;
     private MainHelper helper;
     private RoundTrack roundTrack;
-    private Die dice;
     private DiceBag diceBag;
-    private ArrayList<WindowFrame> windowFrame;
-    private ArrayList<FavorPoint> favorPoints;
-    private ArrayList<CardItem> privObjCards, pubObjCards, toolCards;
+    private List<ColumnConstraints> columnConstraints;
+    private List<RowConstraints> rowConstraints;
+    private List<WindowFrame> windowFrame;
+    private List<FavorPoint> favorPoints;
+    private List<CardItem> privObjCards, pubObjCards, toolCards;
+    private List<Die> dice;
     private int numOfPlayers;
 
     public static void main(String[] args) {
@@ -27,49 +33,50 @@ public class ViewStart extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        root = new AnchorPane();
-        scene = new Scene(root);
-        helper = new MainHelper();
-        windowFrame = new ArrayList<>();
-        favorPoints = new ArrayList<>();
-        privObjCards = new ArrayList<>();
-        pubObjCards = new ArrayList<>();
-        toolCards = new ArrayList<>();
-        primaryStage.setFullScreen(true);
+    public void start(Stage primaryStage){
+        try {
+            root = new GridPane();
+            root.setPrefWidth(GUIParameters.SCREEN_WIDTH);
+            root.setPrefHeight(GUIParameters.SCREEN_HEIGHT);
+            root.setMinWidth(GUIParameters.SCREEN_WIDTH);
+            root.setMinHeight(GUIParameters.SCREEN_HEIGHT);
 
-        if(numOfPlayers == 3) {
-            roundTrack = new RoundTrack(520, 260, "res/9-eng.jpg");
-            dice = new Die(1100, 530, "res/9-eng.jpg");
-            diceBag = new DiceBag(1060, 280, "res/9-eng.jpg");
-            pubObjCards = helper.setPubObjCards(560, 500);
-            toolCards = helper.setToolCards(560, 560);
+            scene = new Scene(root, GUIParameters.SCREEN_WIDTH, GUIParameters.SCREEN_HEIGHT);
+            helper = new MainHelper();
+            primaryStage.setFullScreen(true);
+            root.setGridLinesVisible(true);
+
+            rowConstraints = helper.setRowConstraints(numOfPlayers);
+            columnConstraints = helper.setColumnConstraints();
+            helper.setRectangleOnGrid(root, numOfPlayers);
+
+            windowFrame = helper.setWindowFrames(numOfPlayers, root);
+            privObjCards = helper.setPrivObjCards(numOfPlayers, root);
+            pubObjCards = helper.setPubObjCards(numOfPlayers, root);
+            toolCards = helper.setToolCards(numOfPlayers, root);
+            dice = helper.setDice(numOfPlayers, root);
+            roundTrack = new RoundTrack(0, 1, root);
+
+            root.setPrefSize(GUIParameters.SCREEN_WIDTH, GUIParameters.SCREEN_HEIGHT);
+            root.setStyle("-fx-background-color: #8fbc8f");
+            root.getRowConstraints().addAll(rowConstraints);
+            root.getColumnConstraints().addAll(columnConstraints);
+            root.getChildren().add(roundTrack);
+            root.getChildren().addAll(dice);
+            root.getChildren().addAll(windowFrame);
+            root.getChildren().addAll(privObjCards);
+            root.getChildren().addAll(pubObjCards);
+            root.getChildren().addAll(toolCards);
+
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
         }
-        else{
-            roundTrack = new RoundTrack(520, 340, "res/9-eng.jpg");
-            dice = new Die(1100, 610, "res/9-eng.jpg");
-            diceBag = new DiceBag(1060, 360, "res/9-eng.jpg");
-            pubObjCards = helper.setPubObjCards(560, 580);
-            toolCards = helper.setToolCards(560, 640);
+        catch (Exception e){
+            e.printStackTrace();
         }
-        windowFrame = helper.setWindowFrames(numOfPlayers);
-        favorPoints = helper.setFavorPoints(numOfPlayers);
-        privObjCards = helper.setPrivObjCards(numOfPlayers);
-
-        root.setPrefSize(1920, 1080);
-        root.setStyle("-fx-background-color: #8fbc8f");
-        root.getChildren().addAll(roundTrack, dice, diceBag);
-        root.getChildren().addAll(windowFrame);
-        root.getChildren().addAll(favorPoints);
-        root.getChildren().addAll(privObjCards);
-        root.getChildren().addAll(pubObjCards);
-        root.getChildren().addAll(toolCards);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
-    //Will be used by controller class to set num of players playing the game
     public void setNumOfPlayers(int numOfPlayers) {
         if (numOfPlayers > 4) throw new IllegalArgumentException("Too many players");
         this.numOfPlayers = numOfPlayers;
