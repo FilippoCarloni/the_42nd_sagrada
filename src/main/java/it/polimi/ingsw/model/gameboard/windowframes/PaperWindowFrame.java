@@ -92,7 +92,7 @@ public class PaperWindowFrame implements WindowFrame {
     @Override
     public Die pick(int row, int column) {
         if (isEmpty(row, column))
-            throw new IllegalArgumentException("Cannot pick a not-existing die.");
+            return null;
         return dice.remove(new Coordinate(row, column));
     }
 
