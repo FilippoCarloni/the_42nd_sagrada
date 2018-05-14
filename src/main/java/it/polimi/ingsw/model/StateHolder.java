@@ -2,14 +2,22 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
 
-public class TurnStateHolder {
+public final class StateHolder {
+
     private Die dieHolder;
-    private boolean isToolActive;
+    private boolean toolActive;
+    private boolean toolUsed;
     private boolean diePlaced;
+    private int activeToolID;
+
+    StateHolder() {
+        clear();
+    }
 
     public void clear() {
         dieHolder = null;
-        isToolActive = false;
+        toolActive = false;
+        toolUsed = false;
         diePlaced = false;
     }
 
@@ -22,11 +30,19 @@ public class TurnStateHolder {
     }
 
     public boolean isToolActive() {
-        return isToolActive;
+        return toolActive;
     }
 
     public void setToolActive(boolean toolActive) {
-        isToolActive = toolActive;
+        this.toolActive = toolActive;
+    }
+
+    public boolean isToolUsed() {
+        return toolUsed;
+    }
+
+    public void setToolUsed(boolean toolUsed) {
+        this.toolUsed = toolUsed;
     }
 
     public boolean isDiePlaced() {
@@ -35,5 +51,13 @@ public class TurnStateHolder {
 
     public void setDiePlaced(boolean diePlaced) {
         this.diePlaced = diePlaced;
+    }
+
+    public int getActiveToolID() {
+        return activeToolID;
+    }
+
+    public void setActiveToolID(int activeToolID) {
+        this.activeToolID = activeToolID;
     }
 }

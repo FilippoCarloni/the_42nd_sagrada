@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.*;
 import org.junit.jupiter.api.Test;
 
@@ -14,8 +13,6 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WindowFrameTest {
-
-    // TODO: add test for functionality
 
     @Test
     void placeAndMoveTest() {

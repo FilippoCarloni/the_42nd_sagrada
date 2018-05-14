@@ -8,6 +8,7 @@ public class ConcretePlayer implements Player{
     private String username;
     private WindowFrame window;
     private PrivateObjectiveCard po;
+    private int favorPoints;
 
     public ConcretePlayer(String username){
         this.username=username;
@@ -21,6 +22,7 @@ public class ConcretePlayer implements Player{
     @Override
     public void setWindowFrame(WindowFrame window) {
         if (window == null) throw new NullPointerException("Cannot play with a null map.");
+        favorPoints = window.getDifficulty();
         this.window = window;
     }
 
@@ -41,7 +43,20 @@ public class ConcretePlayer implements Player{
     }
 
     @Override
+    public int getFavorPoints() {
+        return favorPoints;
+    }
+
+    @Override
+    public void setFavorPoints(int points) {
+        if (points < 0)
+            throw new IllegalArgumentException("Favor points cannot be negative.");
+        favorPoints = points;
+    }
+
+    @Override
     public String toString() {
+        String username = this.username + " (" + favorPoints + ")";
         StringBuilder sb = new StringBuilder();
         String frame = window.toString();
         int len = frame.indexOf('\n');

@@ -18,4 +18,5 @@ public interface WindowFrame extends Iterable<Die>, Drawable {
     void put(Die die, int row, int column);
     void move(int oldRow, int oldColumn, int newRow, int newColumn);
     void move(Die die, int row, int column);
+    Die pick(int row, int column);
 }

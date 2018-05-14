@@ -12,14 +12,14 @@ public class Place extends AbstractCommand {
         super(status, cmd);
         regExp = "place \\d \\d";
         legalPredicate = s ->
-                status.getTurnStateHolder().getDieHolder() != null &&
-                        !status.getTurnStateHolder().isToolActive() &&
+                status.getStateHolder().getDieHolder() != null &&
+                        !status.getStateHolder().isToolActive() &&
                         parseInt(s[1]) <= Parameters.MAX_ROWS &&
                         parseInt(s[1]) >= 1 &&
                         parseInt(s[2]) <= Parameters.MAX_COLUMNS &&
                         parseInt(s[2]) >= 1 &&
                         Rule.checkAllRules(
-                                status.getTurnStateHolder().getDieHolder(),
+                                status.getStateHolder().getDieHolder(),
                                 status.getTurnManager().getCurrentPlayer().getWindowFrame(),
                                 parseInt(cmd.split(" ")[1]) - 1,
                                 parseInt(cmd.split(" ")[2]) - 1
@@ -30,12 +30,12 @@ public class Place extends AbstractCommand {
     public void execute() {
         if (isLegal()) {
             status.getTurnManager().getCurrentPlayer().getWindowFrame().put(
-                    status.getTurnStateHolder().getDieHolder(),
+                    status.getStateHolder().getDieHolder(),
                     parseInt(cmd.split(" ")[1]) - 1,
                     parseInt(cmd.split(" ")[2]) - 1
             );
-            status.getTurnStateHolder().setDiePlaced(true);
-            status.getTurnStateHolder().setDieHolder(null);
+            status.getStateHolder().setDiePlaced(true);
+            status.getStateHolder().setDieHolder(null);
         }
     }
 }

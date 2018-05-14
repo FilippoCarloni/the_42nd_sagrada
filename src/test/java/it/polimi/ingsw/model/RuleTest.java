@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RuleTest {
 
-    // TODO: implement deeper tests
-
     @Test
     void placingTest() {
         DiceBag db = new ClothDiceBag();
@@ -40,8 +38,6 @@ class RuleTest {
                     assertFalse(Rule.checkExcludeShade(d1, w, i, j));
             }
         }
-
-
     }
 
     @Test
@@ -73,5 +69,33 @@ class RuleTest {
         assertFalse(Rule.checkAllRules(d1, w, 3, 0));
         assertFalse(Rule.checkAllRules(d1, w, 3, 1));
         assertFalse(Rule.checkAllRules(d1, w, 3, 2));
+    }
+
+    @Test
+    void deeperTest() {
+        DiceBag db = new ClothDiceBag();
+        Deck d = new WindowFrameDeck();
+        WindowFrame w = (WindowFrame) d.draw();
+        while (!w.getName().equals("Industria")) {
+            w = (WindowFrame) d.draw();
+        }
+
+        Die d1 = db.pick();
+        d1.setShade(Shade.DARKEST);
+        d1.setColor(Color.RED);
+        Die d2 = db.pick();
+        d2.setColor(Color.RED);
+        d2.setShade(Shade.LIGHT);
+        Die d3 = db.pick();
+        d3.setColor(Color.BLUE);
+        d3.setShade(Shade.LIGHT);
+
+        assertTrue(Rule.checkAllRules(d1, w, 0, 1));
+        w.put(d1, 0, 1);
+        assertTrue(Rule.checkAllRules(d2, w, 1, 2));
+        w.put(d2, 1, 2);
+        assertTrue(Rule.checkAllRules(d3, w, 0, 3));
+        w.put(d3, 0, 3);
+        assertTrue(Rule.checkExcludeShade(w.pick(0, 3), w, 0, 2));
     }
 }

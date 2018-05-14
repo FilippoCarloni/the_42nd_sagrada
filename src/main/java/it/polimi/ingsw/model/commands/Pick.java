@@ -10,9 +10,9 @@ public class Pick extends AbstractCommand {
         super(status, cmd);
         regExp = "pick \\d";
         legalPredicate = s ->
-                !status.getTurnStateHolder().isDiePlaced() &&
-                status.getTurnStateHolder().getDieHolder() == null &&
-                !status.getTurnStateHolder().isToolActive() &&
+                !status.getStateHolder().isDiePlaced() &&
+                status.getStateHolder().getDieHolder() == null &&
+                !status.getStateHolder().isToolActive() &&
                 parseInt(s[1]) <= status.getDicePool().size() &&
                 parseInt(s[1]) >= 1;
     }
@@ -20,7 +20,7 @@ public class Pick extends AbstractCommand {
     @Override
     public void execute() {
         if (isLegal()) {
-            status.getTurnStateHolder().setDieHolder(
+            status.getStateHolder().setDieHolder(
                     status.getDicePool().remove(parseInt(cmd.split(" ")[1]) - 1)
             );
         }

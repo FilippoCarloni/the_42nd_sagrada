@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.commands;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
-import it.polimi.ingsw.model.TurnStateHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,10 @@ public class ConcreteCommandManager implements CommandManager {
         commands.add(new Pick(status, cmd));
         commands.add(new Place(status, cmd));
         commands.add(new Pass(status, cmd));
+        commands.add(new Tool(status, cmd));
+        commands.add(new Increase(status, cmd));
+        commands.add(new Decrease(status, cmd));
+        commands.add(new Move(status, cmd));
         return commands;
     }
 

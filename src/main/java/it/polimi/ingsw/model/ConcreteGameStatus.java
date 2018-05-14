@@ -3,11 +3,15 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.commands.CommandManager;
 import it.polimi.ingsw.model.commands.ConcreteCommandManager;
 import it.polimi.ingsw.model.gameboard.GameBox;
+import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
+import it.polimi.ingsw.model.gameboard.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.turns.ConcreteTurnManager;
@@ -22,9 +26,10 @@ public class ConcreteGameStatus implements GameStatus {
     private DiceBag diceBag;
     private RoundTrack roundTrack;
     private List<PublicObjectiveCard> publicObjectives;
+    private List<ToolCard> tools;
     private ConcreteTurnManager turnManager;
     private ConcreteCommandManager commandManager;
-    private TurnStateHolder turnStateHolder;
+    private StateHolder stateHolder;
 
     public ConcreteGameStatus(List<Player> players) {
         initialize(players);
@@ -47,9 +52,13 @@ public class ConcreteGameStatus implements GameStatus {
         List<PrivateObjectiveCard> po = gb.getPrivateObjectives(players.size());
         for (Player p : this.players)
             p.setPrivateObjective(po.remove(0));
+        tools = new ArrayList<>();
+        Deck d = new ToolDeck(this);
+        for (int i = 0; i < Parameters.TOOL_CARDS; i++)
+            tools.add((ToolCard) d.draw());
         turnManager = new ConcreteTurnManager(players);
-        turnStateHolder = new TurnStateHolder();
-        turnStateHolder.clear();
+        stateHolder = new StateHolder();
+        stateHolder.clear();
         commandManager = new ConcreteCommandManager(this);
         fillDicePool();
     }
@@ -74,12 +83,16 @@ public class ConcreteGameStatus implements GameStatus {
         return commandManager;
     }
 
-    public TurnStateHolder getTurnStateHolder() {
-        return turnStateHolder;
+    public StateHolder getStateHolder() {
+        return stateHolder;
     }
 
     public List<Die> getDicePool() {
         return dicePool;
+    }
+
+    public List<ToolCard> getTools() {
+        return tools;
     }
 
     @Override
@@ -127,10 +140,12 @@ public class ConcreteGameStatus implements GameStatus {
             sb.append(d);
         sb.append("\n");
         sb.append("PICKED DIE: ");
-        if (turnStateHolder.getDieHolder() != null) sb.append(turnStateHolder.getDieHolder());
+        if (stateHolder.getDieHolder() != null) sb.append(stateHolder.getDieHolder());
         sb.append("\n\n");
         String s = "";
         for (PublicObjectiveCard c : publicObjectives)
+            s = convertToHorizontal(s, c.toString(), "  ");
+        for (ToolCard c : tools)
             s = convertToHorizontal(s, c.toString(), "  ");
         sb.append(s);
         sb.append("\n\n");
