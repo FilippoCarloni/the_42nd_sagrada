@@ -13,24 +13,15 @@ public class Move extends AbstractCommand {
     Move(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         regExp = "move \\d \\d \\d \\d";
-        legalPredicate = s -> {
-            int[] c = readCoordinates();
-            WindowFrame w = status.getTurnManager().getCurrentPlayer().getWindowFrame();
-            return !w.isEmpty(c[0], c[1]) && w.isEmpty(c[2], c[3]) && getMovementConstraint();
-        };
+        legalPredicate = s -> getMovementConstraint();
     }
 
     private boolean getMovementConstraint() {
         int[] c = readCoordinates();
-        for (int i = 0; i < c.length; i++) {
-            if (i / 2 == 0) {
-                if (c[i] < 0 || c[i] >= Parameters.MAX_ROWS) return false;
-            } else {
-                if (c[i] < 0 || c[i] >= Parameters.MAX_COLUMNS) return false;
-            }
-        }
+        if (!areCoordinatesLegal()) return false;
         WindowFrame w = status.getTurnManager().getCurrentPlayer().getWindowFrame();
         Die d = w.pick(c[0], c[1]);
+        if (d == null) return false;
         boolean value;
         switch (status.getStateHolder().getActiveToolID()) {
             case 2:
@@ -43,6 +34,19 @@ public class Move extends AbstractCommand {
                 return value;
         }
         return false;
+    }
+
+    private boolean areCoordinatesLegal() {
+        int[] c = readCoordinates();
+        for (int i = 0; i < c.length; i++) {
+            if (i % 2 == 0) {
+                if (c[i] < 0 || c[i] >= Parameters.MAX_ROWS) return false;
+            } else {
+                if (c[i] < 0 || c[i] >= Parameters.MAX_COLUMNS) return false;
+            }
+        }
+        WindowFrame w = status.getTurnManager().getCurrentPlayer().getWindowFrame();
+        return !(w.isEmpty(c[0], c[1])) && w.isEmpty(c[2], c[3]);
     }
 
     private int[] readCoordinates() {
