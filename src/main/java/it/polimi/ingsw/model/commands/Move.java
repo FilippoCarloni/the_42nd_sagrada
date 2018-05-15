@@ -13,7 +13,7 @@ public class Move extends AbstractCommand {
     Move(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         regExp = "move \\d \\d \\d \\d";
-        legalPredicate = s -> getMovementConstraint();
+        legalPredicate = s -> status.getStateHolder().isToolActive() && getMovementConstraint();
     }
 
     private boolean getMovementConstraint() {
@@ -30,6 +30,10 @@ public class Move extends AbstractCommand {
                 return value;
             case 3:
                 value =  Rule.checkExcludeShade(d, w, c[2], c[3]);
+                w.put(d, c[0], c[1]);
+                return value;
+            case 4:
+                value = Rule.checkAllRules(d, w, c[2], c[3]);
                 w.put(d, c[0], c[1]);
                 return value;
         }
@@ -69,7 +73,17 @@ public class Move extends AbstractCommand {
             status.getTurnManager().getCurrentPlayer().getWindowFrame().move(
                    c[0], c[1], c[2], c[3]
             );
-            status.getStateHolder().setToolActive(false);
+
+            status.getStateHolder().setDieAlreadyMoved(
+                    !status.getStateHolder().isDieAlreadyMoved()
+            );
+
+            if (status.getStateHolder().getActiveToolID() != 4 ||
+                    (
+                            status.getStateHolder().getActiveToolID() == 4 &&
+                            !status.getStateHolder().isDieAlreadyMoved())
+                    )
+                status.getStateHolder().setToolActive(false);
         }
     }
 }

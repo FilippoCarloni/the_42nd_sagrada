@@ -23,6 +23,7 @@ public class ConcreteCommandManager implements CommandManager {
         commands.add(new Increase(status, cmd));
         commands.add(new Decrease(status, cmd));
         commands.add(new Move(status, cmd));
+        commands.add(new Select(status, cmd));
         return commands;
     }
 

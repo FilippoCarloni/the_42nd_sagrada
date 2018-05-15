@@ -63,9 +63,8 @@ public class ConcreteGameStatus implements GameStatus {
 
     public void setDicePool(String serializedDicePool) {
         List<Die> dp = new ArrayList<>();
-        DiceBag db = new ClothDiceBag();
         for (int i = 0; i < serializedDicePool.length(); i += 2) {
-            Die d = db.pick();
+            Die d = diceBag.pick();
             d.setColor(Color.findByID("" + serializedDicePool.charAt(i)));
             d.setShade(Shade.findByID("" + serializedDicePool.charAt(i + 1)));
             dp.add(d);
@@ -98,6 +97,10 @@ public class ConcreteGameStatus implements GameStatus {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+    public RoundTrack getRoundTrack() {
+        return roundTrack;
     }
 
     @Override

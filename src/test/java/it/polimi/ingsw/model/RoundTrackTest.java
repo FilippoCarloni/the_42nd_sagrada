@@ -54,9 +54,11 @@ class RoundTrackTest {
         assertEquals(rt.getTotalScore(), 14);
         assertEquals(rt.getCurrentRoundNumber(), 5);
 
+        Die swapped = db.pick();
         assertEquals(rt.getVisibleDice().get(0), a);
-        rt.swap(db.pick(), a);
+        rt.swap(swapped, a);
         assertNotEquals(rt.getVisibleDice().get(0), a);
+        assertEquals(rt.getVisibleDice().get(0), swapped);
 
         rt.put(db.pick());
         rt.put(db.pick());

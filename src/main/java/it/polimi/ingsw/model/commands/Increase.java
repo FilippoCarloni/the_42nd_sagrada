@@ -9,8 +9,9 @@ public class Increase extends AbstractCommand {
     Increase(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         regExp = "increase";
-        legalPredicate = s -> status.getStateHolder().getActiveToolID() == 1 &&
-                        !status.getStateHolder().getDieHolder().getShade().equals(Shade.DARKEST);
+        legalPredicate = s -> status.getStateHolder().isToolActive() &&
+                status.getStateHolder().getActiveToolID() == 1 &&
+                !status.getStateHolder().getDieHolder().getShade().equals(Shade.DARKEST);
     }
 
     @Override
