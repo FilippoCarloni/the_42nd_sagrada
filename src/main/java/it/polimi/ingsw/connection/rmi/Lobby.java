@@ -8,6 +8,6 @@ public interface Lobby extends Remote{
     Session connect(String username)throws RemoteException;
     void disconnect(Session userSession)throws RemoteException;
     GameManager getGame(Session userSession) throws RemoteException;
-    public Session restoreSession(Session oldSession) throws RemoteException;
+    Session restoreSession(Session oldSession) throws RemoteException;
 
 }

@@ -29,14 +29,15 @@ public class RemoteClient implements Runnable{
     }
     @Override
     public void run() {
-        String cmd[];
+        String []cmd;
         int i;
         try {
             in=new Scanner(client.getInputStream());
             out=new PrintWriter(client.getOutputStream());
             do{
                 line=in.nextLine();
-                logger.info(() ->"Client send: "+line);
+                if(line.trim().length()>0)
+                    logger.info(() ->"Client send: "+line);
                 cmd=line.split(" ");
                 logger.info(line);
                 if(cmd.length>0)
@@ -47,12 +48,13 @@ public class RemoteClient implements Runnable{
                                     session=new Session(cmd[1]);
                                     try {
                                        session=lobby.restoreSession(session);
-                                       send("new SessionID:"+session.getID());
+                                       send("NewSessionID:"+session.getID());
                                     }catch(RemoteException e){
                                         send(e.getMessage());
                                         session=null;
                                     }
-                                }
+                                }else
+                                    send("No username is passed!");
                             }
                             else
                                 send("You are already logged");
@@ -107,8 +109,6 @@ public class RemoteClient implements Runnable{
                             break;
 
                     }
-
-                    out.flush();
             }while(!line.equals("quit"));
             in.close();
             out.close();
@@ -121,7 +121,7 @@ public class RemoteClient implements Runnable{
             logger.log(Level.SEVERE,"Anomaly disconnection");
         }
     }
-    private void send(String msg) throws Exception {
+    private void send(String msg) {
         out.println(msg);
         out.flush();
     }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.*;
 import java.util.stream.Collectors;
+// @TODO refactoring this class, to have a more simmetrical vision between socket and RMI
 
 public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
 

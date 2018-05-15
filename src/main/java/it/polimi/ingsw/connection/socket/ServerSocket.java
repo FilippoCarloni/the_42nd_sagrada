@@ -4,9 +4,7 @@ package it.polimi.ingsw.connection.socket;
 import it.polimi.ingsw.connection.rmi.Lobby;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -18,15 +16,12 @@ public class ServerSocket implements Runnable{
 
     private java.net.ServerSocket server;
     private Socket client;
-    private Scanner in;
-    private PrintWriter out;
     private ExecutorService th;
     private Lobby lobby;
     private Logger logger= Logger.getLogger(ServerSocket.class.getName());
     private int numError;
 
     public ServerSocket(Lobby lobby) throws IOException {
-        in = null;
         client = null;
         this.lobby=lobby;
         server = new java.net.ServerSocket(SOCKET_PORT);
@@ -39,8 +34,6 @@ public class ServerSocket implements Runnable{
         while(numError<10) {
             try {
                 client = server.accept();
-                in = new Scanner(client.getInputStream());
-                out = new PrintWriter(client.getOutputStream());
                 logger.info("A client thread is started");
                 th.execute(new RemoteClient(client,lobby));
             } catch (IOException e) {
@@ -49,16 +42,15 @@ public class ServerSocket implements Runnable{
             }
         }
         logger.log(Level.SEVERE,"Max number of error in the server");
+        close();
     }
-    public String readLine() {
-        return in.nextLine();
-    }
-    public void write(String input) {
-        out.println(input);
-        out.flush();
-    }
-    public void close() throws IOException {
-        server.close();
+
+    private void close() {
+        try {
+            server.close();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Connection of new client over sockete error", e);
+        }
     }
 
 }
