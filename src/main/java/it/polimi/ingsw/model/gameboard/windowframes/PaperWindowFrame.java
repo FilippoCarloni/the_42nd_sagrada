@@ -16,7 +16,7 @@ public class PaperWindowFrame implements WindowFrame {
     private Map<Coordinate, Color> colorConstraints;
     private Map<Coordinate, Shade> shadeConstraints;
 
-    PaperWindowFrame(WindowPatternGenerator generator) {
+    public PaperWindowFrame(WindowPatternGenerator generator) {
         name = generator.getName();
         difficulty = generator.getDifficulty();
         colorConstraints = generator.getColorConstraints();

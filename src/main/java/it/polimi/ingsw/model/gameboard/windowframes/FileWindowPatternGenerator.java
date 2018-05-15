@@ -19,7 +19,7 @@ public class FileWindowPatternGenerator implements WindowPatternGenerator {
     private Map<Coordinate, Shade> shadeConstraints;
     private int difficulty;
 
-    FileWindowPatternGenerator(String path) {
+    public FileWindowPatternGenerator(String path) {
         colorConstraints = new HashMap<>();
         shadeConstraints = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {

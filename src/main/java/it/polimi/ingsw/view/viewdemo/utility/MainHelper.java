@@ -12,62 +12,66 @@ import java.util.ArrayList;
 
 public class MainHelper {
 
-    public ArrayList<ColumnConstraints> setColumnConstraints(){
-        ArrayList<ColumnConstraints> columnConstraints = new ArrayList<>();
-
-        for (int i = 0; i < GUIParameters.NUM_COLUMNS; i++){
-            columnConstraints.add(new ColumnConstraints());
-            columnConstraints.get(i).setPrefWidth(GUIParameters.SCREEN_WIDTH / GUIParameters.NUM_COLUMNS);
-        }
-
-        return columnConstraints;
-    }
-    public ArrayList<RowConstraints> setRowConstraints(int numOfPlayers){
-        int numRows = setNumRows(numOfPlayers);
-        ArrayList<RowConstraints> rowConstraints = new ArrayList<>();
-
-        for (int i = 0; i < numRows; i++){
-            rowConstraints.add(new RowConstraints());
-            rowConstraints.get(i).setPrefHeight(GUIParameters.SCREEN_HEIGHT / numRows);
-        }
-
-        return rowConstraints;
-    }
-    private int setNumRows(int numOfPlayers){
+    public int setNumRows(int numOfPlayers){
         if(numOfPlayers == 2)
             return 4;
         else
             return 5;
     }
-    public void setRectangleOnGrid(GridPane root, int numOfPlayers){
-        for(int i = 0; i < setNumRows(numOfPlayers); i++){
-            for(int j = 0; j < GUIParameters.NUM_COLUMNS; j++){
-                HBox hBox = new HBox();
-                root.add(hBox, j, i);
+    public double setDimension(int i, boolean b){
+        if(b)       //Rows dimension
+            return (GUIParameters.SCREEN_HEIGHT / i);
+        else        //Column dimension
+            return (GUIParameters.SCREEN_WIDTH / i);
+    }
+    public ArrayList<ColumnConstraints> setColumnConstraints(int numColumn){
+        ArrayList<ColumnConstraints> columnConstraints = new ArrayList<>();
+
+        for (int i = 0; i < numColumn; i++){
+            columnConstraints.add(new ColumnConstraints());
+            columnConstraints.get(i).setPrefWidth(setDimension(GUIParameters.NUM_COLUMNS, false));
+        }
+
+        return columnConstraints;
+    }
+    public ArrayList<RowConstraints> setRowConstraints(int numRows){
+        ArrayList<RowConstraints> rowConstraints = new ArrayList<>();
+
+        for (int i = 0; i < numRows; i++){
+            rowConstraints.add(new RowConstraints());
+            rowConstraints.get(i).setPrefHeight(setDimension(numRows, true));
+        }
+
+        return rowConstraints;
+    }
+    public void setHBoxOnGrid(GridPane gridPane, int numRows, int numColumn){
+        for(int i = 0; i < setNumRows(numRows); i++){
+            for(int j = 0; j < numColumn; j++){
+                gridPane.add(new HBox(), j, i);
             }
         }
     }
 
-    public ArrayList<WindowFrame> setWindowFrames(int numOfPlayers, GridPane gridPane){
-        ArrayList<WindowFrame> windowFrame = new ArrayList<>();
+    public ArrayList<DrawableWindowFrame> setWindowFrames(int numOfPlayers, GridPane gridPane){
+        ArrayList<DrawableWindowFrame> drawableWindowFrame = new ArrayList<>();
 
         if(numOfPlayers == 2) {
-            windowFrame.add(new WindowFrame(1, 0, gridPane));
-            windowFrame.add(new WindowFrame(1, 2, gridPane));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "res/window_patterns/batllo.txt"));
         }
         else if (numOfPlayers == 3){
-            windowFrame.add(new WindowFrame(2, 0, gridPane));
-            windowFrame.add(new WindowFrame(4, 1, gridPane));
-            windowFrame.add(new WindowFrame(1, 2, gridPane));
+            drawableWindowFrame.add(new DrawableWindowFrame(2, 0, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(4, 1, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "res/window_patterns/batllo.txt"));
         }
         else {
-            windowFrame.add(new WindowFrame(1, 0, gridPane));
-            windowFrame.add(new WindowFrame(3, 0, gridPane));
-            windowFrame.add(new WindowFrame(0, 2, gridPane));
-            windowFrame.add(new WindowFrame(4, 2, gridPane));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(3, 0, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(0, 2, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(4, 2, gridPane, "res/window_patterns/batllo.txt"));
         }
 
-        return windowFrame;
+        return drawableWindowFrame;
     }
     public ArrayList<CardItem> setPrivObjCards(int numOfPlayers, GridPane gridPane){
         ArrayList<CardItem> privObjCards = new ArrayList<>();

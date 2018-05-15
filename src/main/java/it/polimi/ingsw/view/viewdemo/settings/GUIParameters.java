@@ -9,6 +9,9 @@ public final class GUIParameters {
     public static final int NUM_COLUMNS = 3;
     public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
     public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
+    public static final String BG_IMAGE_PATH = "res/images/sagrada_menu_bg.png";
+    public static final String COLOR_SHADE_IMAGE_PATH = "res/images/";
+    public static final String DEFAULT_IMAGE_PATH = "res/images/default.png";
 
     public static final double DICE_BAG_WIDTH = 350;
     public static final double DICE_BAG_HEIGHT = 120;

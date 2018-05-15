@@ -44,7 +44,7 @@ public class Main extends Application {
         startingWrite.manageRectangle(0.6, Color.BLACK);
         startingWrite.setVisible(true);*/
 
-        loadFromFile("res/images/sagrada_menu_bg.png");
+        loadFromFile(GUIParameters.BG_IMAGE_PATH);
 
         /*startingWrite.setTranslateX(720);
         startingWrite.setTranslateY(900);*/
@@ -63,8 +63,8 @@ public class Main extends Application {
     private void loadFromFile (String path) {
         try (InputStream is = Files.newInputStream(Paths.get(path))) {
             imgView = new ImageView(new Image(is));
-            imgView.setFitWidth(1920);
-            imgView.setFitHeight(1080);
+            imgView.setFitWidth(GUIParameters.SCREEN_WIDTH);
+            imgView.setFitHeight(GUIParameters.SCREEN_HEIGHT);
         }
         catch (IOException e) {
             System.err.println ("Couldn't load background image");

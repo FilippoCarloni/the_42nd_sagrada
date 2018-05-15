@@ -22,7 +22,7 @@ public class ViewStart extends Application {
     private DiceBag diceBag;
     private List<ColumnConstraints> columnConstraints;
     private List<RowConstraints> rowConstraints;
-    private List<WindowFrame> windowFrame;
+    private List<DrawableWindowFrame> drawableWindowFrame;
     private List<FavorPoint> favorPoints;
     private List<CardItem> privObjCards, pubObjCards, toolCards;
     private List<Die> dice;
@@ -46,11 +46,11 @@ public class ViewStart extends Application {
             primaryStage.setFullScreen(true);
             root.setGridLinesVisible(true);
 
-            rowConstraints = helper.setRowConstraints(numOfPlayers);
-            columnConstraints = helper.setColumnConstraints();
-            helper.setRectangleOnGrid(root, numOfPlayers);
+            rowConstraints = helper.setRowConstraints(helper.setNumRows(numOfPlayers));
+            columnConstraints = helper.setColumnConstraints(GUIParameters.NUM_COLUMNS);
+            helper.setHBoxOnGrid(root, helper.setNumRows(numOfPlayers), GUIParameters.NUM_COLUMNS);
 
-            windowFrame = helper.setWindowFrames(numOfPlayers, root);
+            drawableWindowFrame = helper.setWindowFrames(numOfPlayers, root);
             privObjCards = helper.setPrivObjCards(numOfPlayers, root);
             pubObjCards = helper.setPubObjCards(numOfPlayers, root);
             toolCards = helper.setToolCards(numOfPlayers, root);
@@ -63,7 +63,7 @@ public class ViewStart extends Application {
             root.getColumnConstraints().addAll(columnConstraints);
             root.getChildren().add(roundTrack);
             root.getChildren().addAll(dice);
-            root.getChildren().addAll(windowFrame);
+            root.getChildren().addAll(drawableWindowFrame);
             root.getChildren().addAll(privObjCards);
             root.getChildren().addAll(pubObjCards);
             root.getChildren().addAll(toolCards);

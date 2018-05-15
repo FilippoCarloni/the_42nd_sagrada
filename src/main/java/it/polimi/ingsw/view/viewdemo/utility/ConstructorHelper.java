@@ -1,10 +1,14 @@
 package it.polimi.ingsw.view.viewdemo.utility;
 
+import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+
+import java.util.ArrayList;
 
 public class ConstructorHelper {
 
@@ -18,6 +22,16 @@ public class ConstructorHelper {
 
         gridPane.add(stackPane, column, row);   //add asks columnIndex, rowIndex
         return stackPane;
+    }
+
+    public GridPane setWindowFrameElement(int row, int column, GridPane gridPane){
+        GridPane container = new GridPane();
+        container.getColumnConstraints().addAll(new MainHelper().setColumnConstraints(Parameters.MAX_COLUMNS));
+        container.getRowConstraints().addAll(new MainHelper().setRowConstraints(Parameters.MAX_ROWS));
+        container.setGridLinesVisible(true);
+
+        gridPane.add(container, column, row);
+        return container;
     }
 
 }
