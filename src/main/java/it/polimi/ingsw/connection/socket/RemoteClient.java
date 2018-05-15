@@ -39,7 +39,6 @@ public class RemoteClient implements Runnable{
                 if(line.trim().length()>0)
                     logger.info(() ->"Client send: "+line);
                 cmd=line.split(" ");
-                logger.info(line);
                 if(cmd.length>0)
                     switch (cmd[0]) {
                         case "restore":
@@ -103,6 +102,8 @@ public class RemoteClient implements Runnable{
                             }
                             else
                                 send("You are not playing");
+                            break;
+                        case "quit":
                             break;
                         default:
                             send("Command not recognized");
