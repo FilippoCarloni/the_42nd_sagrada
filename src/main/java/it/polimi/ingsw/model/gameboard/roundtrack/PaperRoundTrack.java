@@ -61,7 +61,7 @@ public class PaperRoundTrack implements RoundTrack {
     @Override
     public void swap(Die playerDie, Die roundTrackDie) {
         if (playerDie == null || roundTrackDie == null) throw new NullPointerException("Cannot swap null dice.");
-        if (!dice.contains(roundTrackDie)) throw new IllegalArgumentException("The die is not present on the round track.");
+        if (!dice.contains(roundTrackDie))throw new IllegalArgumentException("The die is not present on the round track.");
         if (dice.contains(playerDie)) throw new IllegalArgumentException("Cannot swap two dice already on the round track.");
         dice.set(dice.indexOf(roundTrackDie), playerDie);
     }

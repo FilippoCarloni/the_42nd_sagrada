@@ -8,7 +8,11 @@ public class ToolDeck extends AbstractDeck {
     public ToolDeck(ConcreteGameStatus status) {
         add(new GrozingPliers(status));
         add(new EglomiseBrush(status));
-        add(new GrindingStone(status));
         add(new CopperFoilBurnisher(status));
+        add(new Lathekin(status));
+        add(new LensCutter(status));
+
+
+        add(new GrindingStone(status));
     }
 }
