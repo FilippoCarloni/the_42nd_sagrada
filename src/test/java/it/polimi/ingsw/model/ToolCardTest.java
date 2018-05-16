@@ -194,4 +194,37 @@ class ToolCardTest {
         assertEquals(1, tw.getGameStatus().getTurnManager().getCurrentPlayer().getFavorPoints());
         tw.wrappedTrueAssertion(0, "pass");
     }
+
+    @Test
+    void corkBackedStraightedge() {
+        init("Cork-backed Straightedge");
+        tw.wrappedSetDicePool("R1B2");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedFalseAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "place 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedFalseAssertion(0, "place 3 3");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "place 3 3");
+        tw.wrappedFalseAssertion(0, "place 1 3");
+        assertEquals(Color.BLUE, tw.getGameStatus().getTurnManager().getCurrentPlayer().getWindowFrame().getDie(2, 2).getColor());
+        assertEquals(Shade.LIGHTER, tw.getGameStatus().getTurnManager().getCurrentPlayer().getWindowFrame().getDie(2, 2).getShade());
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedSetDicePool("P1G3");
+        tw.wrappedTrueAssertion(1, "pick 1");
+        tw.wrappedTrueAssertion(1, "tool 1");
+        tw.wrappedTrueAssertion(1, "place 4 5");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pick 1");
+        tw.wrappedFalseAssertion(1, "place 1 2");
+        tw.wrappedTrueAssertion(1, "tool 1");
+        tw.wrappedTrueAssertion(1, "place 1 2");
+        tw.wrappedFalseAssertion(1, "place 3 4");
+        tw.wrappedTrueAssertion(1, "pass");
+    }
 }

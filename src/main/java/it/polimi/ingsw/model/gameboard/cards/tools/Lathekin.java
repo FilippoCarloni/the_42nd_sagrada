@@ -22,7 +22,7 @@ public class Lathekin extends AbstractToolCard {
     @Override
     public List<Command> getCommands(String cmd) {
         List<Command> commands = new ArrayList<>();
-        commands.add(new Lathekin.MoveExactlyTwoDice(status, cmd, ID));
+        commands.add(new MoveExactlyTwoDice(status, cmd, ID));
         return commands;
     }
 

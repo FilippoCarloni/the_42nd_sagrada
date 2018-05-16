@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.commands.AbstractCommand;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.utility.Color;
 
@@ -28,14 +29,16 @@ public class FluxBrush extends AbstractToolCard {
         if (isLegal()) {
             super.execute();
             status.getStateHolder().getDieHolder().roll();
+            status.getStateHolder().setFluxBrushRoll(true);
             tearDown();
-            status.getStateHolder().setActiveToolID(ID);
         }
     }
 
     @Override
     public List<Command> getCommands(String cmd) {
-        return new ArrayList<>();
+        List<Command> commands = new ArrayList<>();
+        commands.add(new PassWithoutPlace(status, cmd));
+        return commands;
     }
 
     @Override
@@ -60,5 +63,29 @@ public class FluxBrush extends AbstractToolCard {
         sb.append("|");
         sb.append(getLowerCard());
         return sb.toString();
+    }
+
+    private class PassWithoutPlace extends AbstractCommand {
+
+        PassWithoutPlace(ConcreteGameStatus status, String cmd) {
+            super(status, cmd);
+            setRegExp("pass");
+            setLegalPredicate(s -> status.getStateHolder().getDieHolder() != null &&
+                    status.getStateHolder().isFluxBrushRoll());
+        }
+
+        @Override
+        public void execute() {
+            if (super.isLegal()) {
+                getStatus().getDicePool().add(
+                        getStatus().getStateHolder().getDieHolder()
+                );
+                assert !getStatus().getDicePool().contains(null);
+                getStatus().emptyDicePool();
+                getStatus().getTurnManager().advanceTurn();
+                getStatus().getStateHolder().clear();
+                getStatus().fillDicePool();
+            }
+        }
     }
 }

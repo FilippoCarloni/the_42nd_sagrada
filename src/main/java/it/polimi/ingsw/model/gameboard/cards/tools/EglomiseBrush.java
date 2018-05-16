@@ -23,7 +23,7 @@ public class EglomiseBrush extends AbstractToolCard {
     @Override
     public List<Command> getCommands(String cmd) {
         List<Command> commands = new ArrayList<>();
-        commands.add(new EglomiseBrush.MoveIgnoringColor(status, cmd, ID));
+        commands.add(new MoveIgnoringColor(status, cmd, ID));
         return commands;
     }
 

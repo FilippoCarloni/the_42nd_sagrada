@@ -12,5 +12,8 @@ public class ToolDeck extends AbstractDeck {
         add(new Lathekin(status));
         add(new LensCutter(status));
         add(new FluxBrush(status));
+
+
+        add(new CorkBackedStraightedge(status));
     }
 }

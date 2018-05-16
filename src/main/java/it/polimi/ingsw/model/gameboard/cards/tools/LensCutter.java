@@ -29,7 +29,7 @@ public class LensCutter extends AbstractToolCard {
     @Override
     public List<Command> getCommands(String cmd) {
         List<Command> commands = new ArrayList<>();
-        commands.add(new LensCutter.SwapFromRoundTrack(status, cmd, ID));
+        commands.add(new SwapFromRoundTrack(status, cmd, ID));
         return commands;
     }
 

@@ -32,10 +32,9 @@ public class ConcreteCommandManager implements CommandManager {
     }
 
     private Command getLegalCommand(String cmd) {
-        List<Command> commands = commandsFromString(cmd);
-        for (Command c : commands)
-            if (c.isLegal())
-                return c;
+        List<Command> commands = commandsFromString(cmd).stream().filter(Command::isLegal).collect(Collectors.toList());
+        if (commands.size() > 1) throw new IllegalArgumentException("There's more than one valid command: review the command logic.");
+        if (commands.size() == 1) return commands.get(0);
         return null;
     }
 

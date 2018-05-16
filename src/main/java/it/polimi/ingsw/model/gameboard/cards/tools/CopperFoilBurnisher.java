@@ -24,7 +24,7 @@ public class CopperFoilBurnisher extends AbstractToolCard {
     @Override
     public List<Command> getCommands(String cmd) {
         List<Command> commands = new ArrayList<>();
-        commands.add(new CopperFoilBurnisher.MoveIgnoringShade(status, cmd, ID));
+        commands.add(new MoveIgnoringShade(status, cmd, ID));
         return commands;
     }
 

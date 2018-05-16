@@ -36,7 +36,6 @@ public class Place extends AbstractCommand {
             );
             getStatus().getStateHolder().setDiePlaced(true);
             getStatus().getStateHolder().setDieHolder(null);
-            getStatus().getStateHolder().setActiveToolID(0);
         }
     }
 }

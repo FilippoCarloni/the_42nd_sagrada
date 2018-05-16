@@ -10,6 +10,7 @@ public final class StateHolder {
     private boolean diePlaced;
     private int activeToolID;
     private Die dieAlreadyMoved;
+    private boolean fluxBrushRoll;
 
     StateHolder() {
         clear();
@@ -20,7 +21,9 @@ public final class StateHolder {
         toolActive = false;
         toolUsed = false;
         diePlaced = false;
+        activeToolID = 0;
         dieAlreadyMoved = null;
+        fluxBrushRoll = false;
     }
 
     public Die getDieHolder() {
@@ -69,5 +72,13 @@ public final class StateHolder {
 
     public void setDieAlreadyMoved(Die dieAlreadyMoved) {
         this.dieAlreadyMoved = dieAlreadyMoved;
+    }
+
+    public boolean isFluxBrushRoll() {
+        return fluxBrushRoll;
+    }
+
+    public void setFluxBrushRoll(boolean fluxBrushRoll) {
+        this.fluxBrushRoll = fluxBrushRoll;
     }
 }

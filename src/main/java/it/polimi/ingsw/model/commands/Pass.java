@@ -8,15 +8,12 @@ public class Pass extends AbstractCommand {
         super(status, cmd);
         setRegExp("pass");
         setLegalPredicate(s -> !status.getStateHolder().isToolActive() &&
-                (status.getStateHolder().getDieHolder() == null ||
-                 status.getStateHolder().getActiveToolID() == 6));
+                status.getStateHolder().getDieHolder() == null);
     }
 
     @Override
     public void execute() {
         if (isLegal()) {
-            if (getStatus().getStateHolder().getActiveToolID() == 6)
-                getStatus().getDicePool().add(getStatus().getStateHolder().getDieHolder());
             getStatus().emptyDicePool();
             getStatus().getTurnManager().advanceTurn();
             getStatus().getStateHolder().clear();
