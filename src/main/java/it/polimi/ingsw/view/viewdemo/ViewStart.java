@@ -19,13 +19,13 @@ public class ViewStart extends Application {
     private Scene scene;
     private MainHelper helper;
     private RoundTrack roundTrack;
-    private DiceBag diceBag;
+    private DrawableDiceBag drawableDiceBag;
     private List<ColumnConstraints> columnConstraints;
     private List<RowConstraints> rowConstraints;
     private List<DrawableWindowFrame> drawableWindowFrame;
     private List<FavorPoint> favorPoints;
-    private List<CardItem> privObjCards, pubObjCards, toolCards;
-    private List<Die> dice;
+    private List<DrawableCardItem> privObjCards, pubObjCards, toolCards;
+    private List<DrawableDie> dice;
     private int numOfPlayers;
 
     public static void main(String[] args) {

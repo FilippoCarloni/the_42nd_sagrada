@@ -1,18 +1,13 @@
 package it.polimi.ingsw.view.viewdemo.databaseview;
 
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
-import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
-public class Die extends Parent implements GuiItem {
 
-    private StackPane container;
+public class PrivObjDrawableCard extends DrawableCardItem {
 
-    public Die(int row, int column, GridPane gridPane){
-        ConstructorHelper helper = new ConstructorHelper();
-
-        container = helper.setElement(row, column, gridPane, "Dice", 20);
+    public PrivObjDrawableCard(int row, int column, GridPane gridPane) {
+        new ConstructorHelper().setElement(row, column, gridPane, "PrivObjDrawableCard", 20);
     }
 
     @Override

@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.gamemenu;
 
 import it.polimi.ingsw.view.viewdemo.*;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -55,7 +57,7 @@ public class GameMenu extends Parent {
         difficultyMenu.getChildren().addAll(btnEasy, btnNormal, btnBackToOptions, btnBackToMainMenu);
         startGameMenu.getChildren().addAll(btnTwoPlayers, btnThreePlayers, btnFourPlayers, btnBackMain);
 
-        Rectangle bg = new Rectangle(1920, 1080);
+        Rectangle bg = new Rectangle(GUIParameters.SCREEN_WIDTH, GUIParameters.SCREEN_HEIGHT);
         bg.setFill(Color.GRAY);
         bg.setOpacity(0.4);
 
@@ -64,8 +66,9 @@ public class GameMenu extends Parent {
 
     private VBox setMenu(){
         VBox menu = new VBox(20);
-        menu.setTranslateX(720);
-        menu.setTranslateY(500);
+        menu.setAlignment(Pos.CENTER);
+        menu.setTranslateX((GUIParameters.SCREEN_WIDTH / 1.6) - GUIParameters.MENU_BUTTON_WIDTH);
+        menu.setTranslateY((GUIParameters.SCREEN_HEIGHT / 2.3) - GUIParameters.MENU_BUTTON_HEIGHT);
         return menu;
     }
     private void setMainMenuButtons(){
@@ -119,9 +122,7 @@ public class GameMenu extends Parent {
         tt.play();
         tt1.play();
 
-        tt.setOnFinished(e -> {
-            getChildren().remove(menuComing);
-        });
+        tt.setOnFinished(e -> getChildren().remove(menuComing));
     }
     private void launchViewDemo(int numOfPlayers) {
         view.setNumOfPlayers(numOfPlayers);

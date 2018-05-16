@@ -10,8 +10,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
@@ -29,6 +28,7 @@ public class DrawableWindowFrame extends Parent implements GuiItem {
         windowFrame = new PaperWindowFrame(new FileWindowPatternGenerator(path));
         container = new ConstructorHelper().setWindowFrameElement(row, column, gridPane);
         windowFrameDrawer();
+        getChildren().addAll(container);
     }
 
     private void windowFrameDrawer(){
@@ -37,25 +37,32 @@ public class DrawableWindowFrame extends Parent implements GuiItem {
         for(int i = 0; i < Parameters.MAX_ROWS; i++){
             for(int j = 0; j < Parameters.MAX_COLUMNS; j++){
                 if(colorConstraints.get(new Coordinate(i, j)) != null) {
-                    container.add(loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + colorConstraints.get(new Coordinate(i, j)).getLabel() + ".png"), i, j);
+                    //TODO: add button on every single square, and fill it with the image
+                    ImageView img = loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + colorConstraints.get(new Coordinate(i, j)).getLabel() + ".png");
+                    container.add(img, i, j);
+                    img.autosize();
                 }
                 else if(shadeConstraints.get(new Coordinate(i, j)) != null) {
-                    container.add(loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + shadeConstraints.get(new Coordinate(i, j)).getLabel() + ".png"), i, j);
-                }
+                    /*ImageView img = loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + shadeConstraints.get(new Coordinate(i, j)).getValue() + ".png");
+                    container.add(img, i, j);
+                    img.autosize();*/
+                 }
                 else {
-                    container.add(loadImg(GUIParameters.DEFAULT_IMAGE_PATH), i, j);
+                    ImageView img = loadImg(GUIParameters.DEFAULT_IMAGE_PATH);
+                    container.add(img, i, j);
+                    img.autosize();
                 }
             }
         }
     }
     private ImageView loadImg(String path){
-        ImageView img=null;
-        try(InputStream is = Files.newInputStream(Paths.get(path))){
-             img = new ImageView(new Image(is));
+        ImageView img = null;
+        try(InputStream is = Files.newInputStream(Paths.get(path))) {
+            img = new ImageView(new Image(is));
         }
         catch (IOException e){
-            System.out.println("Invalid path: " + path);
         }
+
         if (img == null)
             throw new NullPointerException("Image from " + path + " null");
         return img;

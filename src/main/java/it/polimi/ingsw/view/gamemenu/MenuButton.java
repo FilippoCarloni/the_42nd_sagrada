@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gamemenu;
 
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import javafx.geometry.Pos;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
@@ -18,7 +19,7 @@ public class MenuButton extends StackPane {
 
     public MenuButton(String name, String writeDescription){
         text = new Text(name);
-        rectangle = new Rectangle(450, 60);
+        rectangle = new Rectangle(GUIParameters.MENU_BUTTON_WIDTH, GUIParameters.MENU_BUTTON_HEIGHT);
         drop = new DropShadow(50, Color.WHITE);
         overlayWrite = new OverlayWrite(writeDescription, 450, 60, Pos.CENTER_LEFT);
 

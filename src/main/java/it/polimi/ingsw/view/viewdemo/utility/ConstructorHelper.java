@@ -1,18 +1,15 @@
 package it.polimi.ingsw.view.viewdemo.utility;
 
 import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-import java.util.ArrayList;
-
 public class ConstructorHelper {
 
-    public StackPane setElement(int row, int column, GridPane gridPane, String name, double font) {
+    public void setElement(int row, int column, GridPane gridPane, String name, double font) {
         StackPane stackPane = new StackPane();
         Text nameText = new Text(name);
         nameText.setFont(nameText.getFont().font(font));
@@ -21,7 +18,6 @@ public class ConstructorHelper {
         stackPane.getChildren().add(nameText);
 
         gridPane.add(stackPane, column, row);   //add asks columnIndex, rowIndex
-        return stackPane;
     }
 
     public GridPane setWindowFrameElement(int row, int column, GridPane gridPane){

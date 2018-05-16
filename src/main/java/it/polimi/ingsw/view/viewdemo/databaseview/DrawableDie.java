@@ -3,15 +3,11 @@ package it.polimi.ingsw.view.viewdemo.databaseview;
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
-public class WindowFrame extends Parent implements GuiItem {
+public class DrawableDie extends Parent implements GuiItem {
 
-    private StackPane container;
-
-    public WindowFrame(int row, int column, GridPane gridPane) {
-        ConstructorHelper helper = new ConstructorHelper();
-        container = helper.setElement(row, column, gridPane, "WindowFrame", 50);
+    public DrawableDie(int row, int column, GridPane gridPane){
+        new ConstructorHelper().setElement(row, column, gridPane, "Dice", 20);
     }
 
     @Override

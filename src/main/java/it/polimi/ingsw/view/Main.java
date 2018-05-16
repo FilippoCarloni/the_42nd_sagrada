@@ -25,7 +25,6 @@ public class Main extends Application {
     private ImageView imgView;
     private Scene scene;
     private MenuButton fullScreen;
-    //private OverlayWrite startingWrite;
 
     public static void main(String args[]){
         launch(args);
@@ -39,23 +38,14 @@ public class Main extends Application {
         gameMenu.setVisible(true);
         primaryStage.setFullScreen(true);
 
-        /*startingWrite = new OverlayWrite("  Press any key to start", 510, 100, Pos.CENTER_LEFT);
-        startingWrite.manageText(50, Color.WHITE);
-        startingWrite.manageRectangle(0.6, Color.BLACK);
-        startingWrite.setVisible(true);*/
-
         loadFromFile(GUIParameters.BG_IMAGE_PATH);
-
-        /*startingWrite.setTranslateX(720);
-        startingWrite.setTranslateY(900);*/
 
         fullScreen = gameMenu.getFullScreen();
         fullScreen.setOnMouseClicked(e -> setFullScreen(primaryStage));
 
-        //hideAndShowMenu(scene);
         root.setPrefSize(GUIParameters.SCREEN_WIDTH, GUIParameters.SCREEN_HEIGHT);
         root.getChildren().addAll(imgView, gameMenu);
-        primaryStage.setTitle("Sagrada Board Game");
+        primaryStage.setTitle(GUIParameters.SCENE_TITLE);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -97,14 +87,4 @@ public class Main extends Application {
             }
         });
     }
-    /*private void hideStartingWrite(){
-        if (startingWrite.isVisible()) {
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.6), startingWrite);
-            ft.setFromValue(1);
-            ft.setToValue(0);
-
-            startingWrite.setVisible(false);
-            ft.play();
-        }
-    }*/
 }

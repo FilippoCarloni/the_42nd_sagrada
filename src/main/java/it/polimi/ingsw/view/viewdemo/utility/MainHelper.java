@@ -73,42 +73,42 @@ public class MainHelper {
 
         return drawableWindowFrame;
     }
-    public ArrayList<CardItem> setPrivObjCards(int numOfPlayers, GridPane gridPane){
-        ArrayList<CardItem> privObjCards = new ArrayList<>();
+    public ArrayList<DrawableCardItem> setPrivObjCards(int numOfPlayers, GridPane gridPane){
+        ArrayList<DrawableCardItem> privObjCards = new ArrayList<>();
 
         if(numOfPlayers == 2) {
-            privObjCards.add(new PrivObjCard(2, 0, gridPane));
-            privObjCards.add(new PrivObjCard(0, 2, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(2, 0, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(0, 2, gridPane));
         }
         else if (numOfPlayers == 3) {
-            privObjCards.add(new PrivObjCard(1, 0, gridPane));
-            privObjCards.add(new PrivObjCard(4, 0, gridPane));
-            privObjCards.add(new PrivObjCard(2, 2, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(1, 0, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(4, 0, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(2, 2, gridPane));
         }
         else {
-            privObjCards.add(new PrivObjCard(0, 0, gridPane));
-            privObjCards.add(new PrivObjCard(4, 0, gridPane));
-            privObjCards.add(new PrivObjCard(1, 2, gridPane));
-            privObjCards.add(new PrivObjCard(3, 2, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(0, 0, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(4, 0, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(1, 2, gridPane));
+            privObjCards.add(new PrivObjDrawableCard(3, 2, gridPane));
         }
 
         return privObjCards;
     }
-    public ArrayList<CardItem> setPubObjCards(int numOfPlayers, GridPane gridPane){
-        ArrayList<CardItem> pubObjCards = new ArrayList<>();
+    public ArrayList<DrawableCardItem> setPubObjCards(int numOfPlayers, GridPane gridPane){
+        ArrayList<DrawableCardItem> pubObjCards = new ArrayList<>();
 
-        pubObjCards.add(new PubObjCard(3, 1, gridPane));
+        pubObjCards.add(new PubObjDrawableCard(3, 1, gridPane));
 
         return pubObjCards;
     }
-    public ArrayList<CardItem> setToolCards(int numOfPlayers, GridPane gridPane){
-        ArrayList<CardItem> toolCards = new ArrayList<>();
-        toolCards.add(new ToolCard(2, 1, gridPane));
+    public ArrayList<DrawableCardItem> setToolCards(int numOfPlayers, GridPane gridPane){
+        ArrayList<DrawableCardItem> toolCards = new ArrayList<>();
+        toolCards.add(new ToolDrawableCard(2, 1, gridPane));
         return toolCards;
     }
-    public ArrayList<Die> setDice(int numOfPlayers, GridPane gridPane){
-        ArrayList<Die> dice = new ArrayList<>();
-        dice.add(new Die(1, 1, gridPane));
+    public ArrayList<DrawableDie> setDice(int numOfPlayers, GridPane gridPane){
+        ArrayList<DrawableDie> dice = new ArrayList<>();
+        dice.add(new DrawableDie(1, 1, gridPane));
         return dice;
     }
 

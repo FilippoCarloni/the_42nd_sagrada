@@ -1,17 +1,15 @@
 package it.polimi.ingsw.view.viewdemo.databaseview;
 
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
+import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-public class ToolCard extends CardItem {
 
-    private StackPane container;
+public class DrawableDiceBag extends Parent implements GuiItem {
 
-    public ToolCard(int row, int column, GridPane gridPane){
-        ConstructorHelper helper = new ConstructorHelper();
-
-        container = helper.setElement(row, column, gridPane, "ToolCard", 20);
+    public DrawableDiceBag(int i, int j, GridPane root){
+        new ConstructorHelper().setElement(i, j, root, "DrawableDiceBag", 20);
     }
 
     @Override

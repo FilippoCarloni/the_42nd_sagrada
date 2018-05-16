@@ -2,17 +2,12 @@ package it.polimi.ingsw.view.viewdemo.databaseview;
 
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 
-public class PrivObjCard extends CardItem {
+public class ToolDrawableCard extends DrawableCardItem {
 
-    private StackPane container;
-
-    public PrivObjCard(int row, int column, GridPane gridPane) {
-        ConstructorHelper helper = new ConstructorHelper();
-
-        container = helper.setElement(row, column, gridPane, "PrivObjCard", 20);
+    public ToolDrawableCard(int row, int column, GridPane gridPane){
+        new ConstructorHelper().setElement(row, column, gridPane, "ToolDrawableCard", 20);
     }
 
     @Override

@@ -6,6 +6,9 @@ public final class GUIParameters {
 
     private GUIParameters(){}
 
+    public static final String SCENE_TITLE = "Sagrada Board Game";
+    public static final double MENU_BUTTON_WIDTH = 450;
+    public static final double MENU_BUTTON_HEIGHT = 60;
     public static final int NUM_COLUMNS = 3;
     public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
     public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();

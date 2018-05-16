@@ -3,16 +3,12 @@ package it.polimi.ingsw.view.viewdemo.databaseview;
 import it.polimi.ingsw.view.viewdemo.utility.ConstructorHelper;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+
 
 public class RoundTrack extends Parent implements GuiItem {
 
-    private StackPane container;
-
     public RoundTrack(int row, int column, GridPane gridPane){
-        ConstructorHelper helper = new ConstructorHelper();
-
-        container = helper.setElement(row, column, gridPane, "RoundTrack", 60);
+        new ConstructorHelper().setElement(row, column, gridPane, "RoundTrack", 60);
     }
 
     @Override
