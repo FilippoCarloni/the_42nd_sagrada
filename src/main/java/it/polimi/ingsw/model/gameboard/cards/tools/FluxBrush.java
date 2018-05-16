@@ -1,43 +1,41 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
-import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.commands.Command;
+import it.polimi.ingsw.model.gameboard.utility.Color;
 
-public class GrindingStone extends AbstractToolCard {
+import java.util.ArrayList;
+import java.util.List;
 
-    GrindingStone(ConcreteGameStatus status) {
-        super(status, 10);
-        name = "Grinding Stone";
-        description = "After drafting, flip the die to its opposite side.";
+public class FluxBrush extends AbstractToolCard {
+
+    private static final int ID = 6;
+
+    FluxBrush(ConcreteGameStatus status) {
+        super(status, ID);
+        name = "Flux Brush";
+        description = "After drafting, re-roll the drafted die. " +
+                "If it cannot be placed, return it to the Draft Pool.";
     }
 
     @Override
     public boolean isLegal() {
-        return toolCheck() && favorPointsCheck() && phaseCheck();
-    }
-
-    private boolean phaseCheck() {
-        return status.getStateHolder().getDieHolder() != null;
+        return super.isLegal() && status.getStateHolder().getDieHolder() != null;
     }
 
     @Override
     public void execute() {
         if (isLegal()) {
-            status.getStateHolder().setToolUsed(true);
-            takePointsFromPlayer();
-            addFavorPoints();
-            flip(status.getStateHolder().getDieHolder());
+            super.execute();
+            status.getStateHolder().getDieHolder().roll();
+            tearDown();
+            status.getStateHolder().setActiveToolID(ID);
         }
     }
 
-    private void flip(Die d) {
-        Shade[] shades = Shade.values();
-        int index = -1;
-        for (int i = 0; i < shades.length && index < 0; i++)
-            if (shades[i].equals(d.getShade()))
-                index = i;
-        d.setShade(shades[shades.length - 1 - index]);
+    @Override
+    public List<Command> getCommands(String cmd) {
+        return new ArrayList<>();
     }
 
     @Override
@@ -49,15 +47,15 @@ public class GrindingStone extends AbstractToolCard {
         for (int i = 0; i < pixelWidth - 6; i++) sb.append(" ");
         sb.append("|\n|");
         for (int i = 0; i < (pixelWidth - 9) / 2; i++) sb.append(" ");
-        sb.append("[⚀] ⬌ [⚅]");
+        sb.append("         ");
         for (int i = 0; i < pixelWidth - 9 - (pixelWidth - 9) / 2; i++) sb.append(" ");
         sb.append("|\n|");
         for (int i = 0; i < (pixelWidth - 9) / 2; i++) sb.append(" ");
-        sb.append("[⚁] ⬌ [⚄]");
+        sb.append("(( ").append(Color.BLUE.paint("[⚃]")).append(" ))");
         for (int i = 0; i < pixelWidth - 9 - (pixelWidth - 9) / 2; i++) sb.append(" ");
         sb.append("|\n|");
         for (int i = 0; i < (pixelWidth - 9) / 2; i++) sb.append(" ");
-        sb.append("[⚂] ⬌ [⚃]");
+        sb.append("         ");
         for (int i = 0; i < pixelWidth - 9 - (pixelWidth - 9) / 2; i++) sb.append(" ");
         sb.append("|");
         sb.append(getLowerCard());

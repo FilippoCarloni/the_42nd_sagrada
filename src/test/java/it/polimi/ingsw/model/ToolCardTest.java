@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ToolCardTest {
 
@@ -29,9 +30,9 @@ class ToolCardTest {
     }
 
     private void init(String toolCard) {
-        String[] names = new String[] {"foo", "baz"};
-        String[] windows = new String[] {"Aurora Sagradis", "Aurorae Magnificus"};
-        String[] toolNames = new String[] {toolCard};
+        String[] names = new String[]{"foo", "baz"};
+        String[] windows = new String[]{"Aurora Sagradis", "Aurorae Magnificus"};
+        String[] toolNames = new String[]{toolCard};
         tw = new TestWrapper(names, windows, toolNames);
     }
 
@@ -70,6 +71,7 @@ class ToolCardTest {
         tw.wrappedSetDicePool("R2Y1");
 
         tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedFalseAssertion(0, "place 1 3");
         tw.wrappedTrueAssertion(0, "place 3 1");
         tw.wrappedTrueAssertion(0, "tool 1");
         tw.wrappedFalseAssertion(0, "increase");
@@ -124,9 +126,6 @@ class ToolCardTest {
 
     @Test
     void lathekin() {
-
-        // TODO: pay attention to double die movement: you can move twice the SAME die
-
         init("Lathekin");
         tw.wrappedSetDicePool("B1P2");
         tw.wrappedTrueAssertion(0, "pick 1");
@@ -141,11 +140,13 @@ class ToolCardTest {
         tw.wrappedSetDicePool("Y3G4");
         tw.wrappedTrueAssertion(0, "pick 1");
         tw.wrappedTrueAssertion(0, "place 1 4");
+        tw.wrappedFalseAssertion(0, "move 1 2 2 2");
         tw.wrappedTrueAssertion(0, "tool 1");
         tw.wrappedFalseAssertion(0, "move 1 3 4 1");
         tw.wrappedTrueAssertion(0, "move 1 2 2 2");
         tw.wrappedFalseAssertion(0, "pass");
-        tw.wrappedTrueAssertion(0, "move 2 2 2 5");
+        tw.wrappedFalseAssertion(0, "move 2 2 2 5");
+        tw.wrappedTrueAssertion(0, "move 1 3 3 3");
         tw.wrappedTrueAssertion(0, "pass");
     }
 
@@ -169,5 +170,28 @@ class ToolCardTest {
         tw.wrappedTrueAssertion(1, "select 1");
         assertEquals(Color.RED, tw.getGameStatus().getStateHolder().getDieHolder().getColor());
         assertEquals(Shade.LIGHTEST, tw.getGameStatus().getStateHolder().getDieHolder().getShade());
+        tw.wrappedTrueAssertion(1, "place 4 5 ");
+        tw.wrappedTrueAssertion(1, "pass");
+    }
+
+    @Test
+    void fluxBrush() {
+        init("Flux Brush");
+        tw.wrappedSetDicePool("R1");
+        Die d = tw.getGameStatus().getDicePool().get(0);
+        tw.wrappedTrueAssertion(0, "pick 1");
+        assertTrue(tw.getGameStatus().getDicePool().isEmpty());
+        assertEquals(d, tw.getGameStatus().getStateHolder().getDieHolder());
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        assertEquals(d, tw.getGameStatus().getDicePool().get(0));
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedFalseAssertion(0, "place 1 3");
+        tw.wrappedTrueAssertion(0, "place 1 1");
+        assertEquals(1, tw.getGameStatus().getTurnManager().getCurrentPlayer().getFavorPoints());
+        tw.wrappedTrueAssertion(0, "pass");
     }
 }

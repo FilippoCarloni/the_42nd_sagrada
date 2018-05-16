@@ -7,16 +7,32 @@ import java.util.regex.Pattern;
 
 public abstract class AbstractCommand implements Command {
 
-    ConcreteGameStatus status;
-    String cmd;
-    String regExp;
-    Predicate<String[]> legalPredicate;
+    private ConcreteGameStatus status;
+    private String cmd;
+    private String regExp;
+    private Predicate<String[]> legalPredicate;
 
-    AbstractCommand(ConcreteGameStatus status, String string) {
+    public AbstractCommand(ConcreteGameStatus status, String string) {
         if (status == null || string == null)
             throw new NullPointerException("Command must be initialized with not null parameters.");
         this.status = status;
         this.cmd = string;
+    }
+
+    protected ConcreteGameStatus getStatus() {
+        return status;
+    }
+
+    protected String getCmd() {
+        return cmd;
+    }
+
+    protected void setRegExp(String regExp) {
+        this.regExp = regExp;
+    }
+
+    protected void setLegalPredicate(Predicate<String[]> legalPredicate) {
+        this.legalPredicate = legalPredicate;
     }
 
     @Override

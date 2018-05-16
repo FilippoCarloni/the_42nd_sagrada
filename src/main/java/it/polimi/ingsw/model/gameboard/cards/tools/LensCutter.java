@@ -1,34 +1,36 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.commands.Command;
+import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
 import it.polimi.ingsw.model.gameboard.utility.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 public class LensCutter extends AbstractToolCard {
 
+    private static final int ID = 5;
+
     LensCutter(ConcreteGameStatus status) {
-        super(status, 5);
+        super(status, ID);
         name = "Lens Cutter";
-        description = "After drafting, swap the drafted die with a die form the Round Track.";
+        description = "After drafting, swap the drafted die with a die from the Round Track.";
     }
 
     @Override
     public boolean isLegal() {
-        return toolCheck() && favorPointsCheck() && phaseCheck();
-    }
-
-    private boolean phaseCheck() {
-        return status.getStateHolder().getDieHolder() != null;
+        return super.isLegal() && status.getStateHolder().getDieHolder() != null;
     }
 
     @Override
-    public void execute() {
-        if (isLegal()) {
-            status.getStateHolder().setToolUsed(true);
-            takePointsFromPlayer();
-            addFavorPoints();
-            status.getStateHolder().setToolActive(true);
-            status.getStateHolder().setActiveToolID(getID());
-        }
+    public List<Command> getCommands(String cmd) {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new LensCutter.SwapFromRoundTrack(status, cmd, ID));
+        return commands;
     }
 
     @Override
@@ -53,5 +55,38 @@ public class LensCutter extends AbstractToolCard {
         sb.append("|");
         sb.append(getLowerCard());
         return sb.toString();
+    }
+
+    private class SwapFromRoundTrack extends AbstractToolCommand {
+
+        SwapFromRoundTrack(ConcreteGameStatus status, String cmd, int id) {
+            super(status, cmd, id);
+            setRegExp("select \\d");
+            setLegalPredicate(s -> getStatus().getStateHolder().getDieHolder() != null &&
+                    getIndex() >= 0 && getIndex() < getDiceOnRoundTrack().size());
+        }
+
+        private int getIndex() {
+            return parseInt(getCmd().split(" ")[1]) - 1;
+        }
+
+        List<Die> getDiceOnRoundTrack() {
+            RoundTrack rt = status.getRoundTrack();
+            List<Die> diceOnRoundTrack = new ArrayList<>();
+            for (Die d : rt)
+                diceOnRoundTrack.add(d);
+            return diceOnRoundTrack;
+        }
+
+        @Override
+        public void execute() {
+            if (super.isLegal()) {
+                Die playerDie = status.getStateHolder().getDieHolder();
+                Die roundTrackDie = getDiceOnRoundTrack().get(getIndex());
+                status.getRoundTrack().swap(playerDie, roundTrackDie);
+                status.getStateHolder().setDieHolder(roundTrackDie);
+                tearDown();
+            }
+        }
     }
 }

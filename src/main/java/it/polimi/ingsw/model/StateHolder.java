@@ -9,7 +9,7 @@ public final class StateHolder {
     private boolean toolUsed;
     private boolean diePlaced;
     private int activeToolID;
-    private boolean dieAlreadyMoved;
+    private Die dieAlreadyMoved;
 
     StateHolder() {
         clear();
@@ -20,7 +20,7 @@ public final class StateHolder {
         toolActive = false;
         toolUsed = false;
         diePlaced = false;
-        dieAlreadyMoved = false;
+        dieAlreadyMoved = null;
     }
 
     public Die getDieHolder() {
@@ -63,11 +63,11 @@ public final class StateHolder {
         this.activeToolID = activeToolID;
     }
 
-    public boolean isDieAlreadyMoved() {
+    public Die getDieAlreadyMoved() {
         return dieAlreadyMoved;
     }
 
-    public void setDieAlreadyMoved(boolean dieAlreadyMoved) {
+    public void setDieAlreadyMoved(Die dieAlreadyMoved) {
         this.dieAlreadyMoved = dieAlreadyMoved;
     }
 }

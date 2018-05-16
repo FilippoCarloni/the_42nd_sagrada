@@ -16,7 +16,7 @@ public abstract class AbstractCard implements Card {
 
     protected String getLowerCard() {
         int nameLength = 40;
-        int descriptionLength = 100;
+        int descriptionLength = 120;
         StringBuilder nameBuilder = new StringBuilder(this.name);
         StringBuilder descriptionBuilder = new StringBuilder(this.description);
         for (int i = 0; i < nameLength - this.name.length(); i++)

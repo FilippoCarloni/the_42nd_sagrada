@@ -16,17 +16,17 @@ public abstract class AbstractToolCard extends AbstractCard implements ToolCard 
         this.status = status;
     }
 
-    boolean toolCheck() {
+    private boolean toolCheck() {
         return !status.getStateHolder().isToolActive() && !status.getStateHolder().isToolUsed();
     }
 
-    boolean favorPointsCheck() {
+    private boolean favorPointsCheck() {
         return getFavorPoints() > 0 ?
                 status.getTurnManager().getCurrentPlayer().getFavorPoints() > 1 :
                 status.getTurnManager().getCurrentPlayer().getFavorPoints() >= 1;
     }
 
-    void takePointsFromPlayer() {
+    private void takePointsFromPlayer() {
         status.getTurnManager().getCurrentPlayer().setFavorPoints(
                 getFavorPoints() > 0 ?
                         status.getTurnManager().getCurrentPlayer().getFavorPoints() - 2 :
@@ -47,5 +47,26 @@ public abstract class AbstractToolCard extends AbstractCard implements ToolCard 
     @Override
     public void addFavorPoints() {
         favorPoints = favorPoints > 0 ? favorPoints + 2 : favorPoints + 1;
+    }
+
+    @Override
+    public boolean isLegal() {
+        return toolCheck() && favorPointsCheck();
+    }
+
+    @Override
+    public void execute() {
+        if (isLegal()) {
+            status.getStateHolder().setToolUsed(true);
+            takePointsFromPlayer();
+            addFavorPoints();
+            status.getStateHolder().setToolActive(true);
+            status.getStateHolder().setActiveToolID(getID());
+        }
+    }
+
+    void tearDown() {
+        status.getStateHolder().setToolActive(false);
+        status.getStateHolder().setActiveToolID(0);
     }
 }

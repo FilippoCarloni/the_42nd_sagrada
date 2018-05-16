@@ -1,30 +1,29 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.commands.Command;
+import it.polimi.ingsw.model.commands.rules.Rule;
+import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.utility.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Lathekin extends AbstractToolCard {
 
+    private static final int ID = 4;
+
     Lathekin(ConcreteGameStatus status) {
-        super(status, 4);
+        super(status, ID);
         name = "Lathekin";
         description = "Move exactly two dice, obeying all placement restrictions.";
     }
 
     @Override
-    public boolean isLegal() {
-        return toolCheck() && favorPointsCheck();
-    }
-
-    @Override
-    public void execute() {
-        if (isLegal()) {
-            status.getStateHolder().setToolUsed(true);
-            takePointsFromPlayer();
-            addFavorPoints();
-            status.getStateHolder().setToolActive(true);
-            status.getStateHolder().setActiveToolID(getID());
-        }
+    public List<Command> getCommands(String cmd) {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new Lathekin.MoveExactlyTwoDice(status, cmd, ID));
+        return commands;
     }
 
     @Override
@@ -49,5 +48,49 @@ public class Lathekin extends AbstractToolCard {
         sb.append("|");
         sb.append(getLowerCard());
         return sb.toString();
+    }
+
+    private class MoveExactlyTwoDice extends AbstractMoveCommand {
+
+        MoveExactlyTwoDice(ConcreteGameStatus status, String cmd, int id) {
+            super(status, cmd, id);
+        }
+
+        @Override
+        public boolean isLegal() {
+            return (status.getStateHolder().getDieAlreadyMoved() == null && super.isLegal()) ||
+                    (status.getStateHolder().getDieAlreadyMoved() != null &&
+                            !status.getStateHolder().getDieAlreadyMoved().equals(status.getTurnManager().getCurrentPlayer().getWindowFrame().getDie(
+                                    coordinates[0], coordinates[1]
+                            )));
+        }
+
+        @Override
+        public void execute() {
+            if (super.isLegal()) {
+                if (status.getStateHolder().getDieAlreadyMoved() == null) {
+                    status.getStateHolder().setDieAlreadyMoved(
+                            status.getTurnManager().getCurrentPlayer().getWindowFrame().getDie(coordinates[0], coordinates[1])
+                    );
+                    super.execute();
+                } else {
+                    status.getStateHolder().setDieAlreadyMoved(null);
+                    super.execute();
+                    tearDown();
+                }
+            }
+        }
+
+        @Override
+        boolean checkRules() {
+            Die d = getStatus().getTurnManager().getCurrentPlayer().getWindowFrame().pick(
+                    coordinates[0], coordinates[1]
+            );
+            boolean value = Rule.checkAllRules(d, getStatus().getTurnManager().getCurrentPlayer().getWindowFrame(),
+                    coordinates[2], coordinates[3]
+            );
+            getStatus().getTurnManager().getCurrentPlayer().getWindowFrame().put(d, coordinates[0], coordinates[1]);
+            return value;
+        }
     }
 }

@@ -1,32 +1,31 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.commands.Command;
+import it.polimi.ingsw.model.commands.rules.Rule;
+import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.utility.Color;
 import it.polimi.ingsw.model.gameboard.utility.Shade;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CopperFoilBurnisher extends AbstractToolCard {
 
+    private static final int ID = 3;
+
     CopperFoilBurnisher(ConcreteGameStatus status) {
-        super(status, 3);
+        super(status, ID);
         name = "Copper Foil Burnisher";
-        description = "Move any die in your window ignoring value restrictions." +
+        description = "Move any one die in your window ignoring value restrictions. " +
                 "You must obey all other placement restrictions.";
     }
 
     @Override
-    public boolean isLegal() {
-        return toolCheck() && favorPointsCheck();
-    }
-
-    @Override
-    public void execute() {
-        if (isLegal()) {
-            status.getStateHolder().setToolUsed(true);
-            takePointsFromPlayer();
-            addFavorPoints();
-            status.getStateHolder().setToolActive(true);
-            status.getStateHolder().setActiveToolID(getID());
-        }
+    public List<Command> getCommands(String cmd) {
+        List<Command> commands = new ArrayList<>();
+        commands.add(new CopperFoilBurnisher.MoveIgnoringShade(status, cmd, ID));
+        return commands;
     }
 
     @Override
@@ -51,5 +50,32 @@ public class CopperFoilBurnisher extends AbstractToolCard {
         sb.append("|");
         sb.append(getLowerCard());
         return sb.toString();
+    }
+
+    private class MoveIgnoringShade extends AbstractMoveCommand {
+
+        MoveIgnoringShade(ConcreteGameStatus status, String cmd, int id) {
+            super(status, cmd, id);
+        }
+
+        @Override
+        public void execute() {
+            if (super.isLegal()) {
+                super.execute();
+                tearDown();
+            }
+        }
+
+        @Override
+        boolean checkRules() {
+            Die d = getStatus().getTurnManager().getCurrentPlayer().getWindowFrame().pick(
+                    coordinates[0], coordinates[1]
+            );
+            boolean value = Rule.checkExcludeShade(d, getStatus().getTurnManager().getCurrentPlayer().getWindowFrame(),
+                    coordinates[2], coordinates[3]
+            );
+            getStatus().getTurnManager().getCurrentPlayer().getWindowFrame().put(d, coordinates[0], coordinates[1]);
+            return value;
+        }
     }
 }

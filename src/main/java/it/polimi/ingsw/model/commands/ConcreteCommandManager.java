@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.commands;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,8 @@ public class ConcreteCommandManager implements CommandManager {
         commands.add(new Place(status, cmd));
         commands.add(new Pass(status, cmd));
         commands.add(new Tool(status, cmd));
-        commands.add(new Increase(status, cmd));
-        commands.add(new Decrease(status, cmd));
-        commands.add(new Move(status, cmd));
-        commands.add(new Select(status, cmd));
+        for (ToolCard t : status.getTools())
+            commands.addAll(t.getCommands(cmd));
         return commands;
     }
 

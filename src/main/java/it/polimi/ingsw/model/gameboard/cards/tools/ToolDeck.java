@@ -11,8 +11,6 @@ public class ToolDeck extends AbstractDeck {
         add(new CopperFoilBurnisher(status));
         add(new Lathekin(status));
         add(new LensCutter(status));
-
-
-        add(new GrindingStone(status));
+        add(new FluxBrush(status));
     }
 }

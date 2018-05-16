@@ -10,8 +10,8 @@ public class Place extends AbstractCommand {
 
     Place(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
-        regExp = "place \\d \\d";
-        legalPredicate = s ->
+        setRegExp("place \\d \\d");
+        setLegalPredicate(s ->
                 status.getStateHolder().getDieHolder() != null &&
                         !status.getStateHolder().isToolActive() &&
                         parseInt(s[1]) <= Parameters.MAX_ROWS &&
@@ -23,19 +23,20 @@ public class Place extends AbstractCommand {
                                 status.getTurnManager().getCurrentPlayer().getWindowFrame(),
                                 parseInt(cmd.split(" ")[1]) - 1,
                                 parseInt(cmd.split(" ")[2]) - 1
-                        );
+                        ));
     }
 
     @Override
     public void execute() {
         if (isLegal()) {
-            status.getTurnManager().getCurrentPlayer().getWindowFrame().put(
-                    status.getStateHolder().getDieHolder(),
-                    parseInt(cmd.split(" ")[1]) - 1,
-                    parseInt(cmd.split(" ")[2]) - 1
+            getStatus().getTurnManager().getCurrentPlayer().getWindowFrame().put(
+                    getStatus().getStateHolder().getDieHolder(),
+                    parseInt(getCmd().split(" ")[1]) - 1,
+                    parseInt(getCmd().split(" ")[2]) - 1
             );
-            status.getStateHolder().setDiePlaced(true);
-            status.getStateHolder().setDieHolder(null);
+            getStatus().getStateHolder().setDiePlaced(true);
+            getStatus().getStateHolder().setDieHolder(null);
+            getStatus().getStateHolder().setActiveToolID(0);
         }
     }
 }
