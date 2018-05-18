@@ -16,9 +16,10 @@ public class Server {
     public static void main(String[] args) throws  AlreadyBoundException, RemoteException, MalformedURLException,IOException {
         Logger logger = Logger.getLogger(Server.class.getName());
         ServerRMI server = new ServerRMI();
-        Lobby lobby=new ConcreteLobby();
+        CentralServer centralServer=new CentralServer();
+        Lobby lobby=new ConcreteLobby(centralServer);
         server.addSkeleton("Login", lobby);
         logger.info(() -> ("You can find the exposes object at: " + server.getURL() + "<name_of_the_object>"));
-        new Thread(new ServerSocket(lobby)).start();
+        new Thread(new ServerSocket(centralServer)).start();
     }
 }

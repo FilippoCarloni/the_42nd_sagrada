@@ -8,9 +8,9 @@ import java.io.Serializable;
 class ClientStatus implements Serializable {
     private static final long serialVersionUID = Settings.SERIAL_VERSION_CLIENTSTATUS;
     private String username;
-    private Session sesssion;
-    ClientStatus(Session session, String username){
-        this.sesssion=session;
+    private String sessionID;
+    ClientStatus(String sessionID, String username){
+        this.sessionID=sessionID;
         this.username=username;
     }
 
@@ -18,7 +18,7 @@ class ClientStatus implements Serializable {
         return username;
     }
 
-    Session getSesssion() {
-        return sesssion;
+    String getSesssion() {
+        return sessionID;
     }
 }

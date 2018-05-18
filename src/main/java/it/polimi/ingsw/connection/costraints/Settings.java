@@ -18,4 +18,5 @@ public class Settings{
     public static final int WAITINGTIMETOMATCH=3000;
     public static final long SERIAL_VERSION_CLIENTSTATUS = 1190476517382928173L;
     public static final int SOCKET_PORT=8001;
+    public static final String ANONYMOUS = "ANONYMOUS";
 }

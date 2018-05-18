@@ -9,7 +9,7 @@ public class WrappedPlayer {
     private Player player;
     private Session session;
     private boolean playing;
-    public WrappedPlayer(String username) {
+    WrappedPlayer(String username) {
         player = new ConcretePlayer(username);
         session = new Session(username,"");
         playing = false;
@@ -19,7 +19,7 @@ public class WrappedPlayer {
         return session;
     }
 
-    public boolean isPlaying() {
+    boolean isPlaying() {
         return playing;
     }
 

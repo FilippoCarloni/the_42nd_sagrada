@@ -8,10 +8,9 @@ import java.rmi.RemoteException;
 
 public interface GameManager extends Remote {
 
-    void addRemoteObserver(Session session, RemoteObserver obs) throws RemoteException;
-    void removeRemoteObserver(Session session,RemoteObserver obs) throws RemoteException;
-    boolean isMyTurn(Session session) throws RemoteException;
-    boolean isLegal(Session session, String command) throws RemoteException;
-    void sendCommand(Session session, String command) throws RemoteException;
-    String getStatus() throws RemoteException;
+    void addRemoteObserver(String sessionID, RemoteObserver obs) throws RemoteException;
+    void removeRemoteObserver(String sessionID,RemoteObserver obs) throws RemoteException;
+    boolean isMyTurn(String sessionID) throws RemoteException;
+    void sendCommand(String sessionID, String command) throws RemoteException;
+    String getStatus(String sessionID) throws RemoteException;
 }

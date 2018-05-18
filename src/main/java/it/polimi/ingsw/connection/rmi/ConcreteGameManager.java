@@ -1,22 +1,18 @@
 package it.polimi.ingsw.connection.rmi;
 
 import it.polimi.ingsw.connection.client.RemoteObserver;
-import it.polimi.ingsw.connection.server.Session;
-import it.polimi.ingsw.connection.server.WrappedPlayer;
-import it.polimi.ingsw.model.ConcreteGameStatus;
-import it.polimi.ingsw.model.GameStatus;
+import it.polimi.ingsw.connection.server.GameController;
+import it.polimi.ingsw.connection.server.GameObserver;
+
+import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-public class ConcreteGameManager extends Observable implements GameManager {
+public class ConcreteGameManager extends UnicastRemoteObject implements GameManager {
 
-    private static class WrappedObs implements Observer {
+    private static class WrappedObs extends Observable implements GameObserver, Serializable {
         private  RemoteObserver ro;
 
         WrappedObs(RemoteObserver ro) {
@@ -26,9 +22,10 @@ public class ConcreteGameManager extends Observable implements GameManager {
         @Override
         public void update(Observable o, Object arg) {
             try {
-                ro.remoteUpdate(o.toString(), arg);
+                ro.remoteUpdate(this, arg);
+                System.out.println("ciao");
             } catch (RemoteException e) {
-                logger.info(() -> "Remote exception removing observer:" + this);
+                logger.info(() -> "Remote exception update observer:" +e.getMessage()+ this);
                 o.deleteObserver(this);
             }
         }
@@ -46,76 +43,65 @@ public class ConcreteGameManager extends Observable implements GameManager {
         public int hashCode() {
             return super.hashCode();
         }
+
+        @Override
+        public boolean isAlive() {
+            boolean isAlive = true;
+            try {
+                ro.isAlive();
+            } catch (RemoteException e) {
+                isAlive=false;
+            }
+            return isAlive;
+        }
     }
     private static final transient Logger logger=Logger.getLogger(ConcreteGameManager.class.getName());
-    private final transient GameStatus data;
-    private final transient List<WrappedPlayer> players;
-    private final transient List<WrappedObs> observers;
-    ConcreteGameManager(List<WrappedPlayer> players) {
-        data = new ConcreteGameStatus(players
-                .stream()
-                .map(WrappedPlayer::getPlayer)
-                .collect(Collectors.toList()));
-        this.players = players;
-        observers=new ArrayList<>();
+    private final transient GameController gameController;
+    public ConcreteGameManager(GameController gameController) throws RemoteException{
+        if(gameController == null)
+            throw new RemoteException("Null pointer!");
+        this.gameController=gameController;
     }
 
     @Override
-    public synchronized boolean isLegal(Session session, String command)  throws RemoteException {
-        return data.isLegal(this.getPlayer(session).getPlayer(), command.trim());
-    }
-
-    @Override
-    public synchronized void sendCommand(Session session, String command) throws RemoteException {
-        data.execute(this.getPlayer(session).getPlayer(), command.trim());
-    }
-
-    @Override
-    public synchronized boolean isMyTurn(Session session) throws RemoteException  {
-        return data.isMyTurn(this.getPlayer(session).getPlayer());
-    }
-
-    @Override
-    public void addRemoteObserver(Session session, RemoteObserver o) throws RemoteException{
-        this.getPlayer(session);
-        synchronized(observers) {
-            WrappedObs mo = new WrappedObs(o);
-            addObserver(mo);
-            observers.add(mo);
-            logger.info(() -> "Added observer:" + mo);
+    public void addRemoteObserver(String sessionID, RemoteObserver obs) throws RemoteException {
+        try {
+            gameController.addGameObserver(sessionID, new WrappedObs(obs));
+        }catch (Exception e) {
+            throw new RemoteException(e.getMessage());
         }
     }
 
     @Override
-    public  void removeRemoteObserver(Session session, RemoteObserver obs) throws RemoteException {
-        getPlayer(session);
-        synchronized(observers) {
-            for (WrappedObs x : observers) {
-                if (x.equals(new WrappedObs(obs))) {
-                    x.removeRemoteObserver(this);
-                    observers.remove(x);
-                    logger.info(() -> "Removed observer:" + x);
-                    return;
-                }
-            }
-        }
-        throw new RemoteException("Error occurred removing an observer.");
+    public void removeRemoteObserver(String sessionID, RemoteObserver obs) throws RemoteException {
+
     }
 
     @Override
-    public synchronized String getStatus() {
-        return "" + data;
-    }
-    private WrappedPlayer getPlayer(Session session) throws RemoteException{
-        List<WrappedPlayer> player=players.stream().filter(x -> x.getSession().getID().equals(session.getID()))
-                .collect(Collectors.toList());
-        if(player.size() != 1) {
-            logger.log(Level.SEVERE, "Hacker !!!, not playing user are trying to enter in a match");
-            throw new RemoteException("Error, you are not playing in this game");
+    public boolean isMyTurn(String sessionID) throws RemoteException {
+        try {
+            return gameController.isMyTurn(sessionID);
+        }catch (Exception e) {
+            throw new RemoteException(e.getMessage());
         }
-        return player.get(0);
     }
-    boolean isPlaying(WrappedPlayer player){
-        return players.stream().filter(x-> x.equals(player)).count() == 1;
+
+    @Override
+    public void sendCommand(String sessionID, String command) throws RemoteException {
+        try {
+            gameController.sendCommand(sessionID, command);
+        }catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
     }
+
+    @Override
+    public String getStatus(String sessionID) throws RemoteException {
+        try {
+            return gameController.getStatus(sessionID);
+        }catch (Exception e) {
+            throw new RemoteException(e.getMessage());
+        }
+    }
+
 }

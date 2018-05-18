@@ -3,7 +3,6 @@ package it.polimi.ingsw.connection.client;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
-import it.polimi.ingsw.connection.server.Session;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -15,9 +14,9 @@ import java.util.Scanner;
 public class ClientRMI {
     public static void main(String args[]){
         GameManager model;
-        Session session;
         Lobby login;
         String name;
+        String sessionID="";
         ClientStatus status=null;
         Scanner s=new Scanner(System.in);
         FileInputStream fileIn=null;
@@ -42,26 +41,34 @@ public class ClientRMI {
             } finally {
                 try {
                     if(in!=null)
-                    in.close();
+                        in.close();
                     if(fileIn!=null)
-                    fileIn.close();
+                        fileIn.close();
                 } catch (IOException e) {
 
                 }
             }
             if (status != null) {
-                System.out.println("Restored session of " + status.getUsername());
-                session = status.getSesssion();
-
+                System.out.println("Restoring session of " + status.getUsername());
+                sessionID = status.getSesssion();
+                login.restoreSession(sessionID);
             } else {
                 System.out.println("Trying a new login");
-                session = login.connect(name);
-                while (!session.isValid()) {
-                    System.out.println("this name already exists");
-                    name = s.nextLine();
-                    session = login.connect(name);
+                try {
+                    sessionID = login.connect(name);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
                 }
-                status=new ClientStatus(session, name);
+                while (sessionID.equals("")) {
+                    name = s.nextLine();
+                    try {
+                        sessionID = login.connect(name);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+                status=new ClientStatus(sessionID, name);
                 try {
                     fileOut = new FileOutputStream("./ClientStatus_"+name+".ser");
                     out= new ObjectOutputStream(fileOut);
@@ -73,16 +80,17 @@ public class ClientRMI {
                 }
                 finally {
                     try {
-                        out.close();
+                        if(out!=null)
+                            out.close();
+                        if(fileOut!= null)
                         fileOut.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-            }
             System.out.println("Logged");
-            model=(GameManager) login.getGame(session);
-            Controller controller = new Controller(model, session);
+            model=(GameManager) login.getGame(sessionID);
+            ConnectionController controller = new ConnectionController(model, sessionID);
         } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (MalformedURLException e) {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.connection.socket;
 
 
 import it.polimi.ingsw.connection.rmi.Lobby;
+import it.polimi.ingsw.connection.server.CentralServer;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -17,11 +18,11 @@ public class ServerSocket implements Runnable{
     private java.net.ServerSocket server;
     private Socket client;
     private ExecutorService th;
-    private Lobby lobby;
+    private CentralServer lobby;
     private Logger logger= Logger.getLogger(ServerSocket.class.getName());
     private int numError;
 
-    public ServerSocket(Lobby lobby) throws IOException {
+    public ServerSocket(CentralServer lobby) throws IOException {
         client = null;
         this.lobby=lobby;
         server = new java.net.ServerSocket(SOCKET_PORT);

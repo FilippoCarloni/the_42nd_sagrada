@@ -1,32 +1,34 @@
 package it.polimi.ingsw.connection.client;
 
-
 import it.polimi.ingsw.connection.rmi.GameManager;
-import it.polimi.ingsw.connection.server.Session;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class Controller extends UnicastRemoteObject implements RemoteObserver, Observer {
+public class ConnectionController extends UnicastRemoteObject implements RemoteObserver, Observer {
 
     private transient GameManager gameManger;
     private transient CLI view;
-    private transient Session session;
+    private transient String sessionID;
 
-    Controller(GameManager gameManger, Session session) throws RemoteException {
-        this.session = session;
+    ConnectionController(GameManager gameManger, String sessionID) throws RemoteException {
+        this.sessionID=sessionID;
         this.gameManger = gameManger;
         view = new CLI(this );
-        gameManger.addRemoteObserver(session, this);
+        gameManger.addRemoteObserver(sessionID, this);
         new Thread(view).start();
     }
 
     @Override
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
-        view.update(gameManger.getStatus());
-        if(gameManger.isMyTurn(session))
-            view.update("It's your turn!");
+        if(o instanceof String)
+        view.update((String) o);
+    }
+
+    @Override
+    public boolean isAlive() throws RemoteException {
+        return true;
     }
 
     @Override
@@ -38,27 +40,23 @@ public class Controller extends UnicastRemoteObject implements RemoteObserver, O
                     view.update("Commands still need to be added ;)");
                     break;
                 case "view":
-                    view.update(gameManger.getStatus());
+                    view.update(gameManger.getStatus(sessionID));
                     break;
                 case "exit":
-                    gameManger.removeRemoteObserver(session,this);
+                    gameManger.removeRemoteObserver(sessionID,this);
                     view.update("Good Bye!");
                     System.exit(0);
                     break;
                 default:
-                    if (!gameManger.isMyTurn(session))
+                    if (!gameManger.isMyTurn(sessionID))
                             view.update("It's not your turn, please wait while the other players make their moves.");
-                        else {
-                            boolean legal = gameManger.isLegal(session, cmd);
-                            if (!legal) {
-                                view.update("Illegal command, please check if the syntax is correct.");
-                            } else {
-                                gameManger.sendCommand(session, cmd);
-                            }
+                    else {
+                        gameManger.sendCommand(sessionID, cmd);
                     }
+
             }
         }catch (RemoteException e) {
-            e.printStackTrace();
+            view.update(e.getMessage());
         }
     }
 }
