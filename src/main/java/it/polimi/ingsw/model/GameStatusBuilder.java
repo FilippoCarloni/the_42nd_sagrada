@@ -17,7 +17,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
-import it.polimi.ingsw.model.turns.ConcreteTurnManager;
+import it.polimi.ingsw.model.turns.ArrayTurnManager;
 import it.polimi.ingsw.model.turns.TurnManager;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public final class GameStatusBuilder {
     }
 
     public TurnManager getTurnManager(List<Player> players) {
-        return new ConcreteTurnManager(players);
+        return new ArrayTurnManager(players);
     }
 
     public List<PublicObjectiveCard> getPublicObjectives(int numOfPublicObjectives) {

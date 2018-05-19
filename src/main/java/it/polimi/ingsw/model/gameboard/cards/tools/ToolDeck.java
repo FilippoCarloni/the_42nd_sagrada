@@ -12,8 +12,8 @@ public class ToolDeck extends AbstractDeck {
         add(new Lathekin(status));
         add(new LensCutter(status));
         add(new FluxBrush(status));
-        // tool card #7
-        // tool card #8
+        add(new GlazingHammer(status));
+        add(new RunningPliers(status));
         add(new CorkBackedStraightedge(status));
         add(new GrindingStone(status));
         // tool card #11
