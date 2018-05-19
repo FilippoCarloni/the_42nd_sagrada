@@ -227,4 +227,19 @@ class ToolCardTest {
         tw.wrappedFalseAssertion(1, "place 3 4");
         tw.wrappedTrueAssertion(1, "pass");
     }
+
+    @Test
+    void grindingStone() {
+        init("Grinding Stone");
+        tw.wrappedSetDicePool("R1G2B3");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        assertEquals(Shade.DARKEST, tw.getGameStatus().getStateHolder().getDieHolder().getShade());
+        tw.wrappedTrueAssertion(0, "place 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pick 1");
+        tw.wrappedTrueAssertion(1, "tool 1");
+        assertEquals(Shade.DARKER, tw.getGameStatus().getStateHolder().getDieHolder().getShade());
+    }
 }
