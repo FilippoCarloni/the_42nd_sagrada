@@ -1,6 +1,6 @@
 # The 42nd Sagrada
 
-![logo](./res/images/Sagrada-Logo-CMYK.jpg)
+![logo](./src/main/java/res/images/Sagrada-Logo-CMYK.jpg)
 
 > As a skilled artisan, you will use tools-of-the-trade and careful planning to construct a stained glass window masterpiece in the Sagrada Familia.
 
@@ -14,6 +14,6 @@ As you all know, 42 is the answer to life, the universe and everything: we were 
 
 | Picture | Name | Personal Code |
 |:---:|:---:|:---:|
-| ![archetti](./res/stained_glass_icons/stained_glass_archetti.jpg) | Archetti Alberto | 10534908 |
-| ![boffi](./res/stained_glass_icons/stained_glass_boffi.jpg) | Boffi Paolo | 10493663 |
-| ![carloni](./res/stained_glass_icons/stained_glass_carloni.jpg) | Carloni Filippo | 10541084 |
+| ![archetti](./src/main/java/res/stained_glass_icons/stained_glass_archetti.jpg) | Archetti Alberto | 10534908 |
+| ![boffi](./src/main/java/res/stained_glass_icons/stained_glass_boffi.jpg) | Boffi Paolo | 10493663 |
+| ![carloni](./src/main/java/res/stained_glass_icons/stained_glass_carloni.jpg) | Carloni Filippo | 10541084 |
