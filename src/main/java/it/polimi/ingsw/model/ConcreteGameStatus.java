@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.commands.CommandManager;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
@@ -52,7 +51,6 @@ public class ConcreteGameStatus implements GameStatus {
         turnManager = gsb.getTurnManager(players);
         commandManager = gsb.getCommandManager(this);
         stateHolder = gsb.getStateHolder();
-        turnManager.advanceTurn();
         fillDicePool();
     }
 

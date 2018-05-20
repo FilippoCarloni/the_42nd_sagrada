@@ -56,19 +56,19 @@ public class MainHelper {
         ArrayList<DrawableWindowFrame> drawableWindowFrame = new ArrayList<>();
 
         if(numOfPlayers == 2) {
-            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
         }
         else if (numOfPlayers == 3){
-            drawableWindowFrame.add(new DrawableWindowFrame(2, 0, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(4, 1, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(2, 0, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(4, 1, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 2, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
         }
         else {
-            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(3, 0, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(0, 2, gridPane, "res/window_patterns/batllo.txt"));
-            drawableWindowFrame.add(new DrawableWindowFrame(4, 2, gridPane, "res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(1, 0, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(3, 0, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(0, 2, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
+            drawableWindowFrame.add(new DrawableWindowFrame(4, 2, gridPane, "src/main/java/res/window_patterns/batllo.txt"));
         }
 
         return drawableWindowFrame;

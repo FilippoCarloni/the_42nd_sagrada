@@ -7,4 +7,6 @@ public interface TurnManager {
     void advanceTurn();
     boolean isRoundStarting();
     boolean isRoundEnding();
+    boolean isSecondTurn();
+    void takeTwoTurns();
 }

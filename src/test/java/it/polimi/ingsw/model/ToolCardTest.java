@@ -242,4 +242,34 @@ class ToolCardTest {
         tw.wrappedTrueAssertion(1, "tool 1");
         assertEquals(Shade.DARKER, tw.getGameStatus().getStateHolder().getDieHolder().getShade());
     }
+
+    @Test
+    void glazingHammer() {
+        init("Glazing Hammer");
+        tw.wrappedSetDicePool("R1B2Y3G4P5");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "place 1 1");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "tool 1");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "tool 1");
+    }
+
+    @Test
+    void runningPliers() {
+        init("Running Pliers");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedFalseAssertion(1, "pass");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+    }
 }
