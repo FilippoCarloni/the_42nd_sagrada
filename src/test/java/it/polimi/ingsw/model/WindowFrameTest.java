@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.*;
@@ -18,7 +18,7 @@ class WindowFrameTest {
     void placeAndMoveTest() {
 
         Deck d = new WindowFrameDeck();
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         WindowFrame w = (WindowFrame) d.draw();
 
         assertEquals(PaperWindowFrame.class, w.getClass());

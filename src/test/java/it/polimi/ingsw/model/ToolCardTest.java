@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ToolCardTest {
@@ -270,6 +271,80 @@ class ToolCardTest {
         tw.wrappedTrueAssertion(0, "pass");
         tw.wrappedTrueAssertion(1, "pass");
         tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+    }
+
+    @Test
+    void fluxRemover() {
+        init("Flux Remover");
+        tw.wrappedSetDicePool("R1B3Y3G4P5");
+        tw.wrappedFalseAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        Die d = tw.getGameStatus().getStateHolder().getDieHolder();
+        tw.wrappedTrueAssertion(0, "tool 1");
+        assertNotEquals(null, tw.getGameStatus().getStateHolder().getDieHolder());
+        assertNotEquals(d, tw.getGameStatus().getStateHolder().getDieHolder());
+        tw.wrappedFalseAssertion(0, "pass");
+        tw.wrappedFalseAssertion(0, "place 1 2");
+        tw.wrappedFalseAssertion(0, "select 0");
+        tw.wrappedFalseAssertion(0, "select 7");
+        tw.wrappedTrueAssertion(0, "select 2");
+        assertEquals(Shade.LIGHTER, tw.getGameStatus().getStateHolder().getDieHolder().getShade());
+        tw.wrappedFalseAssertion(0, "select 3");
+        tw.wrappedTrueAssertion(0, "place 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pick 1");
+        tw.wrappedTrueAssertion(1, "tool 1");
+        tw.wrappedTrueAssertion(1, "select 4");
+        tw.wrappedTrueAssertion(1, "pass");
+        assertEquals(4, tw.getGameStatus().getDicePool().size());
+        long count = tw.getGameStatus().getDicePool().stream().filter(die -> die.getShade().getValue() == 4).count();
+        assertTrue(count >= 1);
+    }
+
+    @Test
+    void tapWheel1() {
+        init("Tap Wheel");
+        tw.wrappedSetDicePool("R1B4Y3R2B5");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "place 1 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "place 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "move 1 2 2 1");
+        tw.wrappedFalseAssertion(0, "move 1 1 3 1");
+        tw.wrappedTrueAssertion(0, "move 2 1 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+    }
+
+    @Test
+    void tapWheel2() {
+        init("Tap Wheel");
+        tw.wrappedSetDicePool("R3B4Y3P2B5");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "place 1 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "pick 1");
+        tw.wrappedTrueAssertion(0, "place 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(1, "pass");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedTrueAssertion(0, "pass");
+        tw.wrappedTrueAssertion(0, "tool 1");
+        tw.wrappedFalseAssertion(0, "move 1 1 2 3");
+        tw.wrappedTrueAssertion(0, "move 1 2 2 1");
+        tw.wrappedTrueAssertion(0, "move 2 1 1 2");
+        tw.wrappedTrueAssertion(0, "pass");
         tw.wrappedTrueAssertion(1, "pass");
     }
 }

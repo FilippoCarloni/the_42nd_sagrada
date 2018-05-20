@@ -16,7 +16,7 @@ public class ToolDeck extends AbstractDeck {
         add(new RunningPliers(status));
         add(new CorkBackedStraightedge(status));
         add(new GrindingStone(status));
-        // tool card #11
-        // tool card #12
+        add(new FluxRemover(status));
+        add(new TapWheel(status));
     }
 }

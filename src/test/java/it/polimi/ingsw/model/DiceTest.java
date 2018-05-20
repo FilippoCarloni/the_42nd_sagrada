@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
@@ -15,7 +15,7 @@ class DiceTest {
 
     @Test
     void diceEqualityTest() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         Die a = db.pick();
         Die b = db.pick();
         a.setColor(Color.BLUE);
@@ -29,9 +29,9 @@ class DiceTest {
 
         assertNotEquals(a, c);
         assertEquals(b, c);
+        assertEquals(b.hashCode(), c.hashCode());
+        assertNotEquals(a.hashCode(), b.hashCode());
         assertEquals(a.getColor(), Color.BLUE);
         assertEquals(a.getShade(), Shade.LIGHT);
-        assertEquals(a.hashCode(), 0);
-        assertEquals(b.hashCode(), 1);
     }
 }

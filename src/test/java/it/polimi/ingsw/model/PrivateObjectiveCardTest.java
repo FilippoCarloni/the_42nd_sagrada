@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.utility.Parameters;
@@ -29,7 +29,7 @@ class PrivateObjectiveCardTest {
 
     @Test
     void areCalculationsCorrect() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         PrivateObjectiveCard c = (PrivateObjectiveCard) new PrivateObjectiveDeck().draw();
         WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
         for (int i = 0; i < Parameters.MAX_ROWS; i++)

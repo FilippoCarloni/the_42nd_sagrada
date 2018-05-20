@@ -3,7 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
@@ -29,7 +29,7 @@ class PublicObjectiveCardTest {
 
     @Test
     void printCards() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         Deck frames = new WindowFrameDeck();
         Deck d = new PublicObjectiveDeck();
         WindowFrame w = (WindowFrame) frames.draw();

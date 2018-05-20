@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
@@ -17,7 +17,7 @@ class RoundTrackTest {
     @Test
     void roundTrackTest1() {
         RoundTrack rt = new PaperRoundTrack();
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
 
         assertEquals(rt.getVisibleDice().size(), 0);
 
@@ -35,7 +35,7 @@ class RoundTrackTest {
     @Test
     void roundTrackTest2() {
         RoundTrack rt = new PaperRoundTrack();
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
 
         Die a = db.pick();
         a.setShade(Shade.findByValue(1));

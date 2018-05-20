@@ -101,6 +101,10 @@ public class ConcreteGameStatus implements GameStatus {
         return roundTrack;
     }
 
+    public DiceBag getDiceBag() {
+        return diceBag;
+    }
+
     @Override
     public boolean isMyTurn(Player me) {
         return me.equals(turnManager.getCurrentPlayer());

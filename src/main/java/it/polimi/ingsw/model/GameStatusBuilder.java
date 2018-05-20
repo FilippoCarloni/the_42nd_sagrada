@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
@@ -30,7 +30,7 @@ public final class GameStatusBuilder {
     }
 
     public DiceBag getDiceBag() {
-        return new ClothDiceBag();
+        return new ArrayDiceBag();
     }
 
     public CommandManager getCommandManager(ConcreteGameStatus status) {

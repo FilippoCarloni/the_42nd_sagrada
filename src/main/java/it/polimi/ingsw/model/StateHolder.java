@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.gameboard.utility.Color;
 
 public final class StateHolder {
 
@@ -11,6 +12,8 @@ public final class StateHolder {
     private int activeToolID;
     private Die dieAlreadyMoved;
     private boolean fluxBrushRoll;
+    private boolean fluxRemoverChoice;
+    private Color tapWheelColor;
 
     StateHolder() {
         clear();
@@ -24,6 +27,8 @@ public final class StateHolder {
         activeToolID = 0;
         dieAlreadyMoved = null;
         fluxBrushRoll = false;
+        fluxRemoverChoice = false;
+        tapWheelColor = null;
     }
 
     public Die getDieHolder() {
@@ -80,5 +85,21 @@ public final class StateHolder {
 
     public void setFluxBrushRoll(boolean fluxBrushRoll) {
         this.fluxBrushRoll = fluxBrushRoll;
+    }
+
+    public boolean isFluxRemoverChoice() {
+        return fluxRemoverChoice;
+    }
+
+    public void setFluxRemoverChoice(boolean fluxRemoverChoice) {
+        this.fluxRemoverChoice = fluxRemoverChoice;
+    }
+
+    public Color getTapWheelColor() {
+        return tapWheelColor;
+    }
+
+    public void setTapWheelColor(Color tapWheelColor) {
+        this.tapWheelColor = tapWheelColor;
     }
 }

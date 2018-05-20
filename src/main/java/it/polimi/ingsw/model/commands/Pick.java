@@ -6,7 +6,7 @@ import static java.lang.Integer.parseInt;
 
 public class Pick extends AbstractCommand {
 
-    Pick(ConcreteGameStatus status, String cmd) {
+    public Pick(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         setRegExp("pick \\d");
         setLegalPredicate(s ->

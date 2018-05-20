@@ -6,4 +6,5 @@ public interface DiceBag {
 
     Die pick();
     List<Die> pick(int numOfDice);
+    void insert(Die die);
 }

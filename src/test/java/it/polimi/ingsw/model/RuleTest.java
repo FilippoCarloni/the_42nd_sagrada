@@ -2,7 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commands.rules.Rule;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.utility.Color;
@@ -19,7 +19,7 @@ class RuleTest {
 
     @Test
     void placingTest() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         Deck d = new WindowFrameDeck();
         WindowFrame w = (WindowFrame) d.draw();
         while (!w.getName().equals("Batllo")) {
@@ -42,7 +42,7 @@ class RuleTest {
 
     @Test
     void shadeAndColorTest() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         Deck d = new WindowFrameDeck();
         WindowFrame w = (WindowFrame) d.draw();
         while (!w.getName().equals("Batllo")) {
@@ -73,7 +73,7 @@ class RuleTest {
 
     @Test
     void deeperTest() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         Deck d = new WindowFrameDeck();
         WindowFrame w = (WindowFrame) d.draw();
         while (!w.getName().equals("Industria")) {

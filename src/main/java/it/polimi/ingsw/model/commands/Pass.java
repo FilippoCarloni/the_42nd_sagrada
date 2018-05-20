@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ConcreteGameStatus;
 
 public class Pass extends AbstractCommand {
 
-    Pass(ConcreteGameStatus status, String cmd) {
+    public Pass(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         setRegExp("pass");
         setLegalPredicate(s -> !status.getStateHolder().isToolActive() &&

@@ -8,7 +8,7 @@ import static java.lang.Integer.parseInt;
 
 public class Place extends AbstractCommand {
 
-    Place(ConcreteGameStatus status, String cmd) {
+    public Place(ConcreteGameStatus status, String cmd) {
         super(status, cmd);
         setRegExp("place \\d \\d");
         setLegalPredicate(s ->

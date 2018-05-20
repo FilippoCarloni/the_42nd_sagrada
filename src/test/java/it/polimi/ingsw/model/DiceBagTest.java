@@ -1,12 +1,13 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gameboard.dice.ClothDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.utility.Color;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +17,7 @@ class DiceBagTest {
 
     @Test
     void areDiceInTheBagCorrect() {
-        DiceBag db = new ClothDiceBag();
+        DiceBag db = new ArrayDiceBag();
         ArrayList<Die> dice = new ArrayList<>(db.pick(90));
 
         assertEquals(18, dice.stream().
@@ -29,6 +30,19 @@ class DiceBagTest {
                 map(Die::getColor).filter(c -> c == Color.GREEN).count());
         assertEquals(18, dice.stream().
                 map(Die::getColor).filter(c -> c == Color.PURPLE).count());
+        assertThrows(NoSuchElementException.class, db::pick);
+    }
+
+    @Test
+    void insertTest() {
+        DiceBag db = new ArrayDiceBag();
+        Die d1 = db.pick();
+        List<Die> dice = db.pick(89);
+        assertThrows(NoSuchElementException.class, db::pick);
+        db.insert(d1);
+        Die d2 = db.pick();
+        assertEquals(d1, d2);
+        assertEquals(d1.hashCode(), d2.hashCode());
         assertThrows(NoSuchElementException.class, db::pick);
     }
 }
