@@ -30,7 +30,7 @@ public class RemoteClient implements Runnable,GameObserver {
         client=s;
         this.lobby=lobby;
         action="";
-        isALive=false;
+        isALive=true;
     }
     @Override
     public void run() {
@@ -50,7 +50,7 @@ public class RemoteClient implements Runnable,GameObserver {
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
                                     try {
-                                       sessionID=lobby.restoreSession(cmd[1]);
+                                       sessionID=lobby.restoreSession(cmd[1],this);
                                        send("NewSessionID: "+sessionID);
                                     }catch(Exception e){
                                         send(e.getMessage());
@@ -66,7 +66,7 @@ public class RemoteClient implements Runnable,GameObserver {
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
                                     try {
-                                    sessionID = lobby.connect(cmd[1]);
+                                    sessionID = lobby.connect(cmd[1],this);
                                     send("SessionID: "+sessionID);
                                     }catch (Exception e) {
                                         send(e.getMessage());
@@ -85,10 +85,6 @@ public class RemoteClient implements Runnable,GameObserver {
                                     send("Restoring game");
                                 game = lobby.getGame(sessionID).getGameController();
                                 send(game.getStatus(sessionID));
-                                synchronized (this) {
-                                    isALive = true;
-                                }
-                               game.addGameObserver(sessionID,this);
                             }else
                                 send ("You are not already logged");
                             break;
@@ -106,11 +102,10 @@ public class RemoteClient implements Runnable,GameObserver {
                                if (!game.isMyTurn(sessionID))
                                     send("It's not your turn, please wait while the other players make their moves.");
                                 else {
-                                    boolean legal = game.isLegal(sessionID, action.trim());
-                                    if (!legal) {
-                                        send("Illegal command, please check if the syntax is correct.");
-                                    } else {
+                                    try {
                                         game.sendCommand(sessionID, action);
+                                    }catch (Exception e) {
+                                        send(e.getMessage());
                                     }
                                 }
                                 action = "";
@@ -129,16 +124,14 @@ public class RemoteClient implements Runnable,GameObserver {
             in.close();
             out.close();
             client.close();
-            logger.info("Client disconnection");
+            logger.info(sessionID+" disconnection");
         } catch (IOException e) {
             logger.log(Level.SEVERE,"Connection of new client over socket error",e);
         }
         catch (Exception e) {
-            synchronized (this) {
-                isALive=false;
-            }
-            logger.log(Level.SEVERE,"Anomaly disconnection");
+            logger.log(Level.SEVERE,sessionID+" Anomaly disconnection");
         }
+        isALive=false;
     }
     private void send(String msg) {
         out.println(msg);

@@ -9,9 +9,11 @@ public class WrappedPlayer {
     private Player player;
     private Session session;
     private boolean playing;
-    WrappedPlayer(String username) {
+    private GameObserver observer;
+    WrappedPlayer(String username,GameObserver obs) {
         player = new ConcretePlayer(username);
         session = new Session(username,"");
+        observer=obs;
         playing = false;
     }
 
@@ -29,6 +31,14 @@ public class WrappedPlayer {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    public GameObserver getObserver() {
+        return observer;
+    }
+
+    public void setObserver(GameObserver observer) {
+        this.observer = observer;
     }
 
     @Override

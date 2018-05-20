@@ -5,10 +5,11 @@ import it.polimi.ingsw.connection.costraints.Settings;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
+//@TODO create a proper exception class for the server
 public class CentralServer {
 
         private transient List<WrappedGameController> gl;
@@ -16,15 +17,17 @@ public class CentralServer {
         private transient List<WrappedPlayer> players;
         private transient List<WrappedPlayer>  disconnectedPlayer;
         private transient List<WrappedPlayer> waiting;
+        private Observable observable;
         CentralServer()throws RemoteException{
 
             players=new ArrayList<>();
             disconnectedPlayer=new ArrayList<>();
             waiting=new ArrayList<>();
             gl=new ArrayList<>();
+            observable=new Observable();
         }
 
-        public synchronized String connect(String username)throws Exception {
+        public synchronized String connect(String username,GameObserver obs)throws Exception {
             WrappedPlayer x;
             String filtred=username.trim();
             if(username.length()==0)
@@ -33,13 +36,13 @@ public class CentralServer {
                 if (s.getPlayer().getUsername().equals(filtred)) {
                     throw new Exception("Username already used");
                 }
-            x=new WrappedPlayer(filtred);
+            x=new WrappedPlayer(filtred,obs);
             players.add(x);
-            logger.info(() -> filtred+" is  now playing");
+            observable.addObserver(obs);
+            logger.info(() -> filtred+" is connected with sessionID: "+x.getSession().getID());
             return x.getSession().getID();
         }
         public synchronized void disconnect(Session userSession)throws RemoteException {
-
             for (WrappedPlayer s : players)
                 if (s.getSession().getID().equals(userSession.getID())) {
                     if (s.isPlaying()) {
@@ -53,13 +56,13 @@ public class CentralServer {
                 }
             throw new RemoteException("error, and it is a very big problem!");
         }
-        public synchronized WrappedGameController getGame(String userSessionID) throws RemoteException {
+        public synchronized WrappedGameController getGame(String userSessionID) throws Exception {
             List<WrappedGameController> game;
             int countergame=gl.size()+1;
             List<WrappedPlayer> player = players.stream().filter(
                     x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
             if (player.size() != 1) {
-                throw new RemoteException("You are not logged "+ userSessionID);
+                throw new Exception("You are not logged "+ userSessionID);
             }
             game = gl.parallelStream().filter(x -> x.getGameController().isPlaying(player.get(0))).collect(Collectors.toList());
             if (game.size() == 1) {
@@ -67,6 +70,10 @@ public class CentralServer {
             }
 
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
+                for (WrappedPlayer p :waiting) {
+                    p.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");
+                    player.get(0).getObserver().update(observable, p.getPlayer().getUsername() + " is connected to this game");
+                }
                 waiting.add(player.get(0));
             }
             if (waiting.size() % 4 != 0 && waiting.size()% 4 < 2) {
@@ -96,12 +103,19 @@ public class CentralServer {
             logger.info(() -> userSessionID + " is entered in match n "+ countergame);
             return gl.get(gl.size()-1);
         }
-        public synchronized String restoreSession(String oldSessionID) throws Exception{
+        public synchronized String restoreSession(String oldSessionID, GameObserver obs) throws Exception{
             List<WrappedPlayer> player = players.stream().filter(
                     x -> x.getSession().getID().equals(oldSessionID)).collect(Collectors.toList());
             Session newSession;
             if (player.size() != 1) {
                 throw new Exception("This sessionID not exists: "+ oldSessionID);
+            }
+            if(player.get(0).getObserver().isAlive())
+                throw new Exception("NO multi client for a single user!");
+            else {
+                observable.deleteObserver(player.get(0).getObserver());
+                observable.addObserver(obs);
+                player.get(0).setObserver(obs);
             }
             newSession=new Session(player.get(0).getPlayer().getUsername(),"");
             player.get(0).setSession(newSession);

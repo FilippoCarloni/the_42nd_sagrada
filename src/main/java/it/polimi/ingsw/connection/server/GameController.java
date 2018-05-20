@@ -1,14 +1,11 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.GameStatus;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -17,14 +14,14 @@ public class GameController extends Observable{
     private static final transient Logger logger=Logger.getLogger(GameController.class.getName());
     private final transient GameStatus data;
     private final transient List<WrappedPlayer> players;
-    private final transient List<GameObserver> observers;
     GameController(List<WrappedPlayer> players) {
         data = new ConcreteGameStatus(players
                 .stream()
                 .map(WrappedPlayer::getPlayer)
                 .collect(Collectors.toList()));
         this.players = new ArrayList<>(players);
-        observers=new ArrayList<>();
+        for (WrappedPlayer p: players)
+            addObserver(p.getObserver());
     }
 
     public synchronized boolean isLegal(String sessionID, String command)  throws Exception {
@@ -32,7 +29,10 @@ public class GameController extends Observable{
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws Exception {
-        data.execute(this.getPlayer(sessionID).getPlayer(), command.trim());
+        if(isLegal(sessionID,command))
+            data.execute(this.getPlayer(sessionID).getPlayer(), command.trim());
+        else
+            throw new Exception("Illegal command, please check if the syntax is correct.");
         setChanged();
         notifyObservers(data.toString());
     }
@@ -41,27 +41,6 @@ public class GameController extends Observable{
         return data.isMyTurn(this.getPlayer(sessionID).getPlayer());
     }
 
-    public synchronized void addGameObserver(String sessionID, GameObserver obs) throws Exception{
-        this.getPlayer(sessionID);
-        addObserver(obs);
-        observers.add(obs);
-        logger.info(() -> "Added game observer :"+sessionID);
-    }
-
-    public  void removeRemoteObserver(Session session) throws Exception {
-        getPlayer(session.getID());
-        synchronized(observers) {
-            for (Observer x : observers) {
-               /* if (x.equals(new ConcreteGameManager.WrappedObs(obs))) {
-                    x.removeRemoteObserver(this);
-                    observers.remove(x);
-                    logger.info(() -> "Removed observer:" + x);
-                    return;
-                }*/
-            }
-        }
-        throw new RemoteException("Error occurred removing an observer.");
-    }
 
     public synchronized String getStatus(String sessionID) throws Exception{
         getPlayer(sessionID);

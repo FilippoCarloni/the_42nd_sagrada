@@ -19,6 +19,7 @@ public class CLI extends Observable implements Runnable {
         System.out.println("\nUSAGE:\n" +
                 "  ?     : prints how to play\n" +
                 "  view  : prints game info\n" +
+                "  play  : start a game\n" +
                 "  exit  : disconnects from the current game\n");
     }
 
