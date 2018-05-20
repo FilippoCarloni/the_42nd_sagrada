@@ -134,7 +134,6 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         if(lobby != null)
             try {
                 sessionID = lobby.connect(name, this);
-                System.out.println("pa");
             }catch (RemoteException e) {
                 System.out.println(e.getMessage());
             }

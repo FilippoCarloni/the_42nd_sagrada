@@ -18,6 +18,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
 
     @Override
     public boolean isMyTurn(String sessionID) throws RemoteException {
+        logger.info(() -> "Turn request from: "+sessionID);
         try {
             return gameController.isMyTurn(sessionID);
         }catch (Exception e) {
@@ -27,6 +28,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
 
     @Override
     public void sendCommand(String sessionID, String command) throws RemoteException {
+        logger.info(()->"Command <"+command+"> send from: "+sessionID);
         try{
             gameController.sendCommand(sessionID, command);
         }catch (Exception e) {
@@ -36,6 +38,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
 
     @Override
     public String getStatus(String sessionID) throws RemoteException {
+        logger.info(()->"Starus request from: "+sessionID);
         try {
             return gameController.getStatus(sessionID);
         }catch (Exception e) {

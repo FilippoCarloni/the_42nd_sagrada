@@ -72,7 +72,7 @@ public class CentralServer {
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
                 for (WrappedPlayer p :waiting) {
                     p.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");
-                    player.get(0).getObserver().update(observable, p.getPlayer().getUsername() + " is connected to this game");
+                    player.get(0).getObserver().update(observable, p.getPlayer().getUsername() + " is connected to this game!");
                 }
                 waiting.add(player.get(0));
             }
