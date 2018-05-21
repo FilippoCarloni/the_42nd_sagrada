@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 
 public class Server {
-    public static void main(String[] args) throws  AlreadyBoundException, RemoteException, MalformedURLException,IOException {
+    public static void main(String[] args) throws  AlreadyBoundException, RemoteException, IOException {
         Logger logger = Logger.getLogger(Server.class.getName());
         ServerRMI server = new ServerRMI();
         CentralServer centralServer=new CentralServer();

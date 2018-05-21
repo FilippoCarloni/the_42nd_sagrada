@@ -13,8 +13,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import static it.polimi.ingsw.connection.costraints.Settings.SOCKET_PORT;
-
 public class ConnectionController extends UnicastRemoteObject implements RemoteObserver, Observer {
     private transient GameManager gameManger;
     private final transient CLI view;
@@ -110,7 +108,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
     private void rmiConnection(){
         try {
-            lobby = (Lobby) Naming.lookup("rmi://localhost:" + Settings.RMI_PORT + "/Login");
+            lobby = (Lobby) Naming.lookup("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
     } catch (NotBoundException | MalformedURLException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
@@ -120,7 +118,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
     private void socketConnection() {
         try {
-            client = new Socket("127.0.0.1", SOCKET_PORT);
+            client = new Socket(new Settings().IP_SERVER, new Settings().SOCKET_PORT);
             in = new Scanner(client.getInputStream());
             out = new PrintWriter(client.getOutputStream());
         } catch (IOException ex) {
@@ -174,7 +172,11 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     break;
                 case "view":
                     if (lobby!=null) {
-                        view.update(gameManger.getStatus(sessionID));
+                        if(gameManger!=null)
+                            view.update(gameManger.getStatus(sessionID));
+                        else
+                            view.update("You are not playing");
+                        view.update("> ");
                     }else {
                         out.println("view");
                         out.flush();
@@ -198,11 +200,13 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     break;
                 default:
                     if (lobby!=null) {
-                        if (!gameManger.isMyTurn(sessionID))
-                            view.update("It's not your turn, please wait while the other players make their moves.");
-                        else {
-                            gameManger.sendCommand(sessionID, cmd);
-                        }
+                        if (gameManger!=null)
+                            if (!gameManger.isMyTurn(sessionID))
+                                view.update("It's not your turn, please wait while the other players make their moves.");
+                            else
+                                gameManger.sendCommand(sessionID, cmd);
+                        else
+                            view.update("You are not playing");
                     }
                     else{
                         out.println("action "+cmd);

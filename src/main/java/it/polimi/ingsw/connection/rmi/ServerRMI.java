@@ -15,7 +15,7 @@ public class ServerRMI {
     private String url = "rmi://localhost:";
     public ServerRMI()
     {
-        this.port=Settings.RMI_PORT;
+        this.port=new Settings().RMI_PORT;
         setupRegistry();
     }
 
@@ -31,10 +31,8 @@ public class ServerRMI {
 
     }
 
-    public void addSkeleton(String name,Remote obj) throws RemoteException, MalformedURLException, AlreadyBoundException {
-
-        Naming.bind(url + name, obj);
-
+    public void addSkeleton(String name,Remote obj) throws RemoteException, AlreadyBoundException {
+        registry.bind(name,obj);
     }
     public String getURL() {
         return this.url;
