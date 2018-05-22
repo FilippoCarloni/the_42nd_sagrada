@@ -6,8 +6,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 //@TODO create a proper exception class for the server
 public class CentralServer {
@@ -30,7 +32,7 @@ public class CentralServer {
         public synchronized String connect(String username,GameObserver obs)throws Exception {
             WrappedPlayer x;
             String filtred=username.trim();
-            if(username.length()==0)
+            if(!Pattern.compile("^[a-zA-Z0-9_-]{4,12}$").asPredicate().test(filtred))
                 throw new RemoteException("The username is not valid!");
             for (WrappedPlayer s : players)
                 if (s.getPlayer().getUsername().equals(filtred)) {
@@ -70,10 +72,10 @@ public class CentralServer {
             }
 
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
-                for (WrappedPlayer p :waiting) {
-                    p.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");
-                    player.get(0).getObserver().update(observable, p.getPlayer().getUsername() + " is connected to this game!");
-                }
+                waiting.parallelStream().forEach(x -> {
+                    x.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");
+                    player.get(0).getObserver().update(observable, x.getPlayer().getUsername() + " is connected to this game!");
+                });
                 waiting.add(player.get(0));
             }
             if (waiting.size() % 4 != 0 && waiting.size()% 4 < 2) {
