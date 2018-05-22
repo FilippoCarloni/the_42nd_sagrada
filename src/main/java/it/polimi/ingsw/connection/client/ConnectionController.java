@@ -113,11 +113,9 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     private void rmiConnection(){
         try {
             Registry reg=LocateRegistry.getRegistry(new Settings().IP_SERVER,new Settings().RMI_PORT);
-          lobby=(Lobby)reg.lookup("Login");
-         //   System.out.println("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
-      // lobby = (Lobby) Naming.lookup("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
-            System.out.println("connected");
-        } catch (NotBoundException e) {
+           lobby=(Lobby)reg.lookup("Login");
+
+        } catch (NotBoundException  e) {
             e.printStackTrace();
         } catch (RemoteException e) {
             System.out.println(e.getMessage());
