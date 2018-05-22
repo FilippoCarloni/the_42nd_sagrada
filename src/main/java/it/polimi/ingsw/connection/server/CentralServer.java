@@ -96,7 +96,7 @@ public class CentralServer {
                         Thread.currentThread().interrupt();
                         logger.log(Level.SEVERE, "Fatal error!", e);
                     }
-                if(gl.stream().noneMatch(x -> x.getGameController().isPlaying(player.get(0)))) {
+                if(gl.parallelStream().noneMatch(x -> x.getGameController().isPlaying(player.get(0)))) {
                     gl.add(new WrappedGameController(waiting));
                     waiting.clear();
                 }

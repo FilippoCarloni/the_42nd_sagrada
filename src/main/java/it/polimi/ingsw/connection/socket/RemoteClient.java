@@ -72,6 +72,8 @@ public class RemoteClient implements Runnable,GameObserver {
                                         send(e.getMessage());
                                     }
                                 }
+                                else
+                                    send("Spaces are not allowed!");
                             }
                             else
                                 send ("You are already logged");
