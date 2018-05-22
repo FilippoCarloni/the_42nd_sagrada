@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.socket;
 
 
-import it.polimi.ingsw.connection.rmi.Lobby;
+import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.server.CentralServer;
 
 import java.io.IOException;
@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.Settings.SOCKET_PORT;
 
 public class ServerSocket implements Runnable{
 
@@ -25,13 +24,13 @@ public class ServerSocket implements Runnable{
     public ServerSocket(CentralServer lobby) throws IOException {
         client = null;
         this.lobby=lobby;
-        server = new java.net.ServerSocket(SOCKET_PORT);
+        server = new java.net.ServerSocket(new Settings().SOCKET_PORT);
         th = Executors.newCachedThreadPool();
         numError = 0;
     }
     @Override
     public void run() {
-        logger.info(() -> "Server thread started, the server is reachable through socket connection at the port: "+SOCKET_PORT);
+        logger.info(() -> "Server thread started, the server is reachable through socket connection at the port: "+new Settings().SOCKET_PORT);
         while(numError<10) {
             try {
                 client = server.accept();

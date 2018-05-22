@@ -22,8 +22,8 @@ public class ServerRMI {
     private void setupRegistry(){
         try {
             registry = LocateRegistry.createRegistry(port);
-            //System.setProperty("java.security.policy","./project_demo/src/connection/rmi/server.policy");
-            //System.setSecurityManager(new SecurityManager());
+          //  System.setProperty("java.security.policy","./src/main/java/res/network_config/server.policy");
+           // System.setSecurityManager(new SecurityManager());
             this.url += this.port+"/";
         }catch(Exception e){
             logger.log(Level.SEVERE, "Error in creating the rmi registry", e);

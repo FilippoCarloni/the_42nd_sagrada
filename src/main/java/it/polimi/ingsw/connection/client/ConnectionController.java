@@ -4,12 +4,16 @@ import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
 
+import javax.sound.midi.SysexMessage;
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
@@ -108,8 +112,12 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
     private void rmiConnection(){
         try {
-            lobby = (Lobby) Naming.lookup("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
-    } catch (NotBoundException | MalformedURLException e) {
+            Registry reg=LocateRegistry.getRegistry(new Settings().IP_SERVER,new Settings().RMI_PORT);
+          lobby=(Lobby)reg.lookup("Login");
+         //   System.out.println("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
+      // lobby = (Lobby) Naming.lookup("rmi://"+new Settings().IP_SERVER+":" + new Settings().RMI_PORT + "/Login");
+            System.out.println("connected");
+        } catch (NotBoundException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
             System.out.println(e.getMessage());
