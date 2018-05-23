@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.gameboard.cards.tools;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
 import it.polimi.ingsw.model.utility.Color;
 
 import java.util.ArrayList;
@@ -63,26 +62,18 @@ public class LensCutter extends AbstractToolCard {
             super(status, cmd, id);
             setRegExp("select \\d");
             setLegalPredicate(s -> getStatus().getStateHolder().getDieHolder() != null &&
-                    getIndex() >= 0 && getIndex() < getDiceOnRoundTrack().size());
+                    getIndex() >= 0 && getIndex() < status.getRoundTrack().getDice().size());
         }
 
         private int getIndex() {
             return parseInt(getCmd().split(" ")[1]) - 1;
         }
 
-        List<Die> getDiceOnRoundTrack() {
-            RoundTrack rt = status.getRoundTrack();
-            List<Die> diceOnRoundTrack = new ArrayList<>();
-            for (Die d : rt)
-                diceOnRoundTrack.add(d);
-            return diceOnRoundTrack;
-        }
-
         @Override
         public void execute() {
             if (super.isLegal()) {
                 Die playerDie = status.getStateHolder().getDieHolder();
-                Die roundTrackDie = getDiceOnRoundTrack().get(getIndex());
+                Die roundTrackDie = status.getRoundTrack().getDice().get(getIndex());
                 status.getRoundTrack().swap(playerDie, roundTrackDie);
                 status.getStateHolder().setDieHolder(roundTrackDie);
                 tearDown();

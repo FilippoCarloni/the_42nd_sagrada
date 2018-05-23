@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.utility;
 
-import org.json.simple.JSONObject;
-
 public enum Shade {
 
     LIGHTEST("⚀", 1),

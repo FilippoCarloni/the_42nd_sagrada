@@ -12,10 +12,18 @@ public class ConcretePlayer implements Player{
     private PrivateObjectiveCard po;
     private int favorPoints;
 
+    /**
+     * Generates a player instance with null window frame and null private objective.
+     * @param username A String representing the username
+     */
     public ConcretePlayer(String username){
         this.username=username;
     }
 
+    /**
+     * Generates a clone of the player represented with JSON syntax.
+     * @param obj A JSON Object that holds Player-like information
+     */
     public ConcretePlayer(JSONObject obj) {
         username = (String) obj.get("username");
         favorPoints = (int) obj.get("favor_points");
@@ -41,12 +49,12 @@ public class ConcretePlayer implements Player{
 
     @Override
     public WindowFrame getWindowFrame() {
-        return window;
+        return window == null ? null : new PaperWindowFrame(window.encode());
     }
 
     @Override
     public PrivateObjectiveCard getPrivateObjective() {
-        return po;
+        return po == null ? null : PrivateObjectiveCard.getCardFromJSON(po.encode());
     }
 
     @Override

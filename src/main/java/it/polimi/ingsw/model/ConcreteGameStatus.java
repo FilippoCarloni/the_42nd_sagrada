@@ -178,7 +178,7 @@ public class ConcreteGameStatus implements GameStatus {
         sb.append(roundTrack);
         sb.append("\n\n");
         sb.append("DICE ON ROUND TRACK: ");
-        for (Die d : roundTrack)
+        for (Die d : roundTrack.getDice())
             sb.append(d);
         sb.append("\n");
         sb.append("DICE POOL: ");
@@ -186,7 +186,7 @@ public class ConcreteGameStatus implements GameStatus {
             sb.append(d);
         sb.append("\n");
         sb.append("PICKED DIE: ");
-        if (stateHolder.getDieHolder() != null) sb.append(stateHolder.getDieHolder());
+        if (stateHolder != null && stateHolder.getDieHolder() != null) sb.append(stateHolder.getDieHolder());
         sb.append("\n");
         String s = "";
         for (PublicObjectiveCard c : publicObjectives)

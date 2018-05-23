@@ -5,8 +5,7 @@ import it.polimi.ingsw.model.utility.Shade;
 
 import java.util.Map;
 
-public interface WindowPatternGenerator {
-
+interface WindowPatternGenerator {
     String getName();
     Map<Coordinate, Color> getColorConstraints();
     Map<Coordinate, Shade> getShadeConstraints();

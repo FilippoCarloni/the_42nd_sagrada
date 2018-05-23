@@ -16,13 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DiceBagTest {
 
+    /**
+     * Checks if the dice bag contains the expected dice when created.
+     */
     @Test
     void areDiceInTheBagCorrect() {
         DiceBag db = new ArrayDiceBag();
-
         ArrayList<Die> dice = new ArrayList<>(db.pick(90));
-
-
         assertEquals(18, dice.stream().
                 map(Die::getColor).filter(c -> c == Color.RED).count());
         assertEquals(18, dice.stream().
@@ -36,19 +36,30 @@ class DiceBagTest {
         assertThrows(NoSuchElementException.class, db::pick);
     }
 
+    /**
+     * Checks if the insert method inserts the die correctly in the bag;
+     * the die must be exactly the same that was previously picked.
+     */
     @Test
     void insertTest() {
         DiceBag db = new ArrayDiceBag();
+        assertThrows(IllegalArgumentException.class, () -> db.pick(0));
+        assertThrows(NoSuchElementException.class, () -> db.pick(91));
+        assertThrows(NullPointerException.class, () -> db.insert(null));
         Die d1 = db.pick();
-        List<Die> dice = db.pick(89);
+        db.pick(89);
         assertThrows(NoSuchElementException.class, db::pick);
         db.insert(d1);
+        assertThrows(IllegalArgumentException.class, () -> db.insert(d1));
         Die d2 = db.pick();
         assertEquals(d1, d2);
         assertEquals(d1.hashCode(), d2.hashCode());
         assertThrows(NoSuchElementException.class, db::pick);
     }
 
+    /**
+     * Checks the correct behavior of the cloning constructor.
+     */
     @Test
     void testJSON() {
         DiceBag db = new ArrayDiceBag();

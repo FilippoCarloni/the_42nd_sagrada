@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.utility;
 
+/**
+ * This class holds default Sagrada parameters.
+ * Any change to this class may affect the correct behavior of the game, so be careful!
+ */
 public final class Parameters {
 
     private Parameters() {}

@@ -36,7 +36,7 @@ class PrivateObjectiveCardTest {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
                 w.put(db.pick(), i, j);
         int res = 0;
-        for (Die d : w)
+        for (Die d : w.getDice())
             if (d.getColor().equals(c.getColor()))
                 res += d.getShade().getValue();
         assertEquals(c.getValuePoints(w), res);

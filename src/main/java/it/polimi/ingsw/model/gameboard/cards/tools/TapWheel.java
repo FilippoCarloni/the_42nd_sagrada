@@ -137,7 +137,7 @@ public class TapWheel extends AbstractToolCard {
             if (super.isLegal()) {
                 Color c = status.getTurnManager().getCurrentPlayer().getWindowFrame().getDie(coordinates[0], coordinates[1]).getColor();
                 if (status.getStateHolder().getTapWheelColor() == null) {
-                    for (Die d : status.getRoundTrack())
+                    for (Die d : status.getRoundTrack().getDice())
                         if (d.getColor().equals(c))
                             return true;
                     return false;

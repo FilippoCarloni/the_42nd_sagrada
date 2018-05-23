@@ -18,6 +18,10 @@ public class PaperWindowFrame implements WindowFrame {
     private Map<Coordinate, Color> colorConstraints;
     private Map<Coordinate, Shade> shadeConstraints;
 
+    /**
+     * Generates a window frame from a generator instance picked from file.
+     * @param generator A WindowFrame generator
+     */
     public PaperWindowFrame(WindowPatternGenerator generator) {
         name = generator.getName();
         difficulty = generator.getDifficulty();
@@ -26,6 +30,10 @@ public class PaperWindowFrame implements WindowFrame {
         dice = new HashMap<>();
     }
 
+    /**
+     * Generates a clone of the die represented with JSON syntax.
+     * @param obj A JSON Object that holds WindowFrame-like information
+     */
     public PaperWindowFrame(JSONObject obj) {
         name = (String) obj.get("name");
         difficulty = (int) obj.get("difficulty");
@@ -54,13 +62,30 @@ public class PaperWindowFrame implements WindowFrame {
     }
 
     @Override
-    public Map<Coordinate, Color> getColorConstraints() {
-        return new HashMap<>(colorConstraints);
+    public List<Die> getDice() {
+        Object[] diceArray = dice.values().toArray();
+        List<Die> diceList = new ArrayList<>();
+        for (Object o : diceArray)
+            diceList.add(new PlasticDie(((Die) o).encode()));
+        return diceList;
     }
 
     @Override
-    public Map<Coordinate, Shade> getShadeConstraints() {
-        return new HashMap<>(shadeConstraints);
+    public Color getColorConstraint(int row, int column) {
+        try {
+            return colorConstraints.get(new Coordinate(row, column));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Shade getShadeConstraint(int row, int column) {
+        try {
+            return shadeConstraints.get(new Coordinate(row, column));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Override
@@ -70,22 +95,31 @@ public class PaperWindowFrame implements WindowFrame {
 
     @Override
     public boolean isEmpty(int row, int column) {
-        return dice.get(new Coordinate(row, column)) == null;
+        try {
+            return dice.get(new Coordinate(row, column)) == null;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override
     public Die getDie(int row, int column) {
-        if (!isEmpty(row, column))
-            return new PlasticDie((PlasticDie) dice.get(new Coordinate(row, column)));
-        return null;
+        try {
+            if (!isEmpty(row, column))
+                return new PlasticDie(dice.get(new Coordinate(row, column)).encode());
+            return null;
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 
     @Override
     public void put(Die die, int row, int column) {
-        if (die == null) throw new NullPointerException("Cannot place a null die.");
+        if (die == null)
+            throw new NullPointerException("Cannot place a null die.");
         if (!isEmpty(row, column))
             throw new IllegalArgumentException("This place is already occupied.");
-        dice.put(new Coordinate(row, column), die);
+        dice.put(new Coordinate(row, column), new PlasticDie(die.encode()));
     }
 
     @Override
@@ -98,31 +132,10 @@ public class PaperWindowFrame implements WindowFrame {
     }
 
     @Override
-    public void move(Die die, int row, int column) {
-        if (die == null)
-            throw new NullPointerException("There's no null die on the window frame.");
-        if (!isEmpty(row, column))
-            throw new IllegalArgumentException("The place is already occupied by another die.");
-        for (Map.Entry<Coordinate, Die> entry : dice.entrySet()) {
-            Coordinate c = entry.getKey();
-            if (dice.get(c).equals(die)) {
-                put(dice.remove(c), row, column);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("There's no such die in the window frame.");
-    }
-
-    @Override
     public Die pick(int row, int column) {
         if (isEmpty(row, column))
             return null;
         return dice.remove(new Coordinate(row, column));
-    }
-
-    @Override
-    public Iterator<Die> iterator() {
-        return new WindowFrameIterator(dice);
     }
 
     @Override
@@ -167,32 +180,6 @@ public class PaperWindowFrame implements WindowFrame {
         for (int i = 0; i < pixelWidth; i++) sb.append("_");
         sb.append("|\n");
         return sb.toString();
-    }
-
-    private class WindowFrameIterator implements Iterator<Die> {
-
-        private int position;
-        private List<Die> dice;
-
-        private WindowFrameIterator(Map<Coordinate, Die> dice) {
-            position = 0;
-            this.dice = new ArrayList<>(dice.values());
-        }
-
-        @Override
-        public boolean hasNext() {
-            return position < dice.size();
-        }
-
-        @Override
-        public Die next() {
-            if (hasNext()) {
-                Die d = dice.get(position);
-                position++;
-                return d;
-            }
-            throw new NoSuchElementException("There are no more dice in the window frame.");
-        }
     }
 
     @Override

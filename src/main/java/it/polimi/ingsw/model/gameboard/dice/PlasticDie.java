@@ -10,7 +10,7 @@ public class PlasticDie implements Die {
 
     private Color color;
     private Shade shade;
-    private int id;
+    private final int id;
 
     PlasticDie(int id) {
         this.id = id;
@@ -18,16 +18,14 @@ public class PlasticDie implements Die {
         this.roll();
     }
 
+    /**
+     * Generates a clone of the die represented with JSON syntax.
+     * @param obj A JSON Object that holds Die-like information
+     */
     public PlasticDie(JSONObject obj) {
         this.id = (int) obj.get("id");
         this.color = Color.findByLabel((String) obj.get("color"));
         this.shade = Shade.findByID(obj.get("shade").toString());
-    }
-
-    public PlasticDie(PlasticDie die) {
-        this.id = die.id;
-        this.color = die.color;
-        this.shade = die.shade;
     }
 
     @Override

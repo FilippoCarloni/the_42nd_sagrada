@@ -5,8 +5,17 @@ import org.json.simple.JSONObject;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Represents a Sagrada public objective card.
+ * Every game has three public objective cards, shared by all the players.
+ */
 public interface PublicObjectiveCard extends ObjectiveCard {
 
+    /**
+     * Generates a card instance, cloned from the JSON object.
+     * @param obj A JSON Object that holds card-like information
+     * @return A PublicObjectiveCard instance
+     */
     static PublicObjectiveCard getCardFromJSON(JSONObject obj) {
         int id = (int) obj.get("id");
         Deck d = new PublicObjectiveDeck();

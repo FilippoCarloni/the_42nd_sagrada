@@ -25,12 +25,4 @@ public final class Coordinate {
     public boolean equals(Object o) {
         return o != null && o instanceof Coordinate && row == ((Coordinate) o).row && column == ((Coordinate) o).column;
     }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
 }

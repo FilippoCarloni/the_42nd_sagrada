@@ -22,7 +22,7 @@ public class LightShades extends AbstractCard implements PublicObjectiveCard {
     @Override
     public int getValuePoints(WindowFrame window) {
         if (window == null) throw new NullPointerException("Null map.");
-        return StreamSupport.stream(window.spliterator(), false)
+        return window.getDice().stream()
                 .map(Die::getShade)
                 .filter(s -> s.equals(Shade.LIGHTEST) || s.equals(Shade.LIGHTER))
                 .collect(Collectors.groupingBy(x -> x, counting()))

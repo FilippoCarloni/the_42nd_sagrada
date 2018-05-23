@@ -7,7 +7,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +17,9 @@ public class PaperRoundTrack implements RoundTrack {
     private ArrayList<Die> dice;
     private int[] diceOnSlot;
 
+    /**
+     * Generates a dice-empty round track.
+     */
     public PaperRoundTrack() {
         currentRoundNumber = 1;
         totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
@@ -25,6 +27,10 @@ public class PaperRoundTrack implements RoundTrack {
         diceOnSlot = new int[this.totalNumberOfRounds];
     }
 
+    /**
+     * Generates a clone of the round track represented with JSON syntax.
+     * @param obj A JSON Object that holds RoundTrack-like information
+     */
     public PaperRoundTrack(JSONObject obj) {
         totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
         currentRoundNumber = (int) obj.get("current_round_number");
@@ -43,34 +49,26 @@ public class PaperRoundTrack implements RoundTrack {
         int index = -1;
         for (int i = 0; i < currentRoundNumber - 1; i++) {
             index += diceOnSlot[i];
-            clonedDice.add(new PlasticDie((PlasticDie) dice.get(index)));
+            clonedDice.add(new PlasticDie(dice.get(index).encode()));
         }
         return clonedDice;
     }
 
     @Override
-    public int getTotalScore() {
-        return dice.stream().map(d -> d.getShade().getValue()).mapToInt(Integer::intValue).sum();
-    }
-
-    @Override
-    public void put(Die die) {
-        if (die == null) throw new NullPointerException("Cannot place a null die on the round track.");
-        if (currentRoundNumber <= totalNumberOfRounds) {
-            dice.add(die);
-            diceOnSlot[currentRoundNumber - 1] = 1;
-            currentRoundNumber++;
-        }
+    public List<Die> getDice() {
+        return dice.stream().map(die -> new PlasticDie(die.encode())).collect(Collectors.toList());
     }
 
     @Override
     public void put(List<Die> dice) {
         if (dice == null) throw new NullPointerException("Cannot place null dice on the round track.");
         if (currentRoundNumber <= totalNumberOfRounds) {
-            this.dice.addAll(dice);
+            this.dice.addAll(dice.stream().map(die -> new PlasticDie(die.encode())).collect(Collectors.toList()));
             diceOnSlot[currentRoundNumber - 1] = dice.size();
             currentRoundNumber++;
+            return;
         }
+        throw new IllegalArgumentException("The round track is empty.");
     }
 
     @Override
@@ -78,7 +76,7 @@ public class PaperRoundTrack implements RoundTrack {
         if (playerDie == null || roundTrackDie == null) throw new NullPointerException("Cannot swap null dice.");
         if (!dice.contains(roundTrackDie))throw new IllegalArgumentException("The die is not present on the round track.");
         if (dice.contains(playerDie)) throw new IllegalArgumentException("Cannot swap two dice already on the round track.");
-        dice.set(dice.indexOf(roundTrackDie), playerDie);
+        dice.set(dice.indexOf(roundTrackDie), new PlasticDie(playerDie.encode()));
     }
 
     @Override
@@ -94,13 +92,6 @@ public class PaperRoundTrack implements RoundTrack {
     @Override
     public boolean isGameFinished() {
         return currentRoundNumber > totalNumberOfRounds;
-    }
-
-    @Override
-    public Iterator<Die> iterator() {
-        ArrayList<Die> clonedDice = new ArrayList<>();
-        for (Die d : dice) clonedDice.add(new PlasticDie((PlasticDie) d));
-        return clonedDice.iterator();
     }
 
     @Override

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.commands.rules;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Color;
-import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class ColorRule extends RuleDecorator {
         for (Die windowDie : windowDice)
             if (windowDie.getColor().equals(dieColor))
                 return false;
-        Color windowConstraint = windowFrame.getColorConstraints().get(new Coordinate(row, column));
+        Color windowConstraint = windowFrame.getColorConstraint(row, column);
         return !(windowConstraint != null && windowConstraint != dieColor);
     }
 

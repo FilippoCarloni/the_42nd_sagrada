@@ -16,16 +16,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WindowFrameTest {
 
+    /**
+     * Checks if placing and moving operations behave correctly.
+     */
     @Test
     void placeAndMoveTest() {
-
         Deck d = new WindowFrameDeck();
         DiceBag db = new ArrayDiceBag();
         WindowFrame w = (WindowFrame) d.draw();
 
-        assertEquals(PaperWindowFrame.class, w.getClass());
-
         assertEquals(null, w.getDie(0, 0));
+        assertEquals(null, w.getDie(-1, 0));
+        assertEquals(null, w.getColorConstraint(8, 0));
+        assertEquals(null, w.getShadeConstraint(0, 9));
         assertThrows(NullPointerException.class, () -> w.put(null, 0, 0));
 
         Die die = db.pick();
@@ -36,23 +39,24 @@ class WindowFrameTest {
         assertThrows(IllegalArgumentException.class, () -> w.put(db.pick(), 0, 0));
         w.put(db.pick(), 0, 1);
 
-        assertThrows(NullPointerException.class, () -> w.move(null, 1, 1));
-        assertThrows(IllegalArgumentException.class, () -> w.move(die, 0, 1));
         assertThrows(IllegalArgumentException.class, () -> w.move(0, 0, 0, 1));
-        assertThrows(IllegalArgumentException.class, () -> w.move(db.pick(), 2, 2));
         assertThrows(IllegalArgumentException.class, () -> w.move(1, 1, 0, 0));
 
         w.move(0, 0, 1, 1);
         assertEquals(die, w.getDie(1, 1));
-        w.move(die, 1, 2);
-        assertNotEquals(null, w.getName());
-        assertNotEquals(null, w.getShadeConstraints());
-        assertNotEquals(null, w.getColorConstraints());
-        assertEquals(HashMap.class, w.getColorConstraints().getClass());
-        assertEquals(HashMap.class, w.getShadeConstraints().getClass());
-        assertTrue(w.getDifficulty() > 0);
+        assertEquals(2, w.getDice().size());
+
+        assertEquals(die, w.pick(1, 1));
+        assertEquals(1, w.getDice().size());
+        assertEquals(null, w.pick(1, 1));
+        assertTrue(w.getName().length() > 0);
+        assertTrue(w.getDifficulty() >= 3);
+        assertTrue(w.getDifficulty() <= 6);
     }
 
+    /**
+     * Checks if the deck contains the 24 classic Sagrada cards.
+     */
     @Test
     void drawTest() {
         Deck d = new WindowFrameDeck();
@@ -63,18 +67,22 @@ class WindowFrameTest {
         assertThrows(IllegalArgumentException.class, () -> d.draw(-1));
     }
 
+    /**
+     * Checks the correct behavior of the simple Coordinate class.
+     */
     @Test
     void coordinateTest() {
         assertThrows(IllegalArgumentException.class, () -> new Coordinate(-1, 0));
         assertThrows(IllegalArgumentException.class, () -> new Coordinate(0, 5));
         assertThrows(IllegalArgumentException.class, () -> new Coordinate(4, 0));
         assertThrows(IllegalArgumentException.class, () -> new Coordinate(0, -1));
-        assertEquals(new Coordinate(0, 1).getRow(), 0);
-        assertEquals(new Coordinate(0, 1).getColumn(), 1);
         assertEquals(new Coordinate(2, 3), new Coordinate(2, 3));
         assertNotEquals(new Coordinate(2, 4), new Coordinate(0, 0));
     }
 
+    /**
+     * Checks the correct behavior of the cloning constructor.
+     */
     @Test
     void testJSON() {
         DiceBag db = new ArrayDiceBag();
@@ -94,9 +102,17 @@ class WindowFrameTest {
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 assertEquals(w.getDie(i, j), clonedW.getDie(i, j));
-                assertEquals(w.getColorConstraints().get(new Coordinate(i, j)), clonedW.getColorConstraints().get(new Coordinate(i, j)));
-                assertEquals(w.getShadeConstraints().get(new Coordinate(i, j)), clonedW.getShadeConstraints().get(new Coordinate(i, j)));
+                assertEquals(w.getColorConstraint(i, j), clonedW.getColorConstraint(i, j));
+                assertEquals(w.getShadeConstraint(i, j), clonedW.getShadeConstraint(i, j));
             }
         }
+    }
+
+    @Test
+    void toStringTest() {
+        WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
+        w.put(new ArrayDiceBag().pick(), 0, 0);
+        String s = w.toString();
+        //System.out.println(s);
     }
 }

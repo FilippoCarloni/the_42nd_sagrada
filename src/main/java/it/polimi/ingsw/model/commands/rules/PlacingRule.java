@@ -19,7 +19,7 @@ public class PlacingRule extends RuleDecorator {
             throw new NullPointerException("Problem in the checking placing rule.");
 
         int numOfDiceOnMap = 0;
-        for (Die d : windowFrame) numOfDiceOnMap++;
+        for (Die d : windowFrame.getDice()) numOfDiceOnMap++;
         if (numOfDiceOnMap == 0 && (
                 (row == 0 && column >= 0 && column < Parameters.MAX_COLUMNS) ||
                 (column == 0 && row >= 0 && row < Parameters.MAX_ROWS) ||

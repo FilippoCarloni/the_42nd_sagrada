@@ -13,6 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PlayerTest {
 
+    /**
+     * Checks the correct behavior of getters and setters.
+     */
     @Test
     void getterAndSetterTest() {
         WindowFrame playerFrame = (WindowFrame) new WindowFrameDeck().draw();
@@ -28,11 +31,14 @@ class PlayerTest {
         p.setPrivateObjective(playerObjective);
         p.setWindowFrame(playerFrame);
 
-        assertEquals(playerObjective, p.getPrivateObjective());
-        assertEquals(playerFrame, p.getWindowFrame());
+        assertEquals(playerObjective.getID(), p.getPrivateObjective().getID());
+        assertEquals(playerFrame.getName(), p.getWindowFrame().getName());
         assertEquals(username, p.getUsername());
     }
 
+    /**
+     * Checks the correct behavior of the cloning constructor.
+     */
     @Test
     void testJSON() {
         Player p = new ConcretePlayer("foo");
@@ -46,11 +52,21 @@ class PlayerTest {
         p.setWindowFrame((WindowFrame) new WindowFrameDeck().draw());
         p.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
         p.setFavorPoints(3);
+        assertThrows(IllegalArgumentException.class, () -> p.setFavorPoints(-1));
         pClone = new ConcretePlayer(p.encode());
 
         assertEquals(p.getUsername(), pClone.getUsername());
         assertEquals(p.getWindowFrame().getName(), pClone.getWindowFrame().getName());
         assertEquals(p.getFavorPoints(), pClone.getFavorPoints());
         assertEquals(p.getPrivateObjective().getColor(), pClone.getPrivateObjective().getColor());
+    }
+
+    @Test
+    void toStringTest() {
+        Player foo = new ConcretePlayer("foo");
+        foo.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
+        foo.setWindowFrame((WindowFrame) new WindowFrameDeck().draw());
+        String s = foo.toString();
+        //System.out.println(s);
     }
 }

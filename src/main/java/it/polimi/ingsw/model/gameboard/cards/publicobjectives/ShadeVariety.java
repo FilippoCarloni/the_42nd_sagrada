@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.counting;
 
@@ -22,7 +21,7 @@ public class ShadeVariety extends AbstractCard implements PublicObjectiveCard {
     @Override
     public int getValuePoints(WindowFrame window) {
         if (window == null) throw new NullPointerException("Null map.");
-        return StreamSupport.stream(window.spliterator(), false)
+        return window.getDice().stream()
                 .map(Die::getShade)
                 .collect(Collectors.groupingBy(x -> x, counting()))
                 .values()

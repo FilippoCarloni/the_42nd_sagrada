@@ -9,6 +9,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+/**
+ * Generates a new deck of window frames from files.
+ * It should contain the 24 original Sagrada frames.
+ */
 public class WindowFrameDeck extends AbstractDeck {
 
     public WindowFrameDeck() {

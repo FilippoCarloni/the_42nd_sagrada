@@ -2,13 +2,14 @@ package it.polimi.ingsw.model.commands.rules;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Shade;
-import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShadeRule extends RuleDecorator {
+
+    // TODO: refactor logic
 
     ShadeRule() {
         super(null);
@@ -43,7 +44,7 @@ public class ShadeRule extends RuleDecorator {
         for (Die windowDie : windowDice)
             if (windowDie.getShade().equals(dieShade))
                 return false;
-        Shade windowConstraint = windowFrame.getShadeConstraints().get(new Coordinate(row, column));
+        Shade windowConstraint = windowFrame.getShadeConstraint(row, column);
         return !(windowConstraint != null && windowConstraint != dieShade);
     }
 

@@ -32,17 +32,15 @@ public class DrawableWindowFrame extends Parent implements GuiItem {
     }
 
     private void windowFrameDrawer(){
-        Map<Coordinate, Color> colorConstraints = windowFrame.getColorConstraints();
-        Map<Coordinate, Shade> shadeConstraints = windowFrame.getShadeConstraints();
         for(int i = 0; i < Parameters.MAX_ROWS; i++){
             for(int j = 0; j < Parameters.MAX_COLUMNS; j++){
-                if(colorConstraints.get(new Coordinate(i, j)) != null) {
+                if(windowFrame.getColorConstraint(i, j) != null) {
                     //TODO: add button on every single square, and fill it with the image
-                    ImageView img = loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + colorConstraints.get(new Coordinate(i, j)).getLabel() + ".png");
+                    ImageView img = loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + windowFrame.getColorConstraint(i, j).getLabel() + ".png");
                     container.add(img, i, j);
                     img.autosize();
                 }
-                else if(shadeConstraints.get(new Coordinate(i, j)) != null) {
+                else if(windowFrame.getShadeConstraint(i, j) != null) {
                     /*ImageView img = loadImg(GUIParameters.COLOR_SHADE_IMAGE_PATH + shadeConstraints.get(new Coordinate(i, j)).getValue() + ".png");
                     container.add(img, i, j);
                     img.autosize();*/
