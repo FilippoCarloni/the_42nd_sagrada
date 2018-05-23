@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.gameboard.utility;
+package it.polimi.ingsw.model.utility;
 
 public enum Color {
 
@@ -24,6 +24,13 @@ public enum Color {
     public static Color findByID(String id) {
         for (Color c : Color.values())
             if (c.id.equals(id))
+                return c;
+        return null;
+    }
+
+    public static Color findByLabel(String label) {
+        for (Color c : Color.values())
+            if (c.label.equals(label))
                 return c;
         return null;
     }

@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.players;
 
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import org.json.simple.JSONObject;
 
 public class ConcretePlayer implements Player{
 
@@ -12,6 +14,17 @@ public class ConcretePlayer implements Player{
 
     public ConcretePlayer(String username){
         this.username=username;
+    }
+
+    public ConcretePlayer(JSONObject obj) {
+        username = (String) obj.get("username");
+        favorPoints = (int) obj.get("favor_points");
+        JSONObject windowFrame = (JSONObject) obj.get("window_frame");
+        if (windowFrame != null)
+            window = new PaperWindowFrame(windowFrame);
+        JSONObject privateObjective = (JSONObject) obj.get("private_objective");
+        if (privateObjective != null)
+            po = PrivateObjectiveCard.getCardFromJSON(privateObjective);
     }
 
     @Override
@@ -58,18 +71,31 @@ public class ConcretePlayer implements Player{
     public String toString() {
         String printableUsername = username + " (FP:" + favorPoints + ")";
         StringBuilder sb = new StringBuilder();
-        String frame = window.toString();
-        int len = frame.indexOf('\n');
-        for (int i = 0; i < len; i++)
-            sb.append("-");
-        sb.append("\n");
-        for (int i = 0; i < (len - printableUsername.length()) / 2; i++)
-            sb.append(" ");
-        sb.append(printableUsername);
-        for (int i = 0; i < len - printableUsername.length() - (len - printableUsername.length()) / 2; i++)
-            sb.append(" ");
-        sb.append("\n");
-        sb.append(frame);
+        if (window != null) {
+            String frame = window.toString();
+            int len = frame.indexOf('\n');
+            for (int i = 0; i < len; i++)
+                sb.append("-");
+            sb.append("\n");
+            for (int i = 0; i < (len - printableUsername.length()) / 2; i++)
+                sb.append(" ");
+            sb.append(printableUsername);
+            for (int i = 0; i < len - printableUsername.length() - (len - printableUsername.length()) / 2; i++)
+                sb.append(" ");
+            sb.append("\n");
+            sb.append(frame);
+        }
         return sb.toString();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        obj.put("username", username);
+        obj.put("favor_points", favorPoints);
+        obj.put("window_frame", window == null ? null : window.encode());
+        obj.put("private_objective", po == null ? null : po.encode());
+        return obj;
     }
 }

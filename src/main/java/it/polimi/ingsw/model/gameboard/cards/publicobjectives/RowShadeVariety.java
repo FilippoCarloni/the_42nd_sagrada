@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.gameboard.cards.publicobjectives;
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.HashSet;
@@ -12,9 +12,10 @@ import java.util.Set;
 
 public class RowShadeVariety extends AbstractCard implements PublicObjectiveCard {
 
-    RowShadeVariety() {
+    RowShadeVariety(int id) {
         name = "Row Shade Variety";
         description = "{5} Rows with no repeated values.";
+        this.id = id;
     }
 
     @Override

@@ -2,15 +2,16 @@ package it.polimi.ingsw.model.gameboard.cards.publicobjectives;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 public class ColorDiagonals extends AbstractCard implements PublicObjectiveCard {
 
-    ColorDiagonals() {
+    ColorDiagonals(int id) {
         name = "Color Diagonals";
         description = "{#} Count of diagonally adjacent same color dice.";
+        this.id = id;
     }
 
     @Override

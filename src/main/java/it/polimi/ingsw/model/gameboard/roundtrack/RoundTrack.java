@@ -1,10 +1,11 @@
 package it.polimi.ingsw.model.gameboard.roundtrack;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.utility.JSONSerializable;
 
 import java.util.List;
 
-public interface RoundTrack extends Iterable<Die> {
+public interface RoundTrack extends Iterable<Die>, JSONSerializable {
 
     List<Die> getVisibleDice();
     int getTotalScore();

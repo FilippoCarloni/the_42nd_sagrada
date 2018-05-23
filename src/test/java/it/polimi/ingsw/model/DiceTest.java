@@ -4,8 +4,8 @@ import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Shade;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,5 +33,10 @@ class DiceTest {
         assertNotEquals(a.hashCode(), b.hashCode());
         assertEquals(a.getColor(), Color.BLUE);
         assertEquals(a.getShade(), Shade.LIGHT);
+
+        assertEquals(a, new PlasticDie(a.encode()));
+        assertEquals(Color.BLUE, new PlasticDie(a.encode()).getColor());
+        assertEquals(Shade.LIGHT, new PlasticDie(a.encode()).getShade());
+        assertEquals(a.hashCode(), new PlasticDie(a.encode()).hashCode());
     }
 }

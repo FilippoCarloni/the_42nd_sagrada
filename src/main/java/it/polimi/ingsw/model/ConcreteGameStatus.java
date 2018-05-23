@@ -1,18 +1,27 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commands.CommandManager;
+import it.polimi.ingsw.model.gameboard.cards.Card;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
+import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.players.ConcretePlayer;
+import it.polimi.ingsw.model.turns.ArrayTurnManager;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.turns.TurnManager;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConcreteGameStatus implements GameStatus {
 
@@ -30,6 +39,28 @@ public class ConcreteGameStatus implements GameStatus {
         GameStatusBuilder gsb = new GameStatusBuilder();
         players = gsb.getPlayers(lobbyPlayers);
         initialize();
+    }
+
+    public ConcreteGameStatus(JSONObject obj) {
+        players = new ArrayList<>();
+        JSONArray playerList = (JSONArray) obj.get("players");
+        for (Object o : playerList)
+            players.add(new ConcretePlayer((JSONObject) o));
+        dicePool = new ArrayList<>();
+        JSONArray dicePoolList = (JSONArray) obj.get("dice_pool");
+        for (Object o : dicePoolList)
+            dicePool.add(new PlasticDie((JSONObject) o));
+        diceBag = new ArrayDiceBag((JSONObject) obj.get("dice_bag"));
+        roundTrack = new PaperRoundTrack((JSONObject) obj.get("round_track"));
+        publicObjectives = new ArrayList<>();
+        JSONArray poList = (JSONArray) obj.get("public_objectives");
+        for (Object o : poList)
+            publicObjectives.add(PublicObjectiveCard.getCardFromJSON((JSONObject) o));
+        tools = new ArrayList<>();
+        JSONArray toolList = (JSONArray) obj.get("tools");
+        for (Object o : toolList)
+            tools.add(ToolCard.getCardFromJSON((JSONObject) o, this));
+        turnManager = new ArrayTurnManager((JSONObject) obj.get("turn_manager"));
     }
 
     public ConcreteGameStatus(String[] names, String[] windows, String[] toolNames) {
@@ -169,5 +200,27 @@ public class ConcreteGameStatus implements GameStatus {
             s = convertToHorizontal(s, p.toString());
         sb.append(s);
         return sb.toString();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        JSONArray playerList = new JSONArray();
+        playerList.addAll(players.stream().map(Player::encode).collect(Collectors.toList()));
+        obj.put("players", playerList);
+        JSONArray diceList = new JSONArray();
+        diceList.addAll(dicePool.stream().map(Die::encode).collect(Collectors.toList()));
+        obj.put("dice_pool", diceList);
+        obj.put("dice_bag", diceBag.encode());
+        obj.put("round_track", roundTrack.encode());
+        JSONArray poList = new JSONArray();
+        poList.addAll(publicObjectives.stream().map(Card::encode).collect(Collectors.toList()));
+        obj.put("public_objectives", poList);
+        JSONArray toolList = new JSONArray();
+        toolList.addAll(tools.stream().map(Card::encode).collect(Collectors.toList()));
+        obj.put("tools", toolList);
+        obj.put("turn_manager", turnManager.encode());
+        return obj;
     }
 }

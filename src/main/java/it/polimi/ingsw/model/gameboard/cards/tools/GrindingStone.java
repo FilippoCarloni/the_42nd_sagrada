@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gameboard.cards.tools;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Shade;
 
 import java.util.ArrayList;
 import java.util.List;

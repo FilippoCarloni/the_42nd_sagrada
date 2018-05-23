@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.turns.ArrayTurnManager;
@@ -17,7 +17,6 @@ class TurnManagerTest {
 
     @Test
     void testIllegalArgument() {
-        assertThrows(NullPointerException.class, () -> new ArrayTurnManager(null));
         Player p = new ConcretePlayer("player");
         ArrayList<Player> list = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> new ArrayTurnManager(list));
@@ -256,5 +255,43 @@ class TurnManagerTest {
         assertEquals(a, tm.getCurrentPlayer());
         tm.advanceTurn();
         assertEquals(a, tm.getCurrentPlayer());
+    }
+
+    @Test
+    void testJSON() {
+        Player a = new ConcretePlayer("a");
+        Player b = new ConcretePlayer("b");
+        Player c = new ConcretePlayer("c");
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(a);
+        players.add(b);
+        players.add(c);
+        TurnManager tm = new ArrayTurnManager(players);
+        TurnManager tmClone = new ArrayTurnManager(tm.encode());
+
+        for (int i = 0; i < 30; i++) {
+            assertEquality(tm, tmClone);
+            advance(tm, tmClone);
+        }
+
+        tm.takeTwoTurns();
+        tmClone.takeTwoTurns();
+        assertEquality(tm, tmClone);
+        advance(tm, tmClone);
+        assertEquality(tm, tmClone);
+        advance(tm, tmClone);
+        assertEquality(tm, tmClone);
+    }
+
+    private void assertEquality(TurnManager tm, TurnManager tmClone) {
+        assertEquals(tm.getCurrentPlayer().getUsername(), tmClone.getCurrentPlayer().getUsername());
+        assertEquals(tm.isSecondTurn(), tmClone.isSecondTurn());
+        assertEquals(tm.isRoundEnding(), tmClone.isRoundEnding());
+        assertEquals(tm.isRoundStarting(), tmClone.isRoundStarting());
+    }
+
+    private void advance(TurnManager tm, TurnManager tmClone) {
+        tm.takeTwoTurns();
+        tmClone.takeTwoTurns();
     }
 }

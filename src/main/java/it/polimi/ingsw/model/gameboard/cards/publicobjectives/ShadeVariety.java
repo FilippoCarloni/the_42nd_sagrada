@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.gameboard.cards.publicobjectives;
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.stream.Collectors;
@@ -13,9 +13,10 @@ import static java.util.stream.Collectors.counting;
 
 public class ShadeVariety extends AbstractCard implements PublicObjectiveCard {
 
-    ShadeVariety() {
+    ShadeVariety(int id) {
         name = "Shade Variety";
         description = "{5} Set of one of each value anywhere.";
+        this.id = id;
     }
 
     @Override

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.gameboard.cards;
 
+import org.json.simple.JSONObject;
+
 public abstract class AbstractCard implements Card {
 
     protected String name;
     protected String description;
+    protected int id;
     protected int pixelWidth = 21;
 
     protected String getUpperCard() {
@@ -59,5 +62,19 @@ public abstract class AbstractCard implements Card {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public int getID() {
+        return id;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        assert id > 0;
+        JSONObject obj = new JSONObject();
+        obj.put("id", id);
+        return obj;
     }
 }

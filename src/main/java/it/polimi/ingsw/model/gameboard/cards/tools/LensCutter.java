@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
-import it.polimi.ingsw.model.gameboard.utility.Color;
+import it.polimi.ingsw.model.utility.Color;
 
 import java.util.ArrayList;
 import java.util.List;

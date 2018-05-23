@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
+import it.polimi.ingsw.model.utility.Color;
 
 public final class StateHolder {
 

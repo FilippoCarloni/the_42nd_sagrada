@@ -32,4 +32,25 @@ class PlayerTest {
         assertEquals(playerFrame, p.getWindowFrame());
         assertEquals(username, p.getUsername());
     }
+
+    @Test
+    void testJSON() {
+        Player p = new ConcretePlayer("foo");
+        Player pClone = new ConcretePlayer(p.encode());
+
+        assertEquals(p.getUsername(), pClone.getUsername());
+        assertEquals(p.getWindowFrame(), pClone.getWindowFrame());
+        assertEquals(p.getFavorPoints(), pClone.getFavorPoints());
+        assertEquals(p.getPrivateObjective(), pClone.getPrivateObjective());
+
+        p.setWindowFrame((WindowFrame) new WindowFrameDeck().draw());
+        p.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
+        p.setFavorPoints(3);
+        pClone = new ConcretePlayer(p.encode());
+
+        assertEquals(p.getUsername(), pClone.getUsername());
+        assertEquals(p.getWindowFrame().getName(), pClone.getWindowFrame().getName());
+        assertEquals(p.getFavorPoints(), pClone.getFavorPoints());
+        assertEquals(p.getPrivateObjective().getColor(), pClone.getPrivateObjective().getColor());
+    }
 }

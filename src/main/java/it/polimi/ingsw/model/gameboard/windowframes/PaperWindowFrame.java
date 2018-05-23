@@ -2,9 +2,11 @@ package it.polimi.ingsw.model.gameboard.windowframes;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.*;
 
@@ -22,6 +24,28 @@ public class PaperWindowFrame implements WindowFrame {
         colorConstraints = generator.getColorConstraints();
         shadeConstraints = generator.getShadeConstraints();
         dice = new HashMap<>();
+    }
+
+    public PaperWindowFrame(JSONObject obj) {
+        name = (String) obj.get("name");
+        difficulty = (int) obj.get("difficulty");
+        dice = new HashMap<>();
+        colorConstraints = new HashMap<>();
+        shadeConstraints = new HashMap<>();
+        JSONArray list = (JSONArray) obj.get("coordinates");
+        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
+            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
+                for (Object o : list) {
+                    if ((int) ((JSONObject) o).get("row_index") == i && (int) ((JSONObject) o).get("column_index") == j) {
+                        if (((JSONObject) o).get("die") != null)
+                            dice.put(new Coordinate(i, j), new PlasticDie((JSONObject) ((JSONObject) o).get("die")));
+                        if (((JSONObject) o).get("color_constraint") != null)
+                            colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get("color_constraint")));
+                        if (((JSONObject) o).get("shade_constraint") != null)
+                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue((int) ((JSONObject) o).get("shade_constraint")));                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -169,5 +193,27 @@ public class PaperWindowFrame implements WindowFrame {
             }
             throw new NoSuchElementException("There are no more dice in the window frame.");
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        obj.put("name", name);
+        obj.put("difficulty", difficulty);
+        JSONArray list = new JSONArray();
+        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
+            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
+                JSONObject coordinate = new JSONObject();
+                coordinate.put("row_index", i);
+                coordinate.put("column_index", j);
+                coordinate.put("die", dice.get(new Coordinate(i, j)) == null ? null : dice.get(new Coordinate(i, j)).encode());
+                coordinate.put("color_constraint", colorConstraints.get(new Coordinate(i, j)) == null ? null : colorConstraints.get(new Coordinate(i, j)).getLabel());
+                coordinate.put("shade_constraint", shadeConstraints.get(new Coordinate(i, j)) == null ? null : shadeConstraints.get(new Coordinate(i, j)).getValue());
+                list.add(coordinate);
+            }
+        }
+        obj.put("coordinates", list);
+        return obj;
     }
 }

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
+import it.polimi.ingsw.model.utility.JSONSerializable;
+
 import java.util.List;
 
-public interface DiceBag {
+public interface DiceBag extends JSONSerializable {
 
     Die pick();
     List<Die> pick(int numOfDice);

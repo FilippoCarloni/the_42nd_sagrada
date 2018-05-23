@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.gameboard.cards.privateobjectives;
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.stream.StreamSupport;
@@ -13,10 +13,11 @@ public class PaperPrivateObjectiveCard extends AbstractCard implements PrivateOb
 
     private Color color;
 
-    PaperPrivateObjectiveCard(Color color) {
+    PaperPrivateObjectiveCard(Color color, int id) {
         this.name = "Shades of " + color.getLabel();
         this.description = "Sum of values on " + color.getLabel() + " dice.";
         this.color = color;
+        this.id = id;
     }
 
     @Override

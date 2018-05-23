@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.gameboard.windowframes;
 
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

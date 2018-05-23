@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Shade;
+import org.json.simple.JSONObject;
 
 import java.util.Random;
 
@@ -15,6 +16,12 @@ public class PlasticDie implements Die {
         this.id = id;
         this.color = Color.values()[new Random().nextInt(Color.values().length)];
         this.roll();
+    }
+
+    public PlasticDie(JSONObject obj) {
+        this.id = (int) obj.get("id");
+        this.color = Color.findByLabel((String) obj.get("color"));
+        this.shade = Shade.findByID(obj.get("shade").toString());
     }
 
     public PlasticDie(PlasticDie die) {
@@ -40,11 +47,15 @@ public class PlasticDie implements Die {
 
     @Override
     public void setColor(Color color) {
+        if (color == null)
+            throw new NullPointerException("Trying to set a null color.");
         this.color = color;
     }
 
     @Override
     public void setShade(Shade shade) {
+        if (shade == null)
+            throw new NullPointerException("Trying to set a null shade.");
         this.shade = shade;
     }
 
@@ -61,5 +72,15 @@ public class PlasticDie implements Die {
     @Override
     public String toString() {
         return this.color.paint(this.shade.toString());
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        obj.put("color", color.getLabel());
+        obj.put("shade", shade.getValue());
+        obj.put("id", id);
+        return obj;
     }
 }

@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model.turns;
 
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.players.ConcretePlayer;
+import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.players.Player;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +32,25 @@ public class ArrayTurnManager implements TurnManager {
         firstPlayerIndex = players.size() - 1;
         turnIndex = players.size() * 2 - 1;
         advanceTurn();
+    }
+
+    public ArrayTurnManager(JSONObject obj) {
+        roundStarting = (boolean) obj.get("round_starting");
+        roundEnding = (boolean) obj.get("round_ending");
+        turnIndex = (int) obj.get("turn_index");
+        firstPlayerIndex = (int) obj.get("first_player_index");
+        players = new ArrayList<>();
+        playerTurns = new ArrayList<>();
+        JSONArray playerList = (JSONArray) obj.get("players");
+        for (Object o : playerList)
+            players.add(new ConcretePlayer((JSONObject) o));
+        playerList = (JSONArray) obj.get("player_turns");
+        for (Object o : playerList)
+            for (Player p : players)
+                if (p.getUsername().equals(((JSONObject) o).get("username")))
+                    playerTurns.add(p);
+        for (Player p : playerTurns)
+            assert players.contains(p);
     }
 
     private void updateRoundStatus() {
@@ -88,5 +110,24 @@ public class ArrayTurnManager implements TurnManager {
             }
         }
         throw new NoSuchElementException("Current player already played two times during this round.");
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        obj.put("round_starting", roundStarting);
+        obj.put("round_ending", roundEnding);
+        obj.put("turn_index", turnIndex);
+        obj.put("first_player_index", firstPlayerIndex);
+        JSONArray playerList = new JSONArray();
+        for (Player p : players)
+            playerList.add(p.encode());
+        obj.put("players", playerList);
+        playerList = new JSONArray();
+        for (Player p : playerTurns)
+            playerList.add(p.encode());
+        obj.put("player_turns", playerList);
+        return obj;
     }
 }

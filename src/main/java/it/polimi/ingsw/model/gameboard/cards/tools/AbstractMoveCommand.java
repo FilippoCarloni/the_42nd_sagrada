@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 
 import static java.lang.Integer.parseInt;
 

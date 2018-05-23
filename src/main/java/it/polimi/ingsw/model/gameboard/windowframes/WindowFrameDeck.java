@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameboard.windowframes;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 
 import java.io.IOException;
 import java.nio.file.Files;

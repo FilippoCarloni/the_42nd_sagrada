@@ -1,12 +1,12 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ArrayDiceBag implements DiceBag {
 
@@ -23,6 +23,13 @@ public class ArrayDiceBag implements DiceBag {
             dice.add(die);
         }
         Collections.shuffle(dice);
+    }
+
+    public ArrayDiceBag(JSONObject obj) {
+        JSONArray list = (JSONArray) obj.get("dice");
+        dice = new ArrayList<>();
+        for (Object die : list)
+            dice.add(new PlasticDie((JSONObject) die));
     }
 
     @Override
@@ -51,5 +58,16 @@ public class ArrayDiceBag implements DiceBag {
         d.roll();
         dice.add(d);
         Collections.shuffle(dice);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        JSONArray list = new JSONArray();
+        list.addAll(dice.stream().map(Die::encode).collect(Collectors.toList()));
+        obj.put("dice", list);
+        obj.put("capacity", dice.size());
+        return obj;
     }
 }

@@ -7,8 +7,8 @@ import it.polimi.ingsw.model.commands.Pick;
 import it.polimi.ingsw.model.commands.Place;
 import it.polimi.ingsw.model.commands.rules.Rule;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
 
 import java.util.ArrayList;
 import java.util.List;

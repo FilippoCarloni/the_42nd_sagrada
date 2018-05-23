@@ -1,13 +1,33 @@
 package it.polimi.ingsw.model.gameboard.cards;
 
+import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.commands.Executable;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
+import org.json.simple.JSONObject;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public interface ToolCard extends Card, Executable {
-    int getID();
+
     int getFavorPoints();
     void addFavorPoints();
     List<Command> getCommands(String cmd);
+
+    static ToolCard getCardFromJSON(JSONObject obj, ConcreteGameStatus status) {
+        int id = (int) obj.get("id");
+        int favorPoints = (int) obj.get("favor_points");
+        Deck d = new ToolDeck(status);
+        while (d.size() > 0) {
+            ToolCard card = (ToolCard) d.draw();
+            if (card.getID() == id) {
+                while (card.getFavorPoints() < favorPoints)
+                    card.addFavorPoints();
+                assert card.getFavorPoints() == favorPoints;
+                return card;
+            }
+        }
+        throw new NoSuchElementException("Invalid JSON format: there's no matching card.");
+    }
 }

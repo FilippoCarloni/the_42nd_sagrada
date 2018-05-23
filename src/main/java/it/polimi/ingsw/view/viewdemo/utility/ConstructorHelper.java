@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.viewdemo.utility;
 
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;

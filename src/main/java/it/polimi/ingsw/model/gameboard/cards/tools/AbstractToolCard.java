@@ -3,10 +3,10 @@ package it.polimi.ingsw.model.gameboard.cards.tools;
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import org.json.simple.JSONObject;
 
 public abstract class AbstractToolCard extends AbstractCard implements ToolCard {
 
-    private int id;
     ConcreteGameStatus status;
     private int favorPoints;
 
@@ -32,11 +32,6 @@ public abstract class AbstractToolCard extends AbstractCard implements ToolCard 
                         status.getTurnManager().getCurrentPlayer().getFavorPoints() - 2 :
                         status.getTurnManager().getCurrentPlayer().getFavorPoints() - 1
         );
-    }
-
-    @Override
-    public int getID() {
-        return id;
     }
 
     @Override
@@ -68,5 +63,13 @@ public abstract class AbstractToolCard extends AbstractCard implements ToolCard 
     void tearDown() {
         status.getStateHolder().setToolActive(false);
         status.getStateHolder().setActiveToolID(0);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = super.encode();
+        obj.put("favor_points", favorPoints);
+        return obj;
     }
 }

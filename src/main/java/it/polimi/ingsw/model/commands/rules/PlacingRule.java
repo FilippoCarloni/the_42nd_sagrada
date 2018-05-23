@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.commands.rules;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 public class PlacingRule extends RuleDecorator {

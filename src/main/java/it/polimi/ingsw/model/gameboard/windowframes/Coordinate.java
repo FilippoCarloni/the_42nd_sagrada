@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.gameboard.windowframes;
 
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
 
 import static java.lang.Integer.parseInt;
 

@@ -2,11 +2,14 @@ package it.polimi.ingsw.model.gameboard.roundtrack;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
+import it.polimi.ingsw.model.utility.Parameters;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PaperRoundTrack implements RoundTrack {
 
@@ -16,10 +19,22 @@ public class PaperRoundTrack implements RoundTrack {
     private int[] diceOnSlot;
 
     public PaperRoundTrack() {
-        this.currentRoundNumber = 1;
-        this.totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
-        this.dice = new ArrayList<>();
-        this.diceOnSlot = new int[this.totalNumberOfRounds];
+        currentRoundNumber = 1;
+        totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
+        dice = new ArrayList<>();
+        diceOnSlot = new int[this.totalNumberOfRounds];
+    }
+
+    public PaperRoundTrack(JSONObject obj) {
+        totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
+        currentRoundNumber = (int) obj.get("current_round_number");
+        dice = new ArrayList<>();
+        for (Object die : (JSONArray) obj.get("all_dice"))
+            dice.add(new PlasticDie((JSONObject) die));
+        diceOnSlot = new int[this.totalNumberOfRounds];
+        JSONArray numOfDiceOnSlot = (JSONArray) obj.get("number_of_dice_on_slot");
+        for (int i = 0; i < numOfDiceOnSlot.size(); i++)
+            diceOnSlot[i] = (int) numOfDiceOnSlot.get(i);
     }
 
     @Override
@@ -105,5 +120,25 @@ public class PaperRoundTrack implements RoundTrack {
         for (int i = 0; i < totalNumberOfRounds; i++) sb.append("___");
         sb.append("_|");
         return sb.toString();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public JSONObject encode() {
+        JSONObject obj = new JSONObject();
+        obj.put("current_round_number", currentRoundNumber);
+        obj.put("total_number_of_rounds", totalNumberOfRounds);
+        JSONArray visibleDice = new JSONArray();
+        visibleDice.addAll(getVisibleDice().stream().map(Die::encode).collect(Collectors.toList()));
+        obj.put("visible_dice", visibleDice);
+        JSONArray allDice = new JSONArray();
+        allDice.addAll(dice.stream().map(Die::encode).collect(Collectors.toList()));
+        obj.put("all_dice", allDice);
+        JSONArray numberOfDiceOnSlot = new JSONArray();
+        for (int i : diceOnSlot)
+            numberOfDiceOnSlot.add(i);
+        obj.put("number_of_dice_on_slot", numberOfDiceOnSlot);
+        obj.put("total_number_of_dice", dice.size());
+        return obj;
     }
 }

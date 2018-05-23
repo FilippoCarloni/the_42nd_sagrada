@@ -2,12 +2,13 @@ package it.polimi.ingsw.model.gameboard.windowframes;
 
 import it.polimi.ingsw.model.gameboard.cards.Drawable;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONSerializable;
+import it.polimi.ingsw.model.utility.Shade;
 
 import java.util.Map;
 
-public interface WindowFrame extends Iterable<Die>, Drawable {
+public interface WindowFrame extends Iterable<Die>, Drawable, JSONSerializable {
 
     String getName();
     Map<Coordinate, Color> getColorConstraints();

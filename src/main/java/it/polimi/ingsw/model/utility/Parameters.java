@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.gameboard.utility;
+package it.polimi.ingsw.model.utility;
 
 public final class Parameters {
 

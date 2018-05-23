@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.commands.rules;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
+import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 

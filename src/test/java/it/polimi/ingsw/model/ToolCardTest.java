@@ -1,33 +1,51 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
+import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
+import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
+import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
+import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ToolCardTest {
 
     private TestWrapper tw;
 
     @Test
-    void printDeck() {
-        List<Player> players = new ArrayList<>();
-        players.add(new ConcretePlayer("foo"));
-        players.add(new ConcretePlayer("baz"));
-        Deck d = new ToolDeck(new ConcreteGameStatus(players));
-        while (d.size() > 0)
-            System.out.println(d.draw());
+    void testJSON() {
+        init("Eglomise Brush");
+        Deck d = new ToolDeck(tw.getGameStatus());
+        DiceBag db = new ArrayDiceBag();
+        WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
+        for (int i = 0; i < Parameters.MAX_ROWS; i++)
+            for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
+                w.put(db.pick(), i, j);
+        while (d.size() > 0) {
+            ToolCard card = (ToolCard) d.draw();
+            ToolCard cardClone = ToolCard.getCardFromJSON(card.encode(), tw.getGameStatus());
+            assertEquals(card.getName(), cardClone.getName());
+            assertEquals(card.getDescription(), cardClone.getDescription());
+            assertEquals(card.getID(), cardClone.getID());
+            assertEquals(card.encode(), cardClone.encode());
+            assertEquals(card.getFavorPoints(), cardClone.getFavorPoints());
+        }
     }
 
     private void init(String toolCard) {

@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.*;
+import it.polimi.ingsw.model.utility.Parameters;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,5 +73,30 @@ class WindowFrameTest {
         assertEquals(new Coordinate(0, 1).getColumn(), 1);
         assertEquals(new Coordinate(2, 3), new Coordinate(2, 3));
         assertNotEquals(new Coordinate(2, 4), new Coordinate(0, 0));
+    }
+
+    @Test
+    void testJSON() {
+        DiceBag db = new ArrayDiceBag();
+        Deck d = new WindowFrameDeck();
+        WindowFrame w = (WindowFrame) d.draw();
+        w.put(db.pick(), 2, 3);
+        w.put(db.pick(), 1, 1);
+        w.put(db.pick(), 0, 0);
+        w.put(db.pick(), 3, 4);
+        w.put(db.pick(), 3, 3);
+
+        WindowFrame clonedW = new PaperWindowFrame(w.encode());
+
+        assertEquals(w.getName(), clonedW.getName());
+        assertEquals(w.getDifficulty(), clonedW.getDifficulty());
+
+        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
+            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
+                assertEquals(w.getDie(i, j), clonedW.getDie(i, j));
+                assertEquals(w.getColorConstraints().get(new Coordinate(i, j)), clonedW.getColorConstraints().get(new Coordinate(i, j)));
+                assertEquals(w.getShadeConstraints().get(new Coordinate(i, j)), clonedW.getShadeConstraints().get(new Coordinate(i, j)));
+            }
+        }
     }
 }

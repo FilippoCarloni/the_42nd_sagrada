@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.viewdemo.databaseview;
 
-import it.polimi.ingsw.model.gameboard.utility.Color;
-import it.polimi.ingsw.model.gameboard.utility.Parameters;
-import it.polimi.ingsw.model.gameboard.utility.Shade;
+import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.Parameters;
+import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.gameboard.windowframes.FileWindowPatternGenerator;
 import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
