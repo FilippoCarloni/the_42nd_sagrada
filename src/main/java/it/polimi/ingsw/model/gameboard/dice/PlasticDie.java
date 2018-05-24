@@ -6,6 +6,8 @@ import org.json.simple.JSONObject;
 
 import java.util.Random;
 
+import static java.lang.Integer.parseInt;
+
 public class PlasticDie implements Die {
 
     private Color color;
@@ -23,7 +25,7 @@ public class PlasticDie implements Die {
      * @param obj A JSON Object that holds Die-like information
      */
     public PlasticDie(JSONObject obj) {
-        this.id = (int) obj.get("id");
+        this.id = parseInt(obj.get("id").toString());
         this.color = Color.findByLabel((String) obj.get("color"));
         this.shade = Shade.findByID(obj.get("shade").toString());
     }

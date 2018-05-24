@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameStatusTest {
@@ -40,9 +44,12 @@ class GameStatusTest {
     void testJSON() {
 
         // TODO: should be tested more deeply
-
-        ConcreteGameStatus gs = new ConcreteGameStatus(getPlayers());
-        ConcreteGameStatus gsClone = new ConcreteGameStatus(gs.encode());
-        assertEquality(gs, gsClone);
+        try {
+            ConcreteGameStatus gs = new ConcreteGameStatus(getPlayers());
+            ConcreteGameStatus gsClone = new ConcreteGameStatus((JSONObject) new JSONParser().parse(gs.encode().toString()));
+            assertEquality(gs, gsClone);
+        } catch (ParseException e) {
+            assertFalse(true);
+        }
     }
 }

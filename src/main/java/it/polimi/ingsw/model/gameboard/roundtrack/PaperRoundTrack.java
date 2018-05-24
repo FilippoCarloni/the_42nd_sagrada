@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 public class PaperRoundTrack implements RoundTrack {
 
     private int currentRoundNumber;
@@ -33,14 +35,14 @@ public class PaperRoundTrack implements RoundTrack {
      */
     public PaperRoundTrack(JSONObject obj) {
         totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
-        currentRoundNumber = (int) obj.get("current_round_number");
+        currentRoundNumber = parseInt(obj.get("current_round_number").toString());
         dice = new ArrayList<>();
         for (Object die : (JSONArray) obj.get("all_dice"))
             dice.add(new PlasticDie((JSONObject) die));
         diceOnSlot = new int[this.totalNumberOfRounds];
         JSONArray numOfDiceOnSlot = (JSONArray) obj.get("number_of_dice_on_slot");
         for (int i = 0; i < numOfDiceOnSlot.size(); i++)
-            diceOnSlot[i] = (int) numOfDiceOnSlot.get(i);
+            diceOnSlot[i] = parseInt(numOfDiceOnSlot.get(i).toString());
     }
 
     @Override

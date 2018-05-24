@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
-public class ColorDiagonals extends AbstractCard implements PublicObjectiveCard {
+class ColorDiagonals extends AbstractCard implements PublicObjectiveCard {
 
     ColorDiagonals(int id) {
         name = "Color Diagonals";

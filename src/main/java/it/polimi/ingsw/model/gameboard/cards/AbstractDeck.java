@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+/**
+ * Represents a basic deck with generic Drawable objects as its card content.
+ * Holds the implementation of the draw method that must be equal for every deck.
+ * A concrete deck should be an AbstractDeck child and should fill itself with Drawable objects.
+ */
 public abstract class AbstractDeck implements Deck {
 
     private ArrayList<Drawable> cards;

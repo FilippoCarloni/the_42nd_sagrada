@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static java.lang.Integer.parseInt;
+
 public interface ToolCard extends Card, Executable {
 
     int getFavorPoints();
@@ -16,8 +18,8 @@ public interface ToolCard extends Card, Executable {
     List<Command> getCommands(String cmd);
 
     static ToolCard getCardFromJSON(JSONObject obj, ConcreteGameStatus status) {
-        int id = (int) obj.get("id");
-        int favorPoints = (int) obj.get("favor_points");
+        int id = parseInt(obj.get("id").toString());
+        int favorPoints = parseInt(obj.get("favor_points").toString());
         Deck d = new ToolDeck(status);
         while (d.size() > 0) {
             ToolCard card = (ToolCard) d.draw();

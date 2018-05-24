@@ -12,6 +12,8 @@ import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
+// TODO: make this class package-private
+
 public class FileWindowPatternGenerator implements WindowPatternGenerator {
 
     private String name;

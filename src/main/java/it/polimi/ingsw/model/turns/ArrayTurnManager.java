@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
+import static java.lang.Integer.parseInt;
 
 public class ArrayTurnManager implements TurnManager {
 
@@ -21,12 +24,16 @@ public class ArrayTurnManager implements TurnManager {
     private int turnIndex;
     private int firstPlayerIndex;
 
+    /**
+     * Generates a Sagrada turn manager that holds the drafting logic.
+     * It is implemented with an array-like structure.
+     */
     public ArrayTurnManager(List<Player> players) {
         if (players == null)
             throw new NullPointerException("Cannot manage turns on a null list of players.");
         if (players.size() < 2 || players.size() > Parameters.MAX_PLAYERS)
             throw new IllegalArgumentException("Illegal number of players.");
-        this.players = players;
+        this.players = players.stream().map(p -> new ConcretePlayer(p.encode())).collect(Collectors.toList());
         playerTurns = new ArrayList<>();
         roundEnding = true;
         firstPlayerIndex = players.size() - 1;
@@ -34,11 +41,15 @@ public class ArrayTurnManager implements TurnManager {
         advanceTurn();
     }
 
+    /**
+     * Generates a clone of the turn manager represented with JSON syntax.
+     * @param obj A JSON Object that holds TurnManager-like information
+     */
     public ArrayTurnManager(JSONObject obj) {
         roundStarting = (boolean) obj.get("round_starting");
         roundEnding = (boolean) obj.get("round_ending");
-        turnIndex = (int) obj.get("turn_index");
-        firstPlayerIndex = (int) obj.get("first_player_index");
+        turnIndex = parseInt(obj.get("turn_index").toString());
+        firstPlayerIndex = parseInt(obj.get("first_player_index").toString());
         players = new ArrayList<>();
         playerTurns = new ArrayList<>();
         JSONArray playerList = (JSONArray) obj.get("players");
@@ -70,7 +81,7 @@ public class ArrayTurnManager implements TurnManager {
 
     @Override
     public Player getCurrentPlayer() {
-        return playerTurns.get(turnIndex);
+        return new ConcretePlayer(playerTurns.get(turnIndex).encode());
     }
 
     @Override

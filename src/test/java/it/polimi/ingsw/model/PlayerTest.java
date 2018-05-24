@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PlayerTest {
 
@@ -34,6 +35,11 @@ class PlayerTest {
         assertEquals(playerObjective.getID(), p.getPrivateObjective().getID());
         assertEquals(playerFrame.getName(), p.getWindowFrame().getName());
         assertEquals(username, p.getUsername());
+
+        assertEquals(p.getWindowFrame().getDifficulty(), p.getFavorPoints());
+        assertTrue(2 < p.getFavorPoints());
+        p.setFavorPoints(2);
+        assertEquals(2, p.getFavorPoints());
     }
 
     /**

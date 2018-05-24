@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import org.json.simple.JSONObject;
 
+import static java.lang.Integer.parseInt;
+
 public class ConcretePlayer implements Player{
 
     private String username;
@@ -26,7 +28,7 @@ public class ConcretePlayer implements Player{
      */
     public ConcretePlayer(JSONObject obj) {
         username = (String) obj.get("username");
-        favorPoints = (int) obj.get("favor_points");
+        favorPoints = parseInt(obj.get("favor_points").toString());
         JSONObject windowFrame = (JSONObject) obj.get("window_frame");
         if (windowFrame != null)
             window = new PaperWindowFrame(windowFrame);
@@ -73,6 +75,16 @@ public class ConcretePlayer implements Player{
         if (points < 0)
             throw new IllegalArgumentException("Favor points cannot be negative.");
         favorPoints = points;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o != null && o instanceof ConcretePlayer && ((ConcretePlayer) o).getUsername().equals(username);
+    }
+
+    @Override
+    public int hashCode() {
+        return username.hashCode();
     }
 
     @Override

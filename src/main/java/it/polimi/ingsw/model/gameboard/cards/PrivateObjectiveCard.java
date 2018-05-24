@@ -6,6 +6,8 @@ import org.json.simple.JSONObject;
 
 import java.util.NoSuchElementException;
 
+import static java.lang.Integer.parseInt;
+
 /**
  * Represents a Sagrada private objective card.
  * Every player has only one private objective card during a game.
@@ -24,7 +26,7 @@ public interface PrivateObjectiveCard extends ObjectiveCard {
      * @return A PrivateObjectiveCard instance
      */
     static PrivateObjectiveCard getCardFromJSON(JSONObject obj) {
-        int id = (int) obj.get("id");
+        int id = parseInt(obj.get("id").toString());
         Deck d = new PrivateObjectiveDeck();
         while (d.size() > 0) {
             PrivateObjectiveCard card = (PrivateObjectiveCard) d.draw();

@@ -7,11 +7,10 @@ import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.counting;
 
-public class DarkShades extends AbstractCard implements PublicObjectiveCard {
+class DarkShades extends AbstractCard implements PublicObjectiveCard {
 
     DarkShades(int id) {
         name = "Dark shades";

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.counting;
 
-public class ShadeVariety extends AbstractCard implements PublicObjectiveCard {
+class ShadeVariety extends AbstractCard implements PublicObjectiveCard {
 
     ShadeVariety(int id) {
         name = "Shade Variety";

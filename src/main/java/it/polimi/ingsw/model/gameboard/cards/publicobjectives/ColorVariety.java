@@ -7,11 +7,10 @@ import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.counting;
 
-public class ColorVariety extends AbstractCard implements PublicObjectiveCard {
+class ColorVariety extends AbstractCard implements PublicObjectiveCard {
 
     ColorVariety(int id) {
         name = "Color Variety";

@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
-public class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjectiveCard {
+class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjectiveCard {
 
     private Color color;
 

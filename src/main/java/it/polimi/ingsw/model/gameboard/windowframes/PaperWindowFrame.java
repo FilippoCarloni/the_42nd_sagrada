@@ -10,6 +10,8 @@ import org.json.simple.JSONObject;
 
 import java.util.*;
 
+import static java.lang.Integer.parseInt;
+
 public class PaperWindowFrame implements WindowFrame {
 
     private String name;
@@ -36,7 +38,7 @@ public class PaperWindowFrame implements WindowFrame {
      */
     public PaperWindowFrame(JSONObject obj) {
         name = (String) obj.get("name");
-        difficulty = (int) obj.get("difficulty");
+        difficulty = parseInt(obj.get("difficulty").toString());
         dice = new HashMap<>();
         colorConstraints = new HashMap<>();
         shadeConstraints = new HashMap<>();
@@ -44,13 +46,15 @@ public class PaperWindowFrame implements WindowFrame {
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 for (Object o : list) {
-                    if ((int) ((JSONObject) o).get("row_index") == i && (int) ((JSONObject) o).get("column_index") == j) {
+                    int row = parseInt(((JSONObject) o).get("row_index").toString());
+                    int column = parseInt(((JSONObject) o).get("column_index").toString());
+                    if (row == i && column == j) {
                         if (((JSONObject) o).get("die") != null)
                             dice.put(new Coordinate(i, j), new PlasticDie((JSONObject) ((JSONObject) o).get("die")));
                         if (((JSONObject) o).get("color_constraint") != null)
                             colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get("color_constraint")));
                         if (((JSONObject) o).get("shade_constraint") != null)
-                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue((int) ((JSONObject) o).get("shade_constraint")));                    }
+                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt(((JSONObject) o).get("shade_constraint").toString())));                    }
                 }
             }
         }
@@ -98,7 +102,7 @@ public class PaperWindowFrame implements WindowFrame {
         try {
             return dice.get(new Coordinate(row, column)) == null;
         } catch (IllegalArgumentException e) {
-            return false;
+            return true;
         }
     }
 

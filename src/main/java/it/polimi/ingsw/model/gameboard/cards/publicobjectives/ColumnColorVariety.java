@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ColumnColorVariety extends AbstractCard implements PublicObjectiveCard {
+class ColumnColorVariety extends AbstractCard implements PublicObjectiveCard {
 
     ColumnColorVariety(int id) {
         name = "Column Color Variety";

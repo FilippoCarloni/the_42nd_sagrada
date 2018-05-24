@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.gameboard.cards;
 
 import org.json.simple.JSONObject;
 
+/**
+ * Represents a basic card with its basic functionality.
+ * Every Card is a child of AbstractCard.
+ */
 public abstract class AbstractCard implements Card {
 
     protected String name;
