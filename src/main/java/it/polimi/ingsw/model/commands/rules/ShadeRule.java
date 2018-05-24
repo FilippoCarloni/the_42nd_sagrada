@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShadeRule extends RuleDecorator {
-
-    // TODO: refactor logic
+class ShadeRule extends RuleDecorator {
 
     ShadeRule() {
         super(null);
@@ -25,22 +23,14 @@ public class ShadeRule extends RuleDecorator {
         Shade dieShade = die.getShade();
         List<Die> windowDice = new ArrayList<>();
         Die d;
-        try {
-            d = windowFrame.getDie(row, column - 1);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row - 1, column);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row, column + 1);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row + 1, column);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
+        d = windowFrame.getDie(row, column - 1);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row - 1, column);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row, column + 1);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row + 1, column);
+        if (d != null) windowDice.add(d);
         for (Die windowDie : windowDice)
             if (windowDie.getShade().equals(dieShade))
                 return false;

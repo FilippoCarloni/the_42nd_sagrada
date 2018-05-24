@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 
@@ -33,7 +32,7 @@ public class ArrayTurnManager implements TurnManager {
             throw new NullPointerException("Cannot manage turns on a null list of players.");
         if (players.size() < 2 || players.size() > Parameters.MAX_PLAYERS)
             throw new IllegalArgumentException("Illegal number of players.");
-        this.players = players.stream().map(p -> new ConcretePlayer(p.encode())).collect(Collectors.toList());
+        this.players = players;
         playerTurns = new ArrayList<>();
         roundEnding = true;
         firstPlayerIndex = players.size() - 1;
@@ -81,7 +80,7 @@ public class ArrayTurnManager implements TurnManager {
 
     @Override
     public Player getCurrentPlayer() {
-        return new ConcretePlayer(playerTurns.get(turnIndex).encode());
+        return playerTurns.get(turnIndex);
     }
 
     @Override

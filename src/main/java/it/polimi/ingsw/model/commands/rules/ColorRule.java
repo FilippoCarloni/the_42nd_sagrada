@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorRule extends RuleDecorator {
+class ColorRule extends RuleDecorator {
 
     ColorRule() {
         super(null);
@@ -23,22 +23,14 @@ public class ColorRule extends RuleDecorator {
         Color dieColor = die.getColor();
         List<Die> windowDice = new ArrayList<>();
         Die d;
-        try {
-            d = windowFrame.getDie(row, column - 1);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row - 1, column);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row, column + 1);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
-        try {
-            d = windowFrame.getDie(row + 1, column);
-            if (d != null) windowDice.add(d);
-        } catch (IllegalArgumentException e) {}
+        d = windowFrame.getDie(row, column - 1);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row - 1, column);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row, column + 1);
+        if (d != null) windowDice.add(d);
+        d = windowFrame.getDie(row + 1, column);
+        if (d != null) windowDice.add(d);
         for (Die windowDie : windowDice)
             if (windowDie.getColor().equals(dieColor))
                 return false;

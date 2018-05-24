@@ -51,7 +51,7 @@ public class ConcretePlayer implements Player{
 
     @Override
     public WindowFrame getWindowFrame() {
-        return window == null ? null : new PaperWindowFrame(window.encode());
+        return window;
     }
 
     @Override
