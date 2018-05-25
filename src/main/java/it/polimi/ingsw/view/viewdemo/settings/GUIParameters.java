@@ -10,8 +10,10 @@ public final class GUIParameters {
     public static final double MENU_BUTTON_WIDTH = 450;
     public static final double MENU_BUTTON_HEIGHT = 60;
     public static final int NUM_COLUMNS = 3;
-    public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
-    public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
+    /*public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
+    public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();*/
+    public static final double SCREEN_WIDTH = 1366;
+    public static final double SCREEN_HEIGHT = 768;
     public static final String BG_IMAGE_PATH = "src/main/java/res/images/sagrada_menu_bg.png";
     public static final String COLOR_SHADE_IMAGE_PATH = "src/main/java/res/images/";
     public static final String DEFAULT_IMAGE_PATH = "src/main/java/res/images/default.png";
