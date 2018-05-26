@@ -6,10 +6,6 @@ import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
-
 class LightShades extends AbstractCard implements PublicObjectiveCard {
 
     LightShades(int id) {
@@ -21,16 +17,15 @@ class LightShades extends AbstractCard implements PublicObjectiveCard {
     @Override
     public int getValuePoints(WindowFrame window) {
         if (window == null) throw new NullPointerException("Null map.");
-        return window.getDice().stream()
-                .map(Die::getShade)
-                .filter(s -> s.equals(Shade.LIGHTEST) || s.equals(Shade.LIGHTER))
-                .collect(Collectors.groupingBy(x -> x, counting()))
-                .values()
-                .stream()
-                .mapToInt(Long::intValue)
-                .summaryStatistics()
-                .getMin()
-                * 2;
+        int lightest = 0;
+        int lighter = 0;
+        for (Die d : window.getDice()) {
+            if (d.getShade().equals(Shade.LIGHTEST))
+                lightest++;
+            else if (d.getShade().equals(Shade.LIGHTER))
+                lighter++;
+        }
+        return lighter < lightest ? lighter * 2 : lightest * 2;
     }
 
     @Override

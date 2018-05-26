@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PublicObjectiveCardTest {
 
@@ -41,6 +42,14 @@ class PublicObjectiveCardTest {
             PublicObjectiveCard c = (PublicObjectiveCard) d.draw();
             System.out.println("Value points for " + c.getName() + ": " + c.getValuePoints(w));
         }
+    }
+
+    @Test
+    void emptyMapTest() {
+        WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
+        Deck d = new PublicObjectiveDeck();
+        while (d.size() > 0)
+            assertTrue((((PublicObjectiveCard) d.draw()).getValuePoints(w) == 0));
     }
 
     @Test

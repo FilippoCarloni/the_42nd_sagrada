@@ -21,25 +21,25 @@ class ColorDiagonals extends AbstractCard implements PublicObjectiveCard {
         boolean found;
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
-                found = false;
-                if (i - 1 >= 0 && j - 1 >= 0 &&
-                        window.getDie(i, j).getColor().equals(window.getDie(i - 1, j - 1).getColor())) {
-                    found = true;
-                    valuePoints++;
+                if (window.getDie(i, j) != null) {
+
+                    found = (window.getDie(i - 1, j - 1) != null &&
+                            window.getDie(i, j).getColor() == window.getDie(i - 1, j - 1).getColor());
+
+                    if (!found)
+                        found = (window.getDie(i - 1, j + 1) != null &&
+                                window.getDie(i, j).getColor() == window.getDie(i - 1, j + 1).getColor());
+
+                    if (!found)
+                        found = (window.getDie(i + 1, j - 1) != null &&
+                                window.getDie(i, j).getColor() == window.getDie(i + 1, j - 1).getColor());
+
+                    if (!found)
+                        found = (window.getDie(i + 1, j + 1) != null &&
+                                window.getDie(i, j).getColor() == window.getDie(i + 1, j + 1).getColor());
+
+                    if (found) valuePoints++;
                 }
-                if (!found && i - 1 >= 0 && j + 1 < Parameters.MAX_COLUMNS &&
-                        window.getDie(i, j).getColor().equals(window.getDie(i - 1, j + 1).getColor())) {
-                    found = true;
-                    valuePoints++;
-                }
-                if (!found && i + 1 < Parameters.MAX_ROWS && j - 1 >= 0 &&
-                        window.getDie(i, j).getColor().equals(window.getDie(i + 1, j - 1).getColor())) {
-                    found = true;
-                    valuePoints++;
-                }
-                if (!found && i + 1 < Parameters.MAX_ROWS && j + 1 < Parameters.MAX_COLUMNS &&
-                        window.getDie(i, j).getColor().equals(window.getDie(i + 1, j + 1).getColor()))
-                    valuePoints++;
             }
         }
         return valuePoints;

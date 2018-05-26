@@ -23,6 +23,9 @@ import it.polimi.ingsw.model.turns.TurnManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * @deprecated
+ */
 public final class GameStatusBuilder {
 
     public RoundTrack getRoundTrack() {

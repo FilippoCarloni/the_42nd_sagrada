@@ -23,6 +23,9 @@ import org.json.simple.JSONObject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/*
+ * @deprecated
+ */
 public class ConcreteGameStatus implements GameStatus {
 
     private List<Player> players;

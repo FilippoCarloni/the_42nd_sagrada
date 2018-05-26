@@ -47,6 +47,7 @@ public class ArrayDiceBag implements DiceBag {
     public Die pick() {
         if (dice.isEmpty())
             throw new NoSuchElementException("There are no more dice in the bag.");
+        Collections.shuffle(dice);
         return dice.remove(dice.size() - 1);
     }
 

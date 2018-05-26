@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.commands.rules;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
@@ -16,10 +17,10 @@ class PlacingRule extends RuleDecorator {
 
     private boolean ifMapEmpty(WindowFrame windowFrame, int row, int column) {
         return (windowFrame.getDice().isEmpty() && (
-                (row == 0 && column >= 0 && column < Parameters.MAX_COLUMNS) ||
-                (column == 0 && row >= 0 && row < Parameters.MAX_ROWS) ||
-                (row == Parameters.MAX_ROWS - 1 && column >= 0 && column < Parameters.MAX_COLUMNS) ||
-                (column == Parameters.MAX_COLUMNS - 1 && row >= 0 && row < Parameters.MAX_ROWS))
+                (row == 0 && Coordinate.validateColumn(column)) ||
+                (column == 0 && Coordinate.validateRow(row)) ||
+                (row == Parameters.MAX_ROWS - 1 && Coordinate.validateColumn(column)) ||
+                (column == Parameters.MAX_COLUMNS - 1 && Coordinate.validateRow(row)))
         );
     }
 
