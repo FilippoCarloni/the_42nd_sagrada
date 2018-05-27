@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commands.CommandManager;
-import it.polimi.ingsw.model.commands.ConcreteCommandManager;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
@@ -36,9 +35,9 @@ public final class GameStatusBuilder {
         return new ArrayDiceBag();
     }
 
-    public CommandManager getCommandManager(ConcreteGameStatus status) {
+    /*public CommandManager getCommandManager(ConcreteGameStatus status) {
         return new ConcreteCommandManager(status);
-    }
+    }*/
 
     public StateHolder getStateHolder() {
         return new StateHolder();

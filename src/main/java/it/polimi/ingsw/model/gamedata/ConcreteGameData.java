@@ -136,7 +136,7 @@ public class ConcreteGameData implements GameData {
             int emptySlots = Parameters.MAX_COLUMNS * Parameters.MAX_ROWS - w.getDice().size();
             playerScore -= emptySlots;
             if (playerScore < 0) playerScore = 0;
-            scoreMap.put(p, playerScore);
+            scoreMap.put(new ConcretePlayer(p.encode()), playerScore);
         }
         return scoreMap;
     }

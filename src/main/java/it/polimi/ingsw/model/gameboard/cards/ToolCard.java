@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.gameboard.cards;
 
 import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
-import it.polimi.ingsw.model.commands.Executable;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import org.json.simple.JSONObject;
 
@@ -11,7 +10,7 @@ import java.util.NoSuchElementException;
 
 import static java.lang.Integer.parseInt;
 
-public interface ToolCard extends Card, Executable {
+public interface ToolCard extends Card {
 
     int getFavorPoints();
     void addFavorPoints();

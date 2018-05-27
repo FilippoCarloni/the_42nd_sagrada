@@ -1,51 +1,79 @@
 package it.polimi.ingsw.model.commands;
 
-import it.polimi.ingsw.model.ConcreteGameStatus;
+import it.polimi.ingsw.model.commands.conditions.Condition;
+import it.polimi.ingsw.model.gamedata.GameData;
+import it.polimi.ingsw.model.players.Player;
 
-import java.util.function.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+
+import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_NOT_YOUR_TURN;
+import static java.lang.Integer.parseInt;
 
 public abstract class AbstractCommand implements Command {
 
-    private ConcreteGameStatus status;
     private String cmd;
-    private String regExp;
-    private Predicate<String[]> legalPredicate;
+    private GameData gameData;
+    private Player player;
+    private List<Condition> conditions;
 
-    public AbstractCommand(ConcreteGameStatus status, String string) {
-        if (status == null || string == null)
-            throw new NullPointerException("Command must be initialized with not null parameters.");
-        this.status = status;
-        this.cmd = string;
+    public AbstractCommand(Player player, GameData gameData, String cmd) {
+        assert player != null;
+        assert gameData != null;
+        assert cmd != null;
+        this.cmd = cmd;
+        this.gameData = gameData;
+        this.player = player;
+        conditions = new ArrayList<>();
     }
 
-    protected ConcreteGameStatus getStatus() {
-        return status;
+    private void checkConditions() throws IllegalCommandException {
+        if (!player.getUsername().equals(gameData.getTurnManager().getCurrentPlayer().getUsername()))
+            throw new IllegalCommandException(ERR_NOT_YOUR_TURN);
+        for (Condition c : conditions)
+            c.check();
     }
 
-    protected String getCmd() {
-        return cmd;
+    public int[] getArgs() {
+        String[] stringArgs = cmd.split(" ");
+        if (stringArgs.length == 0)
+            return new int[0];
+        int[] args = new int[stringArgs.length - 1];
+        for (int i = 1; i < stringArgs.length; i++)
+            args[i - 1] = parseInt(stringArgs[i]) - 1;
+        return args;
     }
 
-    protected void setRegExp(String regExp) {
-        this.regExp = regExp;
+    protected void addCondition(Condition condition) {
+        assert condition != null;
+        conditions.add(condition);
     }
 
-    protected void setLegalPredicate(Predicate<String[]> legalPredicate) {
-        this.legalPredicate = legalPredicate;
+    public abstract String getRegExp();
+
+    public abstract void executionWhenLegal();
+
+    public GameData getGameData() {
+        return gameData;
     }
 
     @Override
-    public boolean isValid() {
-        if (regExp == null)
-            throw new NullPointerException("Missing regular expression for command validation.");
-        return Pattern.compile(regExp).asPredicate().test(cmd);
+    public final boolean isValid() {
+        return Pattern.compile("^" + getRegExp() + "$").asPredicate().test(cmd);
     }
 
     @Override
-    public boolean isLegal() {
-        if (legalPredicate == null)
-            throw new NullPointerException("Missing legal predicate for command.");
-        return isValid() && legalPredicate.test(cmd.split(" "));
+    public final void execute() throws IllegalCommandException {
+        if (isValid()) {
+            checkConditions();
+            executionWhenLegal();
+            gameData.setUndoAvailable(true);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "[ ] " + player.getUsername() + ": " + cmd;
     }
 }

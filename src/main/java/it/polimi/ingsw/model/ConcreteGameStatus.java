@@ -83,7 +83,7 @@ public class ConcreteGameStatus implements GameStatus {
         publicObjectives = gsb.getPublicObjectives(Parameters.PUBLIC_OBJECTIVES);
         tools = gsb.getTools(Parameters.TOOL_CARDS, this);
         turnManager = gsb.getTurnManager(players);
-        commandManager = gsb.getCommandManager(this);
+        //commandManager = gsb.getCommandManager(this);
         stateHolder = gsb.getStateHolder();
         fillDicePool();
     }
@@ -146,13 +146,14 @@ public class ConcreteGameStatus implements GameStatus {
 
     @Override
     public boolean isLegal(Player player, String command) {
-        return player.equals(turnManager.getCurrentPlayer()) && commandManager.isLegal(command);
+        //return player.equals(turnManager.getCurrentPlayer()) && commandManager.isLegal(command);
+        return false;
     }
 
     @Override
     public void execute(Player player, String command) {
         if (isLegal(player, command)) {
-            commandManager.execute(command);
+            //commandManager.execute(command);
         }
     }
 

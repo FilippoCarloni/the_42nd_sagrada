@@ -1,7 +1,13 @@
 package it.polimi.ingsw.model.commands;
 
+import it.polimi.ingsw.model.gamedata.GameData;
+import it.polimi.ingsw.model.players.Player;
+
 public interface CommandManager {
-    boolean isValid(String cmd);
-    boolean isLegal(String cmd);
-    void execute(String cmd);
+    GameData getCurrentData();
+    void executeCommand(Player player, String cmd) throws IllegalCommandException;
+    void undoCommand();
+    boolean isUndoAvailable();
+    void redoCommand();
+    boolean isRedoAvailable();
 }

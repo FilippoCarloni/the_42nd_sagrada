@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.commands;
 
-public interface Command extends Executable {
+public interface Command {
     boolean isValid();
+    void execute() throws IllegalCommandException;
 }
