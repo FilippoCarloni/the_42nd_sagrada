@@ -80,13 +80,7 @@ public class RemoteClient implements Runnable,GameObserver {
                             break;
                         case "play":
                             if(!sessionID.equals(ANONYMOUS)) {
-                                if(game==null) {
-                                    send("Waiting others players ...");
-                                }
-                                else
-                                    send("Restoring game");
                                 game = lobby.getGame(sessionID).getGameController();
-                                send(game.getStatus(sessionID));
                             }else
                                 send ("You are not already logged");
                             break;
@@ -126,7 +120,7 @@ public class RemoteClient implements Runnable,GameObserver {
             in.close();
             out.close();
             client.close();
-            logger.info(sessionID+" disconnection");
+            logger.info(() -> sessionID+" disconnection");
         } catch (IOException e) {
             logger.log(Level.SEVERE,"Connection of new client over socket error",e);
         }

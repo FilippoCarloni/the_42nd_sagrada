@@ -35,7 +35,7 @@ public class CentralServer {
             if(!Pattern.compile("^[a-zA-Z0-9_-]{4,12}$").asPredicate().test(filtred))
                 throw new RemoteException("The username is not valid!");
             for (WrappedPlayer s : players)
-                if (s.getPlayer().getUsername().equals(filtred)) {
+                if (s.getPlayer().getUsername().compareToIgnoreCase((filtred))==0) {
                     throw new Exception("Username already used");
                 }
             x=new WrappedPlayer(filtred,obs);
@@ -68,9 +68,10 @@ public class CentralServer {
             }
             game = gl.parallelStream().filter(x -> x.getGameController().isPlaying(player.get(0))).collect(Collectors.toList());
             if (game.size() == 1) {
+                game.get(0).getGameController().reconnect(player.get(0));
                 return game.get(0);
             }
-
+            player.get(0).getObserver().update(observable,"Waiting others players ...");
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
                 waiting.parallelStream().forEach(x -> {
                     x.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.gameboard.cards;
 
-import it.polimi.ingsw.model.ConcreteGameStatus;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
+import it.polimi.ingsw.model.gamedata.ConcreteGameData;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface ToolCard extends Card {
     void addFavorPoints();
     List<Command> getCommands(String cmd);
 
-    static ToolCard getCardFromJSON(JSONObject obj, ConcreteGameStatus status) {
+    static ToolCard getCardFromJSON(JSONObject obj, ConcreteGameData status) {
         int id = parseInt(obj.get("id").toString());
         int favorPoints = parseInt(obj.get("favor_points").toString());
         Deck d = new ToolDeck(status);

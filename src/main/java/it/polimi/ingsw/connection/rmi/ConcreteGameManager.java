@@ -38,7 +38,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
 
     @Override
     public String getStatus(String sessionID) throws RemoteException {
-        logger.info(()->"Starus request from: "+sessionID);
+        logger.info(()->"Status request from: "+sessionID);
         try {
             return gameController.getStatus(sessionID);
         }catch (Exception e) {

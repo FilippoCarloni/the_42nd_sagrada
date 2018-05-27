@@ -4,12 +4,8 @@ import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
 
-import javax.sound.midi.SysexMessage;
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -182,7 +178,6 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                             view.update(gameManger.getStatus(sessionID));
                         else
                             view.update("You are not playing");
-                        view.update("> ");
                     }else {
                         out.println("view");
                         out.flush();

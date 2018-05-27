@@ -1,9 +1,13 @@
 package it.polimi.ingsw.connection.client;
 
+import it.polimi.ingsw.model.gamedata.ConcreteGameData;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
-import java.util.logging.LogManager;
 
 public class CLI extends Observable implements Runnable {
 
@@ -24,7 +28,14 @@ public class CLI extends Observable implements Runnable {
     }
 
     void update(String o) {
+        if(o.contains("{"))
+            try {
+                o = new ConcreteGameData((JSONObject) new JSONParser().parse(o)).toString();
+            }catch (ParseException e){
+                o=e.getMessage();
+            }
         System.out.println(o);
+        System.out.print("> ");
     }
 
     @Override
@@ -35,7 +46,6 @@ public class CLI extends Observable implements Runnable {
         while (message != null) {
             setChanged();
             notifyObservers(message);
-            System.out.print("> ");
             message = scanner.nextLine();
         }
     }
