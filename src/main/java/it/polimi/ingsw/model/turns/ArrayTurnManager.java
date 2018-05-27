@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
 public class ArrayTurnManager implements TurnManager {
@@ -45,8 +46,8 @@ public class ArrayTurnManager implements TurnManager {
      * @param obj A JSON Object that holds TurnManager-like information
      */
     public ArrayTurnManager(JSONObject obj) {
-        roundStarting = (boolean) obj.get("round_starting");
-        roundEnding = (boolean) obj.get("round_ending");
+        roundStarting = parseBoolean(obj.get("round_starting").toString());
+        roundEnding = parseBoolean(obj.get("round_ending").toString());
         turnIndex = parseInt(obj.get("turn_index").toString());
         firstPlayerIndex = parseInt(obj.get("first_player_index").toString());
         players = new ArrayList<>();

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
 public class ConcreteGameData implements GameData {
@@ -81,16 +82,18 @@ public class ConcreteGameData implements GameData {
             tools.add(ToolCard.getCardFromJSON((JSONObject) o, this));
         */
         turnManager = new ArrayTurnManager((JSONObject) obj.get("turn_manager"));
-        pickedDie = (Die) obj.get("picked_die");
-        diePlaced = (boolean) obj.get("die_placed");
+        pickedDie = null;
+        if (obj.get("picked_die") != null)
+            pickedDie = new PlasticDie((JSONObject) obj.get("picked_die"));
+        diePlaced = parseBoolean(obj.get("die_placed").toString());
         activeToolID = parseInt(obj.get("active_tool_ID").toString());
         passiveToolID = parseInt(obj.get("passive_tool_ID").toString());
-        toolActivated = (boolean) obj.get("tool_activated");
+        toolActivated = parseBoolean(obj.get("tool_activated").toString());
         diceMoved = new ArrayList<>();
         JSONArray diceMovedList = (JSONArray) obj.get("dice_moved");
         for (Object o : diceMovedList)
             diceMoved.add(new PlasticDie((JSONObject) o));
-        undoAvailable = (boolean) obj.get("undo_available");
+        undoAvailable = parseBoolean(obj.get("undo_available").toString());
     }
 
     private void clear() {
@@ -309,7 +312,7 @@ public class ConcreteGameData implements GameData {
         toolList.addAll(tools.stream().map(Card::encode).collect(Collectors.toList()));
         obj.put("tools", toolList);
         obj.put("turn_manager", turnManager.encode());
-        obj.put("picked_die", pickedDie);
+        obj.put("picked_die", pickedDie == null ? null : pickedDie.encode());
         obj.put("die_placed", diePlaced);
         obj.put("active_tool_ID", activeToolID);
         obj.put("passive_tool_ID", passiveToolID);

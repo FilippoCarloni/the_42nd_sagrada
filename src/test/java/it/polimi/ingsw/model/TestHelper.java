@@ -7,12 +7,15 @@ import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveD
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
+import it.polimi.ingsw.model.gamedata.ConcreteGameData;
 import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Shade;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,13 @@ public class TestHelper {
             g.executeCommand(player, cmd);
             g.undoCommand();
             g.redoCommand();
+            try {
+                System.out.println(g.getData().encode().toString());
+                new ConcreteGameData((JSONObject) new org.json.simple.parser.JSONParser().parse(g.getData().encode().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                assertTrue(false);
+            }
         } catch (IllegalCommandException e) {
             e.printStackTrace();
             assertTrue(false);
@@ -60,6 +70,7 @@ public class TestHelper {
             g.executeCommand(player, "pass");
         } catch (IllegalCommandException e) {
             e.printStackTrace();
+            System.out.println();
             assertTrue(false);
         }
     }

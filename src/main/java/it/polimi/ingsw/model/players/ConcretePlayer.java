@@ -27,7 +27,7 @@ public class ConcretePlayer implements Player{
      * @param obj A JSON Object that holds Player-like information
      */
     public ConcretePlayer(JSONObject obj) {
-        username = (String) obj.get("username");
+        username = obj.get("username").toString();
         favorPoints = parseInt(obj.get("favor_points").toString());
         JSONObject windowFrame = (JSONObject) obj.get("window_frame");
         if (windowFrame != null)

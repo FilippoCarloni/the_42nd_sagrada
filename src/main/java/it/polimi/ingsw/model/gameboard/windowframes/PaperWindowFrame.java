@@ -37,7 +37,7 @@ public class PaperWindowFrame implements WindowFrame {
      * @param obj A JSON Object that holds WindowFrame-like information
      */
     public PaperWindowFrame(JSONObject obj) {
-        name = (String) obj.get("name");
+        name = obj.get("name").toString();
         difficulty = parseInt(obj.get("difficulty").toString());
         dice = new HashMap<>();
         colorConstraints = new HashMap<>();
