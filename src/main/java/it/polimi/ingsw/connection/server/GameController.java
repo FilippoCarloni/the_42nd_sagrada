@@ -1,5 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.socket.RemoteClient;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
@@ -27,8 +28,9 @@ public class GameController extends Observable{
     private final transient List<WrappedPlayer> players;
     private final List<WrappedPlayer> disconnected;
     final ScheduledFuture<?> beeperHandle;
+    ScheduledFuture<?> timer;
     private final ScheduledExecutorService scheduler =
-            Executors.newScheduledThreadPool(1);
+            Executors.newScheduledThreadPool(2);
     GameController(List<WrappedPlayer> players) {
         Deck deck1=new PrivateObjectiveDeck();
         Deck deck2=new WindowFrameDeck();
@@ -60,9 +62,11 @@ public class GameController extends Observable{
         }}
         ;
         beeperHandle=scheduler.scheduleAtFixedRate(cleener, 1, 100, MILLISECONDS);
+        startTimer();
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws Exception {
+        boolean print=false;
         if(!isMyTurn(sessionID)) {
             throw new Exception("Is not your turn!");
         }
@@ -86,12 +90,17 @@ public class GameController extends Observable{
                 } catch (IllegalCommandException e) {
                     throw new Exception(e.getMessage());
                 }
+                if(command.equals("pass")) {
+                    print=true;
+                }
                 break;
         }
         setChanged();
         notifyObservers(game.getData().encode().toString());
-        if(!isMyTurn(sessionID)) {
+        if(print){
+            timer.cancel(true);
             isTurnOf();
+            startTimer();
         }
     }
 
@@ -132,6 +141,25 @@ public class GameController extends Observable{
     private void isTurnOf(){
         setChanged();
         notifyObservers("Current player: "+game.getCurrentPlayer().getUsername());
+    }
+    private void startTimer(){
+        Runnable task=() -> {
+            this.timerPass();
+        };
+        timer=scheduler.schedule(task,20000,MILLISECONDS);
+    }
+    private synchronized void timerPass(){
+        boolean notCanPass=true;
+        while(notCanPass) {
+            try {
+                game.executeCommand(game.getCurrentPlayer(), "pass");
+                notCanPass=false;
+            } catch (IllegalCommandException e) {
+                game.undoCommand();
+            }
+        }
+        startTimer();
+        isTurnOf();
     }
     @Override
     public boolean equals(Object obj) {
