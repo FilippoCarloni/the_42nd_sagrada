@@ -159,6 +159,8 @@ public class GameController extends Observable{
             }
         }
         startTimer();
+        setChanged();
+        notifyObservers(this.game.getData().encode().toString());
         isTurnOf();
     }
     @Override
