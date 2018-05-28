@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
@@ -95,5 +97,13 @@ public class TestHelper {
         }
         gd.getDicePool().clear();
         gd.getDicePool().addAll(dp);
+    }
+
+    public static void setToolCard(GameData g, String card) {
+        Deck d = new ToolDeck();
+        ToolCard tc = (ToolCard) d.draw();
+        while (!tc.getName().equals(card))
+            tc = (ToolCard) d.draw();
+        g.getTools().set(0, tc);
     }
 }

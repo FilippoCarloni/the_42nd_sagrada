@@ -17,4 +17,10 @@ public final class ErrorMessage {
     public static final String ERR_INVALID_COORDINATES = "Passed coordinates exceed window frame bounds";
     public static final String ERR_SLOT_ALREADY_OCCUPIED = "Chosen slot is already occupied by another die";
     public static final String ERR_RULE_ERROR = "Picked die is not allowed to be placed in that position";
+    public static final String ERR_FAVOR_POINTS = "You don't have enough favor points";
+    public static final String ERR_TOOL_NOT_USABLE = "This tool can't be activated";
+    public static final String ERR_TOOL_ACTIVATED = "You already used a tool card this turn";
+    public static final String ERR_TOOL_NOT_ACTIVE = "You should activate a tool card in order to perform this action";
+    public static final String ERR_CANNOT_INCREASE = "You can't increase the value of the picked die";
+    public static final String ERR_CANNOT_DECREASE = "You can't decrease the value of the picked die";
 }

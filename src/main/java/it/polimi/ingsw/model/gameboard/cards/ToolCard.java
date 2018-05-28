@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.gameboard.cards;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gamedata.ConcreteGameData;
+import it.polimi.ingsw.model.gamedata.GameData;
+import it.polimi.ingsw.model.players.Player;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -14,12 +16,19 @@ public interface ToolCard extends Card {
 
     int getFavorPoints();
     void addFavorPoints();
-    List<Command> getCommands(String cmd);
+    boolean isLegal(GameData gameData);
+    void execute(GameData gameData);
+    List<Command> getCommands(Player player, GameData gameData, String cmd);
 
-    static ToolCard getCardFromJSON(JSONObject obj, ConcreteGameData status) {
+    static void tearDown(GameData gameData) {
+        gameData.setPassiveToolID(0);
+        gameData.setActiveToolID(0);
+    }
+
+    static ToolCard getCardFromJSON(JSONObject obj) {
         int id = parseInt(obj.get("id").toString());
         int favorPoints = parseInt(obj.get("favor_points").toString());
-        Deck d = new ToolDeck(status);
+        Deck d = new ToolDeck();
         while (d.size() > 0) {
             ToolCard card = (ToolCard) d.draw();
             if (card.getID() == id) {

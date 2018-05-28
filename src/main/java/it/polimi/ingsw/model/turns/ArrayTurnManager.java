@@ -85,6 +85,11 @@ public class ArrayTurnManager implements TurnManager {
     }
 
     @Override
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    @Override
     public void advanceTurn() {
         turnIndex = (turnIndex + 1) % (players.size() * 2);
         updateRoundStatus();

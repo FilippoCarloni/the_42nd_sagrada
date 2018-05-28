@@ -3,6 +3,8 @@ package it.polimi.ingsw.model.turns;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONSerializable;
 
+import java.util.List;
+
 /**
  * Represents the class that manages the player order of Sagrada turns.
  * Sagrada is a game based on drafting, and the turn order embraces that policy.
@@ -23,6 +25,8 @@ public interface TurnManager extends JSONSerializable {
      * @return A Player object that should be playing its game
      */
     Player getCurrentPlayer();
+
+    List<Player> getPlayers();
 
     /**
      * Advances the turn order.

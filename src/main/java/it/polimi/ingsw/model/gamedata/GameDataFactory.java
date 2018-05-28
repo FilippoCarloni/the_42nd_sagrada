@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
@@ -17,11 +19,7 @@ import java.util.List;
 
 class GameDataFactory {
 
-    private GameData gameData;
-
-    GameDataFactory(GameData gameData) {
-        this.gameData = gameData;
-    }
+    GameDataFactory() {}
 
     public RoundTrack getRoundTrack() {
         return new PaperRoundTrack();
@@ -31,9 +29,9 @@ class GameDataFactory {
         return new ArrayDiceBag();
     }
 
-    public TurnManager getTurnManager() {
-        assert gameData.getPlayers() != null && gameData.getPlayers().size() > 1;
-        return new ArrayTurnManager(gameData.getPlayers());
+    public TurnManager getTurnManager(List<Player> players) {
+        checkPlayersCorrectness(players);
+        return new ArrayTurnManager(players);
     }
 
     public List<PublicObjectiveCard> getPublicObjectives() {
@@ -42,6 +40,14 @@ class GameDataFactory {
         for (int i = 0; i < Parameters.PUBLIC_OBJECTIVES; i++)
             pos.add((PublicObjectiveCard) d.draw());
         return pos;
+    }
+
+    public List<ToolCard> getTools() {
+        List<ToolCard> tcs = new ArrayList<>();
+        Deck d = new ToolDeck();
+        for (int i = 0; i < Parameters.TOOL_CARDS; i++)
+            tcs.add((ToolCard) d.draw());
+        return tcs;
     }
 
     public void checkPlayersCorrectness(List<Player> players) {

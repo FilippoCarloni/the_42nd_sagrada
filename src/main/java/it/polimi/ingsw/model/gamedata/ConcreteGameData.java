@@ -29,14 +29,11 @@ import static java.lang.Integer.parseInt;
 
 public class ConcreteGameData implements GameData {
 
-    // TODO: correct the tool cards and commands interfaces
-
     private RoundTrack roundTrack;
     private DiceBag diceBag;
     private List<Die> dicePool;
     private List<PublicObjectiveCard> publicObjectives;
     private List<ToolCard> tools;
-    private List<Player> players;
     private TurnManager turnManager;
     private Die pickedDie;
     private boolean diePlaced;
@@ -46,25 +43,19 @@ public class ConcreteGameData implements GameData {
     private List<Die> diceMoved;
     private boolean undoAvailable;
 
-    public ConcreteGameData(List<Player> players) {
-        GameDataFactory factory = new GameDataFactory(this);
-        factory.checkPlayersCorrectness(players);
+    ConcreteGameData(List<Player> players) {
+        GameDataFactory factory = new GameDataFactory();
+        turnManager = factory.getTurnManager(players);
         roundTrack = factory.getRoundTrack();
         diceBag = factory.getDiceBag();
         dicePool = new ArrayList<>();
         publicObjectives = factory.getPublicObjectives();
-        tools = new ArrayList<>(); // TODO: change this to correct draw of tool cards
-        this.players = players.stream().map(p -> new ConcretePlayer(p.encode())).collect(Collectors.toList());
-        turnManager = factory.getTurnManager();
+        tools = factory.getTools();
         fillDicePool();
         clear();
     }
 
     public ConcreteGameData(JSONObject obj) {
-        players = new ArrayList<>();
-        JSONArray playerList = (JSONArray) obj.get("players");
-        for (Object o : playerList)
-            players.add(new ConcretePlayer((JSONObject) o));
         dicePool = new ArrayList<>();
         JSONArray dicePoolList = (JSONArray) obj.get("dice_pool");
         for (Object o : dicePoolList)
@@ -76,11 +67,9 @@ public class ConcreteGameData implements GameData {
         for (Object o : poList)
             publicObjectives.add(PublicObjectiveCard.getCardFromJSON((JSONObject) o));
         tools = new ArrayList<>();
-        /* TODO: uncomment this when tool cards are integrated
         JSONArray toolList = (JSONArray) obj.get("tools");
         for (Object o : toolList)
-            tools.add(ToolCard.getCardFromJSON((JSONObject) o, this));
-        */
+            tools.add(ToolCard.getCardFromJSON((JSONObject) o));
         turnManager = new ArrayTurnManager((JSONObject) obj.get("turn_manager"));
         pickedDie = null;
         if (obj.get("picked_die") != null)
@@ -107,7 +96,7 @@ public class ConcreteGameData implements GameData {
 
     private void fillDicePool() {
         if (turnManager.isRoundStarting())
-            dicePool = diceBag.pick(players.size() * 2 + 1);
+            dicePool = diceBag.pick(turnManager.getPlayers().size() * 2 + 1);
     }
 
     private void emptyDicePool() {
@@ -129,7 +118,7 @@ public class ConcreteGameData implements GameData {
     @Override
     public Map<Player, Integer> getCurrentScore() {
         Map<Player, Integer> scoreMap = new HashMap<>();
-        for (Player p : players) {
+        for (Player p : turnManager.getPlayers()) {
             int playerScore = 0;
             playerScore += p.getPrivateObjective().getValuePoints(p.getWindowFrame());
             for (PublicObjectiveCard c : publicObjectives)
@@ -171,7 +160,7 @@ public class ConcreteGameData implements GameData {
 
     @Override
     public List<Player> getPlayers() {
-        return players;
+        return turnManager.getPlayers();
     }
 
     @Override
@@ -287,7 +276,7 @@ public class ConcreteGameData implements GameData {
         sb.append(s);
         sb.append("\n");
         s = "";
-        for (Player p : players)
+        for (Player p : turnManager.getPlayers())
             s = convertToHorizontal(s, p.toString());
         sb.append(s);
         return sb.toString();
@@ -298,7 +287,7 @@ public class ConcreteGameData implements GameData {
     public JSONObject encode() {
         JSONObject obj = new JSONObject();
         JSONArray playerList = new JSONArray();
-        playerList.addAll(players.stream().map(Player::encode).collect(Collectors.toList()));
+        playerList.addAll(turnManager.getPlayers().stream().map(Player::encode).collect(Collectors.toList()));
         obj.put("players", playerList);
         JSONArray diceList = new JSONArray();
         diceList.addAll(dicePool.stream().map(Die::encode).collect(Collectors.toList()));

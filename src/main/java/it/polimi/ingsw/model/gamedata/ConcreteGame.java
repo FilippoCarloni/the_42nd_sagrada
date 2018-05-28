@@ -14,7 +14,15 @@ public class ConcreteGame implements Game {
     private CommandManager commandManager;
 
     public ConcreteGame(List<Player> players) {
+        if (players == null)
+            throw new NullPointerException("Null players.");
         commandManager = new DequeCommandManager(new ConcreteGameData(players));
+    }
+
+    public ConcreteGame(GameData gameData) {
+        if (gameData == null)
+            throw new NullPointerException("Null game data.");
+        commandManager = new DequeCommandManager(gameData);
     }
 
     @Override
