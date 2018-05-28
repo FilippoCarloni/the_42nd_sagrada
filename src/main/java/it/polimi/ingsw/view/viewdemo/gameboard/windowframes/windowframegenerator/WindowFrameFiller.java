@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.viewdemo.gameboard.windowframes.windowframegenerato
 
 import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -15,21 +16,22 @@ import org.json.simple.parser.ParseException;
 
 public class WindowFrameFiller {
 
-    public void frameFiller(GridPane gridPane) {
-        for (int row = 0; row < 4; row++){
-            for (int column = 0; column < 5; column++){
+    //In the future this method will take as input a real JSON file, but for now I use a String
+    public void frameFiller(GridPane gridPane, String JSon) {
+        for (int row = 0; row < GUIParameters.MAX_WINDOW_FRAMES_ROWS; row++){
+            for (int column = 0; column < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS; column++){
                 StackPane pane = new StackPane();
                 gridPane.add(pane, column, row);
-                Rectangle rectangle = new Rectangle(56, 68);
-                paintWindowFrame(rectangle, row, column);
+                Rectangle rectangle = new Rectangle(60, 60);
+                paintWindowFrame(rectangle, row, column, JSon);
                 pane.getChildren().add(rectangle);
             }
         }
     }
 
-    private void paintWindowFrame(Rectangle rectangle, int row, int column) {
+    private void paintWindowFrame(Rectangle rectangle, int row, int column, String JSon) {
         try {
-            WindowFrame wf = new PaperWindowFrame((JSONObject) new JSONParser().parse("{\"difficulty\":5,\"name\":\"Batllo\",\"coordinates\":[{\"die\":null,\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":0,\"column_index\":0},{\"die\":{\"color\":\"red\",\"shade\":6,\"id\":0},\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":0,\"column_index\":1},{\"die\":null,\"shade_constraint\":6,\"color_constraint\":null,\"row_index\":0,\"column_index\":2},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":0,\"column_index\":3},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":0,\"column_index\":4},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":1,\"column_index\":0},{\"die\":{\"color\":\"green\",\"shade\":6,\"id\":36},\"shade_constraint\":5,\"color_constraint\":null,\"row_index\":1,\"column_index\":1},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":\"blue\",\"row_index\":1,\"column_index\":2},{\"die\":null,\"shade_constraint\":4,\"color_constraint\":null,\"row_index\":1,\"column_index\":3},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":null,\"row_index\":1,\"column_index\":4},{\"die\":null,\"shade_constraint\":3,\"color_constraint\":null,\"row_index\":2,\"column_index\":0},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":\"green\",\"row_index\":2,\"column_index\":1},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":\"yellow\",\"row_index\":2,\"column_index\":2},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":\"purple\",\"row_index\":2,\"column_index\":3},{\"die\":null,\"shade_constraint\":2,\"color_constraint\":null,\"row_index\":2,\"column_index\":4},{\"die\":null,\"shade_constraint\":1,\"color_constraint\":null,\"row_index\":3,\"column_index\":0},{\"die\":null,\"shade_constraint\":4,\"color_constraint\":null,\"row_index\":3,\"column_index\":1},{\"die\":null,\"shade_constraint\":null,\"color_constraint\":\"red\",\"row_index\":3,\"column_index\":2},{\"die\":null,\"shade_constraint\":5,\"color_constraint\":null,\"row_index\":3,\"column_index\":3},{\"die\":null,\"shade_constraint\":3,\"color_constraint\":null,\"row_index\":3,\"column_index\":4}]}"));
+            WindowFrame wf = new PaperWindowFrame((JSONObject) new JSONParser().parse(JSon));
             if(wf.getColorConstraint(row, column) != null){
                 String color = wf.getColorConstraint(row, column).getLabel();
                 switch (color){
