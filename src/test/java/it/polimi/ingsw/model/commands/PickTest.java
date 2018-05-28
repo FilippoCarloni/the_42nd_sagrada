@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.commands;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gamedata.ConcreteGame;
 import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.players.Player;
 import org.junit.jupiter.api.Test;
@@ -21,8 +20,8 @@ class PickTest {
      */
     @Test
     void pickTest() {
-        List<Player> players = init(2);
-        Game g = new ConcreteGame(players);
+        Game g = init("gen_2p_01");
+        List<Player> players = g.getData().getPlayers();
         wrappedIllegalCommand(g, players.get(1), "pick 1");
         wrappedIllegalCommand(g, players.get(0), "pick 0");
         wrappedIllegalCommand(g, players.get(0), "pick 6");

@@ -1,13 +1,14 @@
 package it.polimi.ingsw.model.commands;
 
-import it.polimi.ingsw.model.gamedata.ConcreteGame;
 import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.Shade;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static it.polimi.ingsw.model.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ToolTest {
 
@@ -17,12 +18,16 @@ class ToolTest {
      */
     @Test
     void test() {
-        List<Player> players = init(2);
-        Game g = new ConcreteGame(players);
-        setToolCard(g.getData(), "Grinding Stone");
-        wrappedIllegalCommand(g, players.get(0), "tool 1");
+        Game g = init("gen_2p_01");
+        List<Player> players = g.getData().getPlayers();
+        wrappedIllegalCommand(g, players.get(0), "tool 3");
         wrappedLegalCommand(g, players.get(0), "pick 1");
-        wrappedLegalCommand(g, players.get(0), "tool 1");
-        wrappedIllegalCommand(g, players.get(0), "tool 1");
+        Shade s = g.getData().getPickedDie().getShade();
+        wrappedLegalCommand(g, players.get(0), "tool 3");
+        assertTrue(!s.equals(g.getData().getPickedDie().getShade()));
+        wrappedIllegalCommand(g, players.get(0), "tool 3");
+        wrappedLegalCommand(g, players.get(0), "place 1 1");
+        wrappedIllegalCommand(g, players.get(0), "tool 3");
+        wrappedLegalCommand(g, players.get(0), "pass");
     }
 }

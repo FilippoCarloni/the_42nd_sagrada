@@ -67,7 +67,6 @@ public class ConcreteGame implements Game {
 
     @Override
     public GameData getData() {
-        // TODO: pass a copy of the current data (now this is a handy but temporal shortcut for testing)
-        return commandManager.getCurrentData();
+        return new ConcreteGameData(commandManager.getCurrentData().encode());
     }
 }

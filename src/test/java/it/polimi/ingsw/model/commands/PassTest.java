@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model.commands;
 
-import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
-import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
-import it.polimi.ingsw.model.gamedata.ConcreteGame;
 import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.players.Player;
 import org.junit.jupiter.api.Test;
@@ -12,6 +8,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.model.TestHelper.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PassTest {
 
@@ -21,38 +18,24 @@ class PassTest {
      */
     @Test
     void passTest() {
-        Deck d = new WindowFrameDeck();
-        WindowFrame w = (WindowFrame) d.draw();
-        while (!w.getName().equals("Batllo"))
-            w = (WindowFrame) d.draw();
-        List<Player> players = init(2);
-        players.get(0).setWindowFrame(w);
-        players.get(1).setWindowFrame(w);
-        Game g = new ConcreteGame(players);
+        Game g = init("gen_2p_01");
+        List<Player> players = g.getData().getPlayers();
         wrappedLegalCommand(g, players.get(0), "pick 1");
+        assertTrue(g.isUndoAvailable());
         wrappedIllegalCommand(g, players.get(0), "pass");
         wrappedLegalCommand(g, players.get(0), "place 1 1");
-        wrappedPass(g, players.get(0));
+        assertTrue(g.isUndoAvailable());
+        wrappedLegalCommand(g, players.get(0), "pass");
         assertFalse(g.isUndoAvailable());
         wrappedIllegalCommand(g, players.get(0), "pick 1");
         wrappedLegalCommand(g, players.get(1), "pick 1");
-        wrappedLegalCommand(g, players.get(1), "place 1 1");
-        g.getData().setActiveToolID(2);
+        assertTrue(g.isUndoAvailable());
+        wrappedLegalCommand(g, players.get(1), "tool 2");
+        assertTrue(g.isUndoAvailable());
         wrappedIllegalCommand(g, players.get(1), "pass");
-        wrappedIllegalCommand(g, players.get(1), "pick 1");
-
-        // everything can be undone
-        for (int i = 0; i < 100; i++)
-            g.undoCommand();
-        wrappedLegalCommand(g, players.get(0), "pick 1");
-        wrappedIllegalCommand(g, players.get(0), "pass");
-        wrappedLegalCommand(g, players.get(0), "place 1 1");
-        wrappedPass(g, players.get(0));
-        wrappedIllegalCommand(g, players.get(0), "pick 1");
-        wrappedLegalCommand(g, players.get(1), "pick 1");
-        wrappedLegalCommand(g, players.get(1), "place 1 1");
-        g.getData().setActiveToolID(2);
-        wrappedIllegalCommand(g, players.get(1), "pass");
-        wrappedIllegalCommand(g, players.get(1), "pick 1");
+        wrappedLegalCommand(g, players.get(1), "increase");
+        assertTrue(g.isUndoAvailable());
+        wrappedLegalCommand(g, players.get(1), "place 1 2");
+        assertTrue(g.isUndoAvailable());
     }
 }
