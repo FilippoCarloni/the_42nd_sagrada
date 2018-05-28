@@ -46,6 +46,7 @@ public class GameController extends Observable{
             addObserver(p.getObserver());
         setChanged();
         notifyObservers(game.getData().encode().toString());
+        isTurnOf();
         disconnected= new ArrayList<>();
         final Runnable cleener = () -> {
             synchronized (this.disconnected){
@@ -62,13 +63,35 @@ public class GameController extends Observable{
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws Exception {
-        try {
-            game.executeCommand(this.getPlayer(sessionID).getPlayer(), command.trim());
-        }catch(IllegalCommandException e) {
-                throw new Exception(e.getMessage());
-            }
+        if(!isMyTurn(sessionID)) {
+            throw new Exception("Is not your turn!");
+        }
+        switch (command) {
+            case "undo":
+                if(game.isUndoAvailable())
+                    game.undoCommand();
+                else
+                    throw new Exception("You can not undo");
+                break;
+            case "redo":
+                if(game.isRedoAvailable())
+                    game.redoCommand();
+                else
+                    throw new Exception("You can not redo");
+                break;
+            default:
+                try {
+                    game.executeCommand(this.getPlayer(sessionID).getPlayer(), command.trim());
+                } catch (IllegalCommandException e) {
+                    throw new Exception(e.getMessage());
+                }
+                break;
+        }
         setChanged();
         notifyObservers(game.getData().encode().toString());
+        if(!isMyTurn(sessionID)) {
+            isTurnOf();
+        }
     }
 
     public synchronized boolean isMyTurn(String sessionID) throws Exception  {
@@ -105,7 +128,10 @@ public class GameController extends Observable{
     synchronized boolean isPlaying(WrappedPlayer player){
         return players.stream().filter(x-> x.equals(player)).count() == 1;
     }
-
+    private void isTurnOf(){
+        setChanged();
+        notifyObservers("Current player: "+game.getCurrentPlayer().getUsername());
+    }
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

@@ -215,7 +215,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     }
             }
         }catch (RemoteException e) {
-            view.update(e.getMessage());
+            view.update(e.getMessage().split(":")[2]);
         }
     }
 
