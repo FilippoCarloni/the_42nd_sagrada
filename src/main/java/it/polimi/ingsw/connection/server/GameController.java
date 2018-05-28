@@ -66,6 +66,7 @@ public class GameController extends Observable{
         if(!isMyTurn(sessionID)) {
             throw new Exception("Is not your turn!");
         }
+        command=command.trim();
         switch (command) {
             case "undo":
                 if(game.isUndoAvailable())
@@ -81,7 +82,7 @@ public class GameController extends Observable{
                 break;
             default:
                 try {
-                    game.executeCommand(this.getPlayer(sessionID).getPlayer(), command.trim());
+                    game.executeCommand(this.getPlayer(sessionID).getPlayer(), command);
                 } catch (IllegalCommandException e) {
                     throw new Exception(e.getMessage());
                 }
