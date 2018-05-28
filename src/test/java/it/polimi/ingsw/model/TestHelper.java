@@ -55,7 +55,6 @@ public class TestHelper {
             g.undoCommand();
             g.redoCommand();
             try {
-                System.out.println(g.getData().encode().toString());
                 new ConcreteGameData((JSONObject) new org.json.simple.parser.JSONParser().parse(g.getData().encode().toString()));
             } catch (ParseException e) {
                 e.printStackTrace();

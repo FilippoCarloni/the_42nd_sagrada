@@ -67,8 +67,8 @@ public abstract class AbstractCommand implements Command {
     public final void execute() throws IllegalCommandException {
         if (isValid()) {
             checkConditions();
+            getGameData().setUndoAvailable(undoable());
             executionWhenLegal();
-            gameData.setUndoAvailable(true);
         }
     }
 

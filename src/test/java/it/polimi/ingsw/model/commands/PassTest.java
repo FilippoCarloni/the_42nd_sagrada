@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static it.polimi.ingsw.model.TestHelper.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class PassTest {
 
@@ -32,6 +33,7 @@ class PassTest {
         wrappedIllegalCommand(g, players.get(0), "pass");
         wrappedLegalCommand(g, players.get(0), "place 1 1");
         wrappedPass(g, players.get(0));
+        assertFalse(g.isUndoAvailable());
         wrappedIllegalCommand(g, players.get(0), "pick 1");
         wrappedLegalCommand(g, players.get(1), "pick 1");
         wrappedLegalCommand(g, players.get(1), "place 1 1");

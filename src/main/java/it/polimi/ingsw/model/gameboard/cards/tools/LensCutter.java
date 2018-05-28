@@ -85,5 +85,10 @@ public class LensCutter extends AbstractToolCard {
             getGameData().setPickedDie(roundTrackDie);
             ToolCard.tearDown(getGameData());
         }
+
+        @Override
+        public boolean undoable() {
+            return true;
+        }
     }
 }

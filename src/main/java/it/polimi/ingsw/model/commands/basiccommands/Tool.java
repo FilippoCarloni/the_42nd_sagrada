@@ -48,4 +48,8 @@ public class Tool extends AbstractCommand {
         getGameData().getTools().get(getArgs()[0]).execute(getGameData());
     }
 
+    @Override
+    public boolean undoable() {
+        return true;
+    }
 }

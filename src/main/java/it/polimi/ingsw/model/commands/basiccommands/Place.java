@@ -45,4 +45,9 @@ public class Place extends AbstractCommand {
         getGameData().setPickedDie(null);
         getGameData().setDiePlaced(true);
     }
+
+    @Override
+    public boolean undoable() {
+        return true;
+    }
 }

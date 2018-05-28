@@ -23,4 +23,9 @@ public class Pass extends AbstractCommand {
     public void executionWhenLegal() {
         getGameData().advance();
     }
+
+    @Override
+    public boolean undoable() {
+        return false;
+    }
 }

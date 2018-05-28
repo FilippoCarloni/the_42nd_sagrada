@@ -92,6 +92,7 @@ public class ConcreteGameData implements GameData {
         passiveToolID = 0;
         toolActivated = false;
         diceMoved = new ArrayList<>();
+        undoAvailable = false;
     }
 
     private void fillDicePool() {

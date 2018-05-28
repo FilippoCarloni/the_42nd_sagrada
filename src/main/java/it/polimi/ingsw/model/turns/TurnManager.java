@@ -26,6 +26,10 @@ public interface TurnManager extends JSONSerializable {
      */
     Player getCurrentPlayer();
 
+    /**
+     * Returns the list of all the playing players.
+     * @return A List of player objects
+     */
     List<Player> getPlayers();
 
     /**

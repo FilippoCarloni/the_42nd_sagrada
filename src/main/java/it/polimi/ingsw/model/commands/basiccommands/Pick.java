@@ -31,4 +31,9 @@ public class Pick extends AbstractCommand {
     public void executionWhenLegal() {
         getGameData().setPickedDie(getGameData().getDicePool().remove(getArgs()[0]));
     }
+
+    @Override
+    public boolean undoable() {
+        return true;
+    }
 }

@@ -81,6 +81,11 @@ public class GrozingPliers extends AbstractToolCard {
             getGameData().getPickedDie().setShade(Shade.findByValue(getGameData().getPickedDie().getShade().getValue() + 1));
             ToolCard.tearDown(getGameData());
         }
+
+        @Override
+        public boolean undoable() {
+            return true;
+        }
     }
 
     private class Decrease extends AbstractToolCommand {
@@ -100,6 +105,11 @@ public class GrozingPliers extends AbstractToolCard {
         public void executionWhenLegal() {
             getGameData().getPickedDie().setShade(Shade.findByValue(getGameData().getPickedDie().getShade().getValue() - 1));
             ToolCard.tearDown(getGameData());
+        }
+
+        @Override
+        public boolean undoable() {
+            return true;
         }
     }
 }
