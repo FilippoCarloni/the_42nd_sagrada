@@ -1,7 +1,5 @@
 package it.polimi.ingsw.view.viewdemo.gameboard.windowframes.windowframegenerator;
 
-import it.polimi.ingsw.view.viewdemo.gameboard.MainBoardController;
-import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +26,7 @@ public class WindowFrameGeneratorController extends Application implements Initi
     @FXML
     private AnchorPane apMain = new AnchorPane();
 
-    public void setGridWindowFrame(){
+    private void setGridWindowFrame(){
         for(int i = 0; i < 5; i++){
             gridWindowFrame.getColumnConstraints().add(new ColumnConstraints());
         }
@@ -39,7 +37,7 @@ public class WindowFrameGeneratorController extends Application implements Initi
         gridWindowFrame.setTranslateX(55);
         gridWindowFrame.setTranslateY(175);
     }
-    public void drawCanvasStructure(GraphicsContext gc){
+    private void drawCanvasStructure(GraphicsContext gc){
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(4);
         gc.strokeLine(25, 170, 325, 170);
@@ -55,9 +53,9 @@ public class WindowFrameGeneratorController extends Application implements Initi
         Group group = new Group();
         StackPane pane = new StackPane();
         setGridWindowFrame();
-        new WindowFrameFiller().frameFiller(gridWindowFrame, group);
 
         new WindowFrameGeneratorController().drawCanvasStructure(windowFrameCanvas.getGraphicsContext2D());
+        new WindowFrameFiller().frameFiller(gridWindowFrame);
 
         pane.getChildren().add(gridWindowFrame);
         group.getChildren().addAll(windowFrameCanvas, pane);
