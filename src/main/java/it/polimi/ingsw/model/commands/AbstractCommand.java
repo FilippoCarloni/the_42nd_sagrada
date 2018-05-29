@@ -36,13 +36,17 @@ public abstract class AbstractCommand implements Command {
     }
 
     public int[] getArgs() {
-        String[] stringArgs = cmd.split(" ");
-        if (stringArgs.length == 0)
+        try {
+            String[] stringArgs = cmd.split(" ");
+            if (stringArgs.length == 0)
+                return new int[0];
+            int[] args = new int[stringArgs.length - 1];
+            for (int i = 1; i < stringArgs.length; i++)
+                args[i - 1] = parseInt(stringArgs[i]) - 1;
+            return args;
+        } catch (NumberFormatException e) {
             return new int[0];
-        int[] args = new int[stringArgs.length - 1];
-        for (int i = 1; i < stringArgs.length; i++)
-            args[i - 1] = parseInt(stringArgs[i]) - 1;
-        return args;
+        }
     }
 
     protected void addCondition(Condition condition) {

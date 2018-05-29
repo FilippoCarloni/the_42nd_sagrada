@@ -33,5 +33,29 @@ class LensCutterTest {
         wrappedLegalCommand(g, players.get(1), "select " + (index + 1));
         assertEquals(playerDie, g.getData().getRoundTrack().getDice().get(index));
         assertEquals(roundTrackDie, g.getData().getPickedDie());
+        g.undoCommand();
+        g.undoCommand();
+        g.undoCommand();
+        wrappedLegalCommand(g, players.get(1), "pass");
+        wrappedLegalCommand(g, players.get(0), "pass");
+        wrappedLegalCommand(g, players.get(0), "pass");
+        wrappedLegalCommand(g, players.get(1), "pass");
+        wrappedLegalCommand(g, players.get(0), "pass");
+        wrappedLegalCommand(g, players.get(1), "pass");
+        wrappedLegalCommand(g, players.get(1), "pass");
+        wrappedLegalCommand(g, players.get(0), "pass");
+
+        // check on indexed greater than 9
+        index = (int) (Math.random() * 15);
+        System.out.println(index);
+        wrappedLegalCommand(g, players.get(1), "pick 1");
+        playerDie = g.getData().getPickedDie();
+        roundTrackDie = g.getData().getRoundTrack().getDice().get(index);
+        wrappedLegalCommand(g, players.get(1), "tool 1");
+        wrappedIllegalCommand(g, players.get(1), "select 0");
+        wrappedIllegalCommand(g, players.get(1), "select 16");
+        wrappedLegalCommand(g, players.get(1), "select " + (index + 1));
+        assertEquals(playerDie, g.getData().getRoundTrack().getDice().get(index));
+        assertEquals(roundTrackDie, g.getData().getPickedDie());
     }
 }

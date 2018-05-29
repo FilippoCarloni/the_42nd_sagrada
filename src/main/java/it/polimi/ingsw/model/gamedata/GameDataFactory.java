@@ -50,7 +50,7 @@ class GameDataFactory {
         return tcs;
     }
 
-    public void checkPlayersCorrectness(List<Player> players) {
+    private void checkPlayersCorrectness(List<Player> players) {
         if (players == null)
             throw new NullPointerException("Passed a null list of players.");
         if (players.size() <= 1)

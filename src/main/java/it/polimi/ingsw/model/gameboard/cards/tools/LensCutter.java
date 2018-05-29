@@ -74,7 +74,7 @@ public class LensCutter extends AbstractToolCard {
 
         @Override
         public String getRegExp() {
-            return "select \\d";
+            return "select \\d+";
         }
 
         @Override
