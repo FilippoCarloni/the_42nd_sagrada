@@ -12,7 +12,7 @@ public class ServerRMI {
     private int port;
     private Registry registry;
     private Logger logger= Logger.getLogger(ServerRMI.class.getName());
-    private String url = "rmi://localhost:";
+    private String url = "rmi://"+new Settings().IP_SERVER+":";
     public ServerRMI()
     {
         this.port=new Settings().RMI_PORT;

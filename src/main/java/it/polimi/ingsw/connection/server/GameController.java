@@ -149,11 +149,11 @@ public class GameController extends Observable{
         timer=scheduler.schedule(task,20000,MILLISECONDS);
     }
     private synchronized void timerPass(){
-        boolean notCanPass=true;
-        while(notCanPass) {
+        boolean notPass=true;
+        while(notPass) {
             try {
                 game.executeCommand(game.getCurrentPlayer(), "pass");
-                notCanPass=false;
+                notPass=false;
             } catch (IllegalCommandException e) {
                 game.undoCommand();
             }

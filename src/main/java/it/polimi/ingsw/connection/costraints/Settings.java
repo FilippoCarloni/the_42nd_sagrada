@@ -1,43 +1,43 @@
 package it.polimi.ingsw.connection.costraints;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.Properties;
 
 public  class Settings{
+    private static final int DEFAULT_RMI_PORT=8002;
+    private static final int DEFAULT_SOCKET_PORT=8001;
+    private static final String DEFAULT_SERVER_IP="127.0.0.1";
+    private static final String FILE_CONFIG="./src/main/java/res/network_config/constraints.config";
+    private static final String IP_SERVER_TAG="IP_SERVER";
+    private static final String PORT_SOCKET_TAG="PORT_SOCKET";
+    private static final String PORT_RMI_TAG="PORT_RMI";
+    
     public Settings() {
-        int port_rmi=8002;
-        String ip_server="127.0.0.1";
-        int socket_port=8001;
-        FileReader fileReader=null;
-        Scanner scanner=null;
+        int rmiPort=DEFAULT_RMI_PORT;
+        String ipserver=DEFAULT_SERVER_IP;
+        int socketPort=DEFAULT_SOCKET_PORT;
+        Properties configFile;
+        configFile = new java.util.Properties();
+        FileReader reader;
         String param;
         try {
-            fileReader= new FileReader("./src/main/java/res/network_config/constraints.config");
-            scanner= new Scanner(fileReader);
-            ip_server=scanner.nextLine().split(":")[1];
-            param=scanner.nextLine().split(":")[1];
-            socket_port=Integer.parseInt(param);
-            param=scanner.nextLine().split(":")[1];
-            port_rmi=Integer.parseInt(param);
-
-
-        } catch (FileNotFoundException e) {
-        }finally {
-            if(fileReader!=null) {
-                try {
-                    fileReader.close();
-                } catch (IOException e) {
-                }
-            }
-            if(scanner!=null) {
-                scanner.close();
-            }
+            reader = new FileReader(FILE_CONFIG);
+            configFile.load(reader);
+            param=configFile.getProperty(IP_SERVER_TAG);
+            if(param != null)
+                ipserver=param;
+            param=configFile.getProperty(PORT_SOCKET_TAG);
+            if(param != null)
+                socketPort=Integer.parseInt(param);
+            param=configFile.getProperty(PORT_RMI_TAG);
+            if(param != null)
+                rmiPort=Integer.parseInt(param);
+            reader.close();
+        }catch(Exception eta){
         }
-        RMI_PORT=port_rmi;
-        IP_SERVER=ip_server;
-        SOCKET_PORT=socket_port;
+        RMI_PORT=rmiPort;
+        IP_SERVER=ipserver;
+        SOCKET_PORT=socketPort;
     }
     /**
      * Default Server port number for Registry connection
