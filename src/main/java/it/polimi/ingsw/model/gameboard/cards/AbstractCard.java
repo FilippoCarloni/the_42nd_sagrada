@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gameboard.cards;
 
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 /**
@@ -78,7 +79,7 @@ public abstract class AbstractCard implements Card {
     public JSONObject encode() {
         assert id > 0;
         JSONObject obj = new JSONObject();
-        obj.put("id", id);
+        obj.put(JSONTag.CARD_ID, id);
         return obj;
     }
 }

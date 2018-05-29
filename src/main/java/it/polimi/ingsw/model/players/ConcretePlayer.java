@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.players;
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import static java.lang.Integer.parseInt;
@@ -27,12 +28,12 @@ public class ConcretePlayer implements Player{
      * @param obj A JSON Object that holds Player-like information
      */
     public ConcretePlayer(JSONObject obj) {
-        username = obj.get("username").toString();
-        favorPoints = parseInt(obj.get("favor_points").toString());
-        JSONObject windowFrame = (JSONObject) obj.get("window_frame");
+        username = obj.get(JSONTag.USERNAME).toString();
+        favorPoints = parseInt(obj.get(JSONTag.FAVOR_POINTS).toString());
+        JSONObject windowFrame = (JSONObject) obj.get(JSONTag.WINDOW_FRAME);
         if (windowFrame != null)
             window = new PaperWindowFrame(windowFrame);
-        JSONObject privateObjective = (JSONObject) obj.get("private_objective");
+        JSONObject privateObjective = (JSONObject) obj.get(JSONTag.PRIVATE_OBJECTIVE);
         if (privateObjective != null)
             po = PrivateObjectiveCard.getCardFromJSON(privateObjective);
     }
@@ -112,10 +113,10 @@ public class ConcretePlayer implements Player{
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj = new JSONObject();
-        obj.put("username", username);
-        obj.put("favor_points", favorPoints);
-        obj.put("window_frame", window == null ? null : window.encode());
-        obj.put("private_objective", po == null ? null : po.encode());
+        obj.put(JSONTag.USERNAME, username);
+        obj.put(JSONTag.FAVOR_POINTS, favorPoints);
+        obj.put(JSONTag.WINDOW_FRAME, window == null ? null : window.encode());
+        obj.put(JSONTag.PRIVATE_OBJECTIVE, po == null ? null : po.encode());
         return obj;
     }
 }

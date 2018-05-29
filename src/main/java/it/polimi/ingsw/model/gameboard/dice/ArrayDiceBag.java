@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,7 +38,7 @@ public class ArrayDiceBag implements DiceBag {
      * @param obj A JSON Object that holds DiceBag-like information
      */
     public ArrayDiceBag(JSONObject obj) {
-        JSONArray list = (JSONArray) obj.get("dice");
+        JSONArray list = (JSONArray) obj.get(JSONTag.DICE);
         dice = new ArrayList<>();
         for (Object die : list)
             dice.add(new PlasticDie((JSONObject) die));
@@ -81,8 +82,7 @@ public class ArrayDiceBag implements DiceBag {
         JSONObject obj = new JSONObject();
         JSONArray list = new JSONArray();
         list.addAll(dice.stream().map(Die::encode).collect(Collectors.toList()));
-        obj.put("dice", list);
-        obj.put("capacity", dice.size());
+        obj.put(JSONTag.DICE, list);
         return obj;
     }
 }

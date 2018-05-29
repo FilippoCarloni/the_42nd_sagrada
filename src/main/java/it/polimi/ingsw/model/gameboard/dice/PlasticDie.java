@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Shade;
 import org.json.simple.JSONObject;
 
@@ -25,9 +26,9 @@ public class PlasticDie implements Die {
      * @param obj A JSON Object that holds Die-like information
      */
     public PlasticDie(JSONObject obj) {
-        this.id = parseInt(obj.get("id").toString());
-        this.color = Color.findByLabel((String) obj.get("color"));
-        this.shade = Shade.findByID(obj.get("shade").toString());
+        this.id = parseInt(obj.get(JSONTag.DIE_ID).toString());
+        this.color = Color.findByLabel((String) obj.get(JSONTag.COLOR));
+        this.shade = Shade.findByID(obj.get(JSONTag.SHADE).toString());
     }
 
     @Override
@@ -78,9 +79,9 @@ public class PlasticDie implements Die {
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj = new JSONObject();
-        obj.put("color", color.getLabel());
-        obj.put("shade", shade.getValue());
-        obj.put("id", id);
+        obj.put(JSONTag.COLOR, color.getLabel());
+        obj.put(JSONTag.SHADE, shade.getValue());
+        obj.put(JSONTag.DIE_ID, id);
         return obj;
     }
 }

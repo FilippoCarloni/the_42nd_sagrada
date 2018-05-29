@@ -2,9 +2,9 @@ package it.polimi.ingsw.model.gameboard.cards;
 
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
-import it.polimi.ingsw.model.gamedata.ConcreteGameData;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -26,8 +26,8 @@ public interface ToolCard extends Card {
     }
 
     static ToolCard getCardFromJSON(JSONObject obj) {
-        int id = parseInt(obj.get("id").toString());
-        int favorPoints = parseInt(obj.get("favor_points").toString());
+        int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
+        int favorPoints = parseInt(obj.get(JSONTag.TOOL_FAVOR_POINTS).toString());
         Deck d = new ToolDeck();
         while (d.size() > 0) {
             ToolCard card = (ToolCard) d.draw();

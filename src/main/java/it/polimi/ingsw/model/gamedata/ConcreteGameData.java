@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.turns.ArrayTurnManager;
 import it.polimi.ingsw.model.turns.TurnManager;
+import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -57,32 +58,32 @@ public class ConcreteGameData implements GameData {
 
     public ConcreteGameData(JSONObject obj) {
         dicePool = new ArrayList<>();
-        JSONArray dicePoolList = (JSONArray) obj.get("dice_pool");
+        JSONArray dicePoolList = (JSONArray) obj.get(JSONTag.DICE_POOL);
         for (Object o : dicePoolList)
             dicePool.add(new PlasticDie((JSONObject) o));
-        diceBag = new ArrayDiceBag((JSONObject) obj.get("dice_bag"));
-        roundTrack = new PaperRoundTrack((JSONObject) obj.get("round_track"));
+        diceBag = new ArrayDiceBag((JSONObject) obj.get(JSONTag.DICE_BAG));
+        roundTrack = new PaperRoundTrack((JSONObject) obj.get(JSONTag.ROUND_TRACK));
         publicObjectives = new ArrayList<>();
-        JSONArray poList = (JSONArray) obj.get("public_objectives");
+        JSONArray poList = (JSONArray) obj.get(JSONTag.PUBLIC_OBJECTIVES);
         for (Object o : poList)
             publicObjectives.add(PublicObjectiveCard.getCardFromJSON((JSONObject) o));
         tools = new ArrayList<>();
-        JSONArray toolList = (JSONArray) obj.get("tools");
+        JSONArray toolList = (JSONArray) obj.get(JSONTag.TOOLS);
         for (Object o : toolList)
             tools.add(ToolCard.getCardFromJSON((JSONObject) o));
-        turnManager = new ArrayTurnManager((JSONObject) obj.get("turn_manager"));
+        turnManager = new ArrayTurnManager((JSONObject) obj.get(JSONTag.TURN_MANAGER));
         pickedDie = null;
-        if (obj.get("picked_die") != null)
-            pickedDie = new PlasticDie((JSONObject) obj.get("picked_die"));
-        diePlaced = parseBoolean(obj.get("die_placed").toString());
-        activeToolID = parseInt(obj.get("active_tool_ID").toString());
-        passiveToolID = parseInt(obj.get("passive_tool_ID").toString());
-        toolActivated = parseBoolean(obj.get("tool_activated").toString());
+        if (obj.get(JSONTag.PICKED_DIE) != null)
+            pickedDie = new PlasticDie((JSONObject) obj.get(JSONTag.PICKED_DIE));
+        diePlaced = parseBoolean(obj.get(JSONTag.DIE_PLACED).toString());
+        activeToolID = parseInt(obj.get(JSONTag.ACTIVE_TOOL_ID).toString());
+        passiveToolID = parseInt(obj.get(JSONTag.PASSIVE_TOOL_ID).toString());
+        toolActivated = parseBoolean(obj.get(JSONTag.TOOL_ACTIVATED).toString());
         diceMoved = new ArrayList<>();
-        JSONArray diceMovedList = (JSONArray) obj.get("dice_moved");
+        JSONArray diceMovedList = (JSONArray) obj.get(JSONTag.DICE_MOVED);
         for (Object o : diceMovedList)
             diceMoved.add(new PlasticDie((JSONObject) o));
-        undoAvailable = parseBoolean(obj.get("undo_available").toString());
+        undoAvailable = parseBoolean(obj.get(JSONTag.UNDO_AVAILABLE).toString());
     }
 
     private void clear() {
@@ -289,28 +290,28 @@ public class ConcreteGameData implements GameData {
         JSONObject obj = new JSONObject();
         JSONArray playerList = new JSONArray();
         playerList.addAll(turnManager.getPlayers().stream().map(Player::encode).collect(Collectors.toList()));
-        obj.put("players", playerList);
+        obj.put(JSONTag.PLAYERS, playerList);
         JSONArray diceList = new JSONArray();
         diceList.addAll(dicePool.stream().map(Die::encode).collect(Collectors.toList()));
-        obj.put("dice_pool", diceList);
-        obj.put("dice_bag", diceBag.encode());
-        obj.put("round_track", roundTrack.encode());
+        obj.put(JSONTag.DICE_POOL, diceList);
+        obj.put(JSONTag.DICE_BAG, diceBag.encode());
+        obj.put(JSONTag.ROUND_TRACK, roundTrack.encode());
         JSONArray poList = new JSONArray();
         poList.addAll(publicObjectives.stream().map(Card::encode).collect(Collectors.toList()));
-        obj.put("public_objectives", poList);
+        obj.put(JSONTag.PUBLIC_OBJECTIVES, poList);
         JSONArray toolList = new JSONArray();
         toolList.addAll(tools.stream().map(Card::encode).collect(Collectors.toList()));
-        obj.put("tools", toolList);
-        obj.put("turn_manager", turnManager.encode());
-        obj.put("picked_die", pickedDie == null ? null : pickedDie.encode());
-        obj.put("die_placed", diePlaced);
-        obj.put("active_tool_ID", activeToolID);
-        obj.put("passive_tool_ID", passiveToolID);
-        obj.put("tool_activated", toolActivated);
+        obj.put(JSONTag.TOOLS, toolList);
+        obj.put(JSONTag.TURN_MANAGER, turnManager.encode());
+        obj.put(JSONTag.PICKED_DIE, pickedDie == null ? null : pickedDie.encode());
+        obj.put(JSONTag.DIE_PLACED, diePlaced);
+        obj.put(JSONTag.ACTIVE_TOOL_ID, activeToolID);
+        obj.put(JSONTag.PASSIVE_TOOL_ID, passiveToolID);
+        obj.put(JSONTag.TOOL_ACTIVATED, toolActivated);
         JSONArray diceMovedThisTurn = new JSONArray();
         diceMovedThisTurn.addAll(diceMoved.stream().map(Die::encode).collect(Collectors.toList()));
-        obj.put("dice_moved", diceMovedThisTurn);
-        obj.put("undo_available", undoAvailable);
+        obj.put(JSONTag.DICE_MOVED, diceMovedThisTurn);
+        obj.put(JSONTag.UNDO_AVAILABLE, undoAvailable);
         return obj;
     }
 }

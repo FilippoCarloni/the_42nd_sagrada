@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gameboard.cards;
 
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import java.util.NoSuchElementException;
@@ -26,7 +27,7 @@ public interface PrivateObjectiveCard extends ObjectiveCard {
      * @return A PrivateObjectiveCard instance
      */
     static PrivateObjectiveCard getCardFromJSON(JSONObject obj) {
-        int id = parseInt(obj.get("id").toString());
+        int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
         Deck d = new PrivateObjectiveDeck();
         while (d.size() > 0) {
             PrivateObjectiveCard card = (PrivateObjectiveCard) d.draw();

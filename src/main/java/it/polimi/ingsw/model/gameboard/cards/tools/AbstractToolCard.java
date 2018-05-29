@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 public abstract class AbstractToolCard extends AbstractCard implements ToolCard {
@@ -26,7 +27,7 @@ public abstract class AbstractToolCard extends AbstractCard implements ToolCard 
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj = super.encode();
-        obj.put("favor_points", favorPoints);
+        obj.put(JSONTag.TOOL_FAVOR_POINTS, favorPoints);
         return obj;
     }
 }

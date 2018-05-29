@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.gameboard.windowframes;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.utility.Shade;
 import org.json.simple.JSONArray;
@@ -37,24 +38,24 @@ public class PaperWindowFrame implements WindowFrame {
      * @param obj A JSON Object that holds WindowFrame-like information
      */
     public PaperWindowFrame(JSONObject obj) {
-        name = obj.get("name").toString();
-        difficulty = parseInt(obj.get("difficulty").toString());
+        name = obj.get(JSONTag.NAME).toString();
+        difficulty = parseInt(obj.get(JSONTag.DIFFICULTY).toString());
         dice = new HashMap<>();
         colorConstraints = new HashMap<>();
         shadeConstraints = new HashMap<>();
-        JSONArray list = (JSONArray) obj.get("coordinates");
+        JSONArray list = (JSONArray) obj.get(JSONTag.COORDINATES);
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 for (Object o : list) {
-                    int row = parseInt(((JSONObject) o).get("row_index").toString());
-                    int column = parseInt(((JSONObject) o).get("column_index").toString());
+                    int row = parseInt(((JSONObject) o).get(JSONTag.ROW_INDEX).toString());
+                    int column = parseInt(((JSONObject) o).get(JSONTag.COLUMN_INDEX).toString());
                     if (row == i && column == j) {
-                        if (((JSONObject) o).get("die") != null)
-                            dice.put(new Coordinate(i, j), new PlasticDie((JSONObject) ((JSONObject) o).get("die")));
-                        if (((JSONObject) o).get("color_constraint") != null)
-                            colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get("color_constraint")));
-                        if (((JSONObject) o).get("shade_constraint") != null)
-                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt(((JSONObject) o).get("shade_constraint").toString())));                    }
+                        if (((JSONObject) o).get(JSONTag.DIE) != null)
+                            dice.put(new Coordinate(i, j), new PlasticDie((JSONObject) ((JSONObject) o).get(JSONTag.DIE)));
+                        if (((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT) != null)
+                            colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT)));
+                        if (((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT) != null)
+                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt(((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT).toString())));                    }
                 }
             }
         }
@@ -190,21 +191,21 @@ public class PaperWindowFrame implements WindowFrame {
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj = new JSONObject();
-        obj.put("name", name);
-        obj.put("difficulty", difficulty);
+        obj.put(JSONTag.NAME, name);
+        obj.put(JSONTag.DIFFICULTY, difficulty);
         JSONArray list = new JSONArray();
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 JSONObject coordinate = new JSONObject();
-                coordinate.put("row_index", i);
-                coordinate.put("column_index", j);
-                coordinate.put("die", dice.get(new Coordinate(i, j)) == null ? null : dice.get(new Coordinate(i, j)).encode());
-                coordinate.put("color_constraint", colorConstraints.get(new Coordinate(i, j)) == null ? null : colorConstraints.get(new Coordinate(i, j)).getLabel());
-                coordinate.put("shade_constraint", shadeConstraints.get(new Coordinate(i, j)) == null ? null : shadeConstraints.get(new Coordinate(i, j)).getValue());
+                coordinate.put(JSONTag.ROW_INDEX, i);
+                coordinate.put(JSONTag.COLUMN_INDEX, j);
+                coordinate.put(JSONTag.DIE, dice.get(new Coordinate(i, j)) == null ? null : dice.get(new Coordinate(i, j)).encode());
+                coordinate.put(JSONTag.COLOR_CONSTRAINT, colorConstraints.get(new Coordinate(i, j)) == null ? null : colorConstraints.get(new Coordinate(i, j)).getLabel());
+                coordinate.put(JSONTag.SHADE_CONSTRAINT, shadeConstraints.get(new Coordinate(i, j)) == null ? null : shadeConstraints.get(new Coordinate(i, j)).getValue());
                 list.add(coordinate);
             }
         }
-        obj.put("coordinates", list);
+        obj.put(JSONTag.COORDINATES, list);
         return obj;
     }
 }

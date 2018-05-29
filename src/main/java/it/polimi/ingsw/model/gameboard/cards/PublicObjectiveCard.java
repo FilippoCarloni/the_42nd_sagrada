@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameboard.cards;
 
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
+import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import java.util.NoSuchElementException;
@@ -19,7 +20,7 @@ public interface PublicObjectiveCard extends ObjectiveCard {
      * @return A PublicObjectiveCard instance
      */
     static PublicObjectiveCard getCardFromJSON(JSONObject obj) {
-        int id = parseInt(obj.get("id").toString());
+        int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
         Deck d = new PublicObjectiveDeck();
         while (d.size() > 0) {
             PublicObjectiveCard card = (PublicObjectiveCard) d.draw();
