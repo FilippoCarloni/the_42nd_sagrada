@@ -1,13 +1,14 @@
 package it.polimi.ingsw.view.viewdemo.gameboard.windowframes;
 
+import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.view.viewdemo.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.viewdemo.settings.GUIColor;
 import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
-import javafx.scene.image.Image;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -27,7 +28,6 @@ public class WindowFrameDrawer {
         }
     }
 
-    //TODO: create the function that draws the dice
     private void paintWindowFrame(StackPane pane, int row, int column, String json) {
         try {
             WindowFrame wf = new PaperWindowFrame((JSONObject) new JSONParser().parse(json));
@@ -38,34 +38,17 @@ public class WindowFrameDrawer {
                 pane.getChildren().add(rectangle);
             }
             else if (wf.getShadeConstraint(row, column) != null) {
-                //TODO: instead of rectangle I will put canvas, to draw dice
-                Rectangle rectangle = new Rectangle(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
-                pane.getChildren().add(rectangle);
+                Die die = wf.getDie(row, column);
+                String color = "default";
                 int shade = wf.getShadeConstraint(row, column).getValue();
-                //TODO: modify this switch-case after having the function that draws dice
-                switch (shade){
-                    case 1:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_1.png")));
-                        break;
-                    case 2:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_2.png")));
-                        break;
-                    case 3:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_3.png")));
-                        break;
-                    case 4:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_4.png")));
-                        break;
-                    case 5:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_5.png")));
-                        break;
-                    case 6:
-                        rectangle.setFill(new ImagePattern(new Image("/images/die_6.png")));
-                        break;
-                    default:
-                        rectangle.setFill(GUIParameters.DEFAULT_GRID_COLOR);
-                        break;
+                Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+                if(die != null){
+                    shade = die.getShade().getValue();
+                    color = die.getColor().getLabel();
+                    new DiceDrawer().diceDrawer(shade, color, canvas.getGraphicsContext2D(), pane);
                 }
+                new DiceDrawer().diceDrawer(shade, color, canvas.getGraphicsContext2D(), pane);
+                pane.getChildren().add(canvas);
             }
             else {
                 Rectangle rectangle = new Rectangle(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
