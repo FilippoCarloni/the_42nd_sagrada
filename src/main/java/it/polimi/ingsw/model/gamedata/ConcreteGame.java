@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.gamedata;
 import it.polimi.ingsw.model.commands.CommandManager;
 import it.polimi.ingsw.model.commands.DequeCommandManager;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
-import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.JSONFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class ConcreteGame implements Game {
 
     @Override
     public Player getCurrentPlayer() {
-        return new ConcretePlayer(commandManager.getCurrentData().getTurnManager().getCurrentPlayer().encode());
+        return JSONFactory.getPlayer(commandManager.getCurrentData().getTurnManager().getCurrentPlayer().encode());
     }
 
     @Override
@@ -67,6 +67,6 @@ public class ConcreteGame implements Game {
 
     @Override
     public GameData getData() {
-        return new ConcreteGameData(commandManager.getCurrentData().encode());
+        return JSONFactory.getGameData(commandManager.getCurrentData().encode());
     }
 }

@@ -5,9 +5,9 @@ import it.polimi.ingsw.model.commands.basiccommands.Pick;
 import it.polimi.ingsw.model.commands.basiccommands.Place;
 import it.polimi.ingsw.model.commands.basiccommands.Tool;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
-import it.polimi.ingsw.model.gamedata.ConcreteGameData;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.json.simple.JSONObject;
 
 import java.util.*;
@@ -80,7 +80,7 @@ public class DequeCommandManager implements CommandManager {
     public void undoCommand() {
         if (!undoCommands.isEmpty()) {
             redoCommands.push(gameData.encode());
-            gameData = new ConcreteGameData(undoCommands.pop());
+            gameData = JSONFactory.getGameData(undoCommands.pop());
         }
     }
 
@@ -93,7 +93,7 @@ public class DequeCommandManager implements CommandManager {
     public void redoCommand() {
         if (!redoCommands.isEmpty()) {
             undoCommands.push(gameData.encode());
-            gameData = new ConcreteGameData(redoCommands.pop());
+            gameData = JSONFactory.getGameData(redoCommands.pop());
         }
     }
 }

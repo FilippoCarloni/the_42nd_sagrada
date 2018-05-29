@@ -1,6 +1,7 @@
 package it.polimi.ingsw.connection.client;
 
 import it.polimi.ingsw.model.gamedata.ConcreteGameData;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -30,7 +31,7 @@ public class CLI extends Observable implements Runnable {
     void update(String o) {
         if(o.contains("{"))
             try {
-                o = new ConcreteGameData((JSONObject) new JSONParser().parse(o)).toString();
+                o = JSONFactory.getGameData((JSONObject) new JSONParser().parse(o)).toString();
             }catch (ParseException e){
                 o=e.getMessage();
             }

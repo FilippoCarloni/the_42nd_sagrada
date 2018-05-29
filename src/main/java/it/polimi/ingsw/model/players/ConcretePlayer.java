@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model.players;
 
 import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
-import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
-
-import static java.lang.Integer.parseInt;
 
 public class ConcretePlayer implements Player{
 
@@ -23,19 +21,11 @@ public class ConcretePlayer implements Player{
         this.username=username;
     }
 
-    /**
-     * Generates a clone of the player represented with JSON syntax.
-     * @param obj A JSON Object that holds Player-like information
-     */
-    public ConcretePlayer(JSONObject obj) {
-        username = obj.get(JSONTag.USERNAME).toString();
-        favorPoints = parseInt(obj.get(JSONTag.FAVOR_POINTS).toString());
-        JSONObject windowFrame = (JSONObject) obj.get(JSONTag.WINDOW_FRAME);
-        if (windowFrame != null)
-            window = new PaperWindowFrame(windowFrame);
-        JSONObject privateObjective = (JSONObject) obj.get(JSONTag.PRIVATE_OBJECTIVE);
-        if (privateObjective != null)
-            po = PrivateObjectiveCard.getCardFromJSON(privateObjective);
+    public ConcretePlayer(String username, WindowFrame window, PrivateObjectiveCard privateObjective, int favorPoints) {
+        this.username = username;
+        this.window = window;
+        this.po = privateObjective;
+        this.favorPoints = favorPoints;
     }
 
     @Override
@@ -57,7 +47,7 @@ public class ConcretePlayer implements Player{
 
     @Override
     public PrivateObjectiveCard getPrivateObjective() {
-        return po == null ? null : PrivateObjectiveCard.getCardFromJSON(po.encode());
+        return po == null ? null : JSONFactory.getPrivateObjectiveCard(po.encode());
     }
 
     @Override

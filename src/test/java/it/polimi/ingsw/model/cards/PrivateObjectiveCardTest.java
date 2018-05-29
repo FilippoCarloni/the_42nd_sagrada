@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveD
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
@@ -52,7 +53,7 @@ class PrivateObjectiveCardTest {
                 w.put(db.pick(), i, j);
         while (d.size() > 0) {
             PrivateObjectiveCard card = (PrivateObjectiveCard) d.draw();
-            PrivateObjectiveCard cardClone = PrivateObjectiveCard.getCardFromJSON(card.encode());
+            PrivateObjectiveCard cardClone = JSONFactory.getPrivateObjectiveCard(card.encode());
             assertEquals(card.getColor(), cardClone.getColor());
             assertEquals(card.getName(), cardClone.getName());
             assertEquals(card.getDescription(), cardClone.getDescription());

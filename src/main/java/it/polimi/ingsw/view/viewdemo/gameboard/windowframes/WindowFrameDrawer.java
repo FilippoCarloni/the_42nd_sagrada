@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.viewdemo.gameboard.windowframes;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.windowframes.PaperWindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.view.viewdemo.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.viewdemo.settings.GUIColor;
 import it.polimi.ingsw.view.viewdemo.settings.GUIParameters;
@@ -30,7 +30,7 @@ public class WindowFrameDrawer {
 
     private void paintWindowFrame(StackPane pane, int row, int column, String json) {
         try {
-            WindowFrame wf = new PaperWindowFrame((JSONObject) new JSONParser().parse(json));
+            WindowFrame wf = JSONFactory.getWindowFrame((JSONObject) new JSONParser().parse(json));
             if(wf.getColorConstraint(row, column) != null){
                 Rectangle rectangle = new Rectangle(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
                 String color = wf.getColorConstraint(row, column).getLabel();

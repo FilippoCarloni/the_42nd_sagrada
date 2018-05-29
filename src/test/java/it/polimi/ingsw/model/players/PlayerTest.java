@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +49,7 @@ class PlayerTest {
     @Test
     void testJSON() {
         Player p = new ConcretePlayer("foo");
-        Player pClone = new ConcretePlayer(p.encode());
+        Player pClone = JSONFactory.getPlayer(p.encode());
 
         assertEquals(p.getUsername(), pClone.getUsername());
         assertEquals(p.getWindowFrame(), pClone.getWindowFrame());
@@ -59,7 +60,7 @@ class PlayerTest {
         p.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
         p.setFavorPoints(3);
         assertThrows(IllegalArgumentException.class, () -> p.setFavorPoints(-1));
-        pClone = new ConcretePlayer(p.encode());
+        pClone = JSONFactory.getPlayer(p.encode());
 
         assertEquals(p.getUsername(), pClone.getUsername());
         assertEquals(p.getWindowFrame().getName(), pClone.getWindowFrame().getName());

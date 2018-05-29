@@ -3,17 +3,13 @@ package it.polimi.ingsw.model.gamedata;
 import it.polimi.ingsw.model.gameboard.cards.Card;
 import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.ToolCard;
-import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
-import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
-import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
-import it.polimi.ingsw.model.turns.ArrayTurnManager;
 import it.polimi.ingsw.model.turns.TurnManager;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
@@ -24,9 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
 
 public class ConcreteGameData implements GameData {
 
@@ -56,34 +49,23 @@ public class ConcreteGameData implements GameData {
         clear();
     }
 
-    public ConcreteGameData(JSONObject obj) {
-        dicePool = new ArrayList<>();
-        JSONArray dicePoolList = (JSONArray) obj.get(JSONTag.DICE_POOL);
-        for (Object o : dicePoolList)
-            dicePool.add(new PlasticDie((JSONObject) o));
-        diceBag = new ArrayDiceBag((JSONObject) obj.get(JSONTag.DICE_BAG));
-        roundTrack = new PaperRoundTrack((JSONObject) obj.get(JSONTag.ROUND_TRACK));
-        publicObjectives = new ArrayList<>();
-        JSONArray poList = (JSONArray) obj.get(JSONTag.PUBLIC_OBJECTIVES);
-        for (Object o : poList)
-            publicObjectives.add(PublicObjectiveCard.getCardFromJSON((JSONObject) o));
-        tools = new ArrayList<>();
-        JSONArray toolList = (JSONArray) obj.get(JSONTag.TOOLS);
-        for (Object o : toolList)
-            tools.add(ToolCard.getCardFromJSON((JSONObject) o));
-        turnManager = new ArrayTurnManager((JSONObject) obj.get(JSONTag.TURN_MANAGER));
-        pickedDie = null;
-        if (obj.get(JSONTag.PICKED_DIE) != null)
-            pickedDie = new PlasticDie((JSONObject) obj.get(JSONTag.PICKED_DIE));
-        diePlaced = parseBoolean(obj.get(JSONTag.DIE_PLACED).toString());
-        activeToolID = parseInt(obj.get(JSONTag.ACTIVE_TOOL_ID).toString());
-        passiveToolID = parseInt(obj.get(JSONTag.PASSIVE_TOOL_ID).toString());
-        toolActivated = parseBoolean(obj.get(JSONTag.TOOL_ACTIVATED).toString());
-        diceMoved = new ArrayList<>();
-        JSONArray diceMovedList = (JSONArray) obj.get(JSONTag.DICE_MOVED);
-        for (Object o : diceMovedList)
-            diceMoved.add(new PlasticDie((JSONObject) o));
-        undoAvailable = parseBoolean(obj.get(JSONTag.UNDO_AVAILABLE).toString());
+    public ConcreteGameData(RoundTrack roundTrack, DiceBag diceBag, List<Die> dicePool,
+                            List<PublicObjectiveCard> publicObjectiveCards, List<ToolCard> tools,
+                            TurnManager turnManager, Die pickedDie, boolean diePlaced, int activeToolID,
+                            int passiveToolID, boolean toolActivated, List<Die> diceMoved, boolean undoAvailable) {
+        this.roundTrack = roundTrack;
+        this.diceBag = diceBag;
+        this.dicePool = new ArrayList<>(dicePool);
+        this.publicObjectives = publicObjectiveCards;
+        this.tools = tools;
+        this.turnManager = turnManager;
+        this.pickedDie = pickedDie;
+        this.diePlaced = diePlaced;
+        this.activeToolID = activeToolID;
+        this.passiveToolID = passiveToolID;
+        this.toolActivated = toolActivated;
+        this.diceMoved = new ArrayList<>(diceMoved);
+        this.undoAvailable = undoAvailable;
     }
 
     private void clear() {
@@ -130,7 +112,7 @@ public class ConcreteGameData implements GameData {
             int emptySlots = Parameters.MAX_COLUMNS * Parameters.MAX_ROWS - w.getDice().size();
             playerScore -= emptySlots;
             if (playerScore < 0) playerScore = 0;
-            scoreMap.put(new ConcretePlayer(p.encode()), playerScore);
+            scoreMap.put(JSONFactory.getPlayer(p.encode()), playerScore);
         }
         return scoreMap;
     }

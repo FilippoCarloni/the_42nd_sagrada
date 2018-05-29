@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.turns;
 
-import it.polimi.ingsw.model.players.ConcretePlayer;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.players.Player;
@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Integer.parseInt;
+import java.util.stream.Collectors;
 
 public class ArrayTurnManager implements TurnManager {
 
@@ -21,7 +19,6 @@ public class ArrayTurnManager implements TurnManager {
     private boolean roundEnding;
     private List<Player> players;
     private List<Player> playerTurns;
-
     private int turnIndex;
     private int firstPlayerIndex;
 
@@ -42,27 +39,15 @@ public class ArrayTurnManager implements TurnManager {
         advanceTurn();
     }
 
-    /**
-     * Generates a clone of the turn manager represented with JSON syntax.
-     * @param obj A JSON Object that holds TurnManager-like information
-     */
-    public ArrayTurnManager(JSONObject obj) {
-        roundStarting = parseBoolean(obj.get(JSONTag.ROUND_STARTING).toString());
-        roundEnding = parseBoolean(obj.get(JSONTag.ROUND_ENDING).toString());
-        turnIndex = parseInt(obj.get(JSONTag.TURN_INDEX).toString());
-        firstPlayerIndex = parseInt(obj.get(JSONTag.FIRST_PLAYER_INDEX).toString());
-        players = new ArrayList<>();
-        playerTurns = new ArrayList<>();
-        JSONArray playerList = (JSONArray) obj.get(JSONTag.PLAYERS);
-        for (Object o : playerList)
-            players.add(new ConcretePlayer((JSONObject) o));
-        playerList = (JSONArray) obj.get(JSONTag.PLAYER_TURNS);
-        for (Object o : playerList)
-            for (Player p : players)
-                if (p.getUsername().equals(((JSONObject) o).get(JSONTag.USERNAME)))
-                    playerTurns.add(p);
+    public ArrayTurnManager(boolean roundStarting, boolean roundEnding, List<Player> players, List<Player> playerTurns, int turnIndex, int firstPlayerIndex) {
+        this.roundStarting = roundStarting;
+        this.roundEnding = roundEnding;
+        this.players = players.stream().map(p -> JSONFactory.getPlayer(p.encode())).collect(Collectors.toList());
+        this.playerTurns = new ArrayList<>();
         for (Player p : playerTurns)
-            assert players.contains(p);
+            this.playerTurns.add(this.players.get(this.players.indexOf(p)));
+        this.turnIndex = turnIndex;
+        this.firstPlayerIndex = firstPlayerIndex;
     }
 
     private void updateRoundStatus() {

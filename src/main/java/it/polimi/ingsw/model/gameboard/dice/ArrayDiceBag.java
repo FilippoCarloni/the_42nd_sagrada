@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
@@ -32,16 +33,11 @@ public class ArrayDiceBag implements DiceBag {
         Collections.shuffle(dice);
     }
 
-    /**
-     * Generates a clone of the dice bag represented with JSON syntax.
-     * It has memory of all the dice still in the bag.
-     * @param obj A JSON Object that holds DiceBag-like information
-     */
-    public ArrayDiceBag(JSONObject obj) {
-        JSONArray list = (JSONArray) obj.get(JSONTag.DICE);
-        dice = new ArrayList<>();
-        for (Object die : list)
-            dice.add(new PlasticDie((JSONObject) die));
+    public ArrayDiceBag(List<Die> dice) {
+        if (dice == null)
+            throw new NullPointerException("Null list of dice.");
+        this.dice = new ArrayList<>();
+        this.dice.addAll(dice.stream().map(d -> JSONFactory.getDie(d.encode())).collect(Collectors.toList()));
     }
 
     @Override
@@ -70,7 +66,7 @@ public class ArrayDiceBag implements DiceBag {
             throw new NullPointerException("Cannot insert a null die in the bag.");
         if (dice.stream().map(Die::hashCode).anyMatch(x -> x.hashCode() == die.hashCode()))
             throw new IllegalArgumentException("The bag already contains the die.");
-        Die d = new PlasticDie(die.encode());
+        Die d = JSONFactory.getDie(die.encode());
         d.roll();
         dice.add(d);
         Collections.shuffle(dice);

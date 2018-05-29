@@ -5,11 +5,10 @@ import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.*;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,7 +93,7 @@ class WindowFrameTest {
         w.put(db.pick(), 3, 4);
         w.put(db.pick(), 3, 3);
 
-        WindowFrame clonedW = new PaperWindowFrame(w.encode());
+        WindowFrame clonedW = JSONFactory.getWindowFrame(w.encode());
 
         assertEquals(w.getName(), clonedW.getName());
         assertEquals(w.getDifficulty(), clonedW.getDifficulty());

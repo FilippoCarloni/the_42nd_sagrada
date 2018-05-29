@@ -5,8 +5,7 @@ import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.PaperRoundTrack;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
-import it.polimi.ingsw.model.utility.Parameters;
-import it.polimi.ingsw.model.utility.Shade;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ class RoundTrackTest {
         rt.put(db.pick(1));
         rt.put(db.pick(2));
 
-        RoundTrack clonedRt = new PaperRoundTrack(rt.encode());
+        RoundTrack clonedRt = JSONFactory.getRoundTrack(rt.encode());
 
         assertEquals(rt.getCurrentRoundNumber(), clonedRt.getCurrentRoundNumber());
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ class DiceBagTest {
         db.pick();
         db.insert(db.pick());
 
-        DiceBag clonedDb = new ArrayDiceBag(db.encode());
+        DiceBag clonedDb = JSONFactory.getDiceBag(db.encode());
 
         List<Die> dbDice = db.pick(88);
         List<Die> clonedDbDice = clonedDb.pick(88);

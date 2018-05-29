@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.turns;
 
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
@@ -267,7 +268,7 @@ class TurnManagerTest {
         players.add(b);
         players.add(c);
         TurnManager tm = new ArrayTurnManager(players);
-        TurnManager tmClone = new ArrayTurnManager(tm.encode());
+        TurnManager tmClone = JSONFactory.getTurnManager(tm.encode());
 
         for (int i = 0; i < 30; i++) {
             assertEquality(tm, tmClone);

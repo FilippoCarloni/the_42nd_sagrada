@@ -7,8 +7,6 @@ import org.json.simple.JSONObject;
 
 import java.util.Random;
 
-import static java.lang.Integer.parseInt;
-
 public class PlasticDie implements Die {
 
     private Color color;
@@ -21,14 +19,14 @@ public class PlasticDie implements Die {
         this.roll();
     }
 
-    /**
-     * Generates a clone of the die represented with JSON syntax.
-     * @param obj A JSON Object that holds Die-like information
-     */
-    public PlasticDie(JSONObject obj) {
-        this.id = parseInt(obj.get(JSONTag.DIE_ID).toString());
-        this.color = Color.findByLabel((String) obj.get(JSONTag.COLOR));
-        this.shade = Shade.findByID(obj.get(JSONTag.SHADE).toString());
+    public PlasticDie(int id, Color color, Shade shade) {
+        if (id < 0)
+            throw new IllegalArgumentException("Negative ID");
+        if (color == null || shade == null)
+            throw new NullPointerException("Null color or shade.");
+        this.id = id;
+        this.color = color;
+        this.shade = shade;
     }
 
     @Override

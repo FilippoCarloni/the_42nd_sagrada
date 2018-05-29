@@ -3,8 +3,8 @@ package it.polimi.ingsw.model.dice;
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
 import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Shade;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ class DiceTest {
         assertThrows(NullPointerException.class, () -> a.setColor(null));
 
         assertNotEquals(a, b); // different pointers
-        Die c = new PlasticDie(b.encode()); // c clones b
+        Die c = JSONFactory.getDie(b.encode()); // c clones b
         assertNotEquals(a, c);
         assertEquals(b, c); // c is equal to b, but they have different pointers
         assertEquals(b.hashCode(), c.hashCode()); // c and b share the hashCode
@@ -39,10 +39,10 @@ class DiceTest {
         assertEquals(a.getColor(), Color.BLUE);
         assertEquals(a.getShade(), Shade.LIGHT);
 
-        assertEquals(a, new PlasticDie(a.encode())); // a equals its clone
-        assertEquals(Color.BLUE, new PlasticDie(a.encode()).getColor());
-        assertEquals(Shade.LIGHT, new PlasticDie(a.encode()).getShade());
-        assertEquals(a.hashCode(), new PlasticDie(a.encode()).hashCode());
+        assertEquals(a, JSONFactory.getDie(a.encode())); // a equals its clone
+        assertEquals(Color.BLUE, JSONFactory.getDie(a.encode()).getColor());
+        assertEquals(Shade.LIGHT, JSONFactory.getDie(a.encode()).getShade());
+        assertEquals(a.hashCode(), JSONFactory.getDie(a.encode()).hashCode());
     }
 
     @Test

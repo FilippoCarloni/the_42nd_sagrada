@@ -1,17 +1,11 @@
 package it.polimi.ingsw.model.gameboard.windowframes;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
-import it.polimi.ingsw.model.utility.Color;
-import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.model.utility.Parameters;
-import it.polimi.ingsw.model.utility.Shade;
+import it.polimi.ingsw.model.utility.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
-
-import static java.lang.Integer.parseInt;
 
 public class PaperWindowFrame implements WindowFrame {
 
@@ -33,32 +27,12 @@ public class PaperWindowFrame implements WindowFrame {
         dice = new HashMap<>();
     }
 
-    /**
-     * Generates a clone of the die represented with JSON syntax.
-     * @param obj A JSON Object that holds WindowFrame-like information
-     */
-    public PaperWindowFrame(JSONObject obj) {
-        name = obj.get(JSONTag.NAME).toString();
-        difficulty = parseInt(obj.get(JSONTag.DIFFICULTY).toString());
-        dice = new HashMap<>();
-        colorConstraints = new HashMap<>();
-        shadeConstraints = new HashMap<>();
-        JSONArray list = (JSONArray) obj.get(JSONTag.COORDINATES);
-        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
-                for (Object o : list) {
-                    int row = parseInt(((JSONObject) o).get(JSONTag.ROW_INDEX).toString());
-                    int column = parseInt(((JSONObject) o).get(JSONTag.COLUMN_INDEX).toString());
-                    if (row == i && column == j) {
-                        if (((JSONObject) o).get(JSONTag.DIE) != null)
-                            dice.put(new Coordinate(i, j), new PlasticDie((JSONObject) ((JSONObject) o).get(JSONTag.DIE)));
-                        if (((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT) != null)
-                            colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT)));
-                        if (((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT) != null)
-                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt(((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT).toString())));                    }
-                }
-            }
-        }
+    public PaperWindowFrame(String name, int difficulty, Map<Coordinate, Die> dice, Map<Coordinate, Color> colorConstraints, Map<Coordinate, Shade> shadeConstraints) {
+        this.name = name;
+        this.difficulty = difficulty;
+        this.dice = new HashMap<>(dice);
+        this.colorConstraints = new HashMap<>(colorConstraints);
+        this.shadeConstraints = new HashMap<>(shadeConstraints);
     }
 
     @Override
@@ -71,7 +45,7 @@ public class PaperWindowFrame implements WindowFrame {
         Object[] diceArray = dice.values().toArray();
         List<Die> diceList = new ArrayList<>();
         for (Object o : diceArray)
-            diceList.add(new PlasticDie(((Die) o).encode()));
+            diceList.add(JSONFactory.getDie(((Die) o).encode()));
         return diceList;
     }
 
@@ -111,7 +85,7 @@ public class PaperWindowFrame implements WindowFrame {
     public Die getDie(int row, int column) {
         try {
             if (!isEmpty(row, column))
-                return new PlasticDie(dice.get(new Coordinate(row, column)).encode());
+                return JSONFactory.getDie(dice.get(new Coordinate(row, column)).encode());
             return null;
         } catch (IllegalArgumentException e) {
             return null;
@@ -124,7 +98,7 @@ public class PaperWindowFrame implements WindowFrame {
             throw new NullPointerException("Cannot place a null die.");
         if (!isEmpty(row, column))
             throw new IllegalArgumentException("This place is already occupied.");
-        dice.put(new Coordinate(row, column), new PlasticDie(die.encode()));
+        dice.put(new Coordinate(row, column), JSONFactory.getDie(die.encode()));
     }
 
     @Override

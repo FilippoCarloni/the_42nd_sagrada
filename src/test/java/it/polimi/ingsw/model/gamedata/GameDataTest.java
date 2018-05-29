@@ -5,10 +5,9 @@ import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
-import it.polimi.ingsw.model.gamedata.ConcreteGameData;
-import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,7 +38,7 @@ class GameDataTest {
         }
         GameData data = new ConcreteGameData(players);
         try {
-            GameData dataClone = new ConcreteGameData((JSONObject) new JSONParser().parse(data.encode().toString()));
+            GameData dataClone = JSONFactory.getGameData((JSONObject) new JSONParser().parse(data.encode().toString()));
             assertTrue(data.getRoundTrack().getDice().containsAll(dataClone.getRoundTrack().getDice()));
             assertTrue(data.getRoundTrack().getVisibleDice().containsAll(dataClone.getRoundTrack().getVisibleDice()));
             assertEquals(data.getTurnManager().getCurrentPlayer(), dataClone.getTurnManager().getCurrentPlayer());

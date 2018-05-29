@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gameboard.roundtrack;
 
 import it.polimi.ingsw.model.gameboard.dice.Die;
-import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
+import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
@@ -10,8 +10,6 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.lang.Integer.parseInt;
 
 public class PaperRoundTrack implements RoundTrack {
 
@@ -30,20 +28,13 @@ public class PaperRoundTrack implements RoundTrack {
         diceOnSlot = new int[this.totalNumberOfRounds];
     }
 
-    /**
-     * Generates a clone of the round track represented with JSON syntax.
-     * @param obj A JSON Object that holds RoundTrack-like information
-     */
-    public PaperRoundTrack(JSONObject obj) {
-        totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
-        currentRoundNumber = parseInt(obj.get(JSONTag.CURRENT_ROUND_NUMBER).toString());
-        dice = new ArrayList<>();
-        for (Object die : (JSONArray) obj.get(JSONTag.ALL_DICE))
-            dice.add(new PlasticDie((JSONObject) die));
-        diceOnSlot = new int[this.totalNumberOfRounds];
-        JSONArray numOfDiceOnSlot = (JSONArray) obj.get(JSONTag.NUMBER_OF_DICE_ON_SLOT);
-        for (int i = 0; i < numOfDiceOnSlot.size(); i++)
-            diceOnSlot[i] = parseInt(numOfDiceOnSlot.get(i).toString());
+    public PaperRoundTrack(int currentRoundNumber, List<Die> dice, int[] diceOnSlot) {
+        this.currentRoundNumber = currentRoundNumber;
+        this.totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;
+        this.dice = new ArrayList<>();
+        this.dice.addAll(dice.stream().map(d -> JSONFactory.getDie(d.encode())).collect(Collectors.toList()));
+        this.diceOnSlot = new int[diceOnSlot.length];
+        System.arraycopy(diceOnSlot, 0, this.diceOnSlot, 0, diceOnSlot.length);
     }
 
     @Override
@@ -52,21 +43,21 @@ public class PaperRoundTrack implements RoundTrack {
         int index = -1;
         for (int i = 0; i < currentRoundNumber - 1; i++) {
             index += diceOnSlot[i];
-            clonedDice.add(new PlasticDie(dice.get(index).encode()));
+            clonedDice.add(JSONFactory.getDie(dice.get(index).encode()));
         }
         return clonedDice;
     }
 
     @Override
     public List<Die> getDice() {
-        return dice.stream().map(die -> new PlasticDie(die.encode())).collect(Collectors.toList());
+        return dice.stream().map(die -> JSONFactory.getDie(die.encode())).collect(Collectors.toList());
     }
 
     @Override
     public void put(List<Die> dice) {
         if (dice == null) throw new NullPointerException("Cannot place null dice on the round track.");
         if (currentRoundNumber <= totalNumberOfRounds) {
-            this.dice.addAll(dice.stream().map(die -> new PlasticDie(die.encode())).collect(Collectors.toList()));
+            this.dice.addAll(dice.stream().map(die -> JSONFactory.getDie(die.encode())).collect(Collectors.toList()));
             diceOnSlot[currentRoundNumber - 1] = dice.size();
             currentRoundNumber++;
             return;
@@ -79,7 +70,7 @@ public class PaperRoundTrack implements RoundTrack {
         if (playerDie == null || roundTrackDie == null) throw new NullPointerException("Cannot swap null dice.");
         if (!dice.contains(roundTrackDie))throw new IllegalArgumentException("The die is not present on the round track.");
         if (dice.contains(playerDie)) throw new IllegalArgumentException("Cannot swap two dice already on the round track.");
-        dice.set(dice.indexOf(roundTrackDie), new PlasticDie(playerDie.encode()));
+        dice.set(dice.indexOf(roundTrackDie), JSONFactory.getDie(playerDie.encode()));
     }
 
     @Override
