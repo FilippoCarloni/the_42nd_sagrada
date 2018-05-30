@@ -30,11 +30,6 @@ class PassTest {
         wrappedIllegalCommand(g, players.get(0), "pick 1");
         wrappedLegalCommand(g, players.get(1), "pick 1");
         assertTrue(g.isUndoAvailable());
-        wrappedLegalCommand(g, players.get(1), "tool 2");
-        assertTrue(g.isUndoAvailable());
-        wrappedIllegalCommand(g, players.get(1), "pass");
-        wrappedLegalCommand(g, players.get(1), "increase");
-        assertTrue(g.isUndoAvailable());
         wrappedLegalCommand(g, players.get(1), "place 1 2");
         assertTrue(g.isUndoAvailable());
     }

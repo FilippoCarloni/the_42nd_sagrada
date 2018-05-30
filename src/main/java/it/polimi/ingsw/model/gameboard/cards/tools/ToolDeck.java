@@ -5,8 +5,6 @@ import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
 public class ToolDeck extends AbstractDeck {
 
     public ToolDeck() {
-        add(new GrozingPliers());
-        add(new LensCutter());
-        add(new GrindingStone());
+        // tool cards will be added here
     }
 }
