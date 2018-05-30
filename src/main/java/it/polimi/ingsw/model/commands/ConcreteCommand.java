@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.commands;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
+import it.polimi.ingsw.model.commands.instructions.Instruction;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
 
@@ -11,21 +12,24 @@ import java.util.regex.Pattern;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_NOT_YOUR_TURN;
 import static java.lang.Integer.parseInt;
 
-public abstract class AbstractCommand implements Command {
+public class ConcreteCommand implements Command {
 
+    private String regExp;
+    private boolean undoable;
     private String cmd;
     private GameData gameData;
     private Player player;
     private List<Condition> conditions;
+    private List<Instruction> instructions;
 
-    public AbstractCommand(Player player, GameData gameData, String cmd) {
-        assert player != null;
-        assert gameData != null;
-        assert cmd != null;
+    ConcreteCommand(String regExp, boolean undoable, Player player, GameData gameData, String cmd) {
+        this.regExp = regExp;
+        this.undoable = undoable;
         this.cmd = cmd;
         this.gameData = gameData;
         this.player = player;
         conditions = new ArrayList<>();
+        instructions = new ArrayList<>();
     }
 
     private void checkConditions() throws IllegalCommandException {
@@ -33,6 +37,11 @@ public abstract class AbstractCommand implements Command {
             throw new IllegalCommandException(ERR_NOT_YOUR_TURN);
         for (Condition c : conditions)
             c.check();
+    }
+
+    private void performInstructions() {
+        for (Instruction i : instructions)
+            i.perform(gameData, getArgs());
     }
 
     public int[] getArgs() {
@@ -49,14 +58,13 @@ public abstract class AbstractCommand implements Command {
         }
     }
 
-    protected void addCondition(Condition condition) {
-        assert condition != null;
+    public void addCondition(Condition condition) {
         conditions.add(condition);
     }
 
-    public abstract String getRegExp();
-
-    public abstract void executionWhenLegal();
+    public void addInstruction(Instruction instruction) {
+        instructions.add(instruction);
+    }
 
     public GameData getGameData() {
         return gameData;
@@ -64,15 +72,15 @@ public abstract class AbstractCommand implements Command {
 
     @Override
     public final boolean isValid() {
-        return Pattern.compile("^" + getRegExp() + "$").asPredicate().test(cmd);
+        return Pattern.compile("^" + regExp + "$").asPredicate().test(cmd);
     }
 
     @Override
     public final void execute() throws IllegalCommandException {
         if (isValid()) {
             checkConditions();
-            getGameData().setUndoAvailable(undoable());
-            executionWhenLegal();
+            getGameData().setUndoAvailable(undoable);
+            performInstructions();
         }
     }
 

@@ -65,4 +65,13 @@ public final class JSONTag {
 
     // AbstractToolCard tags
     public static final String TOOL_FAVOR_POINTS = "favor_points";
+
+    // Commands
+    public static final String REGEXP = "reg_exp";
+    public static final String UNDOABLE = "undoable";
+    public static final String CONDITIONS = "conditions";
+    public static final String INSTRUCTIONS = "instructions";
+    public static final String CONDITION = "condition";
+    public static final String INSTRUCTION = "instruction";
+    public static final String COMMANDS = "commands";
 }

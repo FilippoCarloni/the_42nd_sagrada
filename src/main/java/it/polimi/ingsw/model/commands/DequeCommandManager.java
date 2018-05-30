@@ -1,15 +1,17 @@
 package it.polimi.ingsw.model.commands;
 
-import it.polimi.ingsw.model.commands.basiccommands.Pass;
-import it.polimi.ingsw.model.commands.basiccommands.Pick;
-import it.polimi.ingsw.model.commands.basiccommands.Place;
-import it.polimi.ingsw.model.commands.basiccommands.Tool;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONFactory;
+import it.polimi.ingsw.model.utility.JSONTag;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,14 +31,20 @@ public class DequeCommandManager implements CommandManager {
     }
 
     private List<Command> allocateCommands(Player player, String cmd) {
-        List<Command> commands = new ArrayList<>();
-        commands.add(new Pick(player, gameData, cmd));
-        commands.add(new Place(player, gameData, cmd));
-        commands.add(new Pass(player, gameData, cmd));
-        commands.add(new Tool(player, gameData, cmd));
-        for (ToolCard c : gameData.getTools())
-            commands.addAll(c.getCommands(player, gameData, cmd));
-        return commands;
+        try {
+            String path = "src/main/java/res/commands/basic_commands.json";
+            String content = new String(Files.readAllBytes(Paths.get(path)));
+            JSONObject obj = (JSONObject) new JSONParser().parse(content);
+            JSONArray commandsSER = (JSONArray) obj.get(JSONTag.COMMANDS);
+            List<Command> commands = new ArrayList<>();
+            for (Object o : commandsSER)
+                commands.add(CommandFactory.getCommand((JSONObject) o, player, gameData, cmd));
+            return commands;
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Bad file name.");
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Bad JSON file.");
+        }
     }
 
     private List<Command> getValidCommands(Player player, String cmd) {
