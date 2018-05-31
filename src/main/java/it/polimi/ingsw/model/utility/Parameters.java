@@ -13,8 +13,11 @@ public final class Parameters {
     public static final int MAX_COLUMNS = 5;
     public static final int MAX_PLAYERS = 4;
     public static final int PUBLIC_OBJECTIVES = 3;
-    public static final int TOOL_CARDS = 0;
+    public static final int TOOL_CARDS = 1;
     public static final int NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE = 4;
 
     public static final String WINDOW_PATTERNS_PATH = "src/main/java/res/window_patterns/";
+    public static final String BASIC_COMMANDS_PATH = "src/main/java/res/commands/basic_commands.json";
+    public static final String TOOL_ACTIVATOR_PATH = "src/main/java/res/commands/tool_card_activator.json";
+    public static final String TOOLS_PATH = "src/main/java/res/commands/tool_cards.json";
 }

@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+
+import java.util.List;
 
 public class ToolDeck extends AbstractDeck {
 
     public ToolDeck() {
-        // tool cards will be added here
+        List<ToolCard> tools = ToolCardFactory.getTools();
+        for (ToolCard c : tools)
+            add(c);
     }
 }

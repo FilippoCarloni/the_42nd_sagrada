@@ -31,6 +31,22 @@ public enum Shade {
         return null;
     }
 
+    public static int getMaximumValue() {
+        int max = 0;
+        for (Shade s : Shade.values())
+            if (s.getValue() > max)
+                max = s.getValue();
+        return max;
+    }
+
+    public static int getMinimumValue() {
+        int min = 7;
+        for (Shade s : Shade.values())
+            if (s.getValue() < min)
+                min = s.getValue();
+        return min;
+    }
+
     public String getLabel() {
         return label;
     }

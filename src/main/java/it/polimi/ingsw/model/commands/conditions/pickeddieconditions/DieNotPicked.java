@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.commands.conditions.turnstateconditions;
+package it.polimi.ingsw.model.commands.conditions.pickeddieconditions;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;

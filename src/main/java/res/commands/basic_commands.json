@@ -12,6 +12,7 @@
         {"condition": "index_smaller_than", "index": 0, "bound": "dice_pool_size"}
       ],
       "instructions": [
+        {"instruction": "tear_down_passive_tools"},
         {"instruction": "pick_die_from_dice_pool"}
       ]
     },
@@ -28,6 +29,7 @@
         {"condition": "placing_rule", "exclude": "nothing"}
       ],
       "instructions": [
+        {"instruction": "tear_down_passive_tools"},
         {"instruction": "place_die"}
       ]
     },
@@ -40,6 +42,7 @@
         {"condition": "tool_not_active"}
       ],
       "instructions": [
+        {"instruction": "tear_down_passive_tools"},
         {"instruction": "advance_game"}
       ]
     }

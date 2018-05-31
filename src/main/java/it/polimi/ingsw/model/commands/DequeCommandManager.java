@@ -1,9 +1,11 @@
 package it.polimi.ingsw.model.commands;
 
+import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
+import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -32,13 +34,18 @@ public class DequeCommandManager implements CommandManager {
 
     private List<Command> allocateCommands(Player player, String cmd) {
         try {
-            String path = "src/main/java/res/commands/basic_commands.json";
+            String path = Parameters.BASIC_COMMANDS_PATH;
             String content = new String(Files.readAllBytes(Paths.get(path)));
             JSONObject obj = (JSONObject) new JSONParser().parse(content);
             JSONArray commandsSER = (JSONArray) obj.get(JSONTag.COMMANDS);
             List<Command> commands = new ArrayList<>();
             for (Object o : commandsSER)
                 commands.add(CommandFactory.getCommand((JSONObject) o, player, gameData, cmd));
+            for (ToolCard tc : gameData.getTools()) {
+                commands.add(tc.getActivator(player, gameData, cmd));
+                if (tc.getID() == gameData.getActiveToolID() || tc.getID() == gameData.getPassiveToolID())
+                    commands.addAll(tc.getCommands(player, gameData, cmd));
+            }
             return commands;
         } catch (IOException e) {
             throw new IllegalArgumentException("Bad file name.");

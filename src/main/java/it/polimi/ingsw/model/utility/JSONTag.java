@@ -74,4 +74,10 @@ public final class JSONTag {
     public static final String CONDITION = "condition";
     public static final String INSTRUCTION = "instruction";
     public static final String COMMANDS = "commands";
+
+    // Tool cards
+    public static final String TOOL_CARDS = "tool_cards";
+    public static final String DESCRIPTION = "description";
+    public static final String ACTIVE = "active";
+    public static final String ACTIVATOR = "activator";
 }

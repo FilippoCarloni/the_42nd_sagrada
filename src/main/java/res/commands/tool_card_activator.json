@@ -1,0 +1,14 @@
+{
+  "reg_exp": "tool \\d",
+  "conditions": [
+    {"condition": "index_greater_than", "index": 0, "bound": 0},
+    {"condition": "index_smaller_than", "index": 0, "bound": 3},
+    {"condition": "tool_not_active"},
+    {"condition": "tool_not_activated"},
+    {"condition": "favor_points_check"}
+  ],
+  "instructions": [
+    {"instruction": "activate_tool"},
+    {"instruction": "manage_favor_points"}
+  ]
+}

@@ -10,12 +10,7 @@ public interface ToolCard extends Card {
 
     int getFavorPoints();
     void addFavorPoints();
-    boolean isLegal(GameData gameData);
-    void execute(GameData gameData);
+    boolean isEffectActive();
+    Command getActivator(Player player, GameData gameData, String cmd);
     List<Command> getCommands(Player player, GameData gameData, String cmd);
-
-    static void tearDown(GameData gameData) {
-        gameData.setPassiveToolID(0);
-        gameData.setActiveToolID(0);
-    }
 }
