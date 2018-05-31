@@ -25,6 +25,10 @@ public class WrappedPlayer {
         return playing;
     }
 
+    synchronized void setPlaying(boolean playing){
+        this.playing=playing;
+    }
+
     public Player getPlayer(){
         return player;
     }

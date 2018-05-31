@@ -11,8 +11,8 @@ public class WrappedGameController{
     private GameController gameController;
     private ConcreteGameManager game;
 
-    WrappedGameController(List<WrappedPlayer> players) throws RemoteException {
-        this.gameController=new GameController(players);
+    WrappedGameController(CentralServer server,List<WrappedPlayer> players) throws RemoteException {
+        this.gameController=new GameController(server, players);
         this.game=new ConcreteGameManager(gameController);
         this.remoteGame=game;
     }

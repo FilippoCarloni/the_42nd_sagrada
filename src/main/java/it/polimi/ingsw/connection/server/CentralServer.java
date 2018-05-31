@@ -6,7 +6,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -14,18 +13,18 @@ import java.util.stream.Collectors;
 //@TODO create a proper exception class for the server
 public class CentralServer {
 
-        private transient List<WrappedGameController> gl;
+        private transient List<WrappedGameController> gameControllers;
         private transient Logger logger=Logger.getLogger(CentralServer.class.getName());
         private transient List<WrappedPlayer> players;
         private transient List<WrappedPlayer>  disconnectedPlayer;
         private transient List<WrappedPlayer> waiting;
         private Observable observable;
-        CentralServer()throws RemoteException{
+        CentralServer() {
 
             players=new ArrayList<>();
             disconnectedPlayer=new ArrayList<>();
             waiting=new ArrayList<>();
-            gl=new ArrayList<>();
+            gameControllers=new ArrayList<>();
             observable=new Observable();
         }
 
@@ -60,16 +59,20 @@ public class CentralServer {
         }
         public synchronized WrappedGameController getGame(String userSessionID) throws Exception {
             List<WrappedGameController> game;
-            int countergame=gl.size()+1;
+            int countergame=gameControllers.size()+1;
             List<WrappedPlayer> player = players.stream().filter(
                     x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
             if (player.size() != 1) {
                 throw new Exception("You are not logged "+ userSessionID);
             }
-            game = gl.parallelStream().filter(x -> x.getGameController().isPlaying(player.get(0))).collect(Collectors.toList());
-            if (game.size() == 1) {
-                game.get(0).getGameController().reconnect(player.get(0));
-                return game.get(0);
+            if(player.get(0).isPlaying()) {
+                game = gameControllers.parallelStream().filter(x -> x.getGameController().isPlaying(player.get(0))).collect(Collectors.toList());
+                if (game.size() == 1) {
+                    if(game.get(0).getGameController().reconnect(player.get(0)))
+                        return game.get(0);
+                    else
+                        player.get(0).getObserver().update(observable,"previous match was ended because there are too few players. Starting a new one");
+                }
             }
             player.get(0).getObserver().update(observable,"Waiting others players ...");
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
@@ -97,14 +100,22 @@ public class CentralServer {
                         Thread.currentThread().interrupt();
                         logger.log(Level.SEVERE, "Fatal error!", e);
                     }
-                if(gl.parallelStream().noneMatch(x -> x.getGameController().isPlaying(player.get(0)))) {
-                    gl.add(new WrappedGameController(waiting));
+                if(gameControllers.parallelStream().noneMatch(x -> x.getGameController().isPlaying(player.get(0)))) {
+                    waiting.parallelStream().forEach( x->x.setPlaying(true));
+                    gameControllers.add(new WrappedGameController(this, waiting));
                     waiting.clear();
                 }
             }
             this.notifyAll();
             logger.info(() -> userSessionID + " is entered in match n "+ countergame);
-            return gl.get(gl.size()-1);
+            return gameControllers.get(gameControllers.size()-1);
+        }
+
+        synchronized void closeGame(GameController gameController){
+            if(gameControllers.parallelStream().anyMatch( x-> x.getGameController()==gameController)){
+                gameController.getPlayers().parallelStream().forEach( x -> x.setPlaying(false));
+            }
+
         }
         public synchronized String restoreSession(String oldSessionID, GameObserver obs) throws Exception{
             List<WrappedPlayer> player = players.stream().filter(
