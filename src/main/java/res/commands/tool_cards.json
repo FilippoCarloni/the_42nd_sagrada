@@ -10,7 +10,7 @@
       {
         "undoable": true,
         "conditions": [
-          {"condition": "die_picked"}
+          {"condition": "die_picked", "value": true}
         ],
         "instructions": [
 
@@ -21,7 +21,7 @@
           "reg_exp": "increase",
           "undoable": true,
           "conditions": [
-            {"condition": "shade_not_maximum"}
+            {"condition": "shade_comparison", "type_of_comparison": "smaller_than", "bound": "maximum_shade"}
           ],
           "instructions": [
             {"instruction": "set_shade_of_picked_die", "argument": "increase"},
@@ -32,7 +32,7 @@
           "reg_exp": "decrease",
           "undoable": true,
           "conditions": [
-            {"condition": "shade_not_minimum"}
+            {"condition": "shade_comparison", "type_of_comparison": "greater_than", "bound": "minimum_shade"}
           ],
           "instructions": [
             {"instruction": "set_shade_of_picked_die", "argument": "decrease"},
@@ -40,7 +40,66 @@
           ]
         }
       ]
-    }
+    },
 
+    {
+      "name": "Eglomise Brush",
+      "description": "Move any one die in your window ignoring color restrictions. You must obey all other placement restrictions.",
+      "id": 2,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "move \\d \\d \\d \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "move_rule_check", "placing": true, "color": false, "shade": true}
+          ],
+          "instructions": [
+            {"instruction": "move_die"},
+            {"instruction": "tear_down"}
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Copper Foil Burnisher",
+      "description": "Move any one die in your window ignoring value restrictions. You must obey all other placement restrictions.",
+      "id": 3,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "move \\d \\d \\d \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "move_rule_check", "placing": true, "color": true, "shade": false}
+          ],
+          "instructions": [
+            {"instruction": "move_die"},
+            {"instruction": "tear_down"}
+          ]
+        }
+      ]
+    }
   ]
 }

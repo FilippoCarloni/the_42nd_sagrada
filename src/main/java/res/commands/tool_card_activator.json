@@ -1,8 +1,8 @@
 {
-  "reg_exp": "tool \\d",
+  "reg_exp": "tool ",
   "conditions": [
-    {"condition": "index_greater_than", "index": 0, "bound": 0},
-    {"condition": "index_smaller_than", "index": 0, "bound": 3},
+    {"condition": "arg_comparison", "type_of_comparison": "greater_than", "index": 0, "bound": "zero"},
+    {"condition": "arg_comparison", "type_of_comparison": "smaller_than", "index": 0, "bound": "tool_deck_size"},
     {"condition": "tool_not_active"},
     {"condition": "tool_not_activated"},
     {"condition": "favor_points_check"}

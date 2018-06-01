@@ -46,7 +46,7 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
 
     @Override
     public Command getActivator(Player player, GameData gameData, String cmd) {
-        return CommandFactory.getToolActivator(activator, player, gameData, cmd);
+        return CommandFactory.getToolActivator(id, activator, player, gameData, cmd);
     }
 
     @Override
@@ -67,6 +67,14 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
 
     @Override
     public String toString() {
-        return getUpperCard() + "(FP:" + favorPoints + ")\n\n\n" + getLowerCard();
+        StringBuilder sb = new StringBuilder();
+        sb.append(getUpperCard());
+        sb.append("|(FP:").append(favorPoints).append(")");
+        for (int i = 0; i < pixelWidth - 6; i++) sb.append(" ");
+        sb.append("|\n");
+        sb.append("|(ID:").append(id).append(")");
+        for (int i = 0; i < pixelWidth - 6; i++) sb.append(" ");
+        sb.append("|\n\n").append(getLowerCard());
+        return sb.toString();
     }
 }

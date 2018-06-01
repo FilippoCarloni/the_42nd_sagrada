@@ -5,11 +5,11 @@
       "reg_exp": "pick \\d",
       "undoable": true,
       "conditions": [
-        {"condition": "die_not_picked"},
-        {"condition": "die_not_placed"},
+        {"condition": "die_picked", "value": false},
+        {"condition": "die_placed", "value": false},
         {"condition": "tool_not_active"},
-        {"condition": "index_greater_than", "index": 0, "bound": 0},
-        {"condition": "index_smaller_than", "index": 0, "bound": "dice_pool_size"}
+        {"condition": "arg_comparison", "type_of_comparison": "greater_than", "index": 0, "bound": "zero"},
+        {"condition": "arg_comparison", "type_of_comparison": "smaller_than", "index": 0, "bound": "dice_pool_size"}
       ],
       "instructions": [
         {"instruction": "tear_down_passive_tools"},
@@ -21,12 +21,12 @@
       "reg_exp": "place \\d \\d",
       "undoable": true,
       "conditions": [
-        {"condition": "die_picked"},
-        {"condition": "die_not_placed"},
+        {"condition": "die_picked", "value": true},
+        {"condition": "die_placed", "value": false},
         {"condition": "tool_not_active"},
         {"condition": "valid_coordinates"},
         {"condition": "free_slot"},
-        {"condition": "placing_rule", "exclude": "nothing"}
+        {"condition": "placing_rule_check", "placing": true, "color": true, "shade": true}
       ],
       "instructions": [
         {"instruction": "tear_down_passive_tools"},
@@ -38,7 +38,7 @@
       "reg_exp": "pass",
       "undoable": false,
       "conditions": [
-        {"condition": "die_not_picked"},
+        {"condition": "die_picked", "value": false},
         {"condition": "tool_not_active"}
       ],
       "instructions": [

@@ -5,13 +5,13 @@ import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
-class PlacingRule extends RuleDecorator {
+public class PlacingRule extends RuleDecorator {
 
-    PlacingRule() {
+    public PlacingRule() {
         super(null);
     }
 
-    PlacingRule(Rule decoratedRule) {
+    public PlacingRule(Rule decoratedRule) {
         super(decoratedRule);
     }
 

@@ -36,7 +36,7 @@ public class ConcreteCommand implements Command {
         if (!player.getUsername().equals(gameData.getTurnManager().getCurrentPlayer().getUsername()))
             throw new IllegalCommandException(ERR_NOT_YOUR_TURN);
         for (Condition c : conditions)
-            c.check();
+            c.check(gameData, getArgs());
     }
 
     private void performInstructions() {

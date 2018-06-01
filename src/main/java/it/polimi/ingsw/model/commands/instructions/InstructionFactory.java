@@ -32,6 +32,8 @@ public class InstructionFactory {
                 return new SetShadeOfPickedDie(obj.get(InstructionID.ARGUMENT).toString());
             case InstructionID.TEAR_DOWN:
                 return new TearDown();
+            case InstructionID.MOVE_DIE:
+                return new MoveDie();
             default:
                 throw new IllegalArgumentException("Passed string doesn't identify any valid instruction.");
         }

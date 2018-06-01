@@ -3,15 +3,10 @@ package it.polimi.ingsw.model.commands.conditions.windowframeconditions;
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
 import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
-import it.polimi.ingsw.model.gamedata.GameData;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INVALID_COORDINATES;
 
-public class ValidCoordinates extends Condition {
-
-    public ValidCoordinates(GameData gameData, int[] args) {
-        super(gameData, args, ERR_INVALID_COORDINATES);
-    }
+public class ValidCoordinates implements Condition {
 
     @Override
     public ConditionPredicate getPredicate() {
@@ -26,5 +21,10 @@ public class ValidCoordinates extends Condition {
             }
             return valid;
         };
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return ERR_INVALID_COORDINATES;
     }
 }

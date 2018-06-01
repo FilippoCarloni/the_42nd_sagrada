@@ -22,8 +22,13 @@ class GrozingPliersTest {
         Game g = init("gen_2p_01");
         List<Player> players = g.getData().getPlayers();
         wrappedIllegalCommand(g, players.get(0), "tool 1");
+        assertEquals(2, g.getData().getTools().get(0).getID());
+        assertEquals(0, g.getData().getActiveToolID());
+        assertEquals(0, g.getData().getPassiveToolID());
         wrappedLegalCommand(g, players.get(0), "pick 1");
         wrappedLegalCommand(g, players.get(0), "tool 1");
+        assertEquals(1, g.getData().getActiveToolID());
+        assertEquals(1, g.getData().getPassiveToolID());
         wrappedIllegalCommand(g, players.get(0), "place 1 1");
         wrappedIllegalCommand(g, players.get(0), "decrease");
         wrappedIllegalCommand(g, players.get(0), "tool 1");
@@ -38,7 +43,7 @@ class GrozingPliersTest {
         wrappedLegalCommand(g, players.get(1), "decrease");
         assertEquals(4, g.getData().getPlayers().get(0).getFavorPoints());
         assertEquals(3, g.getData().getPlayers().get(1).getFavorPoints());
-        assertEquals(3, g.getData().getTools().get(0).getFavorPoints());
+        assertEquals(3, g.getData().getTools().get(2).getFavorPoints());
         wrappedLegalCommand(g, players.get(1), "place 1 1");
         wrappedLegalCommand(g, players.get(1), "pass");
         wrappedLegalCommand(g, players.get(1), "pick 1");
@@ -54,7 +59,6 @@ class GrozingPliersTest {
         wrappedIllegalCommand(g, players.get(1), "tool 1");
         assertEquals(4, g.getData().getPlayers().get(0).getFavorPoints());
         assertEquals(1, g.getData().getPlayers().get(1).getFavorPoints());
-        assertEquals(5, g.getData().getTools().get(0).getFavorPoints());
-        System.out.println(g.getData());
+        assertEquals(5, g.getData().getTools().get(2).getFavorPoints());
     }
 }

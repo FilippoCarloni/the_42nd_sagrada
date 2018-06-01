@@ -12,6 +12,7 @@ public final class InstructionID {
     public static final String TEAR_DOWN_PASSIVE_TOOLS = "tear_down_passive_tools";
     public static final String SET_SHADE_OF_PICKED_DIE = "set_shade_of_picked_die";
     public static final String TEAR_DOWN = "tear_down";
+    public static final String MOVE_DIE = "move_die";
 
     // helper tags
     public static final String ARGUMENT = "argument";

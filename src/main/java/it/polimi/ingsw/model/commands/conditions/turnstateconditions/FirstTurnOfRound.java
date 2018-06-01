@@ -2,18 +2,29 @@ package it.polimi.ingsw.model.commands.conditions.turnstateconditions;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
-import it.polimi.ingsw.model.gamedata.GameData;
 
+import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_FIRST_TURN_OF_ROUND;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_SECOND_TURN_OF_ROUND;
 
-public class FirstTurnOfRound extends Condition {
+public class FirstTurnOfRound implements Condition {
 
-    public FirstTurnOfRound(GameData gameData) {
-        super(gameData, new int[0], ERR_SECOND_TURN_OF_ROUND);
+    private boolean value;
+
+    public FirstTurnOfRound(boolean value) {
+        this.value = value;
     }
 
     @Override
     public ConditionPredicate getPredicate() {
-        return (gameData, args) -> !gameData.getTurnManager().isSecondTurn();
+        if (value)
+            return (gameData, args) -> !gameData.getTurnManager().isSecondTurn();
+        return (gameData, args) -> gameData.getTurnManager().isSecondTurn();
+    }
+
+    @Override
+    public String getErrorMessage() {
+        if (value)
+            return ERR_SECOND_TURN_OF_ROUND;
+        return ERR_FIRST_TURN_OF_ROUND;
     }
 }

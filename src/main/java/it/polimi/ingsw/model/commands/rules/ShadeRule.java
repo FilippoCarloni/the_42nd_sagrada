@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-class ShadeRule extends RuleDecorator {
+public class ShadeRule extends RuleDecorator {
 
-    ShadeRule() {
+    public ShadeRule() {
         super(null);
     }
 
-    ShadeRule(Rule decoratedRule) {
+    public ShadeRule(Rule decoratedRule) {
         super(decoratedRule);
     }
 

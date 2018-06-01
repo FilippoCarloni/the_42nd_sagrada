@@ -27,27 +27,27 @@ public final class CommandFactory {
         ConcreteCommand command = new ConcreteCommand(regExp, undoable, player, gameData, cmd);
         JSONArray conditionsSER = (JSONArray) obj.get(JSONTag.CONDITIONS);
         for (Object o : conditionsSER)
-            command.addCondition(ConditionFactory.getCondition((JSONObject) o, gameData, command.getArgs()));
+            command.addCondition(ConditionFactory.getCondition((JSONObject) o));
         JSONArray instructionSER = (JSONArray) obj.get(JSONTag.INSTRUCTIONS);
         for (Object o : instructionSER)
             command.addInstruction(InstructionFactory.getInstruction((JSONObject) o));
         return command;
     }
 
-    public static Command getToolActivator(JSONObject obj, Player player, GameData gameData, String cmd) {
+    public static Command getToolActivator(int id, JSONObject obj, Player player, GameData gameData, String cmd) {
         try {
             String path = Parameters.TOOL_ACTIVATOR_PATH;
             String content = new String(Files.readAllBytes(Paths.get(path)));
             JSONObject basicObj = (JSONObject) new JSONParser().parse(content);
-            String regExp = basicObj.get(JSONTag.REGEXP).toString();
+            String regExp = basicObj.get(JSONTag.REGEXP).toString() + id;
             boolean undoable = parseBoolean(obj.get(JSONTag.UNDOABLE).toString());
             ConcreteCommand activator = new ConcreteCommand(regExp, undoable, player, gameData, cmd);
             JSONArray conditionsSER = (JSONArray) basicObj.get(JSONTag.CONDITIONS);
             for (Object o : conditionsSER)
-                activator.addCondition(ConditionFactory.getCondition((JSONObject) o, gameData, activator.getArgs()));
+                activator.addCondition(ConditionFactory.getCondition((JSONObject) o));
             conditionsSER = (JSONArray) obj.get(JSONTag.CONDITIONS);
             for (Object o : conditionsSER)
-                activator.addCondition(ConditionFactory.getCondition((JSONObject) o, gameData, activator.getArgs()));
+                activator.addCondition(ConditionFactory.getCondition((JSONObject) o));
             JSONArray instructionSER = (JSONArray) basicObj.get(JSONTag.INSTRUCTIONS);
             for (Object o : instructionSER)
                 activator.addInstruction(InstructionFactory.getInstruction((JSONObject) o));

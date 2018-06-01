@@ -7,13 +7,13 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
-class ColorRule extends RuleDecorator {
+public class ColorRule extends RuleDecorator {
 
-    ColorRule() {
+    public ColorRule() {
         super(null);
     }
 
-    ColorRule(Rule decoratedRule) {
+    public ColorRule(Rule decoratedRule) {
         super(decoratedRule);
     }
 

@@ -48,7 +48,7 @@ class GameDataTest {
                 assertTrue(i == 0);
             for (int i : dataClone.getCurrentScore().values())
                 assertTrue(i == 0);
-            System.out.println(dataClone);
+            //System.out.println(dataClone)
 
         } catch (ParseException e) {
             assertTrue(false);
