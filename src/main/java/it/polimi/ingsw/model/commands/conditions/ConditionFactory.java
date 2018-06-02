@@ -7,10 +7,7 @@ import it.polimi.ingsw.model.commands.conditions.toolconditions.FavorPointsCheck
 import it.polimi.ingsw.model.commands.conditions.toolconditions.ToolNotActivated;
 import it.polimi.ingsw.model.commands.conditions.toolconditions.ToolNotActive;
 import it.polimi.ingsw.model.commands.conditions.turnstateconditions.*;
-import it.polimi.ingsw.model.commands.conditions.windowframeconditions.FreeSlot;
-import it.polimi.ingsw.model.commands.conditions.windowframeconditions.Move;
-import it.polimi.ingsw.model.commands.conditions.windowframeconditions.Place;
-import it.polimi.ingsw.model.commands.conditions.windowframeconditions.ValidCoordinates;
+import it.polimi.ingsw.model.commands.conditions.windowframeconditions.*;
 import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
@@ -49,6 +46,10 @@ public final class ConditionFactory {
                 return new Move(parseBoolean(obj.get(PLACING).toString()), parseBoolean(obj.get(COLOR).toString()), parseBoolean(obj.get(SHADE).toString()));
             case CON_VALID_COORDINATES:
                 return new ValidCoordinates();
+            case CON_NUM_OF_DICE_MOVED:
+                return new NumberOfDiceMoved(obj.get(TYPE_OF_COMPARISON).toString(), obj.get(BOUND).toString());
+            case CON_NOT_DIE_ALREADY_MOVED:
+                return new NotDieAlreadyMoved();
             default:
         }
         throw new IllegalArgumentException("Passed string doesn't identify any valid condition.");

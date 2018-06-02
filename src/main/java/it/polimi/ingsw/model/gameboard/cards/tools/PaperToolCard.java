@@ -52,8 +52,10 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
     @Override
     public List<Command> getCommands(Player player, GameData gameData, String cmd) {
         List<Command> parsedCommands = new ArrayList<>();
-        for (Object o : commands)
-            parsedCommands.add(CommandFactory.getCommand((JSONObject) o, player, gameData, cmd));
+        if (commands != null) {
+            for (Object o : commands)
+                parsedCommands.add(CommandFactory.getCommand((JSONObject) o, player, gameData, cmd));
+        }
         return parsedCommands;
     }
 

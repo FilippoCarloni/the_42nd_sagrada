@@ -1,41 +1,30 @@
-package it.polimi.ingsw.model.commands.conditions.argconditions;
+package it.polimi.ingsw.model.commands.conditions.windowframeconditions;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
-import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
-import it.polimi.ingsw.model.gamedata.GameData;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIFFERENT_INDEX;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_BIG;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_SMALL;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
+import static it.polimi.ingsw.model.commands.conditions.ConditionID.EQUAL_TO;
+import static it.polimi.ingsw.model.commands.conditions.ConditionID.SMALLER_THAN;
 import static java.lang.Integer.parseInt;
 
-public class ArgComparison implements Condition {
+public class NumberOfDiceMoved implements Condition {
 
     private static final String DEFAULT_ERROR_MESSAGE = "Bad JSON format.";
     private String typeOfComparison;
-    private int index;
     private String bound;
 
-    public ArgComparison(String typeOfComparison, int index, String bound) {
+    public NumberOfDiceMoved(String typeOfComparison, String bound) {
         this.typeOfComparison = typeOfComparison;
-        this.index = index;
         this.bound = bound;
     }
 
-    private int getBound(GameData gameData) {
+    private int getBound() {
         try {
-            switch (bound) {
-                case DICE_POOL_SIZE:
-                    return gameData.getDicePool().size();
-                case ROUND_TRACK_SIZE:
-                    return gameData.getRoundTrack().getDice().size();
-                case TOOL_DECK_SIZE:
-                    return new ToolDeck().size();
-                default:
-                    return parseInt(bound);
-            }
+            return parseInt(bound);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE + " " + e.getMessage());
         }
@@ -45,11 +34,11 @@ public class ArgComparison implements Condition {
     public ConditionPredicate getPredicate() {
         switch (typeOfComparison) {
             case GREATER_THAN:
-                return (gd, args) -> args[index] >= getBound(gd);
+                return (gd, args) -> gd.getDiceMoved().size() >= getBound();
             case SMALLER_THAN:
-                return (gd, args) -> args[index] < getBound(gd);
+                return (gd, args) -> gd.getDiceMoved().size() < getBound();
             case EQUAL_TO:
-                return (gd, args) -> args[index] == getBound(gd);
+                return (gd, args) -> gd.getDiceMoved().size() == getBound();
             default:
         }
         throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE);

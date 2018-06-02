@@ -25,7 +25,7 @@
           ],
           "instructions": [
             {"instruction": "set_shade_of_picked_die", "argument": "increase"},
-            {"instruction": "tear_down"}
+            {"instruction": "tear_down", "condition": null}
           ]
         },
         {
@@ -36,7 +36,7 @@
           ],
           "instructions": [
             {"instruction": "set_shade_of_picked_die", "argument": "decrease"},
-            {"instruction": "tear_down"}
+            {"instruction": "tear_down", "condition": null}
           ]
         }
       ]
@@ -66,7 +66,7 @@
           ],
           "instructions": [
             {"instruction": "move_die"},
-            {"instruction": "tear_down"}
+            {"instruction": "tear_down", "condition": null}
           ]
         }
       ]
@@ -96,10 +96,92 @@
           ],
           "instructions": [
             {"instruction": "move_die"},
-            {"instruction": "tear_down"}
+            {"instruction": "tear_down", "condition": null}
           ]
         }
       ]
+    },
+
+    {
+      "name": "Lathekin",
+      "description": "Move exactly two dice, obeying all placement restrictions.",
+      "id": 4,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "move \\d \\d \\d \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "not_die_already_moved"},
+            {"condition": "move_rule_check", "placing": true, "color": true, "shade": true}
+          ],
+          "instructions": [
+            {"instruction": "move_die"},
+            {"instruction": "tear_down", "condition": {"condition": "num_of_dice_moved", "type_of_comparison": "equal_to", "bound": 2}}
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Lens Cutter",
+      "description": "After drafting, swap the drafted die with a die from the Round Track.",
+      "id": 5,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+          {"condition": "die_picked", "value": true}
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "select \\d+",
+          "undoable": true,
+          "conditions": [
+            {"condition": "arg_comparison", "type_of_comparison": "greater_than", "index": 0, "bound": 0},
+            {"condition": "arg_comparison", "type_of_comparison": "smaller_than", "index": 0, "bound": "round_track_size"}
+          ],
+          "instructions": [
+            {"instruction": "swap_from_round_track"},
+            {"instruction": "tear_down", "condition": null}
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Flux Brush",
+      "description": "After drafting, re-roll the drafted die. If it cannot be placed, return it to the Draft Pool.",
+      "id": 6,
+      "active": false,
+      "activator":
+      {
+        "undoable": false,
+        "conditions": [
+          {"condition": "die_picked", "value": true}
+        ],
+        "instructions": [
+          {"instruction": "roll_die"}
+        ],
+        "commands": [
+
+        ]
+      }
     }
   ]
 }

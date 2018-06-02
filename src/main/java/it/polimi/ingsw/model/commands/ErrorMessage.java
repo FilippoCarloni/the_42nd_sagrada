@@ -26,7 +26,7 @@ public final class ErrorMessage {
     public static final String ERR_TOOL_ACTIVATED = "You already used a tool card this turn";
     public static final String ERR_CANNOT_INCREASE = "You can't increase the value of the picked die";
     public static final String ERR_CANNOT_DECREASE = "You can't decrease the value of the picked die";
-    public static final String ERR_FIRST_TURN_OF_ROUND = "This your first turn of the round.";
+    public static final String ERR_FIRST_TURN_OF_ROUND = "This your first turn of the round";
     public static final String ERR_SECOND_TURN_OF_ROUND = "This your second turn of the round.";
-    public static final String ERR_ACTIVATING_WRONG_TOOL_CARD = "You are trying to activate the wrong tool card.";
+    public static final String ERR_DIE_ALREADY_MOVED = "Tou already moved this die";
 }

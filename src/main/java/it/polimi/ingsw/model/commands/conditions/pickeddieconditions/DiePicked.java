@@ -16,7 +16,11 @@ public class DiePicked implements Condition {
 
     @Override
     public ConditionPredicate getPredicate() {
-        return (gs, args) -> (gs.getPickedDie() != null) == value;
+        return (gs, args) -> {
+            boolean diePicked = gs.getPickedDie() != null;
+            boolean passiveToolActivated = gs.getPassiveToolID() != 0 && gs.getActiveToolID() == 0;
+            return diePicked == value || (diePicked && passiveToolActivated);
+        };
     }
 
     @Override

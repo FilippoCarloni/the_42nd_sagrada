@@ -16,8 +16,10 @@ public class ConditionID {
     static final String CON_VALID_COORDINATES = "valid_coordinates";
     static final String CON_FREE_SLOT = "free_slot";
     static final String CON_MOVE_RULE_CHECK = "move_rule_check";
+    static final String CON_NUM_OF_DICE_MOVED = "num_of_dice_moved";
+    static final String CON_NOT_DIE_ALREADY_MOVED = "not_die_already_moved";
 
-    // auxiliary indexes
+    // auxiliary attributes
     static final String INDEX = "index";
     static final String BOUND = "bound";
     public static final String GREATER_THAN = "greater_than";
@@ -29,7 +31,6 @@ public class ConditionID {
     public static final String TOOL_DECK_SIZE = "tool_deck_size";
     public static final String MAXIMUM_SHADE = "maximum_shade";
     public static final String MINIMUM_SHADE = "minimum_shade";
-    public static final String ZERO = "zero";
     static final String PLACING = "placing";
     static final String COLOR = "color";
     static final String SHADE = "shade";
