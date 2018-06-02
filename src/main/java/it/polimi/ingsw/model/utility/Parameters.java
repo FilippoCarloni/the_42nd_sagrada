@@ -16,8 +16,11 @@ public final class Parameters {
     public static final int TOOL_CARDS = 3;
     public static final int NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE = 4;
 
+    public static final boolean USE_COMPLETE_RULES = true;
+
     public static final String WINDOW_PATTERNS_PATH = "src/main/java/res/window_patterns/";
     public static final String BASIC_COMMANDS_PATH = "src/main/java/res/commands/basic_commands.json";
     public static final String TOOL_ACTIVATOR_PATH = "src/main/java/res/commands/tool_card_activator.json";
-    public static final String TOOLS_PATH = "src/main/java/res/commands/tool_cards.json";
+    public static final String SIMPLIFIED_RULES_TOOLS_PATH = "src/main/java/res/commands/simplified_rules_tool_cards.json";
+    public static final String COMPLETE_RULES_TOOLS_PATH = "src/main/java/res/commands/complete_rules_tool_cards.json";
 }

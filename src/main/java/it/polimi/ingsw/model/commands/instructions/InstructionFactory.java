@@ -2,11 +2,10 @@ package it.polimi.ingsw.model.commands.instructions;
 
 import it.polimi.ingsw.model.commands.conditions.ConditionFactory;
 import it.polimi.ingsw.model.commands.instructions.gamedatainstructions.AdvanceGame;
+import it.polimi.ingsw.model.commands.instructions.gamedatainstructions.ReRollPool;
 import it.polimi.ingsw.model.commands.instructions.gamedatainstructions.SwapFromRoundTrack;
-import it.polimi.ingsw.model.commands.instructions.pickeddieinstructions.PickDieFromPool;
-import it.polimi.ingsw.model.commands.instructions.pickeddieinstructions.PlacePickedDie;
-import it.polimi.ingsw.model.commands.instructions.pickeddieinstructions.RollDie;
-import it.polimi.ingsw.model.commands.instructions.pickeddieinstructions.SetShadeOfPickedDie;
+import it.polimi.ingsw.model.commands.instructions.gamedatainstructions.TakeTwoTurns;
+import it.polimi.ingsw.model.commands.instructions.pickeddieinstructions.*;
 import it.polimi.ingsw.model.commands.instructions.toolsinstructions.ManageFavorPoints;
 import it.polimi.ingsw.model.commands.instructions.toolsinstructions.SetToolCardActivated;
 import it.polimi.ingsw.model.commands.instructions.toolsinstructions.TearDown;
@@ -48,6 +47,10 @@ public class InstructionFactory {
                 return new SwapFromRoundTrack();
             case INS_ROLL_DIE:
                 return new RollDie();
+            case INS_RE_ROLL_POOL:
+                return new ReRollPool();
+            case INS_TAKE_TWO_TURNS:
+                return new TakeTwoTurns();
             default:
                 throw new IllegalArgumentException("Passed string doesn't identify any valid instruction.");
         }

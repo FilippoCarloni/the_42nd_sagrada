@@ -15,11 +15,14 @@ public final class InstructionID {
     static final String INS_MOVE_DIE = "move_die";
     static final String INS_SWAP_FROM_ROUND_TRACK = "swap_from_round_track";
     static final String INS_ROLL_DIE = "roll_die";
+    static final String INS_RE_ROLL_POOL = "re_roll_pool";
+    static final String INS_TAKE_TWO_TURNS = "take_two_turns";
 
     // auxiliary attributes
     static final String ARGUMENT = "argument";
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
+    public static final String FLIP = "flip";
     public static final String NO_CONSTRAINT = "no_constraint";
     static final String CONDITION = "condition";
 }

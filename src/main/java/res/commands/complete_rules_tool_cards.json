@@ -1,0 +1,103 @@
+{
+  "tool_cards": [
+
+    {
+      "name": "Glazing Hammer",
+      "description": "Re-roll all dice in the Draft Pool. This may only be used on your second turn before drafting.",
+      "id": 7,
+      "active": false,
+      "activator":
+      {
+        "undoable": false,
+        "conditions": [
+          {"condition": "first_turn", "value": false},
+          {"condition": "die_picked", "value": false},
+          {"condition": "die_placed", "value": false}
+        ],
+        "instructions": [
+          {"instruction": "re_roll_pool"}
+        ]
+      },
+      "commands": [
+
+      ]
+    },
+
+    {
+      "name": "Running Pliers",
+      "description": "After your first turn, immediately draft a die. Skip your next turn this round.",
+      "id": 8,
+      "active": false,
+      "activator":
+      {
+        "undoable": false,
+        "conditions": [
+          {"condition": "first_turn", "value": true},
+          {"condition": "die_picked", "value": false}
+        ],
+        "instructions": [
+          {"instruction": "take_two_turns"},
+          {"instruction": "advance_game"},
+          {"instruction": "activate_tool"}
+        ]
+      },
+      "commands": [
+
+      ]
+    },
+
+    {
+      "name": "Cork-backed Straightedge",
+      "description": "After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restrictions.",
+      "id": 9,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+          {"condition": "die_picked", "value": true},
+          {"condition": "die_placed", "value": false}
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "place \\d \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "valid_coordinates"},
+            {"condition": "free_slot"},
+            {"condition": "placing_rule_check", "placing": false, "color": true, "shade": true}
+          ],
+          "instructions": [
+            {"instruction": "place_die"},
+            {"instruction": "tear_down", "condition": null}
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Grinding Stone",
+      "description": "After drafting, flip the die to its opposite side (6 flips to 1, 5 to 2, 4 to 3, etc.)",
+      "id": 10,
+      "active": true,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+          {"condition": "die_picked", "value": true}
+        ],
+        "instructions": [
+          {"instruction": "set_shade_of_picked_die", "argument": "flip"},
+          {"instruction": "tear_down", "condition": null}
+        ]
+      },
+      "commands": [
+
+      ]
+    }
+  ]
+}
