@@ -25,7 +25,7 @@
         {"condition": "die_placed", "value": false},
         {"condition": "tool_not_active"},
         {"condition": "valid_coordinates"},
-        {"condition": "free_slot"},
+        {"condition": "free_slot", "row_index": 0, "column_index": 1, "value": true},
         {"condition": "placing_rule_check", "placing": true, "color": true, "shade": true}
       ],
       "instructions": [

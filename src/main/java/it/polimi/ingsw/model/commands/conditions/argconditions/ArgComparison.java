@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gamedata.GameData;
+import it.polimi.ingsw.model.utility.Shade;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIFFERENT_INDEX;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_BIG;
@@ -33,6 +34,10 @@ public class ArgComparison implements Condition {
                     return gameData.getRoundTrack().getDice().size();
                 case TOOL_DECK_SIZE:
                     return new ToolDeck().size();
+                case MINIMUM_SHADE:
+                    return Shade.getMinimumValue() - 1;
+                case MAXIMUM_SHADE:
+                    return Shade.getMaximumValue();
                 default:
                     return parseInt(bound);
             }

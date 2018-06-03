@@ -39,7 +39,7 @@ public final class ConditionFactory {
             case CON_FIRST_TURN:
                 return new FirstTurnOfRound(parseBoolean(obj.get(VALUE).toString()));
             case CON_FREE_SLOT:
-                return new FreeSlot();
+                return new FreeSlot(parseInt(obj.get(ROW_INDEX).toString()), parseInt(obj.get(COLUMN_INDEX).toString()), parseBoolean(obj.get(VALUE).toString()));
             case CON_PLACING_RULE_CHECK:
                 return new Place(parseBoolean(obj.get(PLACING).toString()), parseBoolean(obj.get(COLOR).toString()), parseBoolean(obj.get(SHADE).toString()));
             case CON_MOVE_RULE_CHECK:
@@ -50,6 +50,8 @@ public final class ConditionFactory {
                 return new NumberOfDiceMoved(obj.get(TYPE_OF_COMPARISON).toString(), obj.get(BOUND).toString());
             case CON_NOT_DIE_ALREADY_MOVED:
                 return new NotDieAlreadyMoved();
+            case CON_SHARE:
+                return new Share(obj.get(OBJECT).toString(), obj.get(POOL).toString(), parseBoolean(obj.get(VALUE_IF_EMPTY).toString()));
             default:
         }
         throw new IllegalArgumentException("Passed string doesn't identify any valid condition.");

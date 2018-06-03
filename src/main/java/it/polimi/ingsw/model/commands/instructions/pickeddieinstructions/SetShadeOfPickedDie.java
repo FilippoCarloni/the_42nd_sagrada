@@ -40,7 +40,7 @@ public class SetShadeOfPickedDie implements Instruction {
                 break;
             case InstructionID.NO_CONSTRAINT:
                 gameData.getPickedDie().setShade(
-                        Shade.findByValue(args[0])
+                        Shade.findByValue(args[0] + 1)
                 );
                 break;
             case InstructionID.FLIP:

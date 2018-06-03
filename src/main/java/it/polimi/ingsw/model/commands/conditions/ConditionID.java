@@ -18,6 +18,7 @@ public class ConditionID {
     static final String CON_MOVE_RULE_CHECK = "move_rule_check";
     static final String CON_NUM_OF_DICE_MOVED = "num_of_dice_moved";
     static final String CON_NOT_DIE_ALREADY_MOVED = "not_die_already_moved";
+    static final String CON_SHARE = "share";
 
     // auxiliary attributes
     static final String INDEX = "index";
@@ -32,7 +33,15 @@ public class ConditionID {
     public static final String MAXIMUM_SHADE = "maximum_shade";
     public static final String MINIMUM_SHADE = "minimum_shade";
     static final String PLACING = "placing";
-    static final String COLOR = "color";
-    static final String SHADE = "shade";
+    public static final String COLOR = "color";
+    public static final String SHADE = "shade";
     static final String VALUE = "value";
+    static final String ROW_INDEX = "row_index";
+    static final String COLUMN_INDEX = "column_index";
+    public static final String ROUND_TRACK = "round_track";
+    public static final String DICE_POOL = "dice_pool";
+    public static final String DICE_MOVED = "dice_moved";
+    static final String OBJECT = "object";
+    static final String POOL = "pool";
+    static final String VALUE_IF_EMPTY = "value_if_empty";
 }

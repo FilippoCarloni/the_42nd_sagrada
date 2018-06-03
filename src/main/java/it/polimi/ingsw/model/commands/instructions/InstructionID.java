@@ -5,6 +5,8 @@ public final class InstructionID {
     private InstructionID() {}
 
     static final String INS_PICK_DIE_FROM_POOL = "pick_die_from_dice_pool";
+    static final String INS_PICK_DIE_FROM_BAG = "pick_die_from_dice_bag";
+    static final String INS_RETURN_DIE_TO_BAG = "return_die_to_dice_bag";
     static final String INS_ADVANCE_GAME = "advance_game";
     static final String INS_PLACE_PICKED_DIE = "place_die";
     static final String INS_SET_TOOL_ACTIVATED = "activate_tool";

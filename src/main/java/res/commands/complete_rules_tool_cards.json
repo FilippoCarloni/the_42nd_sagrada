@@ -68,7 +68,7 @@
           "undoable": true,
           "conditions": [
             {"condition": "valid_coordinates"},
-            {"condition": "free_slot"},
+            {"condition": "free_slot", "row_index": 0, "column_index": 1, "value": true},
             {"condition": "placing_rule_check", "placing": false, "color": true, "shade": true}
           ],
           "instructions": [
@@ -98,6 +98,74 @@
       "commands": [
 
       ]
+    },
+
+    {
+      "name": "Flux Remover",
+      "description": "After drafting, return the die to the Dice Bag and pull 1 die from the bag. Choose a value and place the new die or pass.",
+      "id": 11,
+      "active": false,
+      "activator":
+      {
+        "undoable": false,
+        "conditions": [
+          {"condition": "die_picked", "value": true}
+        ],
+        "instructions": [
+          {"instruction": "return_die_to_dice_bag"},
+          {"instruction": "pick_die_from_dice_bag"}
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "select \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "arg_comparison", "type_of_comparison": "greater_than", "index": 0, "bound": "minimum_shade"},
+            {"condition": "arg_comparison", "type_of_comparison": "smaller_than", "index": 0, "bound": "maximum_shade"}
+          ],
+          "instructions": [
+            {"instruction": "set_shade_of_picked_die", "argument": "no_constraint"},
+            {"instruction": "tear_down", "condition": null}
+          ]
+        }
+      ]
+    },
+
+    {
+      "name": "Tap Wheel",
+      "description": "Move up to two dice of the same color that match the color of a die on the Round Track.",
+      "id": 12,
+      "active": false,
+      "activator":
+      {
+        "undoable": true,
+        "conditions": [
+
+        ],
+        "instructions": [
+
+        ]
+      },
+      "commands": [
+        {
+          "reg_exp": "move \\d \\d \\d \\d",
+          "undoable": true,
+          "conditions": [
+            {"condition": "not_die_already_moved"},
+            {"condition": "free_slot", "row_index": 0, "column_index": 1, "value": false},
+            {"condition": "free_slot", "row_index": 2, "column_index": 3, "value": true},
+            {"condition": "share", "object": "color", "pool": "round_track", "value_if_empty": false},
+            {"condition": "share", "object": "color", "pool": "dice_moved", "value_if_empty": true},
+            {"condition": "move_rule_check", "placing": true, "color": true, "shade": true}
+          ],
+          "instructions": [
+            {"instruction": "move_die"},
+            {"instruction": "tear_down", "condition": {"condition": "num_of_dice_moved", "type_of_comparison": "equal_to", "bound": 2}}
+          ]
+        }
+      ]
     }
+
   ]
 }

@@ -51,6 +51,10 @@ public class InstructionFactory {
                 return new ReRollPool();
             case INS_TAKE_TWO_TURNS:
                 return new TakeTwoTurns();
+            case INS_PICK_DIE_FROM_BAG:
+                return new PickDieFromDiceBag();
+            case INS_RETURN_DIE_TO_BAG:
+                return new ReturnDieToDiceBag();
             default:
                 throw new IllegalArgumentException("Passed string doesn't identify any valid instruction.");
         }

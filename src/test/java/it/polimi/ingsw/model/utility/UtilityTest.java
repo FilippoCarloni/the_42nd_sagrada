@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.utility;
 
-import it.polimi.ingsw.model.utility.Color;
-import it.polimi.ingsw.model.utility.Shade;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,5 +54,8 @@ class UtilityTest {
         assertEquals(Shade.DARK.getLabel(), "⚃");
         assertEquals(Shade.DARKER.getLabel(), "⚄");
         assertEquals(Shade.DARKEST.getLabel(), "⚅");
+
+        assertEquals(1, Shade.getMinimumValue());
+        assertEquals(6, Shade.getMaximumValue());
     }
 }

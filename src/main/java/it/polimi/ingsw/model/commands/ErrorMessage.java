@@ -18,6 +18,7 @@ public final class ErrorMessage {
     public static final String ERR_DIE_NOT_PLACED = "You haven't already placed a die this turn.";
     public static final String ERR_INVALID_COORDINATES = "Passed coordinates exceed window frame bounds.";
     public static final String ERR_SLOT_ALREADY_OCCUPIED = "Chosen slot is already occupied by another die.";
+    public static final String ERR_SLOT_UNOCCUPIED = "Chosen slot is empty.";
     public static final String ERR_RULE_ERROR = "Picked die is not allowed to be placed in that position.";
     public static final String ERR_PLACING_ERROR = "Given position for the chosen die violates the placing rule.";
     public static final String ERR_COLOR_ERROR = "Given position for the chosen de violates the color placing rule.";
@@ -29,4 +30,13 @@ public final class ErrorMessage {
     public static final String ERR_FIRST_TURN_OF_ROUND = "This is your first turn of the round.";
     public static final String ERR_SECOND_TURN_OF_ROUND = "This is your second turn of the round.";
     public static final String ERR_DIE_ALREADY_MOVED = "You already moved this die.";
+    public static final String ERR_NO_SHARING_DIE_1 = "There is no ";
+    public static final String ERR_NO_SHARING_DIE_2 = "-sharing die in the ";
+
+    // auxiliary defines
+    public static final String COLOR = "color";
+    public static final String SHADE = "shade";
+    public static final String ROUND_TRACK = "round track";
+    public static final String DICE_POOL = "dice pool";
+    public static final String DICE_MOVED_POOL = "dice-moved pool";
 }
