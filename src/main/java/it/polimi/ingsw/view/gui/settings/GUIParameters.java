@@ -6,8 +6,12 @@ public final class GUIParameters {
 
     private GUIParameters(){}
 
-    public static final String SCENE_TITLE = "Sagrada Board Game";
+    public static final String CONNECTION_SCENE_TITLE = "Connection Choice";
+    public static final String LOGIN_SCENE_TITLE = "Login Screen";
+    public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
 
+    public static final double CONNECTION_LOGIN_SCENE_WIDTH = 600;
+    public static final double CONNECTION_LOGIN_SCENE_HEIGHT = 400;
     public static final double SCREEN_WIDTH = 1280;
     public static final double SCREEN_HEIGHT = 720;
 
@@ -34,8 +38,6 @@ public final class GUIParameters {
     public static final int MAX_WINDOW_FRAMES_ROWS = 4;
     public static final int MAX_WINDOW_FRAMES_COLUMNS = 5;
 
-    public static final int NUM_OF_PLAYERS = 2;
-
     public static final String DEFAULT_GRID_COLOR = "gray";
     public static final String EMPTY_FROM_CONSTRAINTS_COLOR = "default";
     public static final Color NUMBERS_DICE_COLOR = Color.BLACK;
@@ -48,4 +50,6 @@ public final class GUIParameters {
     public static final double[] OFFSET_DIE_4 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0};
     public static final double[] OFFSET_DIE_5 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0, 30.0, 30.0};
     public static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
+
+    public static final double REDUCTION_SCALE = 0.67;
 }

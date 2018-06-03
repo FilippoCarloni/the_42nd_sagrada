@@ -13,47 +13,52 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.ArrayList;
+
 
 public class WindowFrameDrawer {
 
+    private  ArrayList<Canvas> canvasOnWindowFrame;
+
     //In the future this method will take as input a real JSON file, but for now I use a String
     public void frameFiller(GridPane gridPane, String json) {
+        canvasOnWindowFrame = new ArrayList<>();
         for (int row = 0; row < GUIParameters.MAX_WINDOW_FRAMES_ROWS; row++){
             for (int column = 0; column < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS; column++){
                 StackPane pane = new StackPane();
                 gridPane.add(pane, column, row);
-                paintWindowFrame(pane, row, column, json);
+                Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+                canvasOnWindowFrame(canvas.getGraphicsContext2D());
+                paintWindowFrame(canvas.getGraphicsContext2D(), pane, row, column, json);
+                pane.getChildren().add(canvas);
+                canvasOnWindowFrame.add(canvas);
             }
         }
     }
 
-    private void paintWindowFrame(StackPane pane, int row, int column, String json) {
+    public ArrayList<Canvas> getCanvasOnWindowFrame(){
+        return canvasOnWindowFrame;
+    }
+
+    private void paintWindowFrame(GraphicsContext gc, StackPane pane, int row, int column, String json) {
         try {
             WindowFrame wf = JSONFactory.getWindowFrame((JSONObject) new JSONParser().parse(json));
             if(wf.getColorConstraint(row, column) != null){
-                Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
                 String color = wf.getColorConstraint(row, column).getLabel();
-                canvasOnWindowFrame(canvas.getGraphicsContext2D());
                 new DiceDrawer().colorSetter(color, pane);
-                pane.getChildren().add(canvas);
             }
             else if (wf.getShadeConstraint(row, column) != null) {
                 Die die = wf.getDie(row, column);
                 String color = GUIParameters.EMPTY_FROM_CONSTRAINTS_COLOR;
                 int shade = wf.getShadeConstraint(row, column).getValue();
-                Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
                 if(die != null){
                     shade = die.getShade().getValue();
                     color = die.getColor().getLabel();
                 }
-                new DiceDrawer().diceDrawer(shade, color, canvas.getGraphicsContext2D(), pane);
-                pane.getChildren().add(canvas);
+                new DiceDrawer().dicePointsDrawer(shade, color, gc, pane);
             }
             else {
-                Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
-                canvasOnWindowFrame(canvas.getGraphicsContext2D());
                 new DiceDrawer().colorSetter(GUIParameters.DEFAULT_GRID_COLOR, pane);
-                pane.getChildren().add(canvas);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -66,5 +71,4 @@ public class WindowFrameDrawer {
                 new double[]{0, 0, 60, 60, 0},
                 5);
     }
-
 }
