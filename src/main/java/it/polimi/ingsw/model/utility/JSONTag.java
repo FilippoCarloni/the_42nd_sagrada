@@ -80,4 +80,8 @@ public final class JSONTag {
     public static final String DESCRIPTION = "description";
     public static final String ACTIVE = "active";
     public static final String ACTIVATOR = "activator";
+
+    // private objectives
+    public static final String INDEX = "index";
+    public static final String BASE_ID = "base_id";
 }

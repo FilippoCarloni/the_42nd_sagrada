@@ -11,9 +11,9 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
 
     private Color color;
 
-    PaperPrivateObjectiveCard(Color color, int id) {
-        this.name = "Shades of " + color.getLabel();
-        this.description = "Sum of values on " + color.getLabel() + " dice.";
+    PaperPrivateObjectiveCard(String name, String description, int index, Color color, int id) {
+        this.name = name + color.getLabel();
+        this.description = description.substring(0, index) + color.getLabel() + description.substring(index, description.length());
         this.color = color;
         this.id = id;
     }
@@ -26,7 +26,7 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
     @Override
     public int getValuePoints(WindowFrame window) {
         if (window == null) throw new NullPointerException("Cannot evaluate points on a null window.");
-        return window.getDice().stream()
+        return window.getDice().isEmpty() ? 0 : window.getDice().stream()
                 .filter(d -> d.getColor().equals(this.getColor()))
                 .map(Die::getShade)
                 .mapToInt(Shade::getValue).sum();

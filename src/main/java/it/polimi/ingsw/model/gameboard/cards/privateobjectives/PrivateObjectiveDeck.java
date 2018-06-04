@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model.gameboard.cards.privateobjectives;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
-import it.polimi.ingsw.model.utility.Color;
+import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+
+import java.util.List;
 
 /**
  * Generates a deck of private objective cards.
@@ -19,8 +21,8 @@ import it.polimi.ingsw.model.utility.Color;
 public class PrivateObjectiveDeck extends AbstractDeck {
 
     public PrivateObjectiveDeck() {
-        int id = 23;
-        for (Color c : Color.values())
-            add(new PaperPrivateObjectiveCard(c, id++));
+        List<PrivateObjectiveCard> cards = PrivateObjectiveFactory.getPrivateObjectives();
+        for (PrivateObjectiveCard c : cards)
+            add(c);
     }
 }
