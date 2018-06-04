@@ -52,4 +52,7 @@ public final class GUIParameters {
     public static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
 
     public static final double REDUCTION_SCALE = 0.67;
+
+    public static final String TOOL_DIRECTORY = "toolcards";
+    public static final String PUBOBJ_DIRECTORY = "pubobjcards";
 }

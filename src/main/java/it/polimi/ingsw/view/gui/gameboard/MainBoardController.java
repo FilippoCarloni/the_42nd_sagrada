@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard;
 
+import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -96,6 +98,18 @@ public class MainBoardController extends Application implements Initializable {
     private Button diceButton7 = new Button();
     @FXML
     private Button diceButton8 = new Button();
+    @FXML
+    private ImageView toolCard1;
+    @FXML
+    private ImageView toolCard2;
+    @FXML
+    private ImageView toolCard3;
+    @FXML
+    private ImageView pubObjCard1;
+    @FXML
+    private ImageView pubObjCard2;
+    @FXML
+    private ImageView pubObjCard3;
 
 
     private void setGrid(){
@@ -124,6 +138,10 @@ public class MainBoardController extends Application implements Initializable {
         canvasOnDicePool.add(diceCanvas7);
         canvasOnDicePool.add(diceCanvas8);
 
+        for(Canvas c : canvasOnDicePool){
+            c.setMouseTransparent(true);
+        }
+
         diceButton.add(diceButton0);
         diceButton.add(diceButton1);
         diceButton.add(diceButton2);
@@ -149,6 +167,10 @@ public class MainBoardController extends Application implements Initializable {
                 GUIParameters.ARC_HEIGHT, GUIParameters.ARC_ANGLE_START, GUIParameters.ARC_ANGLE_EXTEND, ArcType.OPEN);
     }
 
+    public void pressedButton(){
+        System.out.println("pick 1");
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Group group = new Group();
@@ -162,6 +184,8 @@ public class MainBoardController extends Application implements Initializable {
         try {
             JSONObject jSon = (JSONObject) new JSONParser().parse(new FileReader("src/main/java/res/json_test/gen_2p_01.json"));
             new DiceDrawer().dicePoolFiller(jSon, diceStackPane, canvasOnDicePool, diceButton);
+            new CardsSetter().setPublicCards(toolCard1, toolCard2, toolCard3, jSon, true);
+            new CardsSetter().setPublicCards(pubObjCard1, pubObjCard2, pubObjCard3, jSon, false);
         }
         catch (ParseException f) {
             System.err.println("Error in parsing file JSON");

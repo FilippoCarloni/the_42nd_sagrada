@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.connection.client.Client;
+import it.polimi.ingsw.connection.client.ConnectionController;
 import it.polimi.ingsw.view.gui.login.LoginController;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.application.Application;
@@ -11,7 +13,6 @@ import javafx.stage.Stage;
 public class GuiLauncher extends Application {
 
     private Stage stage;
-    private boolean loginLaunched = false;
 
     public void chooseRMIConnection() throws Exception {
         connectionHandler("RMI");
@@ -20,10 +21,11 @@ public class GuiLauncher extends Application {
         connectionHandler("Socket");
     }
     private void connectionHandler(String typeOfConnection) throws Exception {
+        /*String[] main = new String[]{"prova", "prova"};
+        Client.main(main);*/
         System.out.println(typeOfConnection);
         Stage newStage = new Stage();
         new LoginController().start(newStage);
-        loginLaunched = true;
     }
     private void setStage(Stage stage){
         this.stage = stage;

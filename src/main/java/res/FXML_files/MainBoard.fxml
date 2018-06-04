@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
 <?import javafx.scene.text.*?>
@@ -58,8 +59,8 @@
                      <children>
                         <StackPane fx:id="dicePane0" prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Canvas fx:id="diceCanvas0" height="60.0"  width="60.0" />
-                              <Button fx:id="diceButton0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas fx:id="diceCanvas0" height="60.0" onMouseClicked="#pressedButton" width="60.0" />
+                              <Button fx:id="diceButton0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" onMouseClicked="#pressedButton" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" text="Button" />
                            </children>
                         </StackPane>
                         <StackPane fx:id="dicePane1" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -164,6 +165,12 @@
                   <Label fx:id="labelPlayer2" alignment="CENTER" layoutX="35.0" layoutY="192.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 2" />
                   <Label fx:id="labelPlayer3" alignment="CENTER" layoutX="270.0" layoutY="195.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 3" />
                   <Label fx:id="labelPlayer4" alignment="CENTER" layoutX="510.0" layoutY="195.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 4" />
+                  <ImageView fx:id="toolCard1" fitHeight="200.0" fitWidth="200.0" layoutX="35.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="toolCard2" fitHeight="200.0" fitWidth="200.0" layoutX="270.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="toolCard3" fitHeight="200.0" fitWidth="200.0" layoutX="510.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pubObjCard1" fitHeight="200.0" fitWidth="200.0" layoutX="35.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pubObjCard2" fitHeight="200.0" fitWidth="200.0" layoutX="270.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="pubObjCard3" fitHeight="200.0" fitWidth="200.0" layoutX="510.0" layoutY="510.0" pickOnBounds="true" preserveRatio="true" />
                </children></AnchorPane>
          </children>
       </GridPane>
