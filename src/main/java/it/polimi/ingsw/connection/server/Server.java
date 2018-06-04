@@ -6,7 +6,6 @@ import it.polimi.ingsw.connection.rmi.ServerRMI;
 import it.polimi.ingsw.connection.socket.ServerSocket;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Logger;

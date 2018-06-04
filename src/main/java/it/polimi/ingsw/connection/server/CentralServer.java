@@ -58,21 +58,19 @@ public class CentralServer {
             throw new RemoteException("error, and it is a very big problem!");
         }
         public synchronized WrappedGameController getGame(String userSessionID) throws Exception {
-            List<WrappedGameController> game;
+            WrappedGameController game;
             int countergame=gameControllers.size()+1;
             List<WrappedPlayer> player = players.stream().filter(
                     x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
             if (player.size() != 1) {
                 throw new Exception("You are not logged "+ userSessionID);
             }
-            if(player.get(0).isPlaying()) {
-                game = gameControllers.parallelStream().filter(x -> x.getGameController().isPlaying(player.get(0))).collect(Collectors.toList());
-                if (game.size() == 1) {
-                    if(game.get(0).getGameController().reconnect(player.get(0)))
-                        return game.get(0);
-                    else
-                        player.get(0).getObserver().update(observable,"previous match was ended because there are too few players. Starting a new one");
-                }
+            game = currentGame(player.get(0));
+            if (game != null) {
+                if(game.getGameController().reconnect(player.get(0)))
+                    return game;
+                else
+                    player.get(0).getObserver().update(observable,"previous match was ended because there are too few players. Starting a new one");
             }
             player.get(0).getObserver().update(observable,"Waiting others players ...");
             if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
@@ -100,7 +98,7 @@ public class CentralServer {
                         Thread.currentThread().interrupt();
                         logger.log(Level.SEVERE, "Fatal error!", e);
                     }
-                if(gameControllers.parallelStream().noneMatch(x -> x.getGameController().isPlaying(player.get(0)))) {
+                if(currentGame(player.get(0))==null) {
                     waiting.parallelStream().forEach( x->x.setPlaying(true));
                     gameControllers.add(new WrappedGameController(this, waiting));
                     waiting.clear();
@@ -108,13 +106,24 @@ public class CentralServer {
             }
             this.notifyAll();
             logger.info(() -> userSessionID + " is entered in match n "+ countergame);
-            return gameControllers.get(gameControllers.size()-1);
+            return currentGame(player.get(0));
+        }
+
+        private WrappedGameController currentGame(WrappedPlayer player){
+            List<WrappedGameController> game=new ArrayList<>();
+            if(player.isPlaying())
+                 game=gameControllers.parallelStream().filter(x -> x.getGameController().isPlaying(player)).collect(Collectors.toList());
+            return (game.size()==1) ? game.get(0) : null;
         }
 
         synchronized void closeGame(GameController gameController){
-            if(gameControllers.parallelStream().anyMatch( x-> x.getGameController()==gameController)){
-                gameController.getPlayers().parallelStream().forEach( x -> x.setPlaying(false));
-            }
+            List<WrappedGameController> wrappedGameController;
+            wrappedGameController=gameControllers.parallelStream().filter(x->x.getGameController()==gameController).collect(Collectors.toList());
+            if(wrappedGameController.size()==1)
+                if(gameControllers.parallelStream().anyMatch( x-> x.getGameController()==gameController)){
+                    gameController.getPlayers().parallelStream().forEach( x -> x.setPlaying(false));
+                    gameControllers.remove(wrappedGameController.get(0));
+                }
 
         }
         public synchronized String restoreSession(String oldSessionID, GameObserver obs) throws Exception{
