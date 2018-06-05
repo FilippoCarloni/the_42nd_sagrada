@@ -52,7 +52,7 @@ public  class Settings{
     /**
      * The default waiting time in nanosecond to start a match with less than 4 players
      */
-    public static final int WAITINGTIMETOMATCH=3000;
+    public static final int WAITINGTIMETOMATCH=9000;
     public static final long SERIAL_VERSION_CLIENTSTATUS = 1190476517382928173L;
     public final int SOCKET_PORT;
     public final String IP_SERVER;

@@ -13,18 +13,18 @@ import java.util.stream.Collectors;
 //@TODO create a proper exception class for the server
 public class CentralServer {
 
-        private transient List<WrappedGameController> gameControllers;
-        private transient Logger logger=Logger.getLogger(CentralServer.class.getName());
-        private transient List<WrappedPlayer> players;
-        private transient List<WrappedPlayer>  disconnectedPlayer;
-        private transient List<WrappedPlayer> waiting;
+        private List<WrappedGameController> gameControllers;
+        private Logger logger=Logger.getLogger(CentralServer.class.getName());
+        private List<WrappedPlayer> players;
+        private List<WrappedPlayer>  disconnectedPlayer;
+        private List<LobbyManager> lobbyManagers;
         private Observable observable;
         CentralServer() {
 
             players=new ArrayList<>();
             disconnectedPlayer=new ArrayList<>();
-            waiting=new ArrayList<>();
             gameControllers=new ArrayList<>();
+            lobbyManagers=new ArrayList<>();
             observable=new Observable();
         }
 
@@ -57,55 +57,49 @@ public class CentralServer {
                 }
             throw new RemoteException("error, and it is a very big problem!");
         }
-        public synchronized WrappedGameController getGame(String userSessionID) throws Exception {
+        public  WrappedGameController getGame(String userSessionID) throws Exception {
             WrappedGameController game;
-            int countergame=gameControllers.size()+1;
-            List<WrappedPlayer> player = players.stream().filter(
-                    x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
-            if (player.size() != 1) {
-                throw new Exception("You are not logged "+ userSessionID);
-            }
-            game = currentGame(player.get(0));
-            if (game != null) {
-                if(game.getGameController().reconnect(player.get(0)))
-                    return game;
-                else
-                    player.get(0).getObserver().update(observable,"previous match was ended because there are too few players. Starting a new one");
-            }
-            player.get(0).getObserver().update(observable,"Waiting others players ...");
-            if (waiting.parallelStream().noneMatch(x -> x.getSession().getID().equals(userSessionID))) {
-                waiting.parallelStream().forEach(x -> {
-                    x.getObserver().update(observable, player.get(0).getPlayer().getUsername() + " is connected to this game!");
-                    player.get(0).getObserver().update(observable, x.getPlayer().getUsername() + " is connected to this game!");
-                });
-                waiting.add(player.get(0));
-            }
-            if (waiting.size() % 4 != 0 && waiting.size()% 4 < 2) {
-                while (waiting.size() % 4 != 0 && waiting.size() % 4 < 2) {
-                    try {
-                        wait();
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        logger.log(Level.SEVERE, "Fatal error!", e);
+            LobbyManager lobbyManager=null;
+            boolean find=false;
+            List<WrappedPlayer> player;
+            int counterGame;
+            List<WrappedPlayer> waiting;
+            synchronized (this) {
+                counterGame= gameControllers.size() + 1;
+                player = players.stream().filter(
+                        x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
+                if (player.size() != 1) {
+                    throw new Exception("You are not logged " + userSessionID);
+                }
+                game = currentGame(player.get(0));
+                if (game != null) {
+                    if (game.getGameController().reconnect(player.get(0)))
+                        return game;
+                    else
+                        player.get(0).getObserver().update(observable, "previous match was ended because there are too few players. Starting a new one");
+                }
+                for (LobbyManager lobby : lobbyManagers) {
+                    if (lobby.add(player.get(0))) {
+                        find = true;
+                        lobbyManager = lobby;
+                        break;
                     }
                 }
-            } else {
-                if (waiting.size() % 4 != 0)
-                    try {
-                        wait(Settings.WAITINGTIMETOMATCH);
-
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        logger.log(Level.SEVERE, "Fatal error!", e);
-                    }
-                if(currentGame(player.get(0))==null) {
-                    waiting.parallelStream().forEach( x->x.setPlaying(true));
+                if (!find) {
+                    lobbyManager = new LobbyManager();
+                    lobbyManagers.add(lobbyManager);
+                    lobbyManager.add(player.get(0));
+                }
+            }
+            waiting=lobbyManager.waitStart();
+            synchronized (this) {
+                if (currentGame(player.get(0)) == null) {
+                    waiting.parallelStream().forEach(x -> x.setPlaying(true));
                     gameControllers.add(new WrappedGameController(this, waiting));
                     waiting.clear();
                 }
             }
-            this.notifyAll();
-            logger.info(() -> userSessionID + " is entered in match n "+ countergame);
+            logger.info(() -> userSessionID + " is entered in match n "+ counterGame);
             return currentGame(player.get(0));
         }
 

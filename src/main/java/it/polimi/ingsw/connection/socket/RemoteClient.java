@@ -79,10 +79,16 @@ public class RemoteClient implements Runnable,GameObserver {
                                 send ("You are already logged");
                             break;
                         case "play":
-                            if(!sessionID.equals(ANONYMOUS)) {
-                                game = lobby.getGame(sessionID).getGameController();
-                            }else
-                                send ("You are not already logged");
+                            new Thread(() -> {
+                                if(!sessionID.equals(ANONYMOUS)) {
+                                    try {
+                                        game = lobby.getGame(sessionID).getGameController();
+                                    } catch (Exception e) {
+                                        logger.info("Errore");
+                                    }
+                                }else
+                                    send ("You are not already logged");
+                            }).start();
                             break;
                         case "view":
                             if(game!=null)

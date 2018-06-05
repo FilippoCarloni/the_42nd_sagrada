@@ -174,7 +174,7 @@ public class GameController extends Observable{
 
     private void startTimer(){
         Runnable task= this::timerPass;
-        timer=scheduler.schedule(task,20000,MILLISECONDS);
+        timer=scheduler.schedule(task,60000,MILLISECONDS);
     }
 
     private synchronized void timerPass(){
