@@ -10,7 +10,7 @@ public class Session implements Serializable {
     private static final long serialVersionUID = Settings.SERIAL_VERSION_UID_SESSION;
     private String sessionID;
     private String error;
-    public Session(String id, String error) {
+    Session(String id, String error) {
         Date date=new Date();
         sessionID = id+date.getTime()+(int)(Math.random()*10000000);
         this.error = error;

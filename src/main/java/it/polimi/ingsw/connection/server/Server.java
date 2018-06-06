@@ -7,12 +7,11 @@ import it.polimi.ingsw.connection.socket.ServerSocket;
 
 import java.io.IOException;
 import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
 
 public class Server {
-    public static void main(String[] args) throws  AlreadyBoundException, RemoteException, IOException {
+    public static void main(String[] args) throws  AlreadyBoundException, IOException {
         Logger logger = Logger.getLogger(Server.class.getName());
         ServerRMI server = new ServerRMI();
         CentralServer centralServer=new CentralServer();

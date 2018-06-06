@@ -6,7 +6,7 @@ import java.util.Properties;
 public  class Settings{
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
-    private static final String DEFAULT_SERVER_IP="127.0.0.1";
+    private static final String DEFAULT_SERVER_IP="localhost";
     private static final String FILE_CONFIG="./src/main/java/res/network_config/constraints.config";
     private static final String IP_SERVER_TAG="IP_SERVER";
     private static final String PORT_SOCKET_TAG="PORT_SOCKET";

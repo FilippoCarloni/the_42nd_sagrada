@@ -1,7 +1,6 @@
 package it.polimi.ingsw.connection.client;
 
 import it.polimi.ingsw.connection.costraints.Settings;
-import it.polimi.ingsw.connection.server.Session;
 
 import java.io.*;
 

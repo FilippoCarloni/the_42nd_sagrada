@@ -25,7 +25,7 @@ public class LobbyManager extends Observable{
     }
     public synchronized boolean add(WrappedPlayer player) {
         Runnable task= this::endWaiting;
-        Runnable clener = this::playerCleaner;
+        Runnable cleaner = this::playerCleaner;
         if(players.contains(player))
             return true;
         if(!open)
@@ -38,7 +38,7 @@ public class LobbyManager extends Observable{
         });
         players.add(player);
         if( players.size()==1)
-            beeperHandle=scheduler.scheduleAtFixedRate(clener, 1, 500, MILLISECONDS);
+            beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 500, MILLISECONDS);
         else if(players.size()==4) {
             open = false;
             timer.cancel(true);
@@ -72,7 +72,7 @@ public class LobbyManager extends Observable{
                     noActive.add(p);
                     this.deleteObserver(p.getObserver());
                     this.setChanged();
-                    this.notifyObservers(p.getPlayer().getUsername()+" has leaved the match lobby");
+                    this.notifyObservers(p.getPlayer().getUsername()+" has leaved the match lobby!");
                 }
 
             for(WrappedPlayer p:noActive)

@@ -49,7 +49,7 @@ public class ServerSocket implements Runnable{
         try {
             server.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Connection of new client over sockete error", e);
+            logger.log(Level.SEVERE, "Connection of new client over socket error", e);
         }
     }
 

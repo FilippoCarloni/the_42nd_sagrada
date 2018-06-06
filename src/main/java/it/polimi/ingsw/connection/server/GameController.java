@@ -51,7 +51,7 @@ public class GameController extends Observable{
         isTurnOf();
         beeperHandle=null;
         disconnected= new ArrayList<>();
-        final Runnable cleener = () -> {
+        final Runnable cleaner = () -> {
             synchronized (this.disconnected){
             for( WrappedPlayer p: this.players)
                 if(!p.getObserver().isAlive()&&!disconnected.contains(p)) {
@@ -72,7 +72,7 @@ public class GameController extends Observable{
             }
         }
         ;
-        beeperHandle=scheduler.scheduleAtFixedRate(cleener, 1, 100, MILLISECONDS);
+        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 100, MILLISECONDS);
         startTimer();
     }
 
@@ -108,7 +108,6 @@ public class GameController extends Observable{
         }
         setChanged();
         notifyObservers(game.getData().encode().toString());
-
         if(passed) {
             if(game.isGameEnded()) {
                 printScore();

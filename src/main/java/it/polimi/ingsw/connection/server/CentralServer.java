@@ -1,7 +1,5 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.costraints.Settings;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +95,7 @@ public class CentralServer {
                     waiting.parallelStream().forEach(x -> x.setPlaying(true));
                     gameControllers.add(new WrappedGameController(this, waiting));
                     waiting.clear();
+                    lobbyManagers.remove(lobbyManager);
                 }
             }
             logger.info(() -> userSessionID + " is entered in match n "+ counterGame);

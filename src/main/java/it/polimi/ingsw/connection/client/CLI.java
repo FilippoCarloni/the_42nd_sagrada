@@ -1,6 +1,5 @@
 package it.polimi.ingsw.connection.client;
 
-import it.polimi.ingsw.model.gamedata.ConcreteGameData;
 import it.polimi.ingsw.model.utility.JSONFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

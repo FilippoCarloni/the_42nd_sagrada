@@ -1,8 +1,6 @@
 package it.polimi.ingsw.connection.rmi;
 
 import it.polimi.ingsw.connection.costraints.Settings;
-
-import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.util.logging.Level;
@@ -23,8 +21,8 @@ public class ServerRMI {
         try {
             registry = LocateRegistry.createRegistry(port);
             System.setProperty("java.rmi.server.hostname",new Settings().IP_SERVER);
-            //System.setProperty("java.security.policy","./src/main/java/res/network_config/server.policy");
-            //System.setSecurityManager(new SecurityManager());
+            //System.setProperty("java.security.policy","./src/main/java/res/network_config/server.policy")
+            //System.setSecurityManager(new SecurityManager())
             this.url += this.port+"/";
         }catch(Exception e){
             logger.log(Level.SEVERE, "Error in creating the rmi registry", e);

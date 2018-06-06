@@ -17,7 +17,7 @@ public class WrappedPlayer {
         playing = false;
     }
 
-    synchronized public Session getSession(){
+    synchronized Session getSession(){
         return session;
     }
 
@@ -33,20 +33,20 @@ public class WrappedPlayer {
         return player;
     }
 
-    synchronized public void setSession(Session session) {
+    synchronized void setSession(Session session) {
         this.session = session;
     }
 
-    synchronized public GameObserver getObserver() {
+    synchronized GameObserver getObserver() {
         return observer;
     }
 
-    synchronized public void setObserver(GameObserver observer) {
+    synchronized void setObserver(GameObserver observer) {
         this.observer = observer;
     }
 
     @Override
-    synchronized public boolean equals(Object obj) {
+    public synchronized boolean equals(Object obj) {
         return obj instanceof WrappedPlayer &&
                 this.getSession().getID().equals( ((WrappedPlayer) obj).getSession().getID());
     }
