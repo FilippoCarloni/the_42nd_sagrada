@@ -270,9 +270,6 @@ public class ConcreteGameData implements GameData {
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj = new JSONObject();
-        JSONArray playerList = new JSONArray();
-        playerList.addAll(turnManager.getPlayers().stream().map(Player::encode).collect(Collectors.toList()));
-        obj.put(JSONTag.PLAYERS, playerList);
         JSONArray diceList = new JSONArray();
         diceList.addAll(dicePool.stream().map(Die::encode).collect(Collectors.toList()));
         obj.put(JSONTag.DICE_POOL, diceList);

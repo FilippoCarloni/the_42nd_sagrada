@@ -80,6 +80,8 @@ public abstract class AbstractCard implements Card {
         assert id > 0;
         JSONObject obj = new JSONObject();
         obj.put(JSONTag.CARD_ID, id);
+        obj.put(JSONTag.NAME, name);
+        obj.put(JSONTag.DESCRIPTION, description);
         return obj;
     }
 }

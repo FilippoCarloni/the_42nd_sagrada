@@ -171,8 +171,6 @@ public class PaperWindowFrame implements WindowFrame {
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 JSONObject coordinate = new JSONObject();
-                coordinate.put(JSONTag.ROW_INDEX, i);
-                coordinate.put(JSONTag.COLUMN_INDEX, j);
                 coordinate.put(JSONTag.DIE, dice.get(new Coordinate(i, j)) == null ? null : dice.get(new Coordinate(i, j)).encode());
                 coordinate.put(JSONTag.COLOR_CONSTRAINT, colorConstraints.get(new Coordinate(i, j)) == null ? null : colorConstraints.get(new Coordinate(i, j)).getLabel());
                 coordinate.put(JSONTag.SHADE_CONSTRAINT, shadeConstraints.get(new Coordinate(i, j)) == null ? null : shadeConstraints.get(new Coordinate(i, j)).getValue());

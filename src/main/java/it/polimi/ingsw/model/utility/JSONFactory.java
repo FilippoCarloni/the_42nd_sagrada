@@ -70,17 +70,13 @@ public class JSONFactory {
         JSONArray list = (JSONArray) obj.get(JSONTag.COORDINATES);
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
-                for (Object o : list) {
-                    int row = parseInt(((JSONObject) o).get(JSONTag.ROW_INDEX).toString());
-                    int column = parseInt(((JSONObject) o).get(JSONTag.COLUMN_INDEX).toString());
-                    if (row == i && column == j) {
-                        if (((JSONObject) o).get(JSONTag.DIE) != null)
-                            dice.put(new Coordinate(i, j), JSONFactory.getDie((JSONObject) ((JSONObject) o).get(JSONTag.DIE)));
-                        if (((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT) != null)
-                            colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) ((JSONObject) o).get(JSONTag.COLOR_CONSTRAINT)));
-                        if (((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT) != null)
-                            shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt(((JSONObject) o).get(JSONTag.SHADE_CONSTRAINT).toString())));                    }
-                }
+                JSONObject coordinate = (JSONObject) list.get(i * Parameters.MAX_COLUMNS + j);
+                if (coordinate.get(JSONTag.DIE) != null)
+                    dice.put(new Coordinate(i, j), JSONFactory.getDie((JSONObject) (coordinate.get(JSONTag.DIE))));
+                if (coordinate.get(JSONTag.COLOR_CONSTRAINT) != null)
+                    colorConstraints.put(new Coordinate(i, j), Color.findByLabel((String) (coordinate.get(JSONTag.COLOR_CONSTRAINT))));
+                if (coordinate.get(JSONTag.SHADE_CONSTRAINT) != null)
+                    shadeConstraints.put(new Coordinate(i, j), Shade.findByValue(parseInt((coordinate.get(JSONTag.SHADE_CONSTRAINT).toString()))));
             }
         }
         return new PaperWindowFrame(name, difficulty, dice, colorConstraints, shadeConstraints);
@@ -106,17 +102,13 @@ public class JSONFactory {
         int turnIndex = parseInt(obj.get(JSONTag.TURN_INDEX).toString());
         int firstPlayerIndex = parseInt(obj.get(JSONTag.FIRST_PLAYER_INDEX).toString());
         List<Player> players = new ArrayList<>();
-        List<Player> playerTurns = new ArrayList<>();
+        List<String> playerTurns = new ArrayList<>();
         JSONArray playerList = (JSONArray) obj.get(JSONTag.PLAYERS);
         for (Object o : playerList)
             players.add(JSONFactory.getPlayer((JSONObject) o));
         playerList = (JSONArray) obj.get(JSONTag.PLAYER_TURNS);
         for (Object o : playerList)
-            for (Player p : players)
-                if (p.getUsername().equals(((JSONObject) o).get(JSONTag.USERNAME)))
-                    playerTurns.add(p);
-        for (Player p : playerTurns)
-            assert players.contains(p);
+            playerTurns.add(o.toString());
         return new ArrayTurnManager(roundStarting, roundEnding, players, playerTurns, turnIndex, firstPlayerIndex);
     }
 

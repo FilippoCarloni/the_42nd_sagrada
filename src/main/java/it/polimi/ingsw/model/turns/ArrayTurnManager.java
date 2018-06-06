@@ -18,7 +18,7 @@ public class ArrayTurnManager implements TurnManager {
     private boolean roundStarting;
     private boolean roundEnding;
     private List<Player> players;
-    private List<Player> playerTurns;
+    private List<String> playerTurns;
     private int turnIndex;
     private int firstPlayerIndex;
 
@@ -39,15 +39,20 @@ public class ArrayTurnManager implements TurnManager {
         advanceTurn();
     }
 
-    public ArrayTurnManager(boolean roundStarting, boolean roundEnding, List<Player> players, List<Player> playerTurns, int turnIndex, int firstPlayerIndex) {
+    public ArrayTurnManager(boolean roundStarting, boolean roundEnding, List<Player> players, List<String> playerTurns, int turnIndex, int firstPlayerIndex) {
         this.roundStarting = roundStarting;
         this.roundEnding = roundEnding;
         this.players = players.stream().map(p -> JSONFactory.getPlayer(p.encode())).collect(Collectors.toList());
-        this.playerTurns = new ArrayList<>();
-        for (Player p : playerTurns)
-            this.playerTurns.add(this.players.get(this.players.indexOf(p)));
+        this.playerTurns = new ArrayList<>(playerTurns);
         this.turnIndex = turnIndex;
         this.firstPlayerIndex = firstPlayerIndex;
+    }
+
+    private Player getPlayer(String username) {
+        for (Player p : players)
+            if (p.getUsername().equals(username))
+                return p;
+        throw new IllegalArgumentException("This player does not exist.");
     }
 
     private void updateRoundStatus() {
@@ -60,14 +65,14 @@ public class ArrayTurnManager implements TurnManager {
     private void initializeOrder() {
         playerTurns.clear();
         for (int i = 0; i < players.size(); i++)
-            playerTurns.add(players.get((firstPlayerIndex + i) % players.size()));
+            playerTurns.add(players.get((firstPlayerIndex + i) % players.size()).getUsername());
         for (int i = players.size() - 1; i >= 0; i--)
-            playerTurns.add(players.get((firstPlayerIndex + i) % players.size()));
+            playerTurns.add(players.get((firstPlayerIndex + i) % players.size()).getUsername());
     }
 
     @Override
     public Player getCurrentPlayer() {
-        return playerTurns.get(turnIndex);
+        return getPlayer(playerTurns.get(turnIndex));
     }
 
     @Override
@@ -127,8 +132,7 @@ public class ArrayTurnManager implements TurnManager {
             playerList.add(p.encode());
         obj.put(JSONTag.PLAYERS, playerList);
         playerList = new JSONArray();
-        for (Player p : playerTurns)
-            playerList.add(p.encode());
+        playerList.addAll(playerTurns);
         obj.put(JSONTag.PLAYER_TURNS, playerList);
         return obj;
     }

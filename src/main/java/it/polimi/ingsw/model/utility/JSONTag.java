@@ -41,8 +41,6 @@ public final class JSONTag {
     public static final String NAME = "name";
     public static final String DIFFICULTY = "difficulty";
     public static final String COORDINATES = "coordinates";
-    public static final String ROW_INDEX = "row_index";
-    public static final String COLUMN_INDEX = "column_index";
     public static final String DIE = "die";
     public static final String COLOR_CONSTRAINT = "color_constraint";
     public static final String SHADE_CONSTRAINT = "shade_constraint";
