@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.commands;
 
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONFactory;

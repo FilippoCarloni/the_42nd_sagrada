@@ -1,4 +1,6 @@
-package it.polimi.ingsw.model.gameboard.cards;
+package it.polimi.ingsw.model.gameboard.cards.publicobjectives;
+
+import it.polimi.ingsw.model.gameboard.cards.ObjectiveCard;
 
 /**
  * Represents a Sagrada public objective card.

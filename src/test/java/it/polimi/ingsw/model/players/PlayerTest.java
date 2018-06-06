@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.players;
 
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
-import it.polimi.ingsw.model.players.ConcretePlayer;
-import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONFactory;
 import org.junit.jupiter.api.Test;
 

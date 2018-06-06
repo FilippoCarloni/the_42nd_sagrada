@@ -84,4 +84,12 @@ public final class JSONTag {
     // private objectives
     public static final String INDEX = "index";
     public static final String BASE_ID = "base_id";
+
+    // public objectives
+    public static final String OBJECT = "object";
+    public static final String VALUES = "values";
+    public static final String TYPE = "type";
+    public static final String PLACE = "place";
+    public static final String PATTERN = "pattern";
+    public static final String POINTS_PER_PATTERN = "points_per_pattern";
 }

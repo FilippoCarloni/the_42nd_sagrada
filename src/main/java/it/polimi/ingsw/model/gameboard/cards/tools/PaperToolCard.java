@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.gameboard.cards.tools;
 import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.commands.CommandFactory;
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.utility.JSONTag;

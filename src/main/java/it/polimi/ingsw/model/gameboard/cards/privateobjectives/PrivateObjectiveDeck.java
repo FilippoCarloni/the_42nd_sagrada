@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.gameboard.cards.privateobjectives;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 
 import java.util.List;
 

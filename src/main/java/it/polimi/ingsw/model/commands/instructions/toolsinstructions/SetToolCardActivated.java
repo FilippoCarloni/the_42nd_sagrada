@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.commands.instructions.toolsinstructions;
 
 
 import it.polimi.ingsw.model.commands.instructions.Instruction;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 
 public class SetToolCardActivated implements Instruction {

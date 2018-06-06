@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.gameboard.cards.privateobjectives;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractCard;
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Shade;

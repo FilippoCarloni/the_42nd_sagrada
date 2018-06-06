@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;

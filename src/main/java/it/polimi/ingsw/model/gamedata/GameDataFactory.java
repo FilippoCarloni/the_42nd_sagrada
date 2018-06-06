@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;

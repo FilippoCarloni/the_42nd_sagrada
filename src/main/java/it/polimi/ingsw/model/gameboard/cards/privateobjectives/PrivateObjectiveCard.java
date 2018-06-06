@@ -1,5 +1,6 @@
-package it.polimi.ingsw.model.gameboard.cards;
+package it.polimi.ingsw.model.gameboard.cards.privateobjectives;
 
+import it.polimi.ingsw.model.gameboard.cards.ObjectiveCard;
 import it.polimi.ingsw.model.utility.Color;
 
 /**

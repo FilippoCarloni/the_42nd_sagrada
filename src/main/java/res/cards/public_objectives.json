@@ -1,0 +1,84 @@
+{
+  "public_objectives": [
+
+    {
+      "name": "Color Diagonals",
+      "description": "Count of diagonally adjacent same color dice.",
+      "id": 13,
+      "pattern": {"type": "diagonals", "object": "color"},
+      "points_per_pattern": 1
+    },
+
+    {
+      "name": "Color Variety",
+      "description": "Sets of one of each color anywhere.",
+      "id": 14,
+      "pattern": {"type": "set", "object": "color", "values": ["red", "green", "blue", "purple", "yellow"]},
+      "points_per_pattern": 4
+    },
+
+    {
+      "name": "Column Color Variety",
+      "description": "Columns with no repeated colors.",
+      "id": 15,
+      "pattern": {"type": "difference", "place": "columns", "object": "color"},
+      "points_per_pattern": 5
+    },
+
+    {
+      "name": "Column Shade Variety",
+      "description": "Columns with no repeated values.",
+      "id": 16,
+      "pattern": {"type": "difference", "place": "columns", "object": "shade"},
+      "points_per_pattern": 5
+    },
+
+    {
+      "name": "Dark shades",
+      "description": "Sets of 5 and 6 values anywhere.",
+      "id": 17,
+      "pattern": {"type": "set", "object": "shade", "values": [5, 6]},
+      "points_per_pattern": 2
+    },
+
+    {
+      "name": "Medium shades",
+      "description": "Sets of 3 and 4 values anywhere.",
+      "id": 18,
+      "pattern": {"type": "set", "object": "shade", "values": [3, 4]},
+      "points_per_pattern": 2
+    },
+
+    {
+      "name": "Light shades",
+      "description": "Sets of 1 and 2 values anywhere.",
+      "id": 19,
+      "pattern": {"type": "set", "object": "shade", "values": [1, 2]},
+      "points_per_pattern": 2
+    },
+
+    {
+      "name": "Row Color Variety",
+      "description": "Rows with no repeated color.",
+      "id": 20,
+      "pattern": {"type": "difference", "place": "rows", "object": "color"},
+      "points_per_pattern": 6
+    },
+
+    {
+      "name": "Row Shade Variety",
+      "description": "Rows with no repeated values.",
+      "id": 21,
+      "pattern": {"type": "difference", "place": "rows", "object": "shade"},
+      "points_per_pattern": 5
+    },
+
+    {
+      "name": "Shade Variety",
+      "description": "Set of one of each value anywhere.",
+      "id": 22,
+      "pattern": {"type": "set", "object": "shade", "values": [1, 2, 3, 4, 5, 6]},
+      "points_per_pattern": 5
+    }
+  ]
+}

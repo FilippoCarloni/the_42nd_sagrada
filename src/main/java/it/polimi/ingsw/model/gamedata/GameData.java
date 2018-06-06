@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.gamedata;
 
-import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;

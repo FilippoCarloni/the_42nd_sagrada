@@ -21,7 +21,8 @@ public final class Parameters {
     public static final String WINDOW_PATTERNS_PATH = "src/main/java/res/window_patterns/";
     public static final String BASIC_COMMANDS_PATH = "src/main/java/res/commands/basic_commands.json";
     public static final String TOOL_ACTIVATOR_PATH = "src/main/java/res/commands/tool_card_activator.json";
-    public static final String SIMPLIFIED_RULES_TOOLS_PATH = "src/main/java/res/commands/simplified_rules_tool_cards.json";
-    public static final String COMPLETE_RULES_TOOLS_PATH = "src/main/java/res/commands/complete_rules_tool_cards.json";
-    public static final String PRIVATE_OBJECTIVES_PATH = "src/main/java/res/commands/private_objectives.json";
+    public static final String SIMPLIFIED_RULES_TOOLS_PATH = "src/main/java/res/cards/simplified_rules_tool_cards.json";
+    public static final String COMPLETE_RULES_TOOLS_PATH = "src/main/java/res/cards/complete_rules_tool_cards.json";
+    public static final String PRIVATE_OBJECTIVES_PATH = "src/main/java/res/cards/private_objectives.json";
+    public static final String PUBLIC_OBJECTIVES_PATH = "src/main/java/res/cards/public_objectives.json";
 }

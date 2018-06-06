@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;

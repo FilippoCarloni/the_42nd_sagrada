@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.utility;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.cards.PrivateObjectiveCard;
-import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
@@ -142,7 +142,7 @@ public class JSONFactory {
         throw new NoSuchElementException("Invalid JSON format: there's no matching public objective card.");
     }
 
-    public static ToolCard getToolCard(JSONObject obj) {
+    private static ToolCard getToolCard(JSONObject obj) {
         int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
         int favorPoints = parseInt(obj.get(JSONTag.TOOL_FAVOR_POINTS).toString());
         Deck d = new ToolDeck();

@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.cards;
 
 import it.polimi.ingsw.model.gameboard.cards.Deck;
-import it.polimi.ingsw.model.gameboard.cards.PublicObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.publicobjectives.PublicObjectiveDeck;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolDeck;
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.utility.JSONFactory;
@@ -43,6 +44,15 @@ class PublicObjectiveCardTest {
             PublicObjectiveCard c = (PublicObjectiveCard) d.draw();
             System.out.println("Value points for " + c.getName() + ": " + c.getValuePoints(w));
         }
+    }
+
+    @Test
+    void assertZeroForEmptyMaps() {
+        Deck frames = new WindowFrameDeck();
+        Deck d = new PublicObjectiveDeck();
+        WindowFrame w = (WindowFrame) frames.draw();
+        while (d.size() > 0)
+            assertEquals(0, ((PublicObjectiveCard) d.draw()).getValuePoints(w));
     }
 
     @Test

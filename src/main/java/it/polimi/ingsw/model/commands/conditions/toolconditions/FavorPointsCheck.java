@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.commands.conditions.toolconditions;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
+import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_FAVOR_POINTS;
 

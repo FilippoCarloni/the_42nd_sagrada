@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.gameboard.cards.tools;
 
 import it.polimi.ingsw.model.gameboard.cards.AbstractDeck;
-import it.polimi.ingsw.model.gameboard.cards.ToolCard;
 
 import java.util.List;
 
