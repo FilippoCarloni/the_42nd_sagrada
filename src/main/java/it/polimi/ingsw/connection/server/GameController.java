@@ -1,5 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.server.serverexception.ServerException;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
@@ -19,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class GameController extends Observable{
@@ -76,10 +78,10 @@ public class GameController extends Observable{
         startTimer();
     }
 
-    public synchronized void sendCommand(String sessionID, String command) throws Exception {
+    public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         boolean passed=false;
         if(!isMyTurn(sessionID)) {
-            throw new Exception("Is not your turn!");
+            throw new ServerException("Is not your turn!",GAME_ERROR);
         }
         command=command.trim();
         switch (command) {
@@ -87,19 +89,19 @@ public class GameController extends Observable{
                 if(game.isUndoAvailable())
                     game.undoCommand();
                 else
-                    throw new Exception("You can not undo");
+                    throw new ServerException("You can not undo",GAME_ERROR);
                 break;
             case "redo":
                 if(game.isRedoAvailable())
                     game.redoCommand();
                 else
-                    throw new Exception("You can not redo");
+                    throw new ServerException("You can not redo",GAME_ERROR);
                 break;
             default:
                 try {
                     game.executeCommand(this.getPlayer(sessionID).getPlayer(), command);
                 } catch (IllegalCommandException e) {
-                    throw new Exception(e.getMessage());
+                    throw new ServerException(e.getMessage(),GAME_ERROR);
                 }
                 if(command.equals("pass")) {
                     passed=true;
@@ -121,21 +123,21 @@ public class GameController extends Observable{
         }
     }
 
-    public synchronized boolean isMyTurn(String sessionID) throws Exception  {
+    public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
-    public synchronized String getStatus(String sessionID) throws Exception{
+    public synchronized String getStatus(String sessionID) throws ServerException{
         getPlayer(sessionID);
         return game.getData().encode().toString();
     }
 
-    private WrappedPlayer getPlayer(String sessionID) throws Exception{
-        List<WrappedPlayer> player=players.stream().filter(x -> x.getSession().getID().equals(sessionID))
+    private WrappedPlayer getPlayer(String sessionID) throws ServerException{
+        List<WrappedPlayer> player=players.parallelStream().filter(x -> x.getSession().getID().equals(sessionID))
                 .collect(Collectors.toList());
         if(player.size() != 1) {
             logger.log(Level.SEVERE, "Hacker !!!, not playing user are trying to enter in a match");
-            throw new Exception("Error, you are not playing in this game");
+            throw new ServerException("Error, you are not playing in this game",SERVER_ERROR);
         }
         return player.get(0);
     }

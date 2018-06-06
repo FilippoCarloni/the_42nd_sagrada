@@ -3,6 +3,7 @@ package it.polimi.ingsw.connection.socket;
 import it.polimi.ingsw.connection.server.CentralServer;
 import it.polimi.ingsw.connection.server.GameController;
 import it.polimi.ingsw.connection.server.GameObserver;
+import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,7 +53,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                     try {
                                        sessionID=lobby.restoreSession(cmd[1],this);
                                        send("NewSessionID: "+sessionID);
-                                    }catch(Exception e){
+                                    }catch(ServerException e){
                                         send(e.getMessage());
                                     }
                                 }else
@@ -68,7 +69,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                     try {
                                     sessionID = lobby.connect(cmd[1],this);
                                     send("SessionID: "+sessionID);
-                                    }catch (Exception e) {
+                                    }catch (ServerException e) {
                                         send(e.getMessage());
                                     }
                                 }
