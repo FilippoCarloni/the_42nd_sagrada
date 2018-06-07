@@ -14,8 +14,6 @@ import static java.lang.Integer.parseInt;
 
 public class CLI {
 
-    // TODO: add card images
-
     private static final String SEPARATOR = " ";
     private static final String TOP_SEPARATOR = "  ";
     private static final String ROUND_TRACK_TITLE   = "ROUND TRACK";
@@ -24,19 +22,27 @@ public class CLI {
     private static final String DRAFTED_DIE         = "Drafted die       :  ";
     private static final String ACTIVE_TOOL_CARD    = "Active Tool Card  :  ";
     private static final String TOOL_NOT_ACTIVE = "none";
+    private static final String DIE_NOT_PICKED = "[ ]";
+    private static final String EMPTY_ROUND_TRACK = "empty";
     private static final int PIXEL_WIDTH = 21;
     private static final int NAME_LENGTH = 40;
     private static final int DESCRIPTION_LENGTH = 120;
     private static final int ROUND_TRACK_LENGTH = 44;
+    private static final int TOOL_IMAGE_LENGTH = 9;
+    private static final int OBJECTIVE_IMAGE_LENGTH = 15;
+    private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/card";
 
     public void draw(JSONObject obj) {
-        System.out.println(drawBoard(obj));
+        System.out.print(drawBoard(obj));
     }
 
     private String drawDice(JSONArray jsonArray) {
         StringBuilder sb = new StringBuilder();
-        for (Object o : jsonArray)
-            sb.append(drawDie((JSONObject) o));
+        int i = 1;
+        for (Object o : jsonArray) {
+            sb.append(i).append(drawDie((JSONObject) o)).append(" ");
+            i++;
+        }
         return sb.toString();
     }
 
@@ -84,14 +90,20 @@ public class CLI {
         JSONArray coordinates = (JSONArray) jsonObject.get(JSONTag.COORDINATES);
         String name = jsonObject.get(JSONTag.NAME).toString();
         int difficulty = parseInt(jsonObject.get(JSONTag.DIFFICULTY).toString());
-        int leftEmptySide = (PIXEL_WIDTH - Parameters.MAX_COLUMNS * 3) / 2;
-        int rightEmptySide = PIXEL_WIDTH - Parameters.MAX_COLUMNS * 3 - leftEmptySide;
+        int leftEmptySide = (PIXEL_WIDTH - Parameters.MAX_COLUMNS * 3) / 2 - 2;
+        int rightEmptySide = PIXEL_WIDTH - Parameters.MAX_COLUMNS * 3 - leftEmptySide - 2;
         StringBuilder sb = new StringBuilder();
         sb.append(" ");
         for (int i = 0; i < PIXEL_WIDTH; i++) sb.append("_");
         sb.append(" \n|");
+        for (int i = 0; i < leftEmptySide; i++) sb.append(" ");
+        sb.append("  ");
+        for (int i = 0; i < Parameters.MAX_COLUMNS; i++) sb.append(" ").append(i + 1).append(" ");
+        for (int i = 0; i < rightEmptySide; i++) sb.append(" ");
+        sb.append("|\n|");
         for (int i = 0; i < Parameters.MAX_ROWS; i++) {
             for (int j = 0; j < leftEmptySide; j++) sb.append(" ");
+            sb.append(i + 1).append(" ");
             for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
                 JSONObject coordinate = (JSONObject) coordinates.get(i * Parameters.MAX_COLUMNS + j);
                 if (coordinate.get(JSONTag.DIE) != null)
@@ -135,8 +147,7 @@ public class CLI {
             sb.append(printableUsername);
             for (int i = 0; i < len - printableUsername.length() - (len - printableUsername.length()) / 2; i++)
                 sb.append(" ");
-            sb.append("\n");
-        }
+        } else sb.append("Null window.");
         return sb.toString();
     }
 
@@ -150,11 +161,13 @@ public class CLI {
         StringBuilder sb = new StringBuilder();
         StringBuilder turnStateData = new StringBuilder();
         turnStateData.append("\n").append(DICE_ON_ROUND_TRACK);
-        turnStateData.append(drawDice(visibleDice));
+        if (visibleDice.isEmpty()) turnStateData.append(EMPTY_ROUND_TRACK);
+        else turnStateData.append(drawDice(visibleDice));
         turnStateData.append("\n").append(DICE_POOL);
         turnStateData.append(drawDice(dicePool));
         turnStateData.append("\n").append(DRAFTED_DIE);
         if (pickedDie != null) turnStateData.append(drawDie(pickedDie));
+        else turnStateData.append(DIE_NOT_PICKED);
         turnStateData.append("\n").append(ACTIVE_TOOL_CARD);
         if (parseInt(jsonObject.get(JSONTag.ACTIVE_TOOL_ID).toString()) == 0)
             turnStateData.append(TOOL_NOT_ACTIVE);
@@ -195,13 +208,34 @@ public class CLI {
     }
 
     private String drawCard(JSONObject jsonObject) {
-        int id = parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
-        String name = "[" + id + "] " + jsonObject.get(JSONTag.NAME).toString();
-        String description = jsonObject.get(JSONTag.DESCRIPTION).toString();
-        Long points = (Long) jsonObject.get(JSONTag.FAVOR_POINTS);
-        if (points != null)
-            name = name + " (FP:" + points.intValue() + ")";
-        return getUpperCard() + getLowerCard(name, description);
+        try {
+            int id = parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
+            String image = new String(Files.readAllBytes(Paths.get(CLI_IMAGES_PATH + id + ".cliimage")));
+            String name = "[" + id + "] " + jsonObject.get(JSONTag.NAME).toString();
+            String description = jsonObject.get(JSONTag.DESCRIPTION).toString();
+            Long points = (Long) jsonObject.get(JSONTag.FAVOR_POINTS);
+            if (points != null)
+                name = name + " (FP:" + points.intValue() + ")";
+            StringBuilder sb = new StringBuilder();
+            String[] splitImage = image.split("\n");
+            int imageLength;
+            if (splitImage.length == 3) {
+                sb.append("|");
+                for (int i = 0; i < PIXEL_WIDTH; i++) sb.append(" ");
+                sb.append("|\n");
+                imageLength = TOOL_IMAGE_LENGTH;
+            } else imageLength = OBJECTIVE_IMAGE_LENGTH;
+            for (String line : splitImage) {
+                sb.append("|");
+                for (int i = 0; i < (PIXEL_WIDTH - imageLength) / 2; i++) sb.append(" ");
+                sb.append(line);
+                for (int i = 0; i < PIXEL_WIDTH - imageLength - (PIXEL_WIDTH - imageLength) / 2; i++) sb.append(" ");
+                sb.append("|\n");
+            }
+            return getUpperCard() + sb.toString() + getLowerCard(name, description);
+        } catch (IOException e) {
+            throw new IllegalArgumentException("No file was found.");
+        }
     }
 
     private String getUpperCard() {
@@ -222,7 +256,7 @@ public class CLI {
         String longName = nameBuilder.toString();
         String longDescription = descriptionBuilder.toString();
         StringBuilder sb = new StringBuilder();
-        sb.append("\n|");
+        sb.append("|");
         for (int i = 0; i < PIXEL_WIDTH; i++) sb.append("-");
         sb.append("|\n");
         int i;
@@ -249,7 +283,7 @@ public class CLI {
 
     public static void main(String[] args){
         try {
-            String path = "src/test/java/res/model/gen_2p_02.json";
+            String path = "src/test/java/res/model/gen_2p_04.json";
             String content = new String(Files.readAllBytes(Paths.get(path)));
             JSONObject json = (JSONObject) new JSONParser().parse(content);
             new CLI().draw(json);
