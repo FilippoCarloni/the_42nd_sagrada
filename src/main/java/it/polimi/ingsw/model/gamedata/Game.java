@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.players.Player;
+import org.json.simple.JSONObject;
 
 import java.util.Map;
 
@@ -76,11 +77,19 @@ public interface Game {
     Map<Player, Integer> getScore();
 
     /**
-     * Exposes a copy of the game data.
-     *
-     * NOTE: the game data can be serialized in JSON syntax with the encode method.
-     * This is a handy shortcut for communication over internet.
+     * Exposes a copy of the entire game data.
      * @return A GameData object containing the current game status
      */
     GameData getData();
+
+    /**
+     * Exposes a copy of the game data. Hides information that the asking player
+     * should not see.
+     *
+     * NOTE: the game data can be serialized in JSON syntax with the encode method.
+     * This is a handy shortcut for communication over internet.
+     * @param player The player that asked its game data
+     * @return A JSON object containing the current game status from the point of view of the player
+     */
+    JSONObject getData(Player player);
 }
