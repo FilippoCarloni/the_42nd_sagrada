@@ -7,23 +7,28 @@ import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiceDrawer {
 
-    public void dicePoolFiller(JSONObject jSon, ArrayList<StackPane> diceStackPane, ArrayList<Canvas> dicePoolCanvas, ArrayList <Button> diceButton){
+    public void dicePoolFiller(JSONObject jSon, GridPane dicePoolGrid){
         int column = 0;
         JSONArray dicePoolList = (JSONArray) jSon.get(JSONTag.DICE_POOL);
         for (Object o : dicePoolList) {
-            StackPane pane = diceStackPane.get(column);
-            Canvas canvas = dicePoolCanvas.get(column);
+            StackPane pane = new StackPane();
+            Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+            canvas.setOnMouseClicked(e -> canvasClicked());
+            dicePoolGrid.add(pane, column, 0);
             String color = (String) ((JSONObject)o).get(JSONTag.COLOR);
             int shade = ((Long)((JSONObject)o).get(JSONTag.SHADE)).intValue();
             dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane);
+            pane.getChildren().add(canvas);
             column++;
         }
     }
@@ -53,6 +58,9 @@ public class DiceDrawer {
         else{
             node.setStyle("-fx-background-color: " + color);
         }
+    }
+    private void canvasClicked(){
+        System.out.println("ciao");
     }
 
 }
