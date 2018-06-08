@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.gamedata;
 
+import it.polimi.ingsw.model.gameboard.cards.Card;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
@@ -18,6 +19,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,5 +102,23 @@ class GameDataTest {
             else
                 assertFalse(encodedPlayer.containsKey(JSONTag.PRIVATE_OBJECTIVE));
         }
+    }
+
+    @Test
+    void testPicking() {
+        assertThrows(IllegalArgumentException.class, () -> Game.getWindowFrames(1));
+        assertThrows(IllegalArgumentException.class, () -> Game.getPrivateObjectives(1));
+        for (int i = 2; i <= Parameters.MAX_PLAYERS; i++) {
+            List<WindowFrame> frames = Game.getWindowFrames(i);
+            List<PrivateObjectiveCard> privateObjectiveCards = Game.getPrivateObjectives(i);
+            assertEquals(i, privateObjectiveCards.size());
+            assertEquals(i * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE, frames.size());
+            Set<String> frameNames = frames.stream().map(WindowFrame::getName).collect(Collectors.toSet());
+            Set<String> cardNames = privateObjectiveCards.stream().map(Card::getName).collect(Collectors.toSet());
+            assertEquals(i, cardNames.size());
+            assertEquals(i * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE, frameNames.size());
+        }
+        assertThrows(IllegalArgumentException.class, () -> Game.getWindowFrames(5));
+        assertThrows(IllegalArgumentException.class, () -> Game.getPrivateObjectives(5));
     }
 }

@@ -1,10 +1,17 @@
 package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.commands.IllegalCommandException;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
+import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
+import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
 import it.polimi.ingsw.model.players.Player;
+import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONObject;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents a generic Sagrada game.
@@ -16,6 +23,40 @@ import java.util.Map;
  * you should always check if it's the correct player's turn and if it is available according to the rules.
  */
 public interface Game {
+
+    /**
+     * Returns a list of private objectives that should be shared between the players
+     * in order to start a new match (1x player).
+     *
+     * NOTE: for a game to start, is required a list of players. All of the players
+     * in the list must have a not-null private objective and a not-null window frame.
+     * This method allows private objective picking outside of the "concrete" game context.
+     * @param numOfPlayers An integer between 2 and 4
+     * @return A list of PrivateObjectiveCard instances (size between 2 and 4)
+     */
+    static List<PrivateObjectiveCard> getPrivateObjectives(int numOfPlayers) {
+        if (numOfPlayers < 2 || numOfPlayers > Parameters.MAX_PLAYERS)
+            throw new IllegalArgumentException("You entered an invalid player number.");
+        return new PrivateObjectiveDeck().draw(numOfPlayers)
+                .stream().map(po -> (PrivateObjectiveCard) po).collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of window frames that should be shared between the players
+     * in order to start a new match (4x player).
+     *
+     * NOTE: for a game to start, is required a list of players. All of the players
+     * in the list must have a not-null private objective and a not-null window frame.
+     * This method allows window frame picking outside of the "concrete" game context.
+     * @param numOfPlayers An integer between 2 and 4
+     * @return A list of WindowFrame instances (size between 8 and 16)
+     */
+    static List<WindowFrame> getWindowFrames(int numOfPlayers) {
+        if (numOfPlayers < 2 || numOfPlayers > Parameters.MAX_PLAYERS)
+            throw new IllegalArgumentException("You entered an invalid player number.");
+        return new WindowFrameDeck().draw(numOfPlayers * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
+                .stream().map(po -> (WindowFrame) po).collect(Collectors.toList());
+    }
 
     /**
      * Executes a string command as a particular player.
@@ -77,17 +118,14 @@ public interface Game {
     Map<Player, Integer> getScore();
 
     /**
-     * Exposes a copy of the entire game data.
+     * Exposes a copy of the entire game data. This method is useful for testing purposes.
      * @return A GameData object containing the current game status
      */
     GameData getData();
 
     /**
      * Exposes a copy of the game data. Hides information that the asking player
-     * should not see.
-     *
-     * NOTE: the game data can be serialized in JSON syntax with the encode method.
-     * This is a handy shortcut for communication over internet.
+     * should not see. This method is meant to be used for internet communication.
      * @param player The player that asked its game data
      * @return A JSON object containing the current game status from the point of view of the player
      */

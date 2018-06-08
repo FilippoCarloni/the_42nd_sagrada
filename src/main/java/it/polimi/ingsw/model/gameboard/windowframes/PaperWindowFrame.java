@@ -15,18 +15,6 @@ public class PaperWindowFrame implements WindowFrame {
     private Map<Coordinate, Color> colorConstraints;
     private Map<Coordinate, Shade> shadeConstraints;
 
-    /**
-     * Generates a window frame from a generator instance picked from file.
-     * @param generator A WindowFrame generator
-     */
-    public PaperWindowFrame(WindowPatternGenerator generator) {
-        name = generator.getName();
-        difficulty = generator.getDifficulty();
-        colorConstraints = generator.getColorConstraints();
-        shadeConstraints = generator.getShadeConstraints();
-        dice = new HashMap<>();
-    }
-
     public PaperWindowFrame(String name, int difficulty, Map<Coordinate, Die> dice, Map<Coordinate, Color> colorConstraints, Map<Coordinate, Shade> shadeConstraints) {
         this.name = name;
         this.difficulty = difficulty;
