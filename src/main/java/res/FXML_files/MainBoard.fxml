@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -19,7 +20,7 @@
          <children>
             <AnchorPane fx:id="apPlayer1" maxHeight="720.0" maxWidth="450.0" minHeight="720.0" minWidth="540.0" prefHeight="720.0" prefWidth="540.0">
                <children>
-                  <Canvas fx:id="canvasPlayer1" height="549.0" layoutX="95.0" layoutY="171.0" width="350.0" />
+                  <Canvas fx:id="canvasPlayer1" height="549.0" layoutX="62.0" layoutY="171.0" width="350.0" />
                   <GridPane fx:id="windowFramePlayer1" gridLinesVisible="true" layoutX="110.0" layoutY="402.0" maxHeight="256.0" maxWidth="320.0" minHeight="256.0" minWidth="320.0" prefHeight="256.0" prefWidth="320.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -56,65 +57,56 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <StackPane fx:id="dicePane0" prefHeight="150.0" prefWidth="200.0">
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Canvas fx:id="diceCanvas0" height="60.0"  width="60.0" />
-                              <Button fx:id="diceButton0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" onMouseClicked="#fuckOff" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane1" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Canvas fx:id="diceCanvas1" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton1" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane2" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
                            <children>
-                              <Canvas fx:id="diceCanvas2" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton2" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane3" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
                            <children>
-                              <Canvas fx:id="diceCanvas3" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton3" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane4" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4">
                            <children>
-                              <Canvas fx:id="diceCanvas4" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton4" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane5" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5">
                            <children>
-                              <Canvas fx:id="diceCanvas5" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton5" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane6" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
                            <children>
-                              <Canvas fx:id="diceCanvas6" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton6" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane7" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="7">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="7">
                            <children>
-                              <Canvas fx:id="diceCanvas7" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton7" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
-                        <StackPane fx:id="dicePane8" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="8">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="8">
                            <children>
-                              <Canvas fx:id="diceCanvas8" height="60.0" width="60.0" />
-                              <Button fx:id="diceButton8" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-border-fill: transparent;" />
+                              <Canvas height="63.0" width="58.0" />
                            </children>
                         </StackPane>
                      </children>
                   </GridPane>
                </children>
             </AnchorPane>
-            <AnchorPane maxHeight="720.0" maxWidth="740.0" minHeight="720.0" minWidth="740.0" prefHeight="720.0" prefWidth="740.0" GridPane.columnIndex="1">
+            <AnchorPane fx:id="apOtherPlayers" maxHeight="720.0" maxWidth="740.0" minHeight="720.0" minWidth="740.0" prefHeight="720.0" prefWidth="740.0" GridPane.columnIndex="1">
                <children>
                   <GridPane fx:id="gridPlayer2" gridLinesVisible="true" layoutX="35.0" layoutY="35.0" maxHeight="160.0" maxWidth="200.0" minHeight="160.0" minWidth="200.0" prefHeight="160.0" prefWidth="200.0">
                     <columnConstraints>
@@ -164,6 +156,28 @@
                   <Label fx:id="labelPlayer2" alignment="CENTER" layoutX="35.0" layoutY="192.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 2" />
                   <Label fx:id="labelPlayer3" alignment="CENTER" layoutX="270.0" layoutY="195.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 3" />
                   <Label fx:id="labelPlayer4" alignment="CENTER" layoutX="510.0" layoutY="195.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" text="Name Player 4" />
+                  <GridPane fx:id="gridCards" gridLinesVisible="true" layoutX="50.0" layoutY="260.0" maxWidth="660.0" prefHeight="440.0" prefWidth="620.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="215.0" minHeight="215.0" prefHeight="215.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="215.0" minHeight="215.0" prefHeight="215.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fx:id="toolCard1" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="toolCard2" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                        <ImageView fx:id="toolCard3" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
+                        <ImageView fx:id="pubObjCard1" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
+                        <ImageView fx:id="pubObjCard2" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ImageView fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
                </children></AnchorPane>
          </children>
       </GridPane>

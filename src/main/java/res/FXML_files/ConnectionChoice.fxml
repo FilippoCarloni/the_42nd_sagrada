@@ -7,7 +7,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <AnchorPane maxHeight="400.0" maxWidth="600.0" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GuiLauncher">
    <children>
       <Button fx:id="buttonRMIConnection" layoutX="50.0" layoutY="200.0" maxHeight="100.0" maxWidth="200.0" minHeight="100.0" minWidth="200.0" mnemonicParsing="false" onMouseClicked="#chooseRMIConnection" prefHeight="100.0" prefWidth="200.0" text="RMI">
