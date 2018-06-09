@@ -34,11 +34,14 @@ public class GameController extends Observable{
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(2);
     GameController(CentralServer server, List<WrappedPlayer> players) {
-        Deck deck1=new PrivateObjectiveDeck();
+        List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(players.size());
         Deck deck2=new WindowFrameDeck();
+        int i=0;
         for( WrappedPlayer p: players){
             p.getPlayer().setWindowFrame((WindowFrame)deck2.draw());
-            p.getPlayer().setPrivateObjective((PrivateObjectiveCard)deck1.draw());
+            p.getPlayer().setPrivateObjective(privateObjectiveCards.get(i));
+          //  p.getObserver().update(this, privateObjectiveCards.get(i).encode().toString());
+            i++;
         }
         this.server=server;
         game = new ConcreteGame(players
@@ -48,8 +51,11 @@ public class GameController extends Observable{
         this.players = new ArrayList<>(players);
         for (WrappedPlayer p: players)
             addObserver(p.getObserver());
-        setChanged();
-        notifyObservers(game.getData().encode().toString());
+        try {
+            players.parallelStream().forEach(x -> x.getObserver().update(this, this.game.getData(x.getPlayer()).toString()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         isTurnOf();
         beeperHandle=null;
         disconnected= new ArrayList<>();
@@ -76,6 +82,10 @@ public class GameController extends Observable{
         ;
         beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 100, MILLISECONDS);
         startTimer();
+    }
+
+    public void setMap(String sessionID,int map){
+
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
@@ -128,8 +138,8 @@ public class GameController extends Observable{
     }
 
     public synchronized String getStatus(String sessionID) throws ServerException{
-        getPlayer(sessionID);
-        return game.getData().encode().toString();
+        WrappedPlayer player=getPlayer(sessionID);
+        return game.getData(player.getPlayer()).toString();
     }
 
     private WrappedPlayer getPlayer(String sessionID) throws ServerException{

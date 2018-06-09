@@ -47,6 +47,14 @@ public class RemoteClient implements Runnable,GameObserver {
                 cmd=line.split(" ");
                 if(cmd.length>0)
                     switch (cmd[0]) {
+                        case "map":
+                            if(game!=null)
+                            if(cmd.length==2){
+                                game.setMap(sessionID,Integer.parseInt(cmd[1]));
+                            }
+                            else
+                                send("you are not playing");
+                            break;
                         case "restore":
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
@@ -85,7 +93,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                     try {
                                         game = lobby.getGame(sessionID).getGameController();
                                     } catch (Exception e) {
-                                        logger.info("Errore");
+                                        logger.info("Error");
                                     }
                                 }else
                                     send ("You are not already logged");

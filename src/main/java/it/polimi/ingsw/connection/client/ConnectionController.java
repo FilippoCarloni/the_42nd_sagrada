@@ -3,7 +3,6 @@ package it.polimi.ingsw.connection.client;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
-
 import java.io.*;
 import java.net.Socket;
 import java.rmi.NotBoundException;
@@ -13,14 +12,16 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class ConnectionController extends UnicastRemoteObject implements RemoteObserver, Observer {
+public class ConnectionController extends UnicastRemoteObject implements RemoteObserver{
     private transient GameManager gameManger;
-    private final transient CLI view;
     private transient String sessionID;
     private transient Lobby lobby;
     private transient Socket client;
     private transient PrintWriter out;
     private transient Scanner in;
+    private ConnectionType connectionType;
+    private transient MessageBuffer messages;
+
     private class ReaderThread implements Runnable {
 
         @Override
@@ -29,54 +30,51 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
             String line;
             while (open) {
                 try {
-                    line=in.nextLine();
-                    view.update(line);
-
+                    line = in.nextLine();
+                    messages.add(line);
                 } catch (Exception e) {
-                    System.out.println("Disconnected");
+                   messages.add("Disconnected");
                     System.exit(0);
                 }
-                synchronized (client) {
+                synchronized (this) {
                     open = !client.isClosed();
                 }
             }
         }
     }
 
-    ConnectionController() throws Exception {
+    public ConnectionController(ConnectionType connectionType) throws Exception {
         super();
-        this.sessionID="";
-        this.gameManger = null;
-        lobby=null;
+        sessionID = "";
+        gameManger = null;
+        lobby = null;
+        this.connectionType=connectionType;
         initialize();
-        view = new CLI(this );
-        new Thread(view).start();
+        messages=new MessageBuffer();
     }
-    private void initialize() {
-        Scanner scanner= new Scanner(System.in);
-        String response,name;
-        ClientStatus status;
 
-        System.out.println("Insert the connection method: [1]RMI    [2] Socket");
-        response=scanner.nextLine();
-        if(response.equals("1"))
+    private void initialize() {
+        if (connectionType == ConnectionType.RMI)
             rmiConnection();
-        else {
+        else
             socketConnection();
-        }
-        System.out.println("Insert which username you would restore, if it is possible the session is restored");
-        response=scanner.nextLine();
-        name=response.trim();
-        status=ClientStatus.restoreClientStatus(name);
+    }
+
+    public boolean restore(String username){
+        if(!sessionID.equals(""))
+            return true;
+        String response;
+        ClientStatus status;
+        username = username.trim();
+        status = ClientStatus.restoreClientStatus(username);
         if (status != null) {
-            System.out.println("Restoring session of " + status.getUsername());
             sessionID = status.getSesssion();
             if (lobby != null)
                 try {
                     sessionID = lobby.restoreSession(sessionID, this);
-                }catch (RemoteException e) {
-                System.out.println(e.getMessage());
-                sessionID="";
+                } catch (RemoteException e) {
+                   // messages.add(e.getMessage()
+                    sessionID = "";
                 }
             else {
                 this.out.println("restore " + sessionID);
@@ -85,78 +83,75 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                 if (response.split(" ")[0].equals("NewSessionID:"))
                     sessionID = response.split(" ")[1];
                 else {
-                    System.out.println(response);
-                    sessionID="";
+                   // messages.add(response)
+                    sessionID = "";
                 }
             }
         }
 
-        if(sessionID.equals("")) {
-            login(name);
-            while (sessionID.equals("")) {
-                name = scanner.nextLine();
-                login(name);
-            }
-        }
-        status=new ClientStatus(sessionID, name);
+        if (sessionID.equals(""))
+            login(username);
+        if(sessionID.equals(""))
+            return false;
+        status = new ClientStatus(sessionID, username);
         ClientStatus.saveStatus(status);
-        if(lobby==null) {
-          new Thread(new ReaderThread()).start();
+        if (lobby == null) {
+            new Thread(new ReaderThread()).start();
         }
-        System.out.println("Logged");
-
+        return true;
     }
-    private void rmiConnection(){
+
+    private void rmiConnection() {
         try {
-            Registry reg=LocateRegistry.getRegistry(new Settings().IP_SERVER,new Settings().RMI_PORT);
-           lobby=(Lobby)reg.lookup("Login");
+            Registry reg = LocateRegistry.getRegistry(new Settings().IP_SERVER, new Settings().RMI_PORT);
+            lobby = (Lobby) reg.lookup("Login");
 
-        } catch (NotBoundException  e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            System.out.println(e.getMessage());
+        } catch (NotBoundException|RemoteException e) {
+           messages.add(e.getMessage());
         }
 
     }
+
     private void socketConnection() {
         try {
             client = new Socket(new Settings().IP_SERVER, new Settings().SOCKET_PORT);
             in = new Scanner(client.getInputStream());
             out = new PrintWriter(client.getOutputStream());
         } catch (IOException ex) {
-
-            System.out.println(ex.toString());
+            messages.add(ex.toString());
         }
     }
+
     private void login(String name) {
         String response;
-        System.out.println("Trying a new login with: "+name);
-        if(lobby != null)
+        if (lobby != null)
             try {
                 sessionID = lobby.connect(name, this);
-            }catch (RemoteException e) {
-                System.out.println(e.getMessage());
+            } catch (RemoteException e) {
+               // messages.add(e.getMessage())
             }
         else {
-            this.out.println("login "+name);
+            this.out.println("login " + name);
             this.out.flush();
-            response=this.in.nextLine();
-            if(response.split(" ")[0].equals("SessionID:"))
-                sessionID=response.split(" ")[1];
+            response = this.in.nextLine();
+            if (response.split(" ")[0].equals("SessionID:"))
+                sessionID = response.split(" ")[1];
             else {
-                System.out.println(response);
-                sessionID="";
+                //messages.add(response)
+                sessionID = "";
             }
 
         }
+    }
+
+    public String readMessage(){
+        return messages.getNext();
     }
 
     @Override
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
-        synchronized (view) {
-            if (o instanceof String)
-                view.update((String) o);
-        }
+        if (o instanceof String)
+            messages.add((String) o);
     }
 
     @Override
@@ -164,58 +159,62 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         return true;
     }
 
-    @Override
-    public void update(Observable observable, Object o) {
-        String cmd = o.toString();
-        try{
-            switch (cmd) {
+    public void send(String cmd) {
+        try {
+            switch (cmd ) {
                 case "?":
-                    view.update("Commands still need to be added ;)");
+                    messages.add("Commands still need to be added ;)");
                     break;
                 case "view":
-                    if (lobby!=null) {
-                        if(gameManger!=null)
-                            view.update(gameManger.getStatus(sessionID));
+                    if (lobby != null) {
+                        if (gameManger != null)
+                            messages.add(gameManger.getStatus(sessionID));
                         else
-                            view.update("You are not playing");
-                    }else {
+                            messages.add("You are not playing");
+                    } else {
                         out.println("view");
                         out.flush();
                     }
                     break;
                 case "exit":
-                    if(lobby==null){
+                    if (lobby == null) {
                         out.println("quit");
                         out.flush();
+                        synchronized (this){
+                            try {
+                                client.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                    view.update("Good Bye!");
+                    messages.add("Good Bye!");
                     System.exit(0);
                     break;
                 case "play":
-                    if(lobby!=null)
-                        gameManger=lobby.getGame(sessionID);
-                    else{
+                    if (lobby != null)
+                        gameManger = lobby.getGame(sessionID);
+                    else {
                         out.println("play");
                         out.flush();
                     }
                     break;
                 default:
-                    if (lobby!=null) {
-                        if (gameManger!=null)
+                    if (lobby != null) {
+                        if (gameManger != null)
                             if (!gameManger.isMyTurn(sessionID))
-                                view.update("It's not your turn, please wait while the other players make their moves.");
+                                messages.add("It's not your turn, please wait while the other players make their moves.");
                             else
                                 gameManger.sendCommand(sessionID, cmd);
                         else
-                            view.update("You are not playing");
-                    }
-                    else{
-                        out.println("action "+cmd);
+                            messages.add("You are not playing");
+                    } else {
+                        out.println("action " + cmd);
                         out.flush();
                     }
             }
-        }catch (RemoteException e) {
-            view.update(e.getMessage());
+        } catch (RemoteException e) {
+            messages.add(e.getMessage());
         }
     }
 

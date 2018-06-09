@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
+import it.polimi.ingsw.connection.client.ConnectionController;
+import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.model.utility.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,10 +11,14 @@ import org.json.simple.parser.ParseException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static java.lang.Integer.parseInt;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-public class CLI {
+public class CLI implements Runnable {
 
     private static final String SEPARATOR = " ";
     private static final String TOP_SEPARATOR = "  ";
@@ -31,9 +37,89 @@ public class CLI {
     private static final int TOOL_IMAGE_LENGTH = 9;
     private static final int OBJECTIVE_IMAGE_LENGTH = 15;
     private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/card";
+    private Scanner scanner;
+    private ConnectionController connectionController;
+    private final ScheduledExecutorService scheduler =
+            Executors.newScheduledThreadPool(1);
+    public CLI() {
+        scanner = new Scanner(System.in);
+        connect();
+        login();
+        menu();
+        new Thread(this::run).start();
+        startRefresh();
+    }
+
+    private void startRefresh() {
+        scheduler.scheduleAtFixedRate(this::update, 1, 100, MILLISECONDS);
+    }
+
+    private void login(){
+        String username;
+        print("Insert which username you would restore, if it is possible the session is restored");
+        username = scanner.nextLine();
+        while(!connectionController.restore(username)) {
+            print("Username not valid");
+            print("Insert which username you would restore, if it is possible the session is restored");
+            username = scanner.nextLine();
+        }
+        print("Logged");
+    }
+
+    private void connect(){
+        ConnectionType connectionType;
+        print("Insert the connection method: [1]RMI    [2] Socket");
+        if(scanner.nextLine().equals("1"))
+            connectionType=ConnectionType.RMI;
+        else
+            connectionType=ConnectionType.SOCKET;
+        try {
+            connectionController= new ConnectionController(connectionType);
+        } catch (Exception e) {
+            print("Connecton error");
+            Thread.currentThread().interrupt();
+        }
+        print("Connected");
+    }
+
+    private void menu() {
+        print("\nUSAGE:\n" +
+                "  ?     : prints how to play\n" +
+                "  view  : prints game info\n" +
+                "  play  : start a game\n" +
+                "  exit  : disconnects from the current game\n");
+    }
+
+    private void update() {
+        String message = connectionController.readMessage();
+        if (message.length() > 0)
+            if(message.contains("{")) {
+                try {
+                    this.draw((JSONObject) new JSONParser().parse(message));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+                print(message);
+    }
+
+    @Override
+    public void run() {
+        String message;
+        message = scanner.nextLine();
+        while (message != null) {
+            connectionController.send(message);
+            message = scanner.nextLine();
+        }
+    }
+
+    private void print(String data){
+        System.out.println(data);
+    }
 
     public void draw(JSONObject obj) {
-        System.out.print(drawBoard(obj));
+        print(drawBoard(obj));
     }
 
     private String drawDice(JSONArray jsonArray) {
@@ -281,16 +367,4 @@ public class CLI {
         return sb.toString();
     }
 
-    public static void main(String[] args){
-        try {
-            String path = "src/test/java/res/model/gen_2p_04.json";
-            String content = new String(Files.readAllBytes(Paths.get(path)));
-            JSONObject json = (JSONObject) new JSONParser().parse(content);
-            new CLI().draw(json);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Bad file name.");
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Bad JSON file.");
-        }
-    }
 }

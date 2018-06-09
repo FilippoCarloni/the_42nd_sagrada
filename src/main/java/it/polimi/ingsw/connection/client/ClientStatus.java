@@ -30,9 +30,9 @@ class ClientStatus implements Serializable {
             in = new ObjectInputStream(fileIn);
             status = (ClientStatus) in.readObject();
         } catch (IOException i) {
-            System.out.println("A previous game session of "+name+" session not found");
+            //System.out.println("A previous game session of "+name+" session not found")
         } catch (ClassNotFoundException c) {
-            System.out.println("A previous game session not found");
+            //System.out.println("A previous game session not found")
             System.exit(0);
         } finally {
             try {
