@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.MainBoardController">
+<AnchorPane fx:id="root" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.GameBoardController">
    <children>
       <GridPane fx:id="gridBase" layoutX="1.0" layoutY="-1.0" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
         <columnConstraints>
@@ -21,7 +21,7 @@
             <AnchorPane fx:id="apPlayer1" maxHeight="720.0" maxWidth="450.0" minHeight="720.0" minWidth="540.0" prefHeight="720.0" prefWidth="540.0">
                <children>
                   <Canvas fx:id="canvasPlayer1" height="549.0" layoutX="62.0" layoutY="171.0" width="350.0" />
-                  <GridPane fx:id="windowFramePlayer1" gridLinesVisible="true" layoutX="110.0" layoutY="402.0" maxHeight="256.0" maxWidth="320.0" minHeight="256.0" minWidth="320.0" prefHeight="256.0" prefWidth="320.0">
+                  <GridPane fx:id="windowFramePlayer1" gridLinesVisible="true" layoutX="77.0" layoutY="402.0" maxHeight="256.0" maxWidth="320.0" minHeight="256.0" minWidth="320.0" prefHeight="256.0" prefWidth="320.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,7 +36,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="110.0" layoutY="658.0" maxHeight="62.0" maxWidth="320.0" minHeight="62.0" minWidth="320.0" prefHeight="62.0" prefWidth="320.0" text="Name Player 1">
+                  <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="77.0" layoutY="658.0" maxHeight="62.0" maxWidth="320.0" minHeight="62.0" minWidth="320.0" prefHeight="62.0" prefWidth="320.0" text="Name Player 1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -57,49 +57,49 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                        <StackPane fx:id="paneDicePool1" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0">
                            <children>
-                              <Canvas height="63.0" onMouseClicked="#fuckOff" width="58.0" />
+                              <Canvas fx:id="canvasDicePool1" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+                        <StackPane fx:id="paneDicePool2" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool2" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+                        <StackPane fx:id="paneDicePool3" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool3" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3">
+                        <StackPane fx:id="paneDicePool4" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool4" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4">
+                        <StackPane fx:id="paneDicePool5" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool5" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5">
+                        <StackPane fx:id="paneDicePool6" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool6" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6">
+                        <StackPane fx:id="paneDicePool7" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="6">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool7" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="7">
+                        <StackPane fx:id="paneDicePool8" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="7">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool8" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="8">
+                        <StackPane fx:id="paneDicePool9" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="8">
                            <children>
-                              <Canvas height="63.0" width="58.0" />
+                              <Canvas fx:id="canvasDicePool9" height="60.0" width="60.0" />
                            </children>
                         </StackPane>
                      </children>
@@ -175,10 +175,11 @@
                         <ImageView fx:id="toolCard3" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
                         <ImageView fx:id="pubObjCard1" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2" />
                         <ImageView fx:id="pubObjCard2" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <ImageView fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <ImageView fx:id="pubObjCard3" fitHeight="215.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-               </children></AnchorPane>
+               </children>
+            </AnchorPane>
          </children>
       </GridPane>
    </children>

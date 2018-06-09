@@ -8,5 +8,6 @@
    <children>
       <TextField fx:id="username" layoutX="200.0" layoutY="228.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" promptText="Username" />
       <Button fx:id="loginButton" alignment="CENTER" layoutX="250.0" layoutY="289.0" maxHeight="25.0" maxWidth="100.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onMouseClicked="#getUsername" prefHeight="25.0" prefWidth="100.0" text="Login" />
+      <Label fx:id="usernameNotValid" layoutX="242.0" layoutY="192.0" prefHeight="17.0" prefWidth="117.0" textFill="#f50303" />
    </children>
 </AnchorPane>

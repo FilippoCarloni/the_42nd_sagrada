@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class GuiLauncher extends Application {
 
-    private Stage stage;
+    private Stage primaryStage;
 
     public void chooseRMIConnection() throws Exception {
         connectionHandler("RMI");
@@ -21,25 +21,24 @@ public class GuiLauncher extends Application {
         connectionHandler("Socket");
     }
     private void connectionHandler(String typeOfConnection) throws Exception {
-        /*String[] main = new String[]{"prova", "prova"};
-        Client.main(main);*/
-        System.out.println(typeOfConnection);
-        Stage newStage = new Stage();
-        new LoginController().start(newStage);
+        //Management of type of connection, sending information to server
+        setStage(new Stage());
+        new LoginController().start(primaryStage);
     }
-    private void setStage(Stage stage){
-        this.stage = stage;
+
+    public void setStage(Stage stage){
+        this.primaryStage = stage;
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        setStage(primaryStage);
         Parent parent = FXMLLoader.load(getClass().getResource("/FXML_files/ConnectionChoice.fxml"));
         primaryStage.setTitle(GUIParameters.CONNECTION_SCENE_TITLE);
 
-        setStage(primaryStage);
-
         Scene scene = new Scene(parent, GUIParameters.CONNECTION_LOGIN_SCENE_WIDTH, GUIParameters.CONNECTION_LOGIN_SCENE_HEIGHT);
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
     public static void main(String args[]){
         launch(args);

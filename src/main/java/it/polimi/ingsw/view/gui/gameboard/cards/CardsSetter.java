@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui.gameboard.cards;
 
-import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.scene.image.Image;
@@ -12,15 +11,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
 public class CardsSetter implements CardsOnGameBoard {
 
+    //TODO: refactor
+
     @Override
-    public List<ImageView> setPublicCards(ImageView card1, ImageView card2, ImageView card3, JSONArray json, String directory) {
-        List<ImageView> cards = new ArrayList<>();
+    public ArrayList<ImageView> setPublicCards(ImageView card1, ImageView card2, ImageView card3, JSONArray json, String directory) {
+        ArrayList<ImageView> cards = new ArrayList<>();
 
         card1 = loadFromFile(json.get(0), directory);
         card2 = loadFromFile(json.get(1), directory);

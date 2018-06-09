@@ -8,14 +8,16 @@ public final class GUIParameters {
 
     public static final String CONNECTION_SCENE_TITLE = "Connection Choice";
     public static final String LOGIN_SCENE_TITLE = "Login Screen";
+    public static final String CHOICE_SCENE_TITLE = "Map Choice";
     public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
 
     public static final double CONNECTION_LOGIN_SCENE_WIDTH = 600;
     public static final double CONNECTION_LOGIN_SCENE_HEIGHT = 400;
+    public static final double MAP_CHOICE_SCREEN_HEIGHT = 370;
     public static final double SCREEN_WIDTH = 1280;
     public static final double SCREEN_HEIGHT = 720;
 
-    public static final double PLAYER_1_GRID_X = 110;
+    public static final double PLAYER_1_GRID_X = 77;
     public static final double PLAYER_1_GRID_Y = 402;
 
     public static final double PLAYER_1_CANVAS_WIDTH = 350;
