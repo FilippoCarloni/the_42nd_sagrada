@@ -97,7 +97,7 @@ public class CLI implements Runnable {
                 try {
                     this.draw((JSONObject) new JSONParser().parse(message));
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                   print(e.getMessage());
                 }
             }
             else
