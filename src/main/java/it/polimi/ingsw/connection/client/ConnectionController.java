@@ -20,7 +20,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     private transient Socket client;
     private transient PrintWriter out;
     private transient Scanner in;
-    private ConnectionType connectionType;
+    private transient ConnectionType connectionType;
     private transient MessageBuffer messages;
 
     private class ReaderThread implements Runnable {
@@ -58,7 +58,10 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         if (connectionType == ConnectionType.RMI)
             rmiConnection();
         else
+            if(connectionType==ConnectionType.SOCKET)
             socketConnection();
+        else
+            throw new ConnectException("No available connection type");
     }
 
     public boolean restore(String username){
@@ -70,22 +73,23 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         status = ClientStatus.restoreClientStatus(username);
         if (status != null) {
             sessionID = status.getSesssion();
-            if (lobby != null)
+            if (connectionType==ConnectionType.RMI)
                 try {
                     sessionID = lobby.restoreSession(sessionID, this);
                 } catch (RemoteException e) {
                    // messages.add(e.getMessage()
                     sessionID = "";
                 }
-            else {
-                this.out.println("restore " + sessionID);
-                this.out.flush();
-                response = this.in.nextLine();
-                if (response.split(" ")[0].equals("NewSessionID:"))
-                    sessionID = response.split(" ")[1];
-                else {
-                   // messages.add(response)
-                    sessionID = "";
+            else
+                if(connectionType==ConnectionType.SOCKET) {
+                    this.out.println("restore " + sessionID);
+                    this.out.flush();
+                    response = this.in.nextLine();
+                    if (response.split(" ")[0].equals("NewSessionID:"))
+                        sessionID = response.split(" ")[1];
+                    else {
+                       // messages.add(response)
+                        sessionID = "";
                 }
             }
         }
@@ -125,23 +129,23 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
 
     private void login(String name) {
         String response;
-        if (lobby != null)
+        if (connectionType==ConnectionType.RMI)
             try {
                 sessionID = lobby.connect(name, this);
             } catch (RemoteException e) {
                // messages.add(e.getMessage())
             }
-        else {
-            this.out.println("login " + name);
-            this.out.flush();
-            response = this.in.nextLine();
-            if (response.split(" ")[0].equals("SessionID:"))
-                sessionID = response.split(" ")[1];
-            else {
-                //messages.add(response)
-                sessionID = "";
-            }
-
+        else
+            if(connectionType==ConnectionType.SOCKET) {
+                this.out.println("login " + name);
+                this.out.flush();
+                response = this.in.nextLine();
+                if (response.split(" ")[0].equals("SessionID:"))
+                    sessionID = response.split(" ")[1];
+                else {
+                    //messages.add(response)
+                    sessionID = "";
+                }
         }
     }
 
@@ -153,6 +157,8 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     public void remoteUpdate(Object observable, Object o) throws RemoteException {
         if (o instanceof String)
             messages.add((String) o);
+        else
+            throw new RemoteException("Invalid message");
     }
 
     @Override
@@ -185,7 +191,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                             try {
                                 client.close();
                             } catch (IOException e) {
-                                e.printStackTrace();
+                                messages.add("disconnection error");
                             }
                         }
                     }
@@ -219,4 +225,13 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
