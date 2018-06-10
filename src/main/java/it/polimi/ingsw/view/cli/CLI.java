@@ -96,24 +96,28 @@ public class CLI implements Runnable {
 
     private void update() {
         String message = connectionController.readMessage();
-        if (message.length() > 0) {
-            switch (MessageType.decodeMessageType(message)) {
-                case GENERIC_MESSAGE:
-                    print(MessageType.decodeMessageContent(message));
-                    break;
-                case GAME_BOARD:
-                    try {
-                        this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
-                    } catch (ParseException e) {
-                        print(e.getMessage());
-                    }
-                    break;
-                case ERROR_MESSAGE:
-                    print(MessageType.decodeMessageContent(message));
-                    break;
-                default:
-                    print("Message not supported!");
+        try {
+            if (message.length() > 0) {
+                switch (MessageType.decodeMessageType(message)) {
+                    case GENERIC_MESSAGE:
+                        print(MessageType.decodeMessageContent(message));
+                        break;
+                    case GAME_BOARD:
+                        try {
+                            this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
+                        } catch (ParseException e) {
+                            print(e.getMessage());
+                        }
+                        break;
+                    case ERROR_MESSAGE:
+                        print(MessageType.decodeMessageContent(message));
+                        break;
+                    default:
+                        print("Message not supported!");
+                }
             }
+        }catch(Exception e) {
+            print(e.getMessage());
         }
     }
 

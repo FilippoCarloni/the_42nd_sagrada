@@ -135,7 +135,7 @@ public class GameController extends Observable{
 
     public synchronized String getStatus(String sessionID) throws ServerException{
         WrappedPlayer player=getPlayer(sessionID);
-        return game.getData(player.getPlayer()).toString();
+        return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
     private WrappedPlayer getPlayer(String sessionID) throws ServerException{
