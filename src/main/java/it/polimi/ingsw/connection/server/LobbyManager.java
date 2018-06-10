@@ -1,6 +1,7 @@
 package it.polimi.ingsw.connection.server;
 
 import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +31,11 @@ public class LobbyManager extends Observable{
             return true;
         if(!open)
             return false;
-        player.getObserver().update(this,"Waiting others players ...");
+        player.getObserver().update(this,MessageType.encodeMessage("Waiting others players ...",MessageType.GENERIC_MESSAGE));
         this.addObserver(player.getObserver());
         players.parallelStream().forEach(x -> {
-            x.getObserver().update(this, player.getPlayer().getUsername() + " is connected to this game!");
-            player.getObserver().update(this, x.getPlayer().getUsername() + " is connected to this game!");
+            x.getObserver().update(this, MessageType.encodeMessage(player.getPlayer().getUsername() + " is connected to this game!",MessageType.GENERIC_MESSAGE));
+            player.getObserver().update(this, MessageType.encodeMessage(x.getPlayer().getUsername() + " is connected to this game!",MessageType.GENERIC_MESSAGE));
         });
         players.add(player);
         if( players.size()==1)
@@ -72,7 +73,7 @@ public class LobbyManager extends Observable{
                     noActive.add(p);
                     this.deleteObserver(p.getObserver());
                     this.setChanged();
-                    this.notifyObservers(p.getPlayer().getUsername()+" has leaved the match lobby!");
+                    this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername()+" has leaved the match lobby!",MessageType.GENERIC_MESSAGE));
                 }
 
             for(WrappedPlayer p:noActive)

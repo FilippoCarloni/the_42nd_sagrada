@@ -2,6 +2,7 @@ package it.polimi.ingsw.connection.rmi;
 import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.connection.server.CentralServer;
 import it.polimi.ingsw.connection.server.Session;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -23,7 +24,7 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         try {
             session=server.connect(username, new WrappedObs(obs));
         } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
         return session;
     }
@@ -36,14 +37,14 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         try {
             return server.getGame(userSessionID).getRemoteGame();
         } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
     }
     public String restoreSession(String oldSessionID, RemoteObserver newObserver) throws RemoteException{
         try {
             return server.restoreSession(oldSessionID,new WrappedObs(newObserver));
         } catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
     }
 

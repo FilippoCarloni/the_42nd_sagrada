@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.connection.client.ConnectionController;
 import it.polimi.ingsw.connection.client.ConnectionType;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.model.utility.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -9,29 +10,33 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.net.ConnectException;
+import java.lang.management.MemoryType;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.rmi.RemoteException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static it.polimi.ingsw.view.ViewMessage.*;
+import static it.polimi.ingsw.view.cli.CLIMessage.*;
 import static java.lang.Integer.parseInt;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class CLI implements Runnable {
 
+    // Board printer descriptors
     private static final String SEPARATOR = " ";
     private static final String TOP_SEPARATOR = "  ";
-    private static final String ROUND_TRACK_TITLE   = "ROUND TRACK";
+    private static final String ROUND_TRACK_TITLE = "ROUND TRACK";
     private static final String DICE_ON_ROUND_TRACK = "Round Track dice  :  ";
-    private static final String DICE_POOL           = "Dice Pool         :  ";
-    private static final String DRAFTED_DIE         = "Drafted die       :  ";
-    private static final String ACTIVE_TOOL_CARD    = "Active Tool Card  :  ";
+    private static final String DICE_POOL = "Dice Pool         :  ";
+    private static final String DRAFTED_DIE = "Drafted die       :  ";
+    private static final String ACTIVE_TOOL_CARD = "Active Tool Card  :  ";
     private static final String TOOL_NOT_ACTIVE = "none";
     private static final String DIE_NOT_PICKED = "[ ]";
     private static final String EMPTY_ROUND_TRACK = "empty";
+
+    // Board printer constants
     private static final int PIXEL_WIDTH = 21;
     private static final int NAME_LENGTH = 40;
     private static final int DESCRIPTION_LENGTH = 120;
@@ -39,12 +44,15 @@ public class CLI implements Runnable {
     private static final int TOOL_IMAGE_LENGTH = 9;
     private static final int OBJECTIVE_IMAGE_LENGTH = 15;
     private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/card";
+
     private Scanner scanner;
     private ConnectionController connectionController;
-    private final ScheduledExecutorService scheduler =
-            Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final int REFRESH_RATE = 100; // milliseconds
+
     public CLI() {
         scanner = new Scanner(System.in);
+        print(TITLE);
         connect();
         login();
         menu();
@@ -53,57 +61,60 @@ public class CLI implements Runnable {
     }
 
     private void startRefresh() {
-        scheduler.scheduleAtFixedRate(this::update, 1, 100, MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::update, 1, REFRESH_RATE, MILLISECONDS);
     }
 
-    private void login(){
+    private void login() {
         String username;
-        print("Insert which username you would restore, if it is possible the session is restored");
+        print(INSERT_USERNAME);
         username = scanner.nextLine();
-        while(!connectionController.restore(username)) {
-            print("Username not valid");
-            print("Insert which username you would restore, if it is possible the session is restored");
+        while (!connectionController.restore(username)) {
+            print(INVALID_USERNAME);
+            print(INSERT_USERNAME);
             username = scanner.nextLine();
         }
-        print("Logged");
+        print(LOGIN_CONFIRMATION);
     }
 
-    private void connect(){
+    private void connect() {
         ConnectionType connectionType;
-        print("Insert the connection method: [1]RMI    [2] Socket");
-        if(scanner.nextLine().equals("1"))
-            connectionType=ConnectionType.RMI;
-        else
-            connectionType=ConnectionType.SOCKET;
+        print(CONNECTION_TYPE);
+        print(CONNECTION_TYPE_OPTIONS);
+        connectionType = scanner.nextLine().equals(CONNECTION_TYPE_FIRST_OPTION) ? ConnectionType.RMI : ConnectionType.SOCKET;
         try {
-            connectionController= new ConnectionController(connectionType);
-        } catch (ConnectException|RemoteException e) {
-            print("Connection error, the server is not reachable");
+            connectionController = new ConnectionController(connectionType);
+        } catch (Exception e) {
+            print(CONNECTION_ERROR);
             System.exit(1);
         }
-        print("Connected");
+        print(CONNECTION_CONFIRMATION);
     }
 
     private void menu() {
-        print("\nUSAGE:\n" +
-                "  ?     : prints how to play\n" +
-                "  view  : prints game info\n" +
-                "  play  : start a game\n" +
-                "  exit  : disconnects from the current game\n");
+        print(USAGE);
     }
 
     private void update() {
         String message = connectionController.readMessage();
-        if (message.length() > 0)
-            if(message.contains("{")) {
-                try {
-                    this.draw((JSONObject) new JSONParser().parse(message));
-                } catch (ParseException e) {
-                   print(e.getMessage());
-                }
+        if (message.length() > 0) {
+            switch (MessageType.decodeMessageType(message)) {
+                case GENERIC_MESSAGE:
+                    print(MessageType.decodeMessageContent(message));
+                    break;
+                case GAME_BOARD:
+                    try {
+                        this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
+                    } catch (ParseException e) {
+                        print(e.getMessage());
+                    }
+                    break;
+                case ERROR_MESSAGE:
+                    print(MessageType.decodeMessageContent(message));
+                    break;
+                default:
+                    print("Message not supported!");
             }
-            else
-                print(message);
+        }
     }
 
     @Override
@@ -116,7 +127,7 @@ public class CLI implements Runnable {
         }
     }
 
-    private void print(String data){
+    private void print(String data) {
         System.out.println(data);
     }
 
@@ -134,15 +145,15 @@ public class CLI implements Runnable {
         return sb.toString();
     }
 
-    private String drawDie(JSONObject jsonObject){
-        CliShade shade=CliShade.findByValue(parseInt(jsonObject.get(JSONTag.SHADE).toString()));
-        CliColor color=CliColor.findByLabel(jsonObject.get(JSONTag.COLOR).toString());
-        if(shade!=null&&color!=null)
+    private String drawDie(JSONObject jsonObject) {
+        CliShade shade = CliShade.findByValue(parseInt(jsonObject.get(JSONTag.SHADE).toString()));
+        CliColor color = CliColor.findByLabel(jsonObject.get(JSONTag.COLOR).toString());
+        if (shade != null && color != null)
             return color.paint(shade.toString());
         throw new NullPointerException();
     }
 
-    private String drawRoundTrack(JSONObject jsonObject){
+    private String drawRoundTrack(JSONObject jsonObject) {
         JSONArray dice = (JSONArray) jsonObject.get(JSONTag.ALL_DICE);
         int currentRoundNumber = parseInt(jsonObject.get(JSONTag.CURRENT_ROUND_NUMBER).toString());
         int[] diceOnSlot = new int[Parameters.TOTAL_NUMBER_OF_ROUNDS];
@@ -155,7 +166,8 @@ public class CLI implements Runnable {
         sb.append("_ \n|");
         for (int i = 0; i < (ROUND_TRACK_LENGTH - ROUND_TRACK_TITLE.length()) / 2; i++) sb.append(" ");
         sb.append(ROUND_TRACK_TITLE);
-        for (int i = 0; i < ROUND_TRACK_LENGTH - ROUND_TRACK_TITLE.length() - (ROUND_TRACK_LENGTH - ROUND_TRACK_TITLE.length()) / 2; i++) sb.append(" ");
+        for (int i = 0; i < ROUND_TRACK_LENGTH - ROUND_TRACK_TITLE.length() - (ROUND_TRACK_LENGTH - ROUND_TRACK_TITLE.length()) / 2; i++)
+            sb.append(" ");
         sb.append(" |\n|");
         for (int i = 0; i < ROUND_TRACK_LENGTH; i++) sb.append("-");
         sb.append("-|\n|  ");
@@ -349,7 +361,7 @@ public class CLI implements Runnable {
         sb.append("|\n");
         int i;
         for (i = 0; i < longName.length() / PIXEL_WIDTH; i++)
-            sb.append("|").append(longName.substring(i * PIXEL_WIDTH, PIXEL_WIDTH * (i + 1))).append( "|\n");
+            sb.append("|").append(longName.substring(i * PIXEL_WIDTH, PIXEL_WIDTH * (i + 1))).append("|\n");
         sb.append("|").append(longName.substring(
                 i * PIXEL_WIDTH, longName.length()));
         for (int j = 0; j < PIXEL_WIDTH - longName.length() + i * PIXEL_WIDTH; j++)
@@ -368,5 +380,4 @@ public class CLI implements Runnable {
         sb.append("|\n");
         return sb.toString();
     }
-
 }

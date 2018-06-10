@@ -1,5 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.Deck;
@@ -51,11 +52,7 @@ public class GameController extends Observable{
         this.players = new ArrayList<>(players);
         for (WrappedPlayer p: players)
             addObserver(p.getObserver());
-        try {
-            players.parallelStream().forEach(x -> x.getObserver().update(this, this.game.getData(x.getPlayer()).toString()));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        sendStatus();
         isTurnOf();
         beeperHandle=null;
         disconnected= new ArrayList<>();
@@ -66,11 +63,11 @@ public class GameController extends Observable{
                     this.deleteObserver(p.getObserver());
                     this.disconnected.add(p);
                     this.setChanged();
-                    this.notifyObservers(p.getPlayer().getUsername()+" is now disconnected");
+                    this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername()+" is now disconnected",MessageType.GENERIC_MESSAGE));
                 }
                 if(this.countObservers()==1) {
                     this.setChanged();
-                    this.notifyObservers("You win! because you are the only player");
+                    this.notifyObservers(MessageType.encodeMessage("You win! because you are the only player",MessageType.GENERIC_MESSAGE));
                     this.deleteObservers();
                 }
 
@@ -118,8 +115,7 @@ public class GameController extends Observable{
                 }
                 break;
         }
-        setChanged();
-        notifyObservers(game.getData().encode().toString());
+        sendStatus();
         if(passed) {
             if(game.isGameEnded()) {
                 printScore();
@@ -156,7 +152,7 @@ public class GameController extends Observable{
         synchronized (disconnected) {
             if (isPlaying(player)&&disconnected.contains(player)&& player.getObserver().isAlive()) {
                 this.setChanged();
-                this.notifyObservers(player.getPlayer().getUsername()+" is now reconnected");
+                this.notifyObservers(MessageType.encodeMessage(player.getPlayer().getUsername()+" is now reconnected",MessageType.GENERIC_MESSAGE));
                 this.addObserver(player.getObserver());
                 this.disconnected.remove(player);
                 if(this.countObservers()==0)
@@ -180,7 +176,7 @@ public class GameController extends Observable{
 
     private void isTurnOf(){
         setChanged();
-        notifyObservers("Current player: "+game.getCurrentPlayer().getUsername());
+        notifyObservers(MessageType.encodeMessage("Current player: "+game.getCurrentPlayer().getUsername(),MessageType.GENERIC_MESSAGE));
     }
 
     private void startTimer(){
@@ -188,6 +184,9 @@ public class GameController extends Observable{
         timer=scheduler.schedule(task,60000,MILLISECONDS);
     }
 
+    private void sendStatus(){
+        players.parallelStream().forEach(x -> x.getObserver().update(this, MessageType.encodeMessage(this.game.getData(x.getPlayer()).toString(),MessageType.GAME_BOARD)));
+    }
     private synchronized void timerPass(){
         boolean notPass=true;
         while(notPass) {
@@ -200,7 +199,7 @@ public class GameController extends Observable{
         }
         startTimer();
         setChanged();
-        notifyObservers(this.game.getData().encode().toString());
+        sendStatus();
         if(game.isGameEnded()) {
             printScore();
             closeGame();
@@ -215,7 +214,7 @@ public class GameController extends Observable{
             out = out.concat(p.getPlayer().getUsername() + ":" + Integer.toString(game.getScore().get(p.getPlayer())) + "\n");
         out=out.concat("Ready to start a new game!");
         this.setChanged();
-        this.notifyObservers(out);
+        this.notifyObservers(MessageType.encodeMessage(out,MessageType.GENERIC_MESSAGE));
     }
 
     List<WrappedPlayer> getPlayers(){

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
 import java.rmi.RemoteException;
@@ -10,6 +11,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.connection.server.ServerMessage.*;
 import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.SERVER_ERROR;
 
 public class CentralServer {
@@ -29,14 +31,14 @@ public class CentralServer {
             observable=new Observable();
         }
 
-        public synchronized String connect(String username,GameObserver obs)throws ServerException {
+        public synchronized String connect(String username,GameObserver obs) throws ServerException {
             WrappedPlayer x;
             String filtered=username.trim();
             if(!Pattern.compile("^[a-zA-Z0-9_-]{4,12}$").asPredicate().test(filtered))
-                throw new ServerException("The username is not valid!",SERVER_ERROR);
+                throw new ServerException(NOT_VALID_USERNAME,SERVER_ERROR);
             for (WrappedPlayer s : players)
                 if (s.getPlayer().getUsername().compareToIgnoreCase((filtered))==0) {
-                    throw new ServerException("Username already used",SERVER_ERROR);
+                    throw new ServerException(ALREADY_EXISTING_USERNAME,SERVER_ERROR);
                 }
             x=new WrappedPlayer(filtered,obs);
             players.add(x);
@@ -70,14 +72,14 @@ public class CentralServer {
                 player = players.stream().filter(
                         x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
                 if (player.size() != 1) {
-                    throw new ServerException("You are not logged " + userSessionID,SERVER_ERROR);
+                    throw new ServerException(NOT_LOGGED + userSessionID,SERVER_ERROR);
                 }
                 game = currentGame(player.get(0));
                 if (game != null) {
                     if (game.getGameController().reconnect(player.get(0)))
                         return game;
                     else
-                        player.get(0).getObserver().update(observable, "previous match was ended because there are too few players. Starting a new one");
+                        player.get(0).getObserver().update(observable, MessageType.encodeMessage("Previous match was ended because there are too few players. Starting a new one", MessageType.GENERIC_MESSAGE));
                 }
                 for (LobbyManager lobby : lobbyManagers) {
                     if (lobby.add(player.get(0))) {
@@ -125,10 +127,10 @@ public class CentralServer {
                     x -> x.getSession().getID().equals(oldSessionID)).collect(Collectors.toList());
             Session newSession;
             if (player.size() != 1) {
-                throw new ServerException("This sessionID not exists: "+ oldSessionID,SERVER_ERROR);
+                throw new ServerException(NOT_EXISTING_SESSION+": "+ oldSessionID,SERVER_ERROR);
             }
             if(player.get(0).getObserver().isAlive())
-                throw new ServerException("NO multi client for a single user!",SERVER_ERROR);
+                throw new ServerException(NOT_MULTYGAME_WITH_ONE_CLIENT,SERVER_ERROR);
             else {
                 observable.deleteObserver(player.get(0).getObserver());
                 observable.addObserver(obs);

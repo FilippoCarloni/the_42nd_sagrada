@@ -3,6 +3,7 @@ package it.polimi.ingsw.connection.socket;
 import it.polimi.ingsw.connection.server.CentralServer;
 import it.polimi.ingsw.connection.server.GameController;
 import it.polimi.ingsw.connection.server.GameObserver;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
 import java.io.IOException;
@@ -53,22 +54,22 @@ public class RemoteClient implements Runnable,GameObserver {
                                 game.setMap(sessionID,Integer.parseInt(cmd[1]));
                             }
                             else
-                                send("you are not playing");
+                                send(MessageType.encodeMessage("you are not playing",MessageType.ERROR_MESSAGE));
                             break;
                         case "restore":
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
                                     try {
                                        sessionID=lobby.restoreSession(cmd[1],this);
-                                       send("NewSessionID: "+sessionID);
+                                       send(MessageType.encodeMessage("NewSessionID: "+sessionID,MessageType.GENERIC_MESSAGE));
                                     }catch(ServerException e){
-                                        send(e.getMessage());
+                                        send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
                                     }
                                 }else
-                                    send("No username is passed!");
+                                    send(MessageType.encodeMessage("No username is passed!",MessageType.GENERIC_MESSAGE));
                             }
                             else
-                                send("You are already logged");
+                                send(MessageType.encodeMessage("You are already logged",MessageType.ERROR_MESSAGE));
                             break;
 
                         case "login":
@@ -76,16 +77,16 @@ public class RemoteClient implements Runnable,GameObserver {
                                 if (cmd.length == 2) {
                                     try {
                                     sessionID = lobby.connect(cmd[1],this);
-                                    send("SessionID: "+sessionID);
+                                    send(MessageType.encodeMessage("SessionID: "+sessionID,MessageType.GENERIC_MESSAGE));
                                     }catch (ServerException e) {
-                                        send(e.getMessage());
+                                        send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
                                     }
                                 }
                                 else
-                                    send("Spaces are not allowed!");
+                                    send(MessageType.encodeMessage("Spaces are not allowed!",MessageType.ERROR_MESSAGE));
                             }
                             else
-                                send ("You are already logged");
+                                send (MessageType.encodeMessage("You are already logged",MessageType.ERROR_MESSAGE));
                             break;
                         case "play":
                             new Thread(() -> {
@@ -96,14 +97,14 @@ public class RemoteClient implements Runnable,GameObserver {
                                         logger.info("Error");
                                     }
                                 }else
-                                    send ("You are not already logged");
+                                    send (MessageType.encodeMessage("You are not already logged",MessageType.ERROR_MESSAGE));
                             }).start();
                             break;
                         case "view":
                             if(game!=null)
                                 send(game.getStatus(sessionID));
                             else
-                                send("You are not playing");
+                                send(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
                             break;
                         case "action":
                             if(game != null) {
@@ -111,23 +112,23 @@ public class RemoteClient implements Runnable,GameObserver {
                                     action = action.concat(" " + cmd[i]);
                                 }
                                if (!game.isMyTurn(sessionID))
-                                    send("It's not your turn, please wait while the other players make their moves.");
+                                    send(MessageType.encodeMessage("It's not your turn, please wait while the other players make their moves.",MessageType.GENERIC_MESSAGE));
                                 else {
                                     try {
                                         game.sendCommand(sessionID, action);
                                     }catch (Exception e) {
-                                        send(e.getMessage());
+                                        send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
                                     }
                                 }
                                 action = "";
                             }
                             else
-                                send("You are not playing");
+                                send(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
                             break;
                         case "quit":
                             break;
                         default:
-                            send("Command not recognized");
+                            send(MessageType.encodeMessage("Command not recognized",MessageType.ERROR_MESSAGE));
                             break;
 
                     }

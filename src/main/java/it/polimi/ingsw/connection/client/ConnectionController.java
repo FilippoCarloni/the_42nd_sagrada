@@ -3,6 +3,8 @@ package it.polimi.ingsw.connection.client;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
+
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
@@ -85,7 +87,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     this.out.println("restore " + sessionID);
                     this.out.flush();
                     response = this.in.nextLine();
-                    if (response.split(" ")[0].equals("NewSessionID:"))
+                    if (MessageType.decodeMessageType(response)==MessageType.GENERIC_MESSAGE&&MessageType.decodeMessageContent(response).split(" ")[0].equals("NewSessionID:"))
                         sessionID = response.split(" ")[1];
                     else {
                        // messages.add(response)
@@ -140,7 +142,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                 this.out.println("login " + name);
                 this.out.flush();
                 response = this.in.nextLine();
-                if (response.split(" ")[0].equals("SessionID:"))
+                if (MessageType.decodeMessageType(response)==MessageType.GENERIC_MESSAGE&&MessageType.decodeMessageContent(response).split(" ")[0].equals("SessionID:"))
                     sessionID = response.split(" ")[1];
                 else {
                     //messages.add(response)
@@ -170,14 +172,14 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         try {
             switch (cmd ) {
                 case "?":
-                    messages.add("Commands still need to be added ;)");
+                    messages.add(MessageType.encodeMessage("Commands still need to be added ;)",MessageType.GENERIC_MESSAGE));
                     break;
                 case "view":
                     if (lobby != null) {
                         if (gameManger != null)
                             messages.add(gameManger.getStatus(sessionID));
                         else
-                            messages.add("You are not playing");
+                            messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
                     } else {
                         out.println("view");
                         out.flush();
@@ -191,11 +193,11 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                             try {
                                 client.close();
                             } catch (IOException e) {
-                                messages.add("disconnection error");
+                                messages.add(MessageType.encodeMessage("disconnection error",MessageType.ERROR_MESSAGE));
                             }
                         }
                     }
-                    messages.add("Good Bye!");
+                    messages.add(MessageType.encodeMessage("Good Bye!",MessageType.GENERIC_MESSAGE));
                     System.exit(0);
                     break;
                 case "play":
@@ -208,20 +210,21 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     break;
                 default:
                     if (lobby != null) {
-                        if (gameManger != null)
+                        if (gameManger != null) {
                             if (!gameManger.isMyTurn(sessionID))
-                                messages.add("It's not your turn, please wait while the other players make their moves.");
+                                messages.add(MessageType.encodeMessage("It's not your turn, please wait while the other players make their moves.",MessageType.GENERIC_MESSAGE));
                             else
                                 gameManger.sendCommand(sessionID, cmd);
+                        }
                         else
-                            messages.add("You are not playing");
+                            messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
                     } else {
                         out.println("action " + cmd);
                         out.flush();
                     }
             }
         } catch (RemoteException e) {
-            messages.add(e.getMessage());
+            messages.add(e.getCause().getMessage());
         }
     }
 

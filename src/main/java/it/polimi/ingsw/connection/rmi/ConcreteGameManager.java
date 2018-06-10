@@ -1,6 +1,8 @@
 package it.polimi.ingsw.connection.rmi;
 
 import it.polimi.ingsw.connection.server.GameController;
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Logger;
@@ -22,7 +24,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
         try {
             return gameController.isMyTurn(sessionID);
         }catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
     }
 
@@ -32,7 +34,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
         try{
             gameController.sendCommand(sessionID, command);
         }catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
     }
 
@@ -42,7 +44,7 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
         try {
             return gameController.getStatus(sessionID);
         }catch (Exception e) {
-            throw new RemoteException(e.getMessage());
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
         }
     }
 
