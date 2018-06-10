@@ -101,7 +101,8 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         if(sessionID.equals(""))
             return false;
         status = new ClientStatus(sessionID, username);
-        ClientStatus.saveStatus(status);
+        if(!ClientStatus.saveStatus(status))
+            return false;
         if (lobby == null) {
             new Thread(new ReaderThread()).start();
         }

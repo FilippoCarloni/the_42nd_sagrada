@@ -45,7 +45,7 @@ class ClientStatus implements Serializable {
         return status;
     }
 
-    static void saveStatus(ClientStatus clientStatus){
+    static boolean saveStatus(ClientStatus clientStatus){
         FileOutputStream fileOut=null;
         ObjectOutputStream out=null;
         try {
@@ -55,7 +55,7 @@ class ClientStatus implements Serializable {
             out.close();
             fileOut.close();
         } catch (IOException i) {
-
+            return false;
         }
         finally {
             try {
@@ -67,5 +67,6 @@ class ClientStatus implements Serializable {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 }

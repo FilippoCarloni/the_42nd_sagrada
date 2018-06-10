@@ -41,7 +41,7 @@ public class GameController extends Observable{
         for( WrappedPlayer p: players){
             p.getPlayer().setWindowFrame((WindowFrame)deck2.draw());
             p.getPlayer().setPrivateObjective(privateObjectiveCards.get(i));
-          //  p.getObserver().update(this, privateObjectiveCards.get(i).encode().toString());
+          //  p.getObserver().update(this, privateObjectiveCards.get(i).encode().toString())
             i++;
         }
         this.server=server;
