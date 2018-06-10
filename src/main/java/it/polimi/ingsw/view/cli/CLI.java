@@ -15,11 +15,14 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static it.polimi.ingsw.view.ViewMessage.*;
+import static it.polimi.ingsw.view.cli.CLIMessage.*;
 import static java.lang.Integer.parseInt;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class CLI implements Runnable {
 
+    // Board printer descriptors
     private static final String SEPARATOR = " ";
     private static final String TOP_SEPARATOR = "  ";
     private static final String ROUND_TRACK_TITLE   = "ROUND TRACK";
@@ -30,6 +33,8 @@ public class CLI implements Runnable {
     private static final String TOOL_NOT_ACTIVE = "none";
     private static final String DIE_NOT_PICKED = "[ ]";
     private static final String EMPTY_ROUND_TRACK = "empty";
+
+    // Board printer constants
     private static final int PIXEL_WIDTH = 21;
     private static final int NAME_LENGTH = 40;
     private static final int DESCRIPTION_LENGTH = 120;
@@ -37,12 +42,15 @@ public class CLI implements Runnable {
     private static final int TOOL_IMAGE_LENGTH = 9;
     private static final int OBJECTIVE_IMAGE_LENGTH = 15;
     private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/card";
+
     private Scanner scanner;
     private ConnectionController connectionController;
-    private final ScheduledExecutorService scheduler =
-            Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private static final int REFRESH_RATE = 100; // milliseconds
+
     public CLI() {
         scanner = new Scanner(System.in);
+        print(TITLE);
         connect();
         login();
         menu();
@@ -51,43 +59,37 @@ public class CLI implements Runnable {
     }
 
     private void startRefresh() {
-        scheduler.scheduleAtFixedRate(this::update, 1, 100, MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::update, 1, REFRESH_RATE, MILLISECONDS);
     }
 
-    private void login(){
+    private void login() {
         String username;
-        print("Insert which username you would restore, if it is possible the session is restored");
+        print(INSERT_USERNAME);
         username = scanner.nextLine();
         while(!connectionController.restore(username)) {
-            print("Username not valid");
-            print("Insert which username you would restore, if it is possible the session is restored");
+            print(INVALID_USERNAME);
+            print(INSERT_USERNAME);
             username = scanner.nextLine();
         }
-        print("Logged");
+        print(LOGIN_CONFIRMATION);
     }
 
-    private void connect(){
+    private void connect() {
         ConnectionType connectionType;
-        print("Insert the connection method: [1]RMI    [2] Socket");
-        if(scanner.nextLine().equals("1"))
-            connectionType=ConnectionType.RMI;
-        else
-            connectionType=ConnectionType.SOCKET;
+        print(CONNECTION_TYPE);
+        print(CONNECTION_TYPE_OPTIONS);
+        connectionType = scanner.nextLine().equals(CONNECTION_TYPE_FIRST_OPTION) ? ConnectionType.RMI : ConnectionType.SOCKET;
         try {
             connectionController= new ConnectionController(connectionType);
         } catch (Exception e) {
-            print("Connection error, the server is not reachable");
+            print(CONNECTION_ERROR);
             System.exit(1);
         }
-        print("Connected");
+        print(CONNECTION_CONFIRMATION);
     }
 
     private void menu() {
-        print("\nUSAGE:\n" +
-                "  ?     : prints how to play\n" +
-                "  view  : prints game info\n" +
-                "  play  : start a game\n" +
-                "  exit  : disconnects from the current game\n");
+        print(USAGE);
     }
 
     private void update() {
@@ -366,5 +368,4 @@ public class CLI implements Runnable {
         sb.append("|\n");
         return sb.toString();
     }
-
 }
