@@ -10,9 +10,8 @@ public class MessageBuffer {
     }
 
     public synchronized String getNext(){
-        if(!messages.isEmpty()){
+        if(!messages.isEmpty())
             return messages.remove(0);
-        }
         return "";
     }
 

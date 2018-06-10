@@ -76,8 +76,8 @@ public class CLI implements Runnable {
         try {
             connectionController= new ConnectionController(connectionType);
         } catch (Exception e) {
-            print("Connecton error");
-            Thread.currentThread().interrupt();
+            print("Connection error, the server is not reachable");
+            System.exit(1);
         }
         print("Connected");
     }

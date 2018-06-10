@@ -4,6 +4,7 @@ import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -43,7 +44,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         }
     }
 
-    public ConnectionController(ConnectionType connectionType) throws Exception {
+    public ConnectionController(ConnectionType connectionType) throws ConnectException,RemoteException {
         super();
         sessionID = "";
         gameManger = null;
@@ -53,7 +54,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         messages=new MessageBuffer();
     }
 
-    private void initialize() {
+    private void initialize() throws ConnectException {
         if (connectionType == ConnectionType.RMI)
             rmiConnection();
         else
@@ -101,24 +102,24 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         return true;
     }
 
-    private void rmiConnection() {
+    private void rmiConnection() throws ConnectException {
         try {
             Registry reg = LocateRegistry.getRegistry(new Settings().IP_SERVER, new Settings().RMI_PORT);
             lobby = (Lobby) reg.lookup("Login");
 
         } catch (NotBoundException|RemoteException e) {
-           messages.add(e.getMessage());
+           throw new ConnectException(e.getMessage());
         }
 
     }
 
-    private void socketConnection() {
+    private void socketConnection() throws ConnectException {
         try {
             client = new Socket(new Settings().IP_SERVER, new Settings().SOCKET_PORT);
             in = new Scanner(client.getInputStream());
             out = new PrintWriter(client.getOutputStream());
         } catch (IOException ex) {
-            messages.add(ex.toString());
+            throw new ConnectException(ex.getMessage());
         }
     }
 
