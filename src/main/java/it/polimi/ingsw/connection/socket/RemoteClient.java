@@ -48,10 +48,14 @@ public class RemoteClient implements Runnable,GameObserver {
                 cmd=line.split(" ");
                 if(cmd.length>0)
                     switch (cmd[0]) {
-                        case "map":
+                        case "window":
                             if(game!=null)
-                            if(cmd.length==2){
-                                game.setMap(sessionID,Integer.parseInt(cmd[1]));
+                            if(cmd.length==2) {
+                                try {
+                                    game.setMap(sessionID, Integer.parseInt(cmd[1]));
+                                }catch (NumberFormatException e) {
+
+                                }
                             }
                             else
                                 send(MessageType.encodeMessage("you are not playing",MessageType.ERROR_MESSAGE));

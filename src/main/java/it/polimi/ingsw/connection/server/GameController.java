@@ -10,6 +10,10 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
 import it.polimi.ingsw.model.gamedata.ConcreteGame;
 import it.polimi.ingsw.model.gamedata.Game;
+import it.polimi.ingsw.model.utility.JSONTag;
+import it.polimi.ingsw.model.utility.Parameters;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,34 +30,27 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class GameController extends Observable{
     private static final Logger logger=Logger.getLogger(GameController.class.getName());
-    private final Game game;
+    private Game game;
     private final List<WrappedPlayer> players;
     private final List<WrappedPlayer> disconnected;
     private ScheduledFuture<?> beeperHandle;
     private final CentralServer server;
     private ScheduledFuture<?> timer;
     private final ScheduledExecutorService scheduler =
-            Executors.newScheduledThreadPool(2);
+            Executors.newScheduledThreadPool(3);
+    private List<WindowFrame> windowFrames;
+    private List<Integer> winodwChose;
     GameController(CentralServer server, List<WrappedPlayer> players) {
         List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(players.size());
         Deck deck2=new WindowFrameDeck();
-        int i=0;
-        for( WrappedPlayer p: players){
-            p.getPlayer().setWindowFrame((WindowFrame)deck2.draw());
-            p.getPlayer().setPrivateObjective(privateObjectiveCards.get(i));
-          //  p.getObserver().update(this, privateObjectiveCards.get(i).encode().toString())
-            i++;
-        }
         this.server=server;
-        game = new ConcreteGame(players
-                .stream()
-                .map(WrappedPlayer::getPlayer)
-                .collect(Collectors.toList()));
         this.players = new ArrayList<>(players);
+        this.winodwChose=new ArrayList<>();
+        for(int i=0;i<this.players.size();i++)
+            this.winodwChose.add(1);
+        getPreGameFrames(players.size());
         for (WrappedPlayer p: players)
             addObserver(p.getObserver());
-        sendStatus();
-        isTurnOf();
         beeperHandle=null;
         disconnected= new ArrayList<>();
         final Runnable cleaner = () -> {
@@ -79,10 +76,43 @@ public class GameController extends Observable{
         ;
         beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 100, MILLISECONDS);
         startTimer();
+        scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
     }
 
-    public void setMap(String sessionID,int map){
+    public synchronized void setMap(String sessionID,int window) throws ServerException {
+        WrappedPlayer player=this.getPlayer(sessionID);
+        if(window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
+            winodwChose.set(players.indexOf(player),window);
+    }
 
+    private synchronized void setWindowsFrame() {
+        for( WrappedPlayer p: players){
+            p.getPlayer().setWindowFrame(windowFrames.get(winodwChose.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
+        }
+        game = new ConcreteGame(players
+                .stream()
+                .map(WrappedPlayer::getPlayer)
+                .collect(Collectors.toList()));
+        isTurnOf();
+        sendStatus();
+    }
+    private void getPreGameFrames(int numPlayers){
+        List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(numPlayers);
+        JSONObject jsonObject;
+        JSONArray encodedFrames;
+        windowFrames=Game.getWindowFrames(numPlayers);
+        int j=0;
+        for(WrappedPlayer p:players){
+            jsonObject=new JSONObject();
+            p.getPlayer().setPrivateObjective(privateObjectiveCards.remove(0));
+            jsonObject.put(JSONTag.PRIVATE_OBJECTIVE,p.getPlayer().getPrivateObjective().encode());
+            encodedFrames=new JSONArray();
+            for(int i=0;i<Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE;i++)
+                encodedFrames.add(windowFrames.get(i+Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE*j).encode());
+            jsonObject.put(JSONTag.WINDOW_FRAMES,encodedFrames);
+            p.getObserver().update(this,MessageType.encodeMessage(jsonObject.toString(),MessageType.PRE_GAME_CHOICE));
+            j++;
+        }
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {

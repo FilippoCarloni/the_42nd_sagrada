@@ -90,4 +90,7 @@ public final class JSONTag {
     public static final String PLACE = "place";
     public static final String PATTERN = "pattern";
     public static final String POINTS_PER_PATTERN = "points_per_pattern";
+
+    //pre-game choice
+    public static final String WINDOW_FRAMES = "window_frames";
 }

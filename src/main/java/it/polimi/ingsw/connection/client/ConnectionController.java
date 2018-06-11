@@ -170,8 +170,11 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
 
     public void send(String cmd) {
+        cmd=cmd.trim();
+        String []action=cmd.split(" ");
+        if(action.length>0)
         try {
-            switch (cmd ) {
+            switch (action[0]) {
                 case "?":
                     messages.add(MessageType.encodeMessage("Commands still need to be added ;)",MessageType.GENERIC_MESSAGE));
                     break;
@@ -207,6 +210,24 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     else {
                         out.println("play");
                         out.flush();
+                    }
+                    break;
+                case "window":
+                    if(action.length==2) {
+                        if(connectionType==ConnectionType.RMI){
+                            if (gameManger != null) {
+                                try {
+                                    gameManger.setMap(sessionID, Integer.parseInt(action[1]));
+                                }catch (NumberFormatException e){
+
+                                }
+                            }
+                            else
+                                messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
+                        } else {
+                            out.println(cmd);
+                            out.flush();
+                        }
                     }
                     break;
                 default:

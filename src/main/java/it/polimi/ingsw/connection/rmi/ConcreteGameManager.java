@@ -50,6 +50,16 @@ public class ConcreteGameManager extends UnicastRemoteObject implements GameMana
     }
 
     @Override
+    public void setMap(String sessionID, int window) throws RemoteException {
+        logger.info(() -> "Status request from: " + sessionID);
+        try {
+            gameController.setMap(sessionID,window);
+        } catch (ServerException e) {
+            throw new RemoteException(MessageType.encodeMessage(e.getMessage(), MessageType.ERROR_MESSAGE));
+        }
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
     }

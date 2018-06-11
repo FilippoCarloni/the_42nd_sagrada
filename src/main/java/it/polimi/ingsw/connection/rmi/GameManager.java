@@ -8,4 +8,5 @@ public interface GameManager extends Remote {
     boolean isMyTurn(String sessionID) throws RemoteException;
     void sendCommand(String sessionID, String command) throws RemoteException;
     String getStatus(String sessionID) throws RemoteException;
+    void setMap(String sessionID, int window) throws RemoteException;
 }

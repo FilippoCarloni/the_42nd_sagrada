@@ -103,14 +103,13 @@ public class CLI implements Runnable {
                         print(MessageType.decodeMessageContent(message));
                         break;
                     case GAME_BOARD:
-                        try {
-                            this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
-                        } catch (ParseException e) {
-                            print(e.getMessage());
-                        }
+                        this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     case ERROR_MESSAGE:
                         print(MessageType.decodeMessageContent(message));
+                        break;
+                    case PRE_GAME_CHOICE:
+                        drawPreGame((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     default:
                         print("Message not supported!");
@@ -133,6 +132,18 @@ public class CLI implements Runnable {
 
     private void print(String data) {
         System.out.println(data);
+    }
+
+    private void drawPreGame(JSONObject jsonObject){
+        StringBuilder sb=new StringBuilder();
+        String s="";
+        JSONArray windowsFrames=(JSONArray)jsonObject.get(JSONTag.WINDOW_FRAMES);
+        sb.append(drawCard((JSONObject)jsonObject.get(JSONTag.PRIVATE_OBJECTIVE)));
+        sb.append("\n");
+        for(Object o: windowsFrames)
+            s=convertToHorizontal(s,drawWindowFrame((JSONObject)o),SEPARATOR);
+        sb.append(s);
+        print(sb.toString());
     }
 
     public void draw(JSONObject obj) {
