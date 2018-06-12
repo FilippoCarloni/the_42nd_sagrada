@@ -12,17 +12,28 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+//TODO: screen with visualization of "player connected"; UNDERSTAND WHY LABEL NOT WORKS
+//TODO: wait for buffer message
+//TODO: end game screen
+
+/**
+ * MAIN GUI MANAGER, ALL GUI'S PARTS WILL BE HANDLED BY THIS CLASS
+ */
 
 public class GuiLauncher extends Application {
 
@@ -36,6 +47,10 @@ public class GuiLauncher extends Application {
     @FXML
     private Label usernameNotValid;
     @FXML
+    private Button playButton;
+    @FXML
+    private Label lobbyLabel;
+    @FXML
     private GridPane map1 = new GridPane();
     @FXML
     private GridPane map2;
@@ -46,39 +61,73 @@ public class GuiLauncher extends Application {
     @FXML
     private ImageView privObjCard;
 
+    /************************
+     * FXML methods section *
+     ************************/
+
+    //Connection selection
     public void slowConnection(){
         this.connectionType = ConnectionType.SOCKET;
     }
 
-    public void getUsername() throws Exception {
+    //Username and Login Management
+    public void getUsername() throws RemoteException, ConnectException {
         checkAndSaveUsername(username.getText());
     }
-    private void checkAndSaveUsername(String username) throws Exception {
+    private void checkAndSaveUsername(String username) throws RemoteException, ConnectException {
         connectionController = new ConnectionController(connectionType);
         boolean isValid = connectionController.restore(username);
         if (isValid) {
-            if(usernameNotValid.getText() != null){
-                usernameNotValid.setText("");
-                changeScene1();
-            }
+            loginToPlayOrQuitChoice();
         } else
             usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
     }
-    private void changeScene1() {
-        try {
-            parent = FXMLLoader.load(getClass().getResource("/FXML_files/WindowFrameChoice.fxml"));
-            //WARNING: you have to initialize map1 to use getScene() on it
-            Scene scene = username.getScene();
-            scene.setRoot(parent);
-            Stage stage = (Stage) scene.getWindow();
-            stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
-            stage.setWidth(GUIParameters.SCREEN_WIDTH);
-            stage.setHeight(GUIParameters.SCREEN_HEIGHT);
-            stage.setScene(scene);
-        } catch (IOException e) {
-            System.out.println("File fxml not found");
+
+    //Play or Quit Management
+    public void playClicked(){
+        connectionController.send("play");
+        playOrQuitToLobby();
+    }
+    public void quitClicked(){
+        connectionController.send("exit");
+        System.exit(0);
+    }
+
+    //Lobby Management
+    public void printConnectionOrDisconnection(String message, boolean connection){
+        if(connection){
+            lobbyLabel.setText(message);
+        }
+        else{
+            lobbyLabel.setTextFill(Color.RED);
+            lobbyLabel.setText(message);
         }
     }
+    //TODO: method that will take as input a message from connection controller to start game
+
+    //Map Choice Management
+    public void choose1(){
+        clicked(1);
+    }
+    public void choose2(){
+        clicked(2);
+    }
+    public void choose3(){
+        clicked(3);
+    }
+    public void choose4(){
+        clicked(4);
+    }
+    private void clicked(int idMapChosen) {
+        GameBoardController controller = new GameBoardController();
+        controller.setIdMapChosen(idMapChosen);
+        connectionController.send("window " + idMapChosen);
+        mapChoiceToGameBoard(controller);
+    }
+
+    /***************************
+     * Utility methods section *
+     ***************************/
 
     public void drawMapsAndSetCard(JSONObject json){
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
@@ -97,29 +146,40 @@ public class GuiLauncher extends Application {
         maps.add(map4);
     }
 
-    public void choose1(){
-        clicked(1);
-    }
-    public void choose2(){
-        clicked(2);
-    }
-    public void choose3(){
-        clicked(3);
-    }
-    public void choose4(){
-        clicked(4);
+    /************************************
+     * Switching between scenes section *
+     ************************************/
+
+    private void loginToPlayOrQuitChoice() {
+        try {
+            parent = FXMLLoader.load(getClass().getResource(GUIParameters.PLAY_OR_QUIT_FXML_PATH));
+            Scene scene = username.getScene();
+            scene.setRoot(parent);
+            Stage stage = (Stage) scene.getWindow();
+            stage.setTitle(GUIParameters.PLAY_OR_QUIT_TITLE);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.out.println(GUIParameters.LOAD_FXML_ERROR);
+        }
     }
 
-    private void clicked(int idMapChosen) {
-        GameBoardController controller = new GameBoardController();
-        controller.setIdMapChosen(idMapChosen);
-        connectionController.send("window " + idMapChosen);
-        changeScene(controller);
+    private void playOrQuitToLobby() {
+        try {
+            parent = FXMLLoader.load(getClass().getResource(GUIParameters.LOBBY_FXML_PATH));
+            Scene scene = playButton.getScene();
+            scene.setRoot(parent);
+            Stage stage = (Stage) scene.getWindow();
+            stage.setTitle(GUIParameters.LOBBY_TITLE);
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.out.println(GUIParameters.LOAD_FXML_ERROR);
+        }
     }
-    private void changeScene(GameBoardController controller) {
+
+    private void mapChoiceToGameBoard(GameBoardController controller) {
         try {
             controller.initialize();
-            parent = FXMLLoader.load(getClass().getResource("/FXML_files/MainBoard.fxml"));
+            parent = FXMLLoader.load(getClass().getResource(GUIParameters.MAIN_BOARD_FXML_PATH));
             //WARNING: you have to initialize map1 to use getScene() on it
             Scene scene = map1.getScene();
             scene.setRoot(parent);
@@ -127,9 +187,13 @@ public class GuiLauncher extends Application {
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
             stage.setScene(scene);
         } catch (IOException e) {
-            System.out.println("File fxml not found");
+            System.out.println(GUIParameters.LOAD_FXML_ERROR);
         }
     }
+
+    /*****************
+     * Start section *
+     *****************/
 
     @Override
     public void start(Stage primaryStage) throws Exception {

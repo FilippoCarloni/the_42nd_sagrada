@@ -14,11 +14,10 @@ import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
 
-public class CardsSetter implements CardsOnGameBoard {
+public class CardsSetter {
 
     //TODO: refactor
 
-    @Override
     public ArrayList<ImageView> setPublicCards(ImageView card1, ImageView card2, ImageView card3, JSONArray json, String directory) {
         ArrayList<ImageView> cards = new ArrayList<>();
 
@@ -39,12 +38,10 @@ public class CardsSetter implements CardsOnGameBoard {
 
         return cards;
     }
-    @Override
     public ImageView setPrivateCard(ImageView card, JSONObject json) {
         card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
         return card;
     }
-
     private ImageView loadFromFile(Object jsonCard, String directory){
         JSONObject jsonObject = (JSONObject) jsonCard;
         int id =parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
