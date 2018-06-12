@@ -39,15 +39,15 @@ public class GameController extends Observable{
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(3);
     private List<WindowFrame> windowFrames;
-    private List<Integer> winodwChose;
+    private List<Integer> windowChose;
     GameController(CentralServer server, List<WrappedPlayer> players) {
         List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(players.size());
         Deck deck2=new WindowFrameDeck();
         this.server=server;
         this.players = new ArrayList<>(players);
-        this.winodwChose=new ArrayList<>();
+        this.windowChose=new ArrayList<>();
         for(int i=0;i<this.players.size();i++)
-            this.winodwChose.add(1);
+            this.windowChose.add(1);
         getPreGameFrames(players.size());
         for (WrappedPlayer p: players)
             addObserver(p.getObserver());
@@ -82,12 +82,12 @@ public class GameController extends Observable{
     public synchronized void setMap(String sessionID,int window) throws ServerException {
         WrappedPlayer player=this.getPlayer(sessionID);
         if(window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
-            winodwChose.set(players.indexOf(player),window);
+            windowChose.set(players.indexOf(player),window);
     }
 
     private synchronized void setWindowsFrame() {
         for( WrappedPlayer p: players){
-            p.getPlayer().setWindowFrame(windowFrames.get(winodwChose.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
+            p.getPlayer().setWindowFrame(windowFrames.get(windowChose.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
         }
         game = new ConcreteGame(players
                 .stream()

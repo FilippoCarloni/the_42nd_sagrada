@@ -56,53 +56,6 @@
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                     <children>
-                        <StackPane fx:id="paneDicePool1" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0">
-                           <children>
-                              <Canvas fx:id="canvasDicePool1" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool2" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
-                           <children>
-                              <Canvas fx:id="canvasDicePool2" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool3" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2">
-                           <children>
-                              <Canvas fx:id="canvasDicePool3" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool4" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3">
-                           <children>
-                              <Canvas fx:id="canvasDicePool4" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool5" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4">
-                           <children>
-                              <Canvas fx:id="canvasDicePool5" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool6" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5">
-                           <children>
-                              <Canvas fx:id="canvasDicePool6" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool7" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="6">
-                           <children>
-                              <Canvas fx:id="canvasDicePool7" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool8" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="7">
-                           <children>
-                              <Canvas fx:id="canvasDicePool8" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                        <StackPane fx:id="paneDicePool9" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="8">
-                           <children>
-                              <Canvas fx:id="canvasDicePool9" height="60.0" width="60.0" />
-                           </children>
-                        </StackPane>
-                     </children>
                   </GridPane>
                </children>
             </AnchorPane>

@@ -6,10 +6,11 @@ public final class GUIParameters {
 
     private GUIParameters(){}
 
-    public static final String CONNECTION_SCENE_TITLE = "Connection Choice";
-    public static final String LOGIN_SCENE_TITLE = "Login Screen";
+    public static final String CONNECTION_LOGIN_SCENE_TITLE = "Connection-Login Screen";
     public static final String CHOICE_SCENE_TITLE = "Map Choice";
     public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
+
+    public static final int NUM_MAPS_TO_CHOOSE = 4;
 
     public static final double CONNECTION_LOGIN_SCENE_WIDTH = 600;
     public static final double CONNECTION_LOGIN_SCENE_HEIGHT = 400;
@@ -58,4 +59,8 @@ public final class GUIParameters {
     public static final String DEFAULT_DIRECTORY = "src/main/java/res/images/cards/";
     public static final String TOOL_DIRECTORY = "toolcards";
     public static final String PUBOBJ_DIRECTORY = "pubobjcards";
+    public static final String PRIV_OBJ_DIRECTORY = "privobjcards";
+
+    public static final String CONNECTION_LOGIN_FXML_PATH = "/FXML_files/ConnectionLogin.fxml";
+    public static final String LOGIN_ERROR = "Username not valid, insert a new one";
 }

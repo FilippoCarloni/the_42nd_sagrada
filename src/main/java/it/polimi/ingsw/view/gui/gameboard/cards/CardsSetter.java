@@ -40,8 +40,9 @@ public class CardsSetter implements CardsOnGameBoard {
         return cards;
     }
     @Override
-    public void setPrivateCard(ImageView card, JSONObject json) {
-        //Complete the implementation later
+    public ImageView setPrivateCard(ImageView card, JSONObject json) {
+        card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
+        return card;
     }
 
     private ImageView loadFromFile(Object jsonCard, String directory){

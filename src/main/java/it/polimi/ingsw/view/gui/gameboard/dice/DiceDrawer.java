@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import it.polimi.ingsw.view.gui.settings.GUIShade;
 import javafx.scene.Node;
@@ -12,33 +11,24 @@ import javafx.scene.layout.StackPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-
 //TODO: method that will be used by canvases when clicked
 //TODO: refactor
 
 public class DiceDrawer {
 
-    private ArrayList<StackPane> paneDicePool = new ArrayList<>();
-    private ArrayList<Canvas> canvasDicePool = new ArrayList<>();
-
     public void dicePoolFiller(JSONObject jSon, GridPane dicePoolGrid) {
         int column = 0;
         JSONArray dicePoolList = (JSONArray) jSon.get(JSONTag.DICE_POOL);
-        GameBoardController controller = new GameBoardController();
 
-        controller.listDicePoolSetter();
-        paneDicePool = controller.getPaneDicePool();
-        canvasDicePool = controller.getCanvasDicePool();
         for (Object o : dicePoolList) {
-            StackPane pane = paneDicePool.get(column);
-            Canvas canvas = canvasDicePool.get(column);
-            pane.getChildren().add(canvas);
+            StackPane pane = new StackPane();
+            Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
             dicePoolGrid.add(pane, column, 0);
             String color = (String) ((JSONObject) o).get(JSONTag.COLOR);
             int shade = ((Long) ((JSONObject) o).get(JSONTag.SHADE)).intValue();
             dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane);
             column++;
+            pane.getChildren().add(canvas);
         }
     }
 
@@ -66,12 +56,5 @@ public class DiceDrawer {
         } else {
             node.setStyle("-fx-background-color: " + color);
         }
-    }
-
-    public ArrayList<StackPane> getPaneDicePool(){
-        return paneDicePool;
-    }
-    public ArrayList<Canvas> getCanvasDicePool(){
-        return canvasDicePool;
     }
 }
