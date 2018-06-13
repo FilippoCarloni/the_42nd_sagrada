@@ -65,7 +65,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                 if (cmd.length == 2) {
                                     try {
                                        sessionID=lobby.restoreSession(cmd[1],this);
-                                       send(MessageType.encodeMessage("NewSessionID: "+sessionID,MessageType.GENERIC_MESSAGE));
+                                       send(MessageType.encodeMessage(sessionID,MessageType.SESSION));
                                     }catch(ServerException e){
                                         send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
                                     }
@@ -81,7 +81,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                 if (cmd.length == 2) {
                                     try {
                                     sessionID = lobby.connect(cmd[1],this);
-                                    send(MessageType.encodeMessage("SessionID: "+sessionID,MessageType.GENERIC_MESSAGE));
+                                    send(MessageType.encodeMessage(sessionID,MessageType.SESSION));
                                     }catch (ServerException e) {
                                         send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
                                     }

@@ -52,11 +52,11 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         gameManger = null;
         lobby = null;
         this.connectionType=connectionType;
-        initialize();
+        initializeConnection();
         messages=new MessageBuffer();
     }
 
-    private void initialize() throws ConnectException {
+    private void initializeConnection() throws ConnectException {
         if (connectionType == ConnectionType.RMI)
             rmiConnection();
         else
@@ -67,6 +67,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
 
     public boolean restore(String username){
+        boolean logged=false;
         if(!sessionID.equals(""))
             return true;
         String response;
@@ -78,32 +79,26 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
             if (connectionType==ConnectionType.RMI)
                 try {
                     sessionID = lobby.restoreSession(sessionID, this);
+                    logged=true;
                 } catch (RemoteException e) {
                    // messages.add(e.getMessage()
-                    sessionID = "";
                 }
             else
                 if(connectionType==ConnectionType.SOCKET) {
                     this.out.println("restore " + sessionID);
                     this.out.flush();
                     response = this.in.nextLine();
-                    if (MessageType.decodeMessageType(response)==MessageType.GENERIC_MESSAGE&&MessageType.decodeMessageContent(response).split(" ")[0].equals("NewSessionID:"))
-                        sessionID = response.split(" ")[1];
-                    else {
-                       // messages.add(response)
-                        sessionID = "";
-                }
+                    if (MessageType.decodeMessageType(response)==MessageType.SESSION) {
+                        sessionID = MessageType.decodeMessageContent(response);
+                        logged=true;
+                    }
             }
         }
-
-        if (sessionID.equals(""))
-            login(username);
-        if(sessionID.equals(""))
+            if(!logged&&!login(username))
+                return false;
+        if(!ClientStatus.saveStatus(new ClientStatus(sessionID, username)))
             return false;
-        status = new ClientStatus(sessionID, username);
-        if(!ClientStatus.saveStatus(status))
-            return false;
-        if (lobby == null) {
+        if (connectionType==ConnectionType.SOCKET) {
             new Thread(new ReaderThread()).start();
         }
         return true;
@@ -130,26 +125,28 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         }
     }
 
-    private void login(String name) {
+    private boolean login(String name) {
         String response;
         if (connectionType==ConnectionType.RMI)
             try {
                 sessionID = lobby.connect(name, this);
             } catch (RemoteException e) {
                // messages.add(e.getMessage())
+                return false;
             }
         else
             if(connectionType==ConnectionType.SOCKET) {
                 this.out.println("login " + name);
                 this.out.flush();
                 response = this.in.nextLine();
-                if (MessageType.decodeMessageType(response)==MessageType.GENERIC_MESSAGE&&MessageType.decodeMessageContent(response).split(" ")[0].equals("SessionID:"))
-                    sessionID = response.split(" ")[1];
+                if (MessageType.decodeMessageType(response)==MessageType.SESSION)
+                    sessionID = MessageType.decodeMessageContent(response);
                 else {
                     //messages.add(response)
-                    sessionID = "";
+                    return false;
                 }
         }
+        return true;
     }
 
     public String readMessage(){
@@ -179,18 +176,18 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     messages.add(MessageType.encodeMessage("Commands still need to be added ;)",MessageType.GENERIC_MESSAGE));
                     break;
                 case "view":
-                    if (lobby != null) {
+                    if (connectionType==ConnectionType.RMI) {
                         if (gameManger != null)
                             messages.add(gameManger.getStatus(sessionID));
                         else
                             messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
-                    } else {
+                    } else if (connectionType==ConnectionType.SOCKET){
                         out.println("view");
                         out.flush();
                     }
                     break;
                 case "exit":
-                    if (lobby == null) {
+                    if (connectionType==ConnectionType.SOCKET) {
                         out.println("quit");
                         out.flush();
                         synchronized (this){
@@ -205,9 +202,9 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                     System.exit(0);
                     break;
                 case "play":
-                    if (lobby != null)
+                    if (connectionType==ConnectionType.RMI)
                         gameManger = lobby.getGame(sessionID);
-                    else {
+                    else if (connectionType==ConnectionType.SOCKET){
                         out.println("play");
                         out.flush();
                     }
@@ -224,14 +221,14 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                             }
                             else
                                 messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
-                        } else {
+                        } else if (connectionType==ConnectionType.SOCKET){
                             out.println(cmd);
                             out.flush();
                         }
                     }
                     break;
                 default:
-                    if (lobby != null) {
+                    if (connectionType==ConnectionType.RMI) {
                         if (gameManger != null) {
                             if (!gameManger.isMyTurn(sessionID))
                                 messages.add(MessageType.encodeMessage("It's not your turn, please wait while the other players make their moves.",MessageType.GENERIC_MESSAGE));
@@ -240,7 +237,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
                         }
                         else
                             messages.add(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
-                    } else {
+                    } else if(connectionType==ConnectionType.SOCKET){
                         out.println("action " + cmd);
                         out.flush();
                     }

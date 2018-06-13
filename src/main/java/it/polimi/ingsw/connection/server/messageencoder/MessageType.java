@@ -9,7 +9,8 @@ public enum MessageType {
     ERROR_MESSAGE("error_message"),
     GAME_BOARD("game_board"),
     GAME_STATS("game_stats"),
-    PRE_GAME_CHOICE("pre_game_choice");
+    PRE_GAME_CHOICE("pre_game_choice"),
+    SESSION("session");
     private String tag;
     private static final String MESSAGE_TAG="tag";
     private static final String MESSAGE_CONTENT="message_content";
