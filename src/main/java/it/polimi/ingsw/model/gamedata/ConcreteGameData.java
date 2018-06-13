@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Implements a GameData interface with a generic structure.
+ */
 public class ConcreteGameData implements GameData {
 
     private RoundTrack roundTrack;
@@ -38,13 +41,12 @@ public class ConcreteGameData implements GameData {
     private boolean undoAvailable;
 
     ConcreteGameData(List<Player> players) {
-        GameDataFactory factory = new GameDataFactory();
-        turnManager = factory.getTurnManager(players);
-        roundTrack = factory.getRoundTrack();
-        diceBag = factory.getDiceBag();
+        turnManager = GameDataFactory.getTurnManager(players);
+        roundTrack = GameDataFactory.getRoundTrack();
+        diceBag = GameDataFactory.getDiceBag();
         dicePool = new ArrayList<>();
-        publicObjectives = factory.getPublicObjectives();
-        tools = factory.getTools();
+        publicObjectives = GameDataFactory.getPublicObjectives();
+        tools = GameDataFactory.getTools();
         fillDicePool();
         clear();
     }
@@ -217,52 +219,27 @@ public class ConcreteGameData implements GameData {
         this.undoAvailable = available;
     }
 
-    private String convertToHorizontal(String s1, String s2) {
-        if (s1 == null || s2 == null)
-            throw new NullPointerException("Strings can't be null.");
-        if (s1.length() == 0) return s2;
-        if (s2.length() == 0) return s1;
-        String separator = "  ";
-        StringBuilder sb = new StringBuilder();
-        String[] splitS1 = s1.split("\n");
-        String[] splitS2 = s2.split("\n");
-        int min = splitS1.length > splitS2.length ? splitS2.length : splitS1.length;
-        for (int i = 0; i < min; i++) {
-            sb.append(splitS1[i]);
-            sb.append(separator);
-            sb.append(splitS2[i]);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(roundTrack);
-        sb.append("\n\n");
-        sb.append("DICE ON ROUND TRACK: ");
-        for (Die d : roundTrack.getDice())
-            sb.append(d);
-        sb.append("\n");
-        sb.append("DICE POOL: ");
-        for (Die d : dicePool)
-            sb.append(d);
-        sb.append("\n");
-        sb.append("PICKED DIE: ");
-        if (pickedDie != null) sb.append(pickedDie);
-        sb.append("\n");
-        String s = "";
-        for (PublicObjectiveCard c : publicObjectives)
-            s = convertToHorizontal(s, c.toString());
-        for (ToolCard c : tools)
-            s = convertToHorizontal(s, c.toString());
-        sb.append(s);
-        sb.append("\n");
-        s = "";
-        for (Player p : turnManager.getPlayers())
-            s = convertToHorizontal(s, p.toString());
-        sb.append(s);
+        sb.append("--- GAME DATA DUMP ---:");
+        sb.append("\nround track : ").append(roundTrack);
+        sb.append("\ndice pool   : ");
+        for (Die d : dicePool) sb.append(d);
+        sb.append("\npicked die  : ").append(pickedDie);
+        sb.append("\ndie placed  : ").append(diePlaced);
+        sb.append("\nactive  ID  : ").append(activeToolID);
+        sb.append("\npassive ID  : ").append(passiveToolID);
+        sb.append("\ntool act    : ").append(toolActivated);
+        sb.append("\ndice moved  : ");
+        for (Die d : diceMoved) sb.append(d);
+        sb.append("\nundo av     : ").append(undoAvailable);
+        sb.append("\npub obj     :\n");
+        for (PublicObjectiveCard c : publicObjectives) sb.append(c).append("\n");
+        sb.append("tool cards  :\n");
+        for (ToolCard c : tools) sb.append(c).append("\n");
+        sb.append("players     :\n");
+        for (Player p : turnManager.getPlayers()) sb.append(p).append("\n");
         return sb.toString();
     }
 

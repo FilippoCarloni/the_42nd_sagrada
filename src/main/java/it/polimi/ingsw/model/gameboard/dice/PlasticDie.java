@@ -7,6 +7,9 @@ import org.json.simple.JSONObject;
 
 import java.util.Random;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NEGATIVE_INTEGER;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
 public class PlasticDie implements Die {
 
     private Color color;
@@ -21,9 +24,9 @@ public class PlasticDie implements Die {
 
     public PlasticDie(int id, Color color, Shade shade) {
         if (id < 0)
-            throw new IllegalArgumentException("Negative ID");
+            throw new IllegalArgumentException(NEGATIVE_INTEGER);
         if (color == null || shade == null)
-            throw new NullPointerException("Null color or shade.");
+            throw new NullPointerException(NULL_PARAMETER);
         this.id = id;
         this.color = color;
         this.shade = shade;
@@ -47,14 +50,14 @@ public class PlasticDie implements Die {
     @Override
     public void setColor(Color color) {
         if (color == null)
-            throw new NullPointerException("Trying to set a null color.");
+            throw new NullPointerException(NULL_PARAMETER);
         this.color = color;
     }
 
     @Override
     public void setShade(Shade shade) {
         if (shade == null)
-            throw new NullPointerException("Trying to set a null shade.");
+            throw new NullPointerException(NULL_PARAMETER);
         this.shade = shade;
     }
 
@@ -70,7 +73,7 @@ public class PlasticDie implements Die {
 
     @Override
     public String toString() {
-        return this.color.paint(this.shade.toString());
+        return "[" + color.getID() + shade.getValue() + "]";
     }
 
     @Override

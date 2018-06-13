@@ -23,9 +23,4 @@ public class PaperPublicObjectiveCard extends AbstractCard implements PublicObje
     public int getValuePoints(WindowFrame window) {
         return pattern.getNumOfPatterns(window) * pointsPerPattern;
     }
-
-    @Override
-    public String toString() {
-        return getUpperCard() + getLowerCard();
-    }
 }

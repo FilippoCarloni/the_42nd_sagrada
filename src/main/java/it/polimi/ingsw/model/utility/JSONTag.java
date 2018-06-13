@@ -61,9 +61,6 @@ public final class JSONTag {
     // AbstractCard tags
     public static final String CARD_ID = "id";
 
-    // AbstractToolCard tags
-    public static final String TOOL_FAVOR_POINTS = "favor_points";
-
     // Commands
     public static final String REGEXP = "reg_exp";
     public static final String UNDOABLE = "undoable";

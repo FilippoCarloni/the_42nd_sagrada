@@ -1,26 +1,35 @@
 package it.polimi.ingsw.model.utility;
 
+/**
+ * Represents the color of a Sagrada die.
+ */
 public enum Color {
 
-    RED("R", "red", "\u001B[31m", "\u001B[41m"),
-    GREEN("G", "green", "\u001B[32m", "\u001B[42m"),
-    YELLOW("Y", "yellow", "\u001B[33m", "\u001B[43m"),
-    BLUE("B", "blue", "\u001B[34m", "\u001B[44m"),
-    PURPLE("P", "purple", "\u001B[35m", "\u001B[45m");
+    RED("R", "red"),
+    GREEN("G", "green"),
+    YELLOW("Y", "yellow"),
+    BLUE("B", "blue"),
+    PURPLE("P", "purple");
 
     private String id;
     private String label;
-    private String ansi;
-    private String ansiBG;
-    public static final String ANSI_RESET = "\u001B[0m";
 
-    Color(String id, String label, String ansi, String ansiBG) {
+    Color(String id, String label) {
         this.id = id;
         this.label = label;
-        this.ansi = ansi;
-        this.ansiBG = ansiBG;
     }
 
+    /**
+     * Returns a color from a unique identifier.
+     * The possible identifiers are:
+     *   - R : color red
+     *   - G : color green
+     *   - Y : color yellow
+     *   - B : color blue
+     *   - P : color purple
+     * @param id A string ID
+     * @return A Color enum value, or null if the ID doesn't match with any color
+     */
     public static Color findByID(String id) {
         for (Color c : Color.values())
             if (c.id.equals(id))
@@ -28,6 +37,17 @@ public enum Color {
         return null;
     }
 
+    /**
+     * Returns a color from a unique label.
+     * The possible labels are:
+     *   - red    : color red
+     *   - green  : color green
+     *   - yellow : color yellow
+     *   - blue   : color blue
+     *   - purple : color purple
+     * @param label A string label
+     * @return A Color enum value, or null if the label doesn't match with any color
+     */
     public static Color findByLabel(String label) {
         for (Color c : Color.values())
             if (c.label.equals(label))
@@ -35,20 +55,25 @@ public enum Color {
         return null;
     }
 
-    public String paint(String s) {
-        return s == null ? "" : this.ansi + s + ANSI_RESET;
-    }
-
-    public String paintBG(String s) {
-        return s == null ? "" : this.ansiBG + s + ANSI_RESET;
-    }
-
+    /**
+     * Returns the label of the current color.
+     * @return A unique string that identifies the color
+     */
     public String getLabel() {
         return label;
     }
 
+    /**
+     * Returns the ID of the current color.
+     * It can be used for window frame constraints definition.
+     * @return A unique string ID that identifies the color
+     */
+    public String getID() {
+        return id;
+    }
+
     @Override
     public String toString() {
-        return "[" + this.paint("■") + "]";
+        return "[" + this.id + " ]";
     }
 }

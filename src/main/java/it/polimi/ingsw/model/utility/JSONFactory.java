@@ -27,13 +27,22 @@ import org.json.simple.JSONObject;
 
 import java.util.*;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Converts JSON objects to game data objects.
+ */
 public class JSONFactory {
 
     private JSONFactory() {}
 
+    /**
+     * Loads a Die object from JSON data.
+     * @param obj A JSON-encoded die
+     * @return A Die object
+     */
     public static Die getDie(JSONObject obj) {
         int id = parseInt(obj.get(JSONTag.DIE_ID).toString());
         Color color = Color.findByLabel((String) obj.get(JSONTag.COLOR));
@@ -41,6 +50,11 @@ public class JSONFactory {
         return new PlasticDie(id, color, shade);
     }
 
+    /**
+     * Loads a DiceBag object from JSON data.
+     * @param obj A JSON-encoded dice bag
+     * @return A DiceBag object
+     */
     public static DiceBag getDiceBag(JSONObject obj) {
         JSONArray list = (JSONArray) obj.get(JSONTag.DICE);
         List<Die> dice = new ArrayList<>();
@@ -49,6 +63,11 @@ public class JSONFactory {
         return new ArrayDiceBag(dice);
     }
 
+    /**
+     * Loads a RoundTrack object from JSON data.
+     * @param obj A JSON-encoded round track
+     * @return A RoundTrack object
+     */
     public static RoundTrack getRoundTrack(JSONObject obj) {
         int currentRoundNumber = parseInt(obj.get(JSONTag.CURRENT_ROUND_NUMBER).toString());
         List<Die> dice = new ArrayList<>();
@@ -61,6 +80,11 @@ public class JSONFactory {
         return new PaperRoundTrack(currentRoundNumber, dice, diceOnSlot);
     }
 
+    /**
+     * Loads a WindowFrame object from JSON data.
+     * @param obj A JSON-encoded window frame
+     * @return A WindowFrame object
+     */
     public static WindowFrame getWindowFrame(JSONObject obj) {
         String name = obj.get(JSONTag.NAME).toString();
         int difficulty = parseInt(obj.get(JSONTag.DIFFICULTY).toString());
@@ -82,6 +106,11 @@ public class JSONFactory {
         return new PaperWindowFrame(name, difficulty, dice, colorConstraints, shadeConstraints);
     }
 
+    /**
+     * Loads a Player object from JSON data.
+     * @param obj A JSON-encoded player
+     * @return A Player object
+     */
     public static Player getPlayer(JSONObject obj) {
         String username = obj.get(JSONTag.USERNAME).toString();
         int favorPoints = parseInt(obj.get(JSONTag.FAVOR_POINTS).toString());
@@ -96,6 +125,11 @@ public class JSONFactory {
         return new ConcretePlayer(username, window, po, favorPoints);
     }
 
+    /**
+     * Loads a TurnManager object from JSON data.
+     * @param obj A JSON-encoded turn manager
+     * @return A TurnManager object
+     */
     public static TurnManager getTurnManager(JSONObject obj) {
         boolean roundStarting = parseBoolean(obj.get(JSONTag.ROUND_STARTING).toString());
         boolean roundEnding = parseBoolean(obj.get(JSONTag.ROUND_ENDING).toString());
@@ -112,6 +146,11 @@ public class JSONFactory {
         return new ArrayTurnManager(roundStarting, roundEnding, players, playerTurns, turnIndex, firstPlayerIndex);
     }
 
+    /**
+     * Loads a PrivateObjectiveCard object from JSON data.
+     * @param obj A JSON-encoded private objective card
+     * @return A PrivateObjectiveCard object
+     */
     public static PrivateObjectiveCard getPrivateObjectiveCard(JSONObject obj) {
         int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
         Deck d = new PrivateObjectiveDeck();
@@ -120,9 +159,14 @@ public class JSONFactory {
             if (card.getID() == id)
                 return card;
         }
-        throw new NoSuchElementException("Invalid JSON format: there's no matching private objective card.");
+        throw new NoSuchElementException(BAD_JSON);
     }
 
+    /**
+     * Loads a PublicObjectiveCard object from JSON data.
+     * @param obj A JSON-encoded public objective card
+     * @return A PublicObjectiveCard object
+     */
     public static PublicObjectiveCard getPublicObjectiveCard(JSONObject obj) {
         int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
         Deck d = new PublicObjectiveDeck();
@@ -131,12 +175,18 @@ public class JSONFactory {
             if (card.getID() == id)
                 return card;
         }
-        throw new NoSuchElementException("Invalid JSON format: there's no matching public objective card.");
+        throw new NoSuchElementException(BAD_JSON);
     }
 
+
+    /**
+     * Loads a ToolCard object from JSON data.
+     * @param obj A JSON-encoded tool card
+     * @return A ToolCard object
+     */
     private static ToolCard getToolCard(JSONObject obj) {
         int id = parseInt(obj.get(JSONTag.CARD_ID).toString());
-        int favorPoints = parseInt(obj.get(JSONTag.TOOL_FAVOR_POINTS).toString());
+        int favorPoints = parseInt(obj.get(JSONTag.FAVOR_POINTS).toString());
         Deck d = new ToolDeck();
         while (d.size() > 0) {
             ToolCard card = (ToolCard) d.draw();
@@ -147,9 +197,15 @@ public class JSONFactory {
                 return card;
             }
         }
-        throw new NoSuchElementException("Invalid JSON format: there's no matching tool card.");
+        throw new NoSuchElementException(BAD_JSON);
     }
 
+
+    /**
+     * Loads a GameData object from JSON data.
+     * @param obj A JSON-encoded game data
+     * @return A GameData object
+     */
     public static GameData getGameData(JSONObject obj) {
         List<Die> dicePool = new ArrayList<>();
         JSONArray dicePoolList = (JSONArray) obj.get(JSONTag.DICE_POOL);

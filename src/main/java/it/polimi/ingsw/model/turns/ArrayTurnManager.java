@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.*;
+
+/**
+ * Implements the TurnManger interface using an array-like structure.
+ */
 public class ArrayTurnManager implements TurnManager {
 
     private boolean roundStarting;
@@ -28,9 +33,9 @@ public class ArrayTurnManager implements TurnManager {
      */
     public ArrayTurnManager(List<Player> players) {
         if (players == null)
-            throw new NullPointerException("Cannot manage turns on a null list of players.");
+            throw new NullPointerException(NULL_PARAMETER);
         if (players.size() < 2 || players.size() > Parameters.MAX_PLAYERS)
-            throw new IllegalArgumentException("Illegal number of players.");
+            throw new IllegalArgumentException(INDEX_OUT_OF_BOUND);
         this.players = players;
         playerTurns = new ArrayList<>();
         roundEnding = true;
@@ -52,7 +57,7 @@ public class ArrayTurnManager implements TurnManager {
         for (Player p : players)
             if (p.getUsername().equals(username))
                 return p;
-        throw new IllegalArgumentException("This player does not exist.");
+        throw new IllegalArgumentException(OBJECT_NOT_EXISTS);
     }
 
     private void updateRoundStatus() {
@@ -116,7 +121,7 @@ public class ArrayTurnManager implements TurnManager {
                 return;
             }
         }
-        throw new NoSuchElementException("Current player already played two times during this round.");
+        throw new NoSuchElementException(PLAYER_ALREADY_PLAYED_TWO_TURNS);
     }
 
     @Override

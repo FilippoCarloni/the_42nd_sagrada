@@ -8,6 +8,7 @@ public final class Parameters {
 
     private Parameters() {}
 
+    // game structure parameters
     public static final int TOTAL_NUMBER_OF_ROUNDS = 10;
     public static final int MAX_ROWS = 4;
     public static final int MAX_COLUMNS = 5;
@@ -16,8 +17,10 @@ public final class Parameters {
     public static final int TOOL_CARDS = 3;
     public static final int NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE = 4;
 
+    // game rule parameters
     public static final boolean USE_COMPLETE_RULES = true;
 
+    // paths to game related structures
     public static final String WINDOW_PATTERNS_PATH = "src/main/java/res/window_patterns/";
     public static final String BASIC_COMMANDS_PATH = "src/main/java/res/commands/basic_commands.json";
     public static final String TOOL_ACTIVATOR_PATH = "src/main/java/res/commands/tool_card_activator.json";

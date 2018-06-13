@@ -30,26 +30,4 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
                 .map(Die::getShade)
                 .mapToInt(Shade::getValue).sum();
     }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getUpperCard());
-        sb.append("|");
-        for (int i = 0; i < pixelWidth; i++) sb.append(" ");
-        sb.append("|\n|");
-        for (int i = 0; i < pixelWidth - 2 * pixelWidth / 3; i++) sb.append(" ");
-        for (int i = 0; i < pixelWidth / 3; i++) sb.append(color.paintBG(" "));
-        for (int i = 0; i < pixelWidth - 2 * pixelWidth / 3; i++) sb.append(" ");
-        sb.append("|\n|");
-        for (int i = 0; i < pixelWidth - 2 * pixelWidth / 3; i++) sb.append(" ");
-        for (int i = 0; i < pixelWidth / 3; i++) sb.append(color.paintBG(" "));
-        for (int i = 0; i < pixelWidth - 2 * pixelWidth / 3; i++) sb.append(" ");
-        sb.append("|\n");
-        sb.append("|");
-        for (int i = 0; i < pixelWidth; i++) sb.append(" ");
-        sb.append("|");
-        sb.append(getLowerCard());
-        return sb.toString();
-    }
 }

@@ -62,20 +62,7 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
     @SuppressWarnings("unchecked")
     public JSONObject encode() {
         JSONObject obj =  super.encode();
-        obj.put(JSONTag.TOOL_FAVOR_POINTS, favorPoints);
+        obj.put(JSONTag.FAVOR_POINTS, favorPoints);
         return obj;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getUpperCard());
-        sb.append("|(FP:").append(favorPoints).append(")");
-        for (int i = 0; i < pixelWidth - 6; i++) sb.append(" ");
-        sb.append("|\n");
-        sb.append("|(ID:").append(id).append(")");
-        for (int i = 0; i < pixelWidth - 6; i++) sb.append(" ");
-        sb.append("|\n\n").append(getLowerCard());
-        return sb.toString();
     }
 }

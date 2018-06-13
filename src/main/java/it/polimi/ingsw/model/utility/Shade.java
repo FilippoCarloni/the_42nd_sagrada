@@ -1,29 +1,52 @@
 package it.polimi.ingsw.model.utility;
 
+/**
+ * Represents the shade of a die. A shade consists of an integer between 1 and 6,
+ * that corresponds with the value on the top face of a die.
+ */
 public enum Shade {
 
-    LIGHTEST("⚀", 1),
-    LIGHTER("⚁", 2),
-    LIGHT("⚂", 3),
-    DARK("⚃", 4),
-    DARKER("⚄", 5),
-    DARKEST("⚅", 6);
+    LIGHTEST(1),
+    LIGHTER(2),
+    LIGHT(3),
+    DARK(4),
+    DARKER(5),
+    DARKEST(6);
 
-    private String label;
     private int value;
 
-    Shade(String label, int value) {
-        this.label = label;
+    Shade(int value) {
         this.value = value;
     }
 
+    /**
+     * Returns a shade from a unique integer value.
+     * The possible values are:
+     *   - 1 : lightest shade
+     *   - 2 : lighter shade
+     *   - 3 : light shade
+     *   - 4 : dark shade
+     *   - 5 : darker shade
+     *   - 6 : darkest shade
+     * @param value A shade integer
+     * @return A Shade enum value, or null if the integer doesn't match with any shade
+     */
     public static Shade findByValue(int value) {
-        for (Shade s : Shade.values())
-            if (s.value == value)
-                return s;
-        return null;
+        return findByID("" + value);
     }
 
+    /**
+     * Returns a shade from a unique integer value, passed as string.
+     * The possible values are:
+     *   - 1 : lightest shade
+     *   - 2 : lighter shade
+     *   - 3 : light shade
+     *   - 4 : dark shade
+     *   - 5 : darker shade
+     *   - 6 : darkest shade
+     * @param s A string value
+     * @return A Shade enum value, or null if the string doesn't match with any shade
+     */
     public static Shade findByID(String s) {
         for (Shade shade : Shade.values())
             if (("" + shade.value).equals(s))
@@ -31,6 +54,10 @@ public enum Shade {
         return null;
     }
 
+    /**
+     * Returns the maximum value from all the possible shade values.
+     * @return A positive integer
+     */
     public static int getMaximumValue() {
         int max = 0;
         for (Shade s : Shade.values())
@@ -39,6 +66,10 @@ public enum Shade {
         return max;
     }
 
+    /**
+     * Returns the minimum value from all the possible shade values.
+     * @return A positive integer
+     */
     public static int getMinimumValue() {
         int min = 7;
         for (Shade s : Shade.values())
@@ -47,16 +78,26 @@ public enum Shade {
         return min;
     }
 
+    /**
+     * Returns the label of the shade.
+     * The label is unique and can be used for window frame constraint definition.
+     * The label corresponds to the integer value of the shade.
+     * @return A string that identifies uniquely the shade
+     */
     public String getLabel() {
-        return label;
+        return "" + value;
     }
 
+    /**
+     * Returns the integer value of the shade.
+     * @return An integer between 1 and 6
+     */
     public int getValue() {
         return value;
     }
 
     @Override
     public String toString() {
-        return "[" + this.label + "]";
+        return "[ " + this.value + "]";
     }
 }

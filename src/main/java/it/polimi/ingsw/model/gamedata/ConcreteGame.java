@@ -12,19 +12,27 @@ import org.json.simple.JSONObject;
 import java.util.List;
 import java.util.Map;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NOT_MATCHING_PARAMETER;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
+/**
+ * Implements the Game interface unifying the game data and the command manager with a generic structure.
+ * NOTE: the game data represents the raw data of the game (can be treated as a database of the game information)
+ * while the command manager represents the rule manager (can be treated as the game logic)
+ */
 public class ConcreteGame implements Game {
 
     private CommandManager commandManager;
 
     public ConcreteGame(List<Player> players) {
         if (players == null)
-            throw new NullPointerException("Null players.");
+            throw new NullPointerException(NULL_PARAMETER);
         commandManager = new DequeCommandManager(new ConcreteGameData(players));
     }
 
     public ConcreteGame(GameData gameData) {
         if (gameData == null)
-            throw new NullPointerException("Null game data.");
+            throw new NullPointerException(NULL_PARAMETER);
         commandManager = new DequeCommandManager(gameData);
     }
 
@@ -89,7 +97,7 @@ public class ConcreteGame implements Game {
             }
         }
         if (!found)
-            throw new IllegalArgumentException("The passed player is not playing in this game.");
+            throw new IllegalArgumentException(NOT_MATCHING_PARAMETER);
         return data;
     }
 }

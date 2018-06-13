@@ -24,6 +24,8 @@ class UtilityTest {
         assertEquals(Color.findByID("Y"), Color.YELLOW);
         assertEquals(Color.findByID("G"), Color.GREEN);
         assertEquals(Color.findByID("P"), Color.PURPLE);
+
+        assertEquals(null, Color.findByLabel("invalidLabel"));
     }
 
     @Test
@@ -48,12 +50,12 @@ class UtilityTest {
 
         assertNotEquals(Shade.DARKER, Shade.findByValue(1));
 
-        assertEquals(Shade.LIGHTEST.getLabel(), "⚀");
-        assertEquals(Shade.LIGHTER.getLabel(), "⚁");
-        assertEquals(Shade.LIGHT.getLabel(), "⚂");
-        assertEquals(Shade.DARK.getLabel(), "⚃");
-        assertEquals(Shade.DARKER.getLabel(), "⚄");
-        assertEquals(Shade.DARKEST.getLabel(), "⚅");
+        assertEquals(Shade.LIGHTEST.getLabel(), "1");
+        assertEquals(Shade.LIGHTER.getLabel(), "2");
+        assertEquals(Shade.LIGHT.getLabel(), "3");
+        assertEquals(Shade.DARK.getLabel(), "4");
+        assertEquals(Shade.DARKER.getLabel(), "5");
+        assertEquals(Shade.DARKEST.getLabel(), "6");
 
         assertEquals(1, Shade.getMinimumValue());
         assertEquals(6, Shade.getMaximumValue());

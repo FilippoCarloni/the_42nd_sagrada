@@ -6,6 +6,12 @@ import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NEGATIVE_INTEGER;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
+/**
+ * Implements the Player interface with a generic structure.
+ */
 public class ConcretePlayer implements Player{
 
     private String username;
@@ -35,7 +41,7 @@ public class ConcretePlayer implements Player{
 
     @Override
     public void setWindowFrame(WindowFrame window) {
-        if (window == null) throw new NullPointerException("Cannot play with a null map.");
+        if (window == null) throw new NullPointerException(NULL_PARAMETER);
         favorPoints = window.getDifficulty();
         this.window = window;
     }
@@ -52,7 +58,7 @@ public class ConcretePlayer implements Player{
 
     @Override
     public void setPrivateObjective(PrivateObjectiveCard po) {
-        if (po == null) throw new NullPointerException("Cannot play with no private objective.");
+        if (po == null) throw new NullPointerException(NULL_PARAMETER);
         this.po = po;
     }
 
@@ -63,8 +69,7 @@ public class ConcretePlayer implements Player{
 
     @Override
     public void setFavorPoints(int points) {
-        if (points < 0)
-            throw new IllegalArgumentException("Favor points cannot be negative.");
+        if (points < 0) throw new IllegalArgumentException(NEGATIVE_INTEGER);
         favorPoints = points;
     }
 
@@ -80,23 +85,13 @@ public class ConcretePlayer implements Player{
 
     @Override
     public String toString() {
-        String printableUsername = username + " (FP:" + favorPoints + ")";
-        StringBuilder sb = new StringBuilder();
-        if (window != null) {
-            String frame = window.toString();
-            int len = frame.indexOf('\n');
-            for (int i = 0; i < len; i++)
-                sb.append("-");
-            sb.append("\n");
-            for (int i = 0; i < (len - printableUsername.length()) / 2; i++)
-                sb.append(" ");
-            sb.append(printableUsername);
-            for (int i = 0; i < len - printableUsername.length() - (len - printableUsername.length()) / 2; i++)
-                sb.append(" ");
-            sb.append("\n");
-            sb.append(frame);
-        }
-        return sb.toString();
+        return "{" +
+                "\n  name  : " + username +
+                "\n  fp    : " + favorPoints +
+                "\n  po    : " + po +
+                "\n  frame :\n" + window +
+                "\n}";
+
     }
 
     @Override
