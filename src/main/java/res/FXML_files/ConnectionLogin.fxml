@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GuiLauncher">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.preliminarystages.login.LoginController">
    <children>
-      <CheckBox fx:id="slowConnection" layoutX="202.0" layoutY="325.0" mnemonicParsing="false" onMouseClicked="#slowConnection" text="Slow Connection" />
+      <CheckBox layoutX="202.0" layoutY="325.0" mnemonicParsing="false" onAction="#slowConnection" text="Slow Connection" />
       <TextField fx:id="username" layoutX="178.0" layoutY="239.0" promptText="Username" />
       <Label fx:id="usernameNotValid" layoutX="178.0" layoutY="128.0" textFill="#f50707" />
-      <Button fx:id="loginButton" layoutX="392.0" layoutY="239.0" mnemonicParsing="false" onMouseClicked="#getUsername" text="Login" />
+      <Button layoutX="392.0" layoutY="239.0" mnemonicParsing="false" onAction="#getUsername" text="Login" />
    </children>
 </AnchorPane>

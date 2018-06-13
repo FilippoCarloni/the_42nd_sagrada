@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui.settings;
 
+import it.polimi.ingsw.connection.client.ConnectionType;
+import it.polimi.ingsw.view.gui.Helper;
 import javafx.scene.paint.Color;
 
 public final class GUIParameters {
@@ -73,9 +75,22 @@ public final class GUIParameters {
     public static final String CONNECTION_LOGIN_FXML_PATH = "/FXML_files/ConnectionLogin.fxml";
     public static final String PLAY_OR_QUIT_FXML_PATH = "/FXML_files/PlayOrQuit.fxml";
     public static final String LOBBY_FXML_PATH = "/FXML_files/Lobby.fxml";
+    public static final String MAP_CHOICE_FXML_PATH = "/FXML_files/WindowFrameChoice.fxml";
     public static final String MAIN_BOARD_FXML_PATH = "/FXML_files/MainBoard.fxml";
 
     //Error messages
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";
     public static final String LOAD_FXML_ERROR = "File fxml not found";
+
+    //Global Helper, to have one Connection Controller for all GUI fxml files
+    public static Helper globalHelper;
+    public static void setGlobalHelper(ConnectionType connectionType){
+        globalHelper = Helper.getInstance(connectionType);
+    }
+
+    public static boolean alreadyInLobby = false;
+
+    public static void setAlreadyInLobby(){
+        alreadyInLobby = true;
+    }
 }
