@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.gameboard.cards.publicobjectives.patterns;
 
+/**
+ * Holds the JSON tags for pattern loading.
+ */
 public class PatternID {
 
     private PatternID() {}

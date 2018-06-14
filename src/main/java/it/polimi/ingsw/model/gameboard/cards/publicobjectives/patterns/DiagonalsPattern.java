@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.utility.Shade;
 
+/**
+ * Implements the diagonal pattern that looks for patterns in the window frame diagonals.
+ */
 public class DiagonalsPattern implements FramePattern {
 
     private boolean shadeOrColor;

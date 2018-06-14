@@ -13,14 +13,28 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BROKEN_PATH;
 import static it.polimi.ingsw.model.utility.Parameters.USE_COMPLETE_RULES;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Generates tool card instances from JSON configuration files.
+ */
 public final class ToolCardFactory {
 
     private ToolCardFactory() {}
 
+    /**
+     * Returns the tool card instances from file.
+     *
+     * NOTE: Parameters.USE_COMPLETE_RULES can be used to manage tool card loading:
+     *   - true  : loads tool cards from 1 to 12
+     *   - false : loads tool cards from 1 to 6
+     * @see Parameters
+     * @return A List of tool card instances
+     */
     public static List<ToolCard> getTools() {
         List<ToolCard> cards = new ArrayList<>(loadFromJSON(Parameters.SIMPLIFIED_RULES_TOOLS_PATH));
         if (USE_COMPLETE_RULES)
@@ -42,9 +56,9 @@ public final class ToolCardFactory {
             }
             return loadedTools;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Bad file name.");
+            throw new IllegalArgumentException(BROKEN_PATH);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Bad JSON file.");
+            throw new IllegalArgumentException(BAD_JSON);
         }
     }
 }

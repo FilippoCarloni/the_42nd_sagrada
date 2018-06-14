@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
 class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjectiveCard {
 
     private Color color;
@@ -24,7 +26,7 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
 
     @Override
     public int getValuePoints(WindowFrame window) {
-        if (window == null) throw new NullPointerException("Cannot evaluate points on a null window.");
+        if (window == null) throw new NullPointerException(NULL_PARAMETER);
         return window.getDice().isEmpty() ? 0 : window.getDice().stream()
                 .filter(d -> d.getColor().equals(this.getColor()))
                 .map(Die::getShade)

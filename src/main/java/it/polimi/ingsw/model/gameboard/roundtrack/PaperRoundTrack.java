@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.*;
+
+/**
+ * Implements the RoundTrack interface with an array-like structure.
+ */
 public class PaperRoundTrack implements RoundTrack {
 
     private int currentRoundNumber;
@@ -55,21 +60,21 @@ public class PaperRoundTrack implements RoundTrack {
 
     @Override
     public void put(List<Die> dice) {
-        if (dice == null) throw new NullPointerException("Cannot place null dice on the round track.");
+        if (dice == null) throw new NullPointerException(NULL_PARAMETER);
         if (currentRoundNumber <= totalNumberOfRounds) {
             this.dice.addAll(dice.stream().map(die -> JSONFactory.getDie(die.encode())).collect(Collectors.toList()));
             diceOnSlot[currentRoundNumber - 1] = dice.size();
             currentRoundNumber++;
             return;
         }
-        throw new IllegalArgumentException("The round track is empty.");
+        throw new IllegalArgumentException(FULL_ROUND_TRACK);
     }
 
     @Override
     public void swap(Die playerDie, Die roundTrackDie) {
-        if (playerDie == null || roundTrackDie == null) throw new NullPointerException("Cannot swap null dice.");
-        if (!dice.contains(roundTrackDie))throw new IllegalArgumentException("The die is not present on the round track.");
-        if (dice.contains(playerDie)) throw new IllegalArgumentException("Cannot swap two dice already on the round track.");
+        if (playerDie == null || roundTrackDie == null) throw new NullPointerException(NULL_PARAMETER);
+        if (!dice.contains(roundTrackDie))throw new IllegalArgumentException(OBJECT_NOT_EXISTS);
+        if (dice.contains(playerDie)) throw new IllegalArgumentException(OBJECT_ALREADY_CONTAINED);
         dice.set(dice.indexOf(roundTrackDie), JSONFactory.getDie(playerDie.encode()));
     }
 
@@ -91,19 +96,13 @@ public class PaperRoundTrack implements RoundTrack {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(" ");
-        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("___");
-        sb.append("_ \n| ROUND TRACK");
-        for (int i = 0; i < totalNumberOfRounds * 3 - 12; i++) sb.append(" ");
-        sb.append(" |\n|");
-        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("---");
-        sb.append("-|\n|");
+        sb.append("{");
+        sb.append("\n  visible dice : ");
         for (Die d : getVisibleDice()) sb.append(d);
-        for (int i = 0; i < totalNumberOfRounds - getVisibleDice().size(); i++)
-            sb.append("[").append(getVisibleDice().size() + i + 1).append("]");
-        sb.append("|\n|");
-        for (int i = 0; i < totalNumberOfRounds; i++) sb.append("___");
-        sb.append("_|");
+        sb.append("\n  all dice     : ");
+        for (Die d : getDice()) sb.append(d);
+        sb.append("\n current round : ").append(currentRoundNumber);
+        sb.append("\n}");
         return sb.toString();
     }
 

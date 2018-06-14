@@ -9,6 +9,10 @@ import it.polimi.ingsw.model.utility.Shade;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Implements the difference pattern that identifies differences on rows or columns
+ * of the window frame.
+ */
 public class DifferencePattern implements FramePattern {
 
     private boolean rowsOrColumns;

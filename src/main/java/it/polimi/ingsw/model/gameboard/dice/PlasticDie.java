@@ -10,6 +10,9 @@ import java.util.Random;
 import static it.polimi.ingsw.model.utility.ExceptionMessage.NEGATIVE_INTEGER;
 import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
 
+/**
+ * Implements the Die interface with a generic structure.
+ */
 public class PlasticDie implements Die {
 
     private Color color;
