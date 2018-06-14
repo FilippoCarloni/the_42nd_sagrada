@@ -20,11 +20,17 @@ import static it.polimi.ingsw.view.cli.CLIMessage.*;
 import static java.lang.Integer.parseInt;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+/**
+ * Terminal view of the Sagrada Game.
+ * Uses ansi colors for color rendering.
+ * A monospaced font is highly recommended for smooth usage of the CLI.
+ */
 public class CLI implements Runnable {
 
     // Board printer descriptors
     private static final String SEPARATOR = " ";
     private static final String TOP_SEPARATOR = "  ";
+    private static final String DICE_SEPARATOR = " ";
     private static final String ROUND_TRACK_TITLE = "ROUND TRACK";
     private static final String DICE_ON_ROUND_TRACK = "Round Track dice  :  ";
     private static final String DICE_POOL = "Dice Pool         :  ";
@@ -56,6 +62,16 @@ public class CLI implements Runnable {
         menu();
         new Thread(this::run).start();
         startRefresh();
+    }
+
+    @Override
+    public void run() {
+        String message;
+        message = scanner.nextLine();
+        while (message != null) {
+            connectionController.send(message);
+            message = scanner.nextLine();
+        }
     }
 
     private void startRefresh() {
@@ -110,21 +126,11 @@ public class CLI implements Runnable {
                         drawPreGame((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     default:
-                        print("Message not supported!");
+                        print(UNSUPPORTED_MESSAGE);
                 }
             }
         }catch(Exception e) {
             print(e.getMessage());
-        }
-    }
-
-    @Override
-    public void run() {
-        String message;
-        message = scanner.nextLine();
-        while (message != null) {
-            connectionController.send(message);
-            message = scanner.nextLine();
         }
     }
 
@@ -144,7 +150,7 @@ public class CLI implements Runnable {
         print(sb.toString());
     }
 
-    public void draw(JSONObject obj) {
+    private void draw(JSONObject obj) {
         print(drawBoard(obj));
     }
 
@@ -152,15 +158,15 @@ public class CLI implements Runnable {
         StringBuilder sb = new StringBuilder();
         int i = 1;
         for (Object o : jsonArray) {
-            sb.append(i).append(drawDie((JSONObject) o)).append(" ");
+            sb.append(i).append(drawDie((JSONObject) o)).append(DICE_SEPARATOR);
             i++;
         }
         return sb.toString();
     }
 
     private String drawDie(JSONObject jsonObject) {
-        CliShade shade = CliShade.findByValue(parseInt(jsonObject.get(JSONTag.SHADE).toString()));
-        CliColor color = CliColor.findByLabel(jsonObject.get(JSONTag.COLOR).toString());
+        CLIShade shade = CLIShade.findByValue(parseInt(jsonObject.get(JSONTag.SHADE).toString()));
+        CLIColor color = CLIColor.findByLabel(jsonObject.get(JSONTag.COLOR).toString());
         if (shade != null && color != null)
             return color.paint(shade.toString());
         throw new NullPointerException();
@@ -222,9 +228,9 @@ public class CLI implements Runnable {
                 if (coordinate.get(JSONTag.DIE) != null)
                     sb.append(drawDie((JSONObject) coordinate.get(JSONTag.DIE)));
                 else if (coordinate.get(JSONTag.COLOR_CONSTRAINT) != null)
-                    sb.append("[").append(CliColor.findByLabel((String) coordinate.get(JSONTag.COLOR_CONSTRAINT)).paint("■")).append("]");
+                    sb.append("[").append(CLIColor.findByLabel((String) coordinate.get(JSONTag.COLOR_CONSTRAINT)).paint("■")).append("]");
                 else if (coordinate.get(JSONTag.SHADE_CONSTRAINT) != null)
-                    sb.append(CliShade.findByValue(parseInt(coordinate.get(JSONTag.SHADE_CONSTRAINT).toString())));
+                    sb.append(CLIShade.findByValue(parseInt(coordinate.get(JSONTag.SHADE_CONSTRAINT).toString())));
                 else
                     sb.append("[ ]");
             }
@@ -303,8 +309,6 @@ public class CLI implements Runnable {
     }
 
     private String convertToHorizontal(String s1, String s2, String separator) {
-        if (s1 == null || s2 == null)
-            throw new NullPointerException("Strings can't be null.");
         if (s1.length() == 0) return s2;
         if (s2.length() == 0) return s1;
         StringBuilder sb = new StringBuilder();
@@ -347,7 +351,7 @@ public class CLI implements Runnable {
             }
             return getUpperCard() + sb.toString() + getLowerCard(name, description);
         } catch (IOException e) {
-            throw new IllegalArgumentException("No file was found.");
+            throw new IllegalArgumentException(IMAGE_NOT_FOUND);
         }
     }
 
