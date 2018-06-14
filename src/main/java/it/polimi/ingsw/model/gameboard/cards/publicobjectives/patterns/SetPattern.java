@@ -9,6 +9,9 @@ import org.json.simple.JSONArray;
 import static it.polimi.ingsw.model.gameboard.cards.publicobjectives.patterns.PatternID.COLOR;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Implements the set pattern that identifies a particular set of dice on the window frame.
+ */
 public class SetPattern implements FramePattern {
 
     private boolean color;

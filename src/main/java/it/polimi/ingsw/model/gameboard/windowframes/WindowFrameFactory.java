@@ -16,25 +16,38 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BROKEN_PATH;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Generates window frames from .wfr files in the Parameters.WINDOW_PATTERNS_PATH directory.
+ * @see Parameters
+ */
 public final class WindowFrameFactory {
 
     private WindowFrameFactory() {}
 
+    /**
+     * Returns the list of window frames loaded from the Parameters.WINDOW_PATTERNS_PATH path.
+     * This method automatically detects additions or deletions of .wfr files from the
+     * fetching directory.
+     * @see Parameters
+     * @return A List of loaded window frames
+     */
     public static List<WindowFrame> getWindowFrames() {
         List<WindowFrame> frames = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(Parameters.WINDOW_PATTERNS_PATH))) {
             paths.filter(Files::isRegularFile).forEach(path -> frames.add(getWindowFrame(path.toString())));
             return frames;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Something went wrong in " + Parameters.WINDOW_PATTERNS_PATH + ". Try checking all the window patterns.");
+            throw new IllegalArgumentException(BROKEN_PATH + " " + Parameters.WINDOW_PATTERNS_PATH);
         }
     }
 
     private static WindowFrame getWindowFrame(String path) {
         if (path == null)
-            throw new NullPointerException("Null path.");
+            throw new NullPointerException(NULL_PARAMETER);
         Map<Coordinate, Color> colorConstraints = new HashMap<>();
         Map<Coordinate, Shade> shadeConstraints = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
@@ -53,7 +66,7 @@ public final class WindowFrameFactory {
             }
             return new PaperWindowFrame(name, difficulty, new HashMap<>(), colorConstraints, shadeConstraints);
         } catch (IOException e) {
-            throw new IllegalArgumentException("Given path (" + path + ") is not valid or the file is broken.");
+            throw new IllegalArgumentException(BROKEN_PATH + " " + path);
         }
     }
 }

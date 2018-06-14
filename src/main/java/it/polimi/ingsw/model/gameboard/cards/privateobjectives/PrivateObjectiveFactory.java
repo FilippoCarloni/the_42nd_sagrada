@@ -13,12 +13,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BROKEN_PATH;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Generates the Private Objective Cards of Sagrada Game.
+ * Every private objective corresponds to a different Sagrada Color.
+ */
 public final class PrivateObjectiveFactory {
 
     private PrivateObjectiveFactory() {}
 
+    /**
+     * Returns the list of public objectives, one for every game color.
+     * @return A List of public objectives
+     */
     public static List<PrivateObjectiveCard> getPrivateObjectives() {
         try {
             String content = new String(Files.readAllBytes(Paths.get(Parameters.PRIVATE_OBJECTIVES_PATH)));
@@ -32,9 +42,9 @@ public final class PrivateObjectiveFactory {
                 privateObjectives.add(new PaperPrivateObjectiveCard(name, description, index, color, baseID++));
             return privateObjectives;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Bad file name.");
+            throw new IllegalArgumentException(BROKEN_PATH);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Bad JSON file.");
+            throw new IllegalArgumentException(BAD_JSON);
         }
     }
 }

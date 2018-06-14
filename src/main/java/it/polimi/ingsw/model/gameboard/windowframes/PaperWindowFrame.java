@@ -7,6 +7,13 @@ import org.json.simple.JSONObject;
 
 import java.util.*;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.OBJECT_NOT_EXISTS;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.SLOT_OCCUPIED;
+
+/**
+ * Implements a WindowFrame interface with a generic structure.
+ */
 public class PaperWindowFrame implements WindowFrame {
 
     private String name;
@@ -83,18 +90,18 @@ public class PaperWindowFrame implements WindowFrame {
     @Override
     public void put(Die die, int row, int column) {
         if (die == null)
-            throw new NullPointerException("Cannot place a null die.");
+            throw new NullPointerException(NULL_PARAMETER);
         if (!isEmpty(row, column))
-            throw new IllegalArgumentException("This place is already occupied.");
+            throw new IllegalArgumentException(SLOT_OCCUPIED);
         dice.put(new Coordinate(row, column), JSONFactory.getDie(die.encode()));
     }
 
     @Override
     public void move(int oldRow, int oldColumn, int newRow, int newColumn) {
         if (isEmpty(oldRow, oldColumn))
-            throw new IllegalArgumentException("There's no die to move.");
+            throw new IllegalArgumentException(OBJECT_NOT_EXISTS);
         if (!isEmpty(newRow, newColumn))
-            throw new IllegalArgumentException("The place is already occupied by another die.");
+            throw new IllegalArgumentException(SLOT_OCCUPIED);
         dice.put(new Coordinate(newRow, newColumn), dice.remove(new Coordinate(oldRow, oldColumn)));
     }
 

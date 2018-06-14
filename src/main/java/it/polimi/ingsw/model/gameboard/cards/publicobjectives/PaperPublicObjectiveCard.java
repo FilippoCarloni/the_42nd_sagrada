@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.gameboard.cards.publicobjectives.patterns.PatternFa
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import org.json.simple.JSONObject;
 
+/**
+ * Implements the PublicObjectiveCard interface with a generic structure.
+ */
 public class PaperPublicObjectiveCard extends AbstractCard implements PublicObjectiveCard {
 
     private FramePattern pattern;

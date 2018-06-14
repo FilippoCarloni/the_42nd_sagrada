@@ -12,6 +12,9 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements the tool card interface with a generic structure.
+ */
 public class PaperToolCard extends AbstractCard implements ToolCard {
 
     private int favorPoints;

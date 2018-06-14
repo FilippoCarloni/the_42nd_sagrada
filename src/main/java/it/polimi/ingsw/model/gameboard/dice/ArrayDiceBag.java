@@ -10,6 +10,8 @@ import org.json.simple.JSONObject;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.*;
+
 /**
  * Implements the DiceBag interface holding data with an array-like representation.
  */
@@ -35,7 +37,7 @@ public class ArrayDiceBag implements DiceBag {
 
     public ArrayDiceBag(List<Die> dice) {
         if (dice == null)
-            throw new NullPointerException("Null list of dice.");
+            throw new NullPointerException(NULL_PARAMETER);
         this.dice = new ArrayList<>();
         this.dice.addAll(dice.stream().map(d -> JSONFactory.getDie(d.encode())).collect(Collectors.toList()));
     }
@@ -43,7 +45,7 @@ public class ArrayDiceBag implements DiceBag {
     @Override
     public Die pick() {
         if (dice.isEmpty())
-            throw new NoSuchElementException("There are no more dice in the bag.");
+            throw new NoSuchElementException(EMPTY_COLLECTION);
         Collections.shuffle(dice);
         return dice.remove(dice.size() - 1);
     }
@@ -51,9 +53,9 @@ public class ArrayDiceBag implements DiceBag {
     @Override
     public List<Die> pick(int numOfDice) {
         if (numOfDice <= 0)
-            throw new IllegalArgumentException("You should always pick at least one die.");
+            throw new IllegalArgumentException(NEGATIVE_INTEGER);
         if (numOfDice > dice.size())
-            throw new NoSuchElementException("There are not enough dice in the dice bag.");
+            throw new NoSuchElementException(INDEX_OUT_OF_BOUND);
         List<Die> pickedDice = new ArrayList<>();
         for (int i = 0; i < numOfDice; i++)
             pickedDice.add(pick());
@@ -63,9 +65,9 @@ public class ArrayDiceBag implements DiceBag {
     @Override
     public void insert(Die die) {
         if (die == null)
-            throw new NullPointerException("Cannot insert a null die in the bag.");
+            throw new NullPointerException(NULL_PARAMETER);
         if (dice.stream().map(Die::hashCode).anyMatch(x -> x.hashCode() == die.hashCode()))
-            throw new IllegalArgumentException("The bag already contains the die.");
+            throw new IllegalArgumentException(OBJECT_ALREADY_CONTAINED);
         Die d = JSONFactory.getDie(die.encode());
         d.roll();
         dice.add(d);

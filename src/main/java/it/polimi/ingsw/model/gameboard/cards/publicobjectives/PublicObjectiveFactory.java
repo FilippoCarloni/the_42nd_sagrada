@@ -13,13 +13,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BROKEN_PATH;
 import static it.polimi.ingsw.model.utility.JSONTag.*;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Generates Public Objective Cards from JSON files.
+ */
 public final class PublicObjectiveFactory {
 
     private PublicObjectiveFactory() {}
 
+    /**
+     * Generates the list of Public Objective Cards from a JSON configuration file.
+     * @return A List of public objectives
+     */
     public static List<PublicObjectiveCard> getPublicObjectives() {
         try {
             String content = new String(Files.readAllBytes(Paths.get(Parameters.PUBLIC_OBJECTIVES_PATH)));
@@ -37,9 +46,9 @@ public final class PublicObjectiveFactory {
             }
             return loadedObjectives;
         } catch (IOException e) {
-            throw new IllegalArgumentException("Bad file name.");
+            throw new IllegalArgumentException(BROKEN_PATH);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Bad JSON file.");
+            throw new IllegalArgumentException(BAD_JSON);
         }
     }
 }
