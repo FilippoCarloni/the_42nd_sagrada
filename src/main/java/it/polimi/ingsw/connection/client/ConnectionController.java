@@ -75,17 +75,16 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         username = username.trim();
         status = ClientStatus.restoreClientStatus(username);
         if (status != null) {
-            sessionID = status.getSesssion();
             if (connectionType==ConnectionType.RMI)
                 try {
-                    sessionID = lobby.restoreSession(sessionID, this);
+                    sessionID = lobby.restoreSession(status.getSesssion(), this);
                     logged=true;
                 } catch (RemoteException e) {
                    // messages.add(e.getMessage()
                 }
             else
                 if(connectionType==ConnectionType.SOCKET) {
-                    this.out.println("restore " + sessionID);
+                    this.out.println("restore " + status.getSesssion());
                     this.out.flush();
                     response = this.in.nextLine();
                     if (MessageType.decodeMessageType(response)==MessageType.SESSION) {
