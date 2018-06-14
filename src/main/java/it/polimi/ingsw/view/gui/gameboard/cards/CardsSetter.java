@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
+import static jdk.nashorn.internal.objects.Global.print;
 
 public class CardsSetter {
 
@@ -50,7 +51,7 @@ public class CardsSetter {
             is = new FileInputStream(GUIParameters.DEFAULT_DIRECTORY + directory + "/" + id + ".jpg");
             return new ImageView(new Image(is));
         } catch (IOException e) {
-            e.printStackTrace();
+            print(e.getMessage());
         }
         return null;
     }

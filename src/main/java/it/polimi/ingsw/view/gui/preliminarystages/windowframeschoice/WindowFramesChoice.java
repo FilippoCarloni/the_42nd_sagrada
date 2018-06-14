@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice;
 
 import it.polimi.ingsw.model.utility.JSONTag;
+import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
@@ -12,6 +13,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
+
+//TODO: add button to launch Game Board after map selection
+//TODO: private objective not working properly, fix it
 
 public class WindowFramesChoice {
 
@@ -44,11 +48,11 @@ public class WindowFramesChoice {
     private void clicked(int idMapChosen) {
         GameBoardController controller = new GameBoardController();
         controller.setIdMapChosen(idMapChosen);
-        GUIParameters.globalHelper.getConnectionController().send("window " + idMapChosen);
+        GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
     }
 
     //Methods for preliminary stage
-    public void drawPreGame(JSONObject json){
+    private void drawPreGame(JSONObject json){
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
         JSONObject card = (JSONObject) json.get(JSONTag.PRIVATE_OBJECTIVE);
 
@@ -66,8 +70,8 @@ public class WindowFramesChoice {
     }
 
     @FXML
-    protected void initialize(){
-        GUIParameters.globalHelper.setWindowFramesChoice(this);
+    protected void initialize() {
+        //I need this to initialize @FXML objects
+        drawPreGame(GuiManager.getInstance().getPreGameMessage());
     }
-
 }

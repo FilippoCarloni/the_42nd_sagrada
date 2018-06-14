@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.preliminarystages.lobby.LobbyController">
    <children>
-      <Label layoutX="137.0" layoutY="43.0" text="WELCOME TO SAGRADA">
+      <Button layoutX="38.0" layoutY="329.0" maxHeight="40.0" maxWidth="150.0" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" onAction="#enteredLobby" prefHeight="40.0" prefWidth="150.0" text="ENTER INTO LOBBY" />
+      <TextArea fx:id="textLobby" editable="false" layoutX="113.0" layoutY="100.0" prefHeight="200.0" prefWidth="375.0" />
+      <Label layoutX="136.0" layoutY="14.0" text="WELCOME TO SAGRADA">
          <font>
             <Font size="30.0" />
-         </font></Label>
-      <Label layoutX="213.0" layoutY="95.0" text="Wait here for other players" />
-      <Button layoutX="253.0" layoutY="346.0" maxHeight="40.0" maxWidth="100.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="40.0" prefWidth="100.0" text="QUIT" />
-      <TextArea fx:id="textLobby" editable="false" layoutX="116.0" layoutY="130.0" prefHeight="200.0" prefWidth="375.0" />
+         </font>
+      </Label>
+      <Label layoutX="211.0" layoutY="63.0" text="Wait here for other players" />
+      <Button layoutX="413.0" layoutY="329.0" maxHeight="40.0" maxWidth="150.0" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="40.0" prefWidth="150.0" text="QUIT" />
+      <Button fx:id="playButton" layoutX="231.0" layoutY="329.0" maxHeight="40.0" maxWidth="140.0" minHeight="40.0" minWidth="140.0" mnemonicParsing="false" onAction="#playClicked" prefHeight="40.0" prefWidth="140.0" text="START GAME" />
    </children>
 </AnchorPane>

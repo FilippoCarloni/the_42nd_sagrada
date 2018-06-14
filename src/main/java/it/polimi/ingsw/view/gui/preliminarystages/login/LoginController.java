@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.preliminarystages.login;
 
 import it.polimi.ingsw.connection.client.ConnectionType;
+import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,23 +36,23 @@ public class LoginController {
         checkAndSaveUsername(username.getText(), event);
     }
     private void checkAndSaveUsername(String username, ActionEvent event) {
-        GUIParameters.setGlobalHelper(connectionType);
-        GUIParameters.globalHelper.startRefresh();
-        boolean isValid = GUIParameters.globalHelper.getConnectionController().restore(username);
+        GuiManager.setConnectionType(connectionType);
+        GuiManager.getInstance().startRefresh();
+        boolean isValid = GuiManager.getInstance().getConnectionController().restore(username);
         if (isValid) {
-            loginToPlayOrQuitChoice(event);
+            loginToLobby(event);
         }
         else
             usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
     }
 
     //Change scene Management
-    private void loginToPlayOrQuitChoice(ActionEvent event) {
+    private void loginToLobby(ActionEvent event) {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.PLAY_OR_QUIT_FXML_PATH));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.LOBBY_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle(GUIParameters.PLAY_OR_QUIT_TITLE);
+            stage.setTitle(GUIParameters.LOBBY_TITLE);
             stage.setScene(scene);
         } catch (IOException e) {
             print(GUIParameters.LOAD_FXML_ERROR);
@@ -62,4 +63,6 @@ public class LoginController {
     protected void initialize(){
         //I need it to initialize @FXML objects
     }
+
+
 }
