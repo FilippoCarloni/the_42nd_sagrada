@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -15,6 +16,6 @@
       </Label>
       <Label layoutX="211.0" layoutY="63.0" text="Wait here for other players" />
       <Button layoutX="413.0" layoutY="329.0" maxHeight="40.0" maxWidth="150.0" minHeight="40.0" minWidth="150.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="40.0" prefWidth="150.0" text="QUIT" />
-      <Button fx:id="playButton" layoutX="231.0" layoutY="329.0" maxHeight="40.0" maxWidth="140.0" minHeight="40.0" minWidth="140.0" mnemonicParsing="false" onAction="#playClicked" prefHeight="40.0" prefWidth="140.0" text="START GAME" />
+      <Button fx:id="playButton" layoutX="231.0" layoutY="329.0" maxHeight="40.0" maxWidth="140.0" minHeight="40.0" minWidth="140.0" mnemonicParsing="false" onAction="#playClicked" prefHeight="40.0" prefWidth="140.0" text="MAP SELECTION" />
    </children>
 </AnchorPane>

@@ -40,6 +40,8 @@ public class LoginController {
         GuiManager.getInstance().startRefresh();
         boolean isValid = GuiManager.getInstance().getConnectionController().restore(username);
         if (isValid) {
+            GuiManager.getInstance().setUsernamePlayer1(username);
+            System.out.println(GuiManager.getInstance().getUsernamePlayer1());
             loginToLobby(event);
         }
         else

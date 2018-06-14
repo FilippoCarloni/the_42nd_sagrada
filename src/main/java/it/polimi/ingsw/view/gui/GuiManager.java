@@ -3,7 +3,9 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.connection.client.ConnectionController;
 import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
+import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.lobby.LobbyController;
+import it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice.WindowFramesChoice;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -22,14 +24,19 @@ import static jdk.nashorn.internal.objects.Global.print;
 
 //TODO: put attention on multi-thread for updates
 //TODO: use update to receive screen resolution, to make GUI more responsive
+//TODO: make Game Board self-updated
 
 public class GuiManager {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final int REFRESH_RATE = 100; // milliseconds
+    private static final int REFRESH_RATE = 100;    //milliseconds
     private ConnectionController connectionController;
+    private String usernamePlayer1;
     private LobbyController lobbyController;
+    private WindowFramesChoice windowFramesChoice;
+    private GameBoardController gameBoard;          //I will use it to update the game board
     private JSONObject preGameMessage;
+    private JSONObject gameBoardMessage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -48,6 +55,8 @@ public class GuiManager {
                         break;
                     case GAME_BOARD:
                         //TODO: add method that will launch Game Board Drawing. Remember that I can enter and receive a Game Board, if I've restored a session
+                        windowFramesChoice.getGameBoardButton().setDisable(false);
+                        gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         break;
                     case ERROR_MESSAGE:
                         print(MessageType.decodeMessageContent(message));
@@ -66,17 +75,32 @@ public class GuiManager {
         }
     }
 
-    //Connection Controller getter
+    //Getter
     public ConnectionController getConnectionController(){
         return connectionController;
     }
-
-    //Setters of references to controllers
-    public void setLobbyController(LobbyController lobbyController){
-        this.lobbyController = lobbyController;
+    public String getUsernamePlayer1(){
+        return usernamePlayer1;
     }
     public JSONObject getPreGameMessage(){
         return preGameMessage;
+    }
+    public JSONObject getGameBoardMessage(){
+        return gameBoardMessage;
+    }
+
+    //Setters of references to controllers
+    public void setUsernamePlayer1(String usernamePlayer1){
+        this.usernamePlayer1 = usernamePlayer1;
+    }
+    public void setLobbyController(LobbyController lobbyController){
+        this.lobbyController = lobbyController;
+    }
+    public void setWindowFramesChoice(WindowFramesChoice windowFramesChoice){
+        this.windowFramesChoice = windowFramesChoice;
+    }
+    public void setGameBoard(GameBoardController gameBoard){
+        this.gameBoard = gameBoard;
     }
 
     //Singleton constructor for unique Connection Controller

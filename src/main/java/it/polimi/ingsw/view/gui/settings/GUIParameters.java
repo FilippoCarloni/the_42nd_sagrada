@@ -73,6 +73,7 @@ public final class GUIParameters {
     public static final String CONNECTION_LOGIN_FXML_PATH = "/FXML_files/ConnectionLogin.fxml";
     public static final String LOBBY_FXML_PATH = "/FXML_files/Lobby.fxml";
     public static final String MAP_CHOICE_FXML_PATH = "/FXML_files/WindowFrameChoice.fxml";
+    public static final String GAME_BOARD_FXML_PATH = "/FXML_files/MainBoard.fxml";
 
     //Error messages
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";

@@ -41,6 +41,11 @@ public class CardsSetter {
     }
     public ImageView setPrivateCard(ImageView card, JSONObject json) {
         card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
+
+        card.setFitWidth(256);
+        card.setFitHeight(300);
+        card.setX(0);
+        card.setY(0);
         return card;
     }
     private ImageView loadFromFile(Object jsonCard, String directory){

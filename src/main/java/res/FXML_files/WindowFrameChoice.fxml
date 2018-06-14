@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="root" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-                fx:controller="it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice.WindowFramesChoice">
+<AnchorPane fx:id="root" maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice.WindowFramesChoice">
    <children>
-      <GridPane maxHeight="370.0" maxWidth="1280.0" minHeight="370.0" minWidth="1280.0" prefHeight="370.0" prefWidth="1280.0">
+      <GridPane maxHeight="410.0" maxWidth="1280.0" minHeight="410.0" minWidth="1280.0" prefHeight="410.0" prefWidth="1280.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="305.0" minWidth="305.0" prefWidth="305.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
@@ -20,75 +22,12 @@
         <rowConstraints>
             <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="250.0" minHeight="250.0" prefHeight="250.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane GridPane.rowIndex="3">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <CheckBox fx:id="chooseMap1" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#choose1" prefHeight="17.0" prefWidth="103.0" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               </children>
-            </GridPane>
-            <GridPane layoutX="10.0" layoutY="310.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
-               <children>
-                  <CheckBox fx:id="chooseMap2" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#choose2" prefHeight="17.0" prefWidth="103.0" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="335.0" layoutY="310.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
-               <children>
-                  <CheckBox fx:id="chooseMap3" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#choose3" prefHeight="17.0" prefWidth="103.0" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <GridPane layoutX="660.0" layoutY="310.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
-               <children>
-                  <CheckBox fx:id="chooseMap4" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#choose4" prefHeight="17.0" prefWidth="103.0" textAlignment="JUSTIFY" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
             <GridPane fx:id="map2" gridLinesVisible="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -149,20 +88,59 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
+               <children>
+                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose1" prefHeight="21.0" prefWidth="0.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <children>
+                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose2" prefHeight="21.0" prefWidth="15.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+               <children>
+                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose3" prefHeight="20.0" prefWidth="9.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+               <children>
+                  <RadioButton layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose4" />
+               </children>
+            </AnchorPane>
+            <StackPane fx:id="nameMap1" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
+            <StackPane fx:id="nameMap2" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <StackPane fx:id="nameMap3" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <StackPane fx:id="nameMap4" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <StackPane fx:id="difficultyMap1" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3" />
+            <StackPane fx:id="difficultyMap2" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <StackPane fx:id="difficultyMap3" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <StackPane fx:id="difficultyMap4" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <GridPane layoutY="370.0" maxHeight="350.0" maxWidth="1280.0" minHeight="350.0" minWidth="1280.0" prefHeight="350.0" prefWidth="1280.0">
+      <GridPane fx:id="privObjGrid" layoutY="410.0" maxHeight="310.0" maxWidth="512.0" minHeight="310.0" minWidth="512.0" prefHeight="310.0" prefWidth="512.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="256.0" prefWidth="256.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="256.0" prefWidth="256.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="privObjCard" fitHeight="350.0" fitWidth="427.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+            <ImageView fx:id="privObjCard" fitHeight="300.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+            <Label alignment="CENTER_RIGHT" maxHeight="50.0" maxWidth="256.0" minHeight="50.0" minWidth="256.0" prefHeight="50.0" prefWidth="256.0" text="Private Objective Card:     ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
          </children>
       </GridPane>
+      <AnchorPane layoutX="512.0" layoutY="410.0" maxHeight="310.0" maxWidth="768.0" minHeight="310.0" minWidth="768.0" prefHeight="310.0" prefWidth="768.0">
+         <children>
+            <Button fx:id="gameBoardButton" layoutX="304.0" layoutY="51.0" maxHeight="40.0" maxWidth="160.0" minHeight="40.0" minWidth="160.0" mnemonicParsing="false" onAction="#launchGameBoard" prefHeight="40.0" prefWidth="160.0" text="GO TO GAMEBOARD" />
+            <Button layoutX="304.0" layoutY="226.0" maxHeight="40.0" maxWidth="160.0" minHeight="40.0" minWidth="160.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="40.0" prefWidth="160.0" text="QUIT" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
