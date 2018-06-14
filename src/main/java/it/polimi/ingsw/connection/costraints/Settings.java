@@ -11,11 +11,20 @@ public  class Settings{
     private static final String IP_SERVER_TAG="IP_SERVER";
     private static final String PORT_SOCKET_TAG="PORT_SOCKET";
     private static final String PORT_RMI_TAG="PORT_RMI";
-    
+    private static final String LOBBY_REFRESH_TIMR_TAG="LOBBY_REFRESH_TIME";
+    private static final int DEFAULT_LOBBY_REFRESH_TIME=500;
+    private static final int DEFAULT_TURN_TIME=60000;
+    private static final String TURN_TIME_TAG="TURN_TIME";
+    private static final String GAME_REFRESH_TAG = "GAME_REFRESH";
+    private static final int DEFAULT_GAME_RESFRESH = 101;
+
     public Settings() {
-        int rmiPort=DEFAULT_RMI_PORT;
-        String ipserver=DEFAULT_SERVER_IP;
-        int socketPort=DEFAULT_SOCKET_PORT;
+        int rmiPort = DEFAULT_RMI_PORT;
+        String ipserver = DEFAULT_SERVER_IP;
+        int socketPort = DEFAULT_SOCKET_PORT;
+        int lobbyRefresh = DEFAULT_LOBBY_REFRESH_TIME;
+        int turnTimeRefresh = DEFAULT_TURN_TIME;
+        int gameRefreshTime = DEFAULT_GAME_RESFRESH;
         Properties configFile;
         configFile = new java.util.Properties();
         FileReader reader;
@@ -23,21 +32,33 @@ public  class Settings{
         try {
             reader = new FileReader(FILE_CONFIG);
             configFile.load(reader);
-            param=configFile.getProperty(IP_SERVER_TAG);
-            if(param != null)
-                ipserver=param;
-            param=configFile.getProperty(PORT_SOCKET_TAG);
-            if(param != null)
-                socketPort=Integer.parseInt(param);
-            param=configFile.getProperty(PORT_RMI_TAG);
-            if(param != null)
-                rmiPort=Integer.parseInt(param);
+            param = configFile.getProperty(IP_SERVER_TAG);
+            if (param != null)
+                ipserver = param;
+            param = configFile.getProperty(PORT_SOCKET_TAG);
+            if (param != null)
+                socketPort = Integer.parseInt(param);
+            param = configFile.getProperty(PORT_RMI_TAG);
+            if (param != null)
+                rmiPort = Integer.parseInt(param);
+            param = configFile.getProperty(LOBBY_REFRESH_TIMR_TAG);
+            if (param != null)
+                lobbyRefresh = Integer.parseInt(param);
+            param = configFile.getProperty(TURN_TIME_TAG);
+            if (param != null)
+                turnTimeRefresh = Integer.parseInt(param);
+            param = configFile.getProperty(GAME_REFRESH_TAG);
+            if (param != null)
+                gameRefreshTime = Integer.parseInt(param);
             reader.close();
-        }catch(Exception eta){
+        } catch (Exception eta) {
         }
-        RMI_PORT=rmiPort;
-        IP_SERVER=ipserver;
-        SOCKET_PORT=socketPort;
+        RMI_PORT = rmiPort;
+        IP_SERVER = ipserver;
+        SOCKET_PORT = socketPort;
+        lobbyRefreshTime=lobbyRefresh;
+        turnTime = turnTimeRefresh;
+        gameRefresh = gameRefreshTime;
     }
     /**
      * Default Server port number for Registry connection
@@ -57,4 +78,7 @@ public  class Settings{
     public final int SOCKET_PORT;
     public final String IP_SERVER;
     public static final String ANONYMOUS = "ANONYMOUS";
+    public final int lobbyRefreshTime;
+    public final int turnTime;
+    public final int gameRefresh;
 }

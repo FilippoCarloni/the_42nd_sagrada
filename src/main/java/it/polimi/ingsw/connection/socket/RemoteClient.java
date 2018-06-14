@@ -115,14 +115,13 @@ public class RemoteClient implements Runnable,GameObserver {
                                 for (i = 1; i < cmd.length; i++) {
                                     action = action.concat(" " + cmd[i]);
                                 }
-                               if (!game.isMyTurn(sessionID))
-                                    send(MessageType.encodeMessage("It's not your turn, please wait while the other players make their moves.",MessageType.GENERIC_MESSAGE));
-                                else {
-                                    try {
+                                try {
+                                    if (!game.isMyTurn(sessionID))
+                                        send(MessageType.encodeMessage("It's not your turn, please wait while the other players make their moves.", MessageType.GENERIC_MESSAGE));
+                                    else
                                         game.sendCommand(sessionID, action);
-                                    }catch (Exception e) {
-                                        send(MessageType.encodeMessage(e.getMessage(),MessageType.ERROR_MESSAGE));
-                                    }
+                                }catch (Exception e) {
+                                    send(MessageType.encodeMessage(e.getMessage(), MessageType.ERROR_MESSAGE));
                                 }
                                 action = "";
                             }

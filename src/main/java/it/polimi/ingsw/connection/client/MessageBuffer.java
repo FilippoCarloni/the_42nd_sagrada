@@ -5,11 +5,12 @@ import java.util.List;
 
 public class MessageBuffer {
     private List<String> messages;
-    public MessageBuffer(){
+
+    MessageBuffer(){
         messages=new ArrayList<>();
     }
 
-    public synchronized String getNext(){
+    synchronized String getNext(){
         if(!messages.isEmpty())
             return messages.remove(0);
         return "";

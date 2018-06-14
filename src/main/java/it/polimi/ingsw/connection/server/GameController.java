@@ -1,13 +1,11 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
-import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
-import it.polimi.ingsw.model.gameboard.windowframes.WindowFrameDeck;
 import it.polimi.ingsw.model.gamedata.ConcreteGame;
 import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.utility.JSONTag;
@@ -28,8 +26,10 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+
 public class GameController extends Observable{
     private static final Logger logger=Logger.getLogger(GameController.class.getName());
+    private static final int POOLED_THREAD = 3;
     private Game game;
     private final List<WrappedPlayer> players;
     private final List<WrappedPlayer> disconnected;
@@ -37,57 +37,54 @@ public class GameController extends Observable{
     private final CentralServer server;
     private ScheduledFuture<?> timer;
     private final ScheduledExecutorService scheduler =
-            Executors.newScheduledThreadPool(3);
+            Executors.newScheduledThreadPool(POOLED_THREAD);
     private List<WindowFrame> windowFrames;
-    private List<Integer> windowChose;
+    private List<Integer> windowChoices;
     GameController(CentralServer server, List<WrappedPlayer> players) {
-        List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(players.size());
-        Deck deck2=new WindowFrameDeck();
         this.server=server;
         this.players = new ArrayList<>(players);
-        this.windowChose=new ArrayList<>();
+        this.windowChoices=new ArrayList<>();
         for(int i=0;i<this.players.size();i++)
-            this.windowChose.add(1);
+            this.windowChoices.add(1);
         getPreGameFrames(players.size());
         for (WrappedPlayer p: players)
             addObserver(p.getObserver());
         beeperHandle=null;
         disconnected= new ArrayList<>();
         final Runnable cleaner = () -> {
-            synchronized (this.disconnected){
-            for( WrappedPlayer p: this.players)
-                if(!p.getObserver().isAlive()&&!disconnected.contains(p)) {
-                    this.deleteObserver(p.getObserver());
-                    this.disconnected.add(p);
+            synchronized (this.disconnected) {
+                for (WrappedPlayer p : this.players)
+                    if (!p.getObserver().isAlive() && !disconnected.contains(p)) {
+                        this.deleteObserver(p.getObserver());
+                        this.disconnected.add(p);
+                        this.setChanged();
+                        this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername() + " is now disconnected", MessageType.GENERIC_MESSAGE));
+                    }
+                if (this.countObservers() == 1) {
                     this.setChanged();
-                    this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername()+" is now disconnected",MessageType.GENERIC_MESSAGE));
-                }
-                if(this.countObservers()==1) {
-                    this.setChanged();
-                    this.notifyObservers(MessageType.encodeMessage("You win! because you are the only player",MessageType.GENERIC_MESSAGE));
+                    this.notifyObservers(MessageType.encodeMessage("You win! because you are the only player", MessageType.GENERIC_MESSAGE));
                     this.deleteObservers();
                 }
 
             }
-            if(this.countObservers()==0) {
+            if (this.countObservers() == 0)
                 closeGame();
-            }
         }
         ;
-        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 100, MILLISECONDS);
+        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, new Settings().gameRefresh, MILLISECONDS);
         startTimer();
         scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
     }
 
     public synchronized void setMap(String sessionID,int window) throws ServerException {
         WrappedPlayer player=this.getPlayer(sessionID);
-        if(window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
-            windowChose.set(players.indexOf(player),window);
+        if(gameNotStarted()&&window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
+            windowChoices.set(players.indexOf(player),window);
     }
 
     private synchronized void setWindowsFrame() {
         for( WrappedPlayer p: players){
-            p.getPlayer().setWindowFrame(windowFrames.get(windowChose.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
+            p.getPlayer().setWindowFrame(windowFrames.get(windowChoices.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
         }
         game = new ConcreteGame(players
                 .stream()
@@ -96,6 +93,10 @@ public class GameController extends Observable{
         isTurnOf();
         sendStatus();
     }
+    private boolean gameNotStarted(){
+        return game == null;
+    }
+    @SuppressWarnings("unchecked")
     private void getPreGameFrames(int numPlayers){
         List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(numPlayers);
         JSONObject jsonObject;
@@ -117,6 +118,8 @@ public class GameController extends Observable{
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         boolean passed=false;
+        if(gameNotStarted())
+            throw new ServerException("Wait the timer for the map",GAME_ERROR);
         if(!isMyTurn(sessionID)) {
             throw new ServerException("Is not your turn!",GAME_ERROR);
         }
@@ -160,6 +163,8 @@ public class GameController extends Observable{
     }
 
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
+        if(gameNotStarted())
+            throw new ServerException("Wait the timer for the map",GAME_ERROR);
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
@@ -211,7 +216,7 @@ public class GameController extends Observable{
 
     private void startTimer(){
         Runnable task= this::timerPass;
-        timer=scheduler.schedule(task,60000,MILLISECONDS);
+        timer=scheduler.schedule(task,new Settings().turnTime,MILLISECONDS);
     }
 
     private void sendStatus(){

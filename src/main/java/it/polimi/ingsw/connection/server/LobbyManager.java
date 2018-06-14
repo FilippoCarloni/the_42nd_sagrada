@@ -39,7 +39,7 @@ public class LobbyManager extends Observable{
         });
         players.add(player);
         if( players.size()==1)
-            beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, 500, MILLISECONDS);
+            beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, new Settings().lobbyRefreshTime, MILLISECONDS);
         else if(players.size()==4) {
             open = false;
             timer.cancel(true);
