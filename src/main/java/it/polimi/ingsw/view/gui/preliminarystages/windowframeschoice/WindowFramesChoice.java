@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice;
 
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
@@ -12,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO: add button to launch Game Board after map selection
 
 public class WindowFramesChoice {
 
@@ -88,6 +87,7 @@ public class WindowFramesChoice {
     private void drawPreGame(JSONObject json){
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
         JSONObject card = (JSONObject) json.get(JSONTag.PRIVATE_OBJECTIVE);
+        WindowFrameDrawer windowFrameDrawer = new WindowFrameDrawer();
 
         privObjCard = new CardsSetter().setPrivateCard(privObjCard, card);
         privObjGrid.add(privObjCard, 1, 0);
@@ -95,7 +95,10 @@ public class WindowFramesChoice {
         setNames();
         setDifficulties();
         for(int i = 0; i < GUIParameters.NUM_MAPS_TO_CHOOSE; i++){
-            new WindowFrameDrawer().frameFiller(maps.get(i), (JSONObject) jsonMaps.get(i));
+            ArrayList<Canvas> canvas = new ArrayList<>();
+            ArrayList<StackPane> stackPanes = new ArrayList<>();
+            windowFrameDrawer.setPaneAndCanvasOnFrames(canvas, stackPanes, maps.get(i), 1);
+            windowFrameDrawer.frameFiller((JSONObject) jsonMaps.get(i), canvas, stackPanes, 1);
             Text name = new Text(((JSONObject)jsonMaps.get(i)).get(JSONTag.NAME).toString());
             setText(name, names.get(i));
             Text difficulty = new Text("Difficulty: " + ((Long)(((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).intValue());
@@ -139,7 +142,7 @@ public class WindowFramesChoice {
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
             stage.setScene(scene);
         } catch (IOException e) {
-            print(GUIParameters.LOAD_FXML_ERROR);
+            print(e.getMessage());
         }
     }
 

@@ -22,7 +22,7 @@ public enum GUIShade {
             if(s.value == value)
                 return s;
         }
-        return null;
+        throw new IllegalArgumentException(value + " not valid, insert a new one");
     }
     public double[] getCoordinates(){
         return coordinates;

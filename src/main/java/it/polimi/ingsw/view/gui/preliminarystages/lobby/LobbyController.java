@@ -16,6 +16,8 @@ import java.io.IOException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
+//TODO: add something that can launch directly the main board, if a player requests a reconnection
+
 public class LobbyController {
 
     @FXML

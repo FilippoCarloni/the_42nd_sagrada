@@ -24,7 +24,6 @@ import static jdk.nashorn.internal.objects.Global.print;
 
 //TODO: put attention on multi-thread for updates
 //TODO: use update to receive screen resolution, to make GUI more responsive
-//TODO: make Game Board self-updated
 
 public class GuiManager {
 
@@ -36,7 +35,7 @@ public class GuiManager {
     private WindowFramesChoice windowFramesChoice;
     private GameBoardController gameBoard;          //I will use it to update the game board
     private JSONObject preGameMessage;
-    private JSONObject gameBoardMessage;
+    private JSONObject gameBoardMessage = null;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -44,6 +43,7 @@ public class GuiManager {
     public void startRefresh() {
         scheduler.scheduleAtFixedRate(this::update, 1, REFRESH_RATE, MILLISECONDS);
     }
+
     //Updater, managed by the scheduler
     private void update(){
         try {
@@ -51,12 +51,15 @@ public class GuiManager {
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
-                        lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
+                        if(gameBoard == null)
+                            lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
                         break;
                     case GAME_BOARD:
-                        //TODO: add method that will launch Game Board Drawing. Remember that I can enter and receive a Game Board, if I've restored a session
-                        windowFramesChoice.getGameBoardButton().setDisable(false);
+                        if(gameBoardMessage == null)
+                            windowFramesChoice.getGameBoardButton().setDisable(false);
                         gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+                        if(gameBoard != null)
+                            gameBoard.gameBoardUpdate(gameBoardMessage);
                         break;
                     case ERROR_MESSAGE:
                         print(MessageType.decodeMessageContent(message));
@@ -89,7 +92,7 @@ public class GuiManager {
         return gameBoardMessage;
     }
 
-    //Setters of references to controllers
+    //Setter
     public void setUsernamePlayer1(String usernamePlayer1){
         this.usernamePlayer1 = usernamePlayer1;
     }

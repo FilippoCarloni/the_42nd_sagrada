@@ -46,7 +46,11 @@ public final class GUIParameters {
     public static final int MAX_WINDOW_FRAMES_ROWS = 4;
     public static final int MAX_WINDOW_FRAMES_COLUMNS = 5;
 
+    //Constraints
+    public static final int MAX_NUM_TURNS = 10;
+
     //Colors
+    public static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
     public static final String DEFAULT_GRID_COLOR = "gray";
     public static final String EMPTY_FROM_CONSTRAINTS_COLOR = "default";
     public static final Color NUMBERS_DICE_COLOR = Color.BLACK;
@@ -60,7 +64,6 @@ public final class GUIParameters {
     public static final double[] OFFSET_DIE_4 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0};
     public static final double[] OFFSET_DIE_5 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0, 30.0, 30.0};
     public static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
-
     public static final double REDUCTION_SCALE = 0.67;
 
     //Directories for cards loading
