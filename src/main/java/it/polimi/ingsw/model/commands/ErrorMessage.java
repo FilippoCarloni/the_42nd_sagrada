@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.commands;
 
+/**
+ * Holds all the possible messages returned by an IllegalCommandException
+ * @see IllegalCommandException
+ */
 public final class ErrorMessage {
 
     private ErrorMessage() {}

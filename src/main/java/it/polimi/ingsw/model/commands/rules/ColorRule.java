@@ -7,6 +7,13 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
+/**
+ * Decorates a Rule with the Sagrada color rule:
+ *   - two dice that share the same color can't be placed orthogonally adjacent
+ *   - a die must respect the color constraint of the window frame
+ */
 public class ColorRule extends RuleDecorator {
 
     public ColorRule() {
@@ -19,7 +26,7 @@ public class ColorRule extends RuleDecorator {
 
     private boolean check(Die die, WindowFrame windowFrame, int row, int column) {
         if (die == null || windowFrame == null)
-            throw new NullPointerException("Problem in the checking color rule.");
+            throw new NullPointerException(NULL_PARAMETER);
         Color dieColor = die.getColor();
         List<Die> windowDice = new ArrayList<>();
         Die d;

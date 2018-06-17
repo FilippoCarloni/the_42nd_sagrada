@@ -7,6 +7,13 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
+/**
+ * Decorates a Rule with the Sagrada shade rule:
+ *   - two dice that share the same shade can't be placed orthogonally adjacent
+ *   - a die must respect the shade constraint of the window frame
+ */
 public class ShadeRule extends RuleDecorator {
 
     public ShadeRule() {
@@ -19,7 +26,7 @@ public class ShadeRule extends RuleDecorator {
 
     private boolean check(Die die, WindowFrame windowFrame, int row, int column) {
         if (die == null || windowFrame == null)
-            throw new NullPointerException("Problem in the checking shade rule.");
+            throw new NullPointerException(NULL_PARAMETER);
         Shade dieShade = die.getShade();
         List<Die> windowDice = new ArrayList<>();
         Die d;

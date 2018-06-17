@@ -5,6 +5,14 @@ import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 import it.polimi.ingsw.model.utility.Parameters;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
+
+/**
+ * Decorates a Rule with the Sagrada placing rule:
+ *   - if the window frame is empty, the first die must be placed on a border slot
+ *   - every die placed after the first must be orthogonally or diagonally adjacent to
+ *     a previously placed die
+ */
 public class PlacingRule extends RuleDecorator {
 
     public PlacingRule() {
@@ -26,7 +34,7 @@ public class PlacingRule extends RuleDecorator {
 
     private boolean check(Die die, WindowFrame windowFrame, int row, int column) {
         if (die == null || windowFrame == null)
-            throw new NullPointerException("Problem in the checking placing rule.");
+            throw new NullPointerException(NULL_PARAMETER);
         return ifMapEmpty(windowFrame, row, column) ||
             (windowFrame.getDie(row - 1, column - 1) != null) ||
             (windowFrame.getDie(row - 1, column) != null) ||

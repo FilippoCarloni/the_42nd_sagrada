@@ -21,62 +21,6 @@ public interface Rule {
 
     /**
      * Returns true if the die can be placed in a particular spot of the window frame.
-     * It checks all the Sagrada rules.
-     * @param die The die that should be placed
-     * @param windowFrame The window frame that will hold the die
-     * @param row The placing row
-     * @param column The placing column
-     * @return True if the operation is legal according to the Sagrada rules
-     */
-    static boolean checkAllRules(Die die, WindowFrame windowFrame, int row, int column) {
-        return new PlacingRule(new ShadeRule(new ColorRule()))
-                .canBePlaced(die, windowFrame, row, column);
-    }
-
-    /**
-     * Returns true if the die can be placed in a particular spot of the window frame.
-     * It checks all the Sagrada rules except from the Color one.
-     * @param die The die that should be placed
-     * @param windowFrame The window frame that will hold the die
-     * @param row The placing row
-     * @param column The placing column
-     * @return True if the operation is legal according to the Sagrada rules
-     */
-    static boolean checkExcludeColor(Die die, WindowFrame windowFrame, int row, int column) {
-        return new PlacingRule(new ShadeRule())
-                .canBePlaced(die, windowFrame, row, column);
-    }
-
-    /**
-     * Returns true if the die can be placed in a particular spot of the window frame.
-     * It checks all the Sagrada rules except from the Shade one.
-     * @param die The die that should be placed
-     * @param windowFrame The window frame that will hold the die
-     * @param row The placing row
-     * @param column The placing column
-     * @return True if the operation is legal according to the Sagrada rules
-     */
-    static boolean checkExcludeShade(Die die, WindowFrame windowFrame, int row, int column) {
-        return new ColorRule(new PlacingRule())
-                .canBePlaced(die, windowFrame, row, column);
-    }
-
-    /**
-     * Returns true if the die can be placed in a particular spot of the window frame.
-     * It checks all the Sagrada rules except from the placing one.
-     * @param die The die that should be placed
-     * @param windowFrame The window frame that will hold the die
-     * @param row The placing row
-     * @param column The placing column
-     * @return True if the operation is legal according to the Sagrada rules
-     */
-    static boolean checkExcludePlacing(Die die, WindowFrame windowFrame, int row, int column) {
-        return new ShadeRule(new ColorRule())
-                .canBePlaced(die, windowFrame, row, column);
-    }
-
-    /**
-     * Returns true if the die can be placed in a particular spot of the window frame.
      * This method is not intended to be used alone. You should use the static method of this interface.
      * @param die The die that should be placed
      * @param windowFrame The window frame that will hold the die
