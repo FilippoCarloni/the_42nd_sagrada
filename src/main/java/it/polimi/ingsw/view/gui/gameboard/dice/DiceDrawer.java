@@ -13,34 +13,34 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
-//TODO: method that will be used by canvases when clicked
-//TODO: maybe static class?
+//TODO: method that will be used by canvas when clicked
+//TODO: understand why dice pool is not responsive
 
 public class DiceDrawer {
 
     //Used only the first time, to fill Dice Pool with Canvas and StackPane
-    public void dicePoolFiller(JSONObject json, GridPane dicePoolGrid, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
-        JSONArray dicePoolList = (JSONArray) json.get(JSONTag.DICE_POOL);
-
-        for(int i = 0; i < dicePoolList.size(); i++){
+    public static void dicePoolFiller(GridPane dicePoolGrid, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool, int numDiceOnDicePool){
+        for(int i = 0; i < numDiceOnDicePool; i++){
             StackPane pane = new StackPane();
             dicePoolGrid.add(pane, i, 0);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
+            int finalI = i;
+            canvas.setOnMouseClicked(e -> System.out.println("pick " + finalI));
         }
     }
 
     //Used every move made, to reset colors and shades on dice pool and re-draw it
-    public void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
+    public static void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
         for(int i = 0; i < panesOnDicePool.size(); i++){
             panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
             canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(0,0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
         }
         dicePoolDrawer(json, panesOnDicePool, canvasOnDicePool);
     }
-    private void dicePoolDrawer(JSONObject jSon, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool) {
+    private static void dicePoolDrawer(JSONObject jSon, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool) {
         int i = 0;
         JSONArray dicePoolList = (JSONArray) jSon.get(JSONTag.DICE_POOL);
 
@@ -55,7 +55,7 @@ public class DiceDrawer {
     }
 
     //Utility methods to color and draw dice, used both by dice pool and window frame methods
-    public void dicePointsDrawer(int value, String color, GraphicsContext gc, Node node, double scale) {
+    public static void dicePointsDrawer(int value, String color, GraphicsContext gc, Node node, double scale) {
         if (value < 1)
             throw new IllegalArgumentException("Shade of die must be at least 1");
         int numOfCoordinates = (value * 2) - 1;
@@ -73,11 +73,15 @@ public class DiceDrawer {
         }
         colorSetter(color, node);
     }
-    public void colorSetter(String color, Node node) {
+    public static void colorSetter(String color, Node node) {
         if (color.equals(GUIParameters.EMPTY_FROM_CONSTRAINTS_COLOR)) {
             node.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
         } else {
             node.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + color);
         }
+    }
+
+    private DiceDrawer(){
+
     }
 }

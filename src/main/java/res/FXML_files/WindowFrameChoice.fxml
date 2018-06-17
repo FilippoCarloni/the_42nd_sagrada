@@ -90,22 +90,22 @@
             </GridPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                <children>
-                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose1" prefHeight="21.0" prefWidth="0.0" />
+                  <RadioButton fx:id="buttonMap1" contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose1" prefHeight="21.0" prefWidth="0.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>
-                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose2" prefHeight="21.0" prefWidth="15.0" />
+                  <RadioButton fx:id="buttonMap2" contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose2" prefHeight="21.0" prefWidth="15.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                <children>
-                  <RadioButton contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose3" prefHeight="20.0" prefWidth="9.0" />
+                  <RadioButton fx:id="buttonMap3" contentDisplay="GRAPHIC_ONLY" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose3" prefHeight="20.0" prefWidth="9.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
                <children>
-                  <RadioButton layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose4" />
+                  <RadioButton fx:id="buttonMap4" layoutX="139.0" layoutY="15.0" mnemonicParsing="false" onAction="#choose4" />
                </children>
             </AnchorPane>
             <StackPane fx:id="nameMap1" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2" />
@@ -118,7 +118,7 @@
             <StackPane fx:id="difficultyMap4" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <GridPane fx:id="privObjGrid" layoutY="410.0" maxHeight="310.0" maxWidth="512.0" minHeight="310.0" minWidth="512.0" prefHeight="310.0" prefWidth="512.0">
+      <GridPane fx:id="privateObjGrid" layoutY="410.0" maxHeight="310.0" maxWidth="512.0" minHeight="310.0" minWidth="512.0" prefHeight="310.0" prefWidth="512.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="256.0" prefWidth="256.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="256.0" minWidth="256.0" prefWidth="256.0" />
@@ -128,7 +128,7 @@
             <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="privObjCard" fitHeight="300.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+            <ImageView fx:id="privateObjCard" fitHeight="300.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
             <Label alignment="CENTER_RIGHT" maxHeight="50.0" maxWidth="256.0" minHeight="50.0" minWidth="256.0" prefHeight="50.0" prefWidth="256.0" text="Private Objective Card:     ">
                <font>
                   <Font size="20.0" />
@@ -138,8 +138,7 @@
       </GridPane>
       <AnchorPane layoutX="512.0" layoutY="410.0" maxHeight="310.0" maxWidth="768.0" minHeight="310.0" minWidth="768.0" prefHeight="310.0" prefWidth="768.0">
          <children>
-            <Button fx:id="gameBoardButton" layoutX="304.0" layoutY="51.0" maxHeight="40.0" maxWidth="160.0" minHeight="40.0" minWidth="160.0" mnemonicParsing="false" onAction="#launchGameBoard" prefHeight="40.0" prefWidth="160.0" text="GO TO GAMEBOARD" />
-            <Button layoutX="304.0" layoutY="226.0" maxHeight="40.0" maxWidth="160.0" minHeight="40.0" minWidth="160.0" mnemonicParsing="false" onAction="#quitClicked" prefHeight="40.0" prefWidth="160.0" text="QUIT" />
+            <Button fx:id="gameBoardButton" layoutX="304.0" layoutY="135.0" maxHeight="40.0" maxWidth="160.0" minHeight="40.0" minWidth="160.0" mnemonicParsing="false" onAction="#launchGameBoard" prefHeight="40.0" prefWidth="160.0" text="GO TO GAMEBOARD" />
          </children>
       </AnchorPane>
    </children>

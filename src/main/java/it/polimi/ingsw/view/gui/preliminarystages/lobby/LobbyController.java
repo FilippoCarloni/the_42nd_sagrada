@@ -46,10 +46,10 @@ public class LobbyController {
 
     private void lobbyToPreGame(ActionEvent event){
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.MAP_CHOICE_FXML_PATH));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.MAP_CHOICE_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE);
+            stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
             stage.setScene(scene);
         } catch (IOException e) {
             print(e.getMessage());

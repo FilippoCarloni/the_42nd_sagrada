@@ -33,37 +33,27 @@ public class LoginController {
 
     //Username and Login Management
     public void getUsername(ActionEvent event) {
-        checkAndSaveUsername(username.getText(), event);
-    }
-    private void checkAndSaveUsername(String username, ActionEvent event) {
         GuiManager.setConnectionType(connectionType);
         GuiManager.getInstance().startRefresh();
-        boolean isValid = GuiManager.getInstance().getConnectionController().restore(username);
+        boolean isValid = GuiManager.getInstance().getConnectionController().restore(username.getText());
         if (isValid) {
-            GuiManager.getInstance().setUsernamePlayer1(username);
+            GuiManager.getInstance().setUsernamePlayer1(username.getText());
             loginToLobby(event);
-        }
-        else
+        } else
             usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
     }
 
     //Change scene Management
     private void loginToLobby(ActionEvent event) {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.LOBBY_FXML_PATH));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.LOBBY_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle(GUIParameters.LOBBY_TITLE);
+            stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
             stage.setScene(scene);
         } catch (IOException e) {
             print(GUIParameters.LOAD_FXML_ERROR);
         }
     }
-
-    @FXML
-    protected void initialize(){
-        //I need it to initialize @FXML objects
-    }
-
 
 }

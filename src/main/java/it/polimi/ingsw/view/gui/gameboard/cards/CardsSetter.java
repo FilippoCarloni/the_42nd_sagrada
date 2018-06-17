@@ -11,53 +11,55 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 public class CardsSetter {
 
-    //TODO: refactor
+    private CardsSetter(){}
 
-    public ArrayList<ImageView> setPublicCards(ImageView card1, ImageView card2, ImageView card3, JSONArray json, String directory) {
-        ArrayList<ImageView> cards = new ArrayList<>();
+    //Setter for public cards, on Game Board
+    public static List<ImageView> setPublicCards(JSONArray json, String directory) {
+        List<ImageView> cards = new ArrayList<>();
 
-        card1 = loadFromFile(json.get(0), directory);
-        card2 = loadFromFile(json.get(1), directory);
-        card3 = loadFromFile(json.get(2), directory);
-
-        card1.setFitHeight(215);
-        card1.setFitWidth(200);
-        card2.setFitWidth(200);
-        card2.setFitHeight(215);
-        card3.setFitHeight(215);
-        card3.setFitWidth(200);
+        ImageView card1 = loadFromFile(json.get(0), directory);
+        ImageView card2 = loadFromFile(json.get(1), directory);
+        ImageView card3 = loadFromFile(json.get(2), directory);
 
         cards.add(card1);
         cards.add(card2);
         cards.add(card3);
 
+        for (ImageView card : cards) {
+            setCardsDimension(card, GUIParameters.CARDS_ON_GAME_BOARD_WIDTH, GUIParameters.CARDS_ON_GAME_BOARD_HEIGHT);
+        }
         return cards;
     }
-    public ImageView setPrivateCard(ImageView card, JSONObject json) {
-        card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
 
-        card.setFitWidth(256);
-        card.setFitHeight(300);
-        card.setX(0);
-        card.setY(0);
+    //Setter for Private Objective card, for now just on Window Frame Choice screen
+    public static ImageView setPrivateCard(JSONObject json) {
+        ImageView card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
+        setCardsDimension(card, GUIParameters.CARD_ON_MAP_CHOICE_WIDTH, GUIParameters.CARD_ON_MAP_CHOICE_HEIGHT);
         return card;
     }
-    private ImageView loadFromFile(Object jsonCard, String directory){
-        JSONObject jsonObject = (JSONObject) jsonCard;
-        int id =parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
-        InputStream is;
+
+    //Helpers for previous methods
+    private static ImageView loadFromFile(Object jsonCard, String directory) {
         try{
+            JSONObject jsonObject = (JSONObject) jsonCard;
+            int id =parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
+            InputStream is;
             is = new FileInputStream(GUIParameters.DEFAULT_DIRECTORY + directory + "/" + id + ".jpg");
             return new ImageView(new Image(is));
         } catch (IOException e) {
             print(e.getMessage());
         }
         return null;
+    }
+    private static void setCardsDimension(ImageView card, double width, double height){
+        card.setFitWidth(width);
+        card.setFitHeight(height);
     }
 }

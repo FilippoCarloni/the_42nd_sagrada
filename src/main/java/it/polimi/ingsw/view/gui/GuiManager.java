@@ -91,6 +91,9 @@ public class GuiManager {
     public JSONObject getGameBoardMessage(){
         return gameBoardMessage;
     }
+    public GameBoardController getGameBoard(){
+        return gameBoard;
+    }
 
     //Setter
     public void setUsernamePlayer1(String usernamePlayer1){

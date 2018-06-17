@@ -13,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -28,12 +30,12 @@ import java.util.ArrayList;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
-
 public class WindowFramesChoice {
 
     private ArrayList<GridPane> maps = new ArrayList<>();
     private ArrayList<StackPane> names = new ArrayList<>();
     private  ArrayList<StackPane> difficulties = new ArrayList<>();
+    private ToggleGroup group = new ToggleGroup();
 
     @FXML
     private GridPane map1;
@@ -52,6 +54,14 @@ public class WindowFramesChoice {
     @FXML
     private StackPane nameMap4;
     @FXML
+    private RadioButton buttonMap1;
+    @FXML
+    private RadioButton buttonMap2;
+    @FXML
+    private RadioButton buttonMap3;
+    @FXML
+    private RadioButton buttonMap4;
+    @FXML
     private StackPane difficultyMap1;
     @FXML
     private StackPane difficultyMap2;
@@ -60,9 +70,9 @@ public class WindowFramesChoice {
     @FXML
     private StackPane difficultyMap4;
     @FXML
-    private ImageView privObjCard;
+    private ImageView privateObjCard;
     @FXML
-    private GridPane privObjGrid;
+    private GridPane privateObjGrid;
     @FXML
     private Button gameBoardButton;
 
@@ -82,23 +92,28 @@ public class WindowFramesChoice {
     private void clicked(int idMapChosen) {
         GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
     }
+    private void addRadioButtonsInToggleGroup(){
+        buttonMap1.setToggleGroup(group);
+        buttonMap2.setToggleGroup(group);
+        buttonMap3.setToggleGroup(group);
+        buttonMap4.setToggleGroup(group);
+    }
 
     //Methods for preliminary stage
     private void drawPreGame(JSONObject json){
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
         JSONObject card = (JSONObject) json.get(JSONTag.PRIVATE_OBJECTIVE);
-        WindowFrameDrawer windowFrameDrawer = new WindowFrameDrawer();
 
-        privObjCard = new CardsSetter().setPrivateCard(privObjCard, card);
-        privObjGrid.add(privObjCard, 1, 0);
+        privateObjCard = CardsSetter.setPrivateCard(card);
+        privateObjGrid.add(privateObjCard, 1, 0);
         setMaps();
         setNames();
         setDifficulties();
         for(int i = 0; i < GUIParameters.NUM_MAPS_TO_CHOOSE; i++){
             ArrayList<Canvas> canvas = new ArrayList<>();
             ArrayList<StackPane> stackPanes = new ArrayList<>();
-            windowFrameDrawer.setPaneAndCanvasOnFrames(canvas, stackPanes, maps.get(i), 1);
-            windowFrameDrawer.frameFiller((JSONObject) jsonMaps.get(i), canvas, stackPanes, 1);
+            WindowFrameDrawer.frameFiller(canvas, stackPanes, maps.get(i), 1, false);
+            WindowFrameDrawer.framePainterManager((JSONObject) jsonMaps.get(i), canvas, stackPanes, 1, false);
             Text name = new Text(((JSONObject)jsonMaps.get(i)).get(JSONTag.NAME).toString());
             setText(name, names.get(i));
             Text difficulty = new Text("Difficulty: " + ((Long)(((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).intValue());
@@ -130,13 +145,10 @@ public class WindowFramesChoice {
         difficulties.add(difficultyMap4);
     }
 
-    public void quitClicked(){
-        GuiManager.getInstance().getConnectionController().send("exit");
-        System.exit(0);
-    }
+    //Change screen
     public void launchGameBoard(ActionEvent event){
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.GAME_BOARD_FXML_PATH));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.GAME_BOARD_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
@@ -146,14 +158,15 @@ public class WindowFramesChoice {
         }
     }
 
+    //Getters
     public Button getGameBoardButton(){
         return gameBoardButton;
     }
 
     @FXML
     protected void initialize() {
-        //I need this to initialize @FXML objects
         GuiManager.getInstance().setWindowFramesChoice(this);
+        addRadioButtonsInToggleGroup();
         drawPreGame(GuiManager.getInstance().getPreGameMessage());
         gameBoardButton.setDisable(true);
     }
