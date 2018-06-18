@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui.gameboard.roundtrack;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.json.simple.JSONObject;
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//TODO: complete implementation of initialSettings method
+//TODO: draw initial state of round track
 //TODO: understand how I will receive information about dice to put into RoundTrack
 //TODO: when I click on a turn square I will display a window with all dice of this turn on round track
 

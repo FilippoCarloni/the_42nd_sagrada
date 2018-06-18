@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard.cards;
 
 import it.polimi.ingsw.model.utility.JSONTag;
+import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.scene.image.Image;
 import org.json.simple.JSONArray;
@@ -21,19 +22,15 @@ public class CardsSetter {
     private CardsSetter(){}
 
     //Setter for public cards, on Game Board
-    public static List<ImageView> setPublicCards(JSONArray json, String directory) {
+    public static List<ImageView> setPublicCards(JSONArray json, String directory, boolean toolCards) {
         List<ImageView> cards = new ArrayList<>();
-
-        ImageView card1 = loadFromFile(json.get(0), directory);
-        ImageView card2 = loadFromFile(json.get(1), directory);
-        ImageView card3 = loadFromFile(json.get(2), directory);
-
-        cards.add(card1);
-        cards.add(card2);
-        cards.add(card3);
-
-        for (ImageView card : cards) {
-            setCardsDimension(card, GUIParameters.CARDS_ON_GAME_BOARD_WIDTH, GUIParameters.CARDS_ON_GAME_BOARD_HEIGHT);
+        for (int i = 0; i < json.size(); i++) {
+            cards.add(loadFromFile(json.get(i), directory));
+            if(toolCards){
+                int id =parseInt(((JSONObject)json.get(i)).get(JSONTag.CARD_ID).toString());
+                cards.get(i).setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("tool " + id));
+            }
+            setCardsDimension(cards.get(i), GUIParameters.CARDS_ON_GAME_BOARD_WIDTH, GUIParameters.CARDS_ON_GAME_BOARD_HEIGHT);
         }
         return cards;
     }
@@ -56,7 +53,7 @@ public class CardsSetter {
         } catch (IOException e) {
             print(e.getMessage());
         }
-        return null;
+        return new ImageView();
     }
     private static void setCardsDimension(ImageView card, double width, double height){
         card.setFitWidth(width);

@@ -22,7 +22,7 @@ import static jdk.nashorn.internal.objects.Global.print;
  * It has to be unique for all the fxml scenes
  */
 
-//TODO: put attention on multi-thread for updates
+//TODO: put attention on multi-thread for updates --> IT GIVES PROBLEMS TO ME, FIX THEM
 //TODO: use update to receive screen resolution, to make GUI more responsive
 
 public class GuiManager {

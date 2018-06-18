@@ -15,8 +15,6 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-//TODO: for now temporary actions, I have to manage them better
-
 public class WindowFrameDrawer {
 
     //Called only the first time we go to game board, to set every StackPane and Canvas on window frames

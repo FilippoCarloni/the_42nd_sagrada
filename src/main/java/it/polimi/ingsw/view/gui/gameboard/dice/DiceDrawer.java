@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.JSONTag;
+import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import it.polimi.ingsw.view.gui.settings.GUIShade;
 import javafx.scene.Node;
@@ -13,9 +14,6 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
-//TODO: method that will be used by canvas when clicked
-//TODO: understand why dice pool is not responsive
-
 public class DiceDrawer {
 
     //Used only the first time, to fill Dice Pool with Canvas and StackPane
@@ -27,8 +25,8 @@ public class DiceDrawer {
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
-            int finalI = i;
-            canvas.setOnMouseClicked(e -> System.out.println("pick " + finalI));
+            int finalI = i + 1;             //Need this because in lambda expressions I can't use not final variables (Intellij made it)
+            canvas.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("pick " + finalI));
         }
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui.gameboard;
 
-import it.polimi.ingsw.model.gamedata.Game;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
@@ -33,7 +32,6 @@ import static jdk.nashorn.internal.objects.Global.print;
 //TODO: add favor points
 //TODO: add round track
 //TODO: add a button that will display all dice on round track
-//TODO: MAKE DICE POOL'S DICE RESPONSIVE
 //TODO: add new windows with messages written
 
 public class GameBoardController {
@@ -147,8 +145,8 @@ public class GameBoardController {
 
     //Cards management
     private void addCardsOnGameBoard(JSONObject json){
-        List<ImageView> toolCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), GUIParameters.TOOL_DIRECTORY);
-        List<ImageView> pubObjCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), GUIParameters.PUBOBJ_DIRECTORY);
+        List<ImageView> toolCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), GUIParameters.TOOL_DIRECTORY, true);
+        List<ImageView> pubObjCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), GUIParameters.PUBOBJ_DIRECTORY, false);
 
         for (int i = 0, j = 0; i < 5 && j < toolCards.size(); i += 2, j++) {
             gridCards.add(toolCards.get(j), i, 0);
@@ -199,7 +197,6 @@ public class GameBoardController {
                 j++;
             }
         }
-        //Think about it, because you can't re-draw all dice pool every turn
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
 
