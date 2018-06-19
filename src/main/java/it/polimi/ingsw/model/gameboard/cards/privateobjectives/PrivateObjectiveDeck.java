@@ -7,18 +7,19 @@ import java.util.List;
 /**
  * Generates a deck of private objective cards.
  * Details of the content:
- *     +----+----------------------+
- *     | ID | Name of the card     |
- *     |----|----------------------|
- *     | 23 | Shades of Red        |
- *     | 24 | Shades of Green      |
- *     | 25 | Shades of Yellow     |
- *     | 26 | Shades of Blue       |
- *     | 27 | Shades of Purple     |
- *     +----+----------------------+
+ * <ul>
+ *     <li>23: Shades of red</li>
+ *     <li>24: Shades of green</li>
+ *     <li>25: Shades of yellow</li>
+ *     <li>26: Shades of blue</li>
+ *     <li>27: Shades of purple</li>
+ * </ul>
  */
 public class PrivateObjectiveDeck extends AbstractDeck {
 
+    /**
+     * Generates a new private objective deck instance.
+     */
     public PrivateObjectiveDeck() {
         List<PrivateObjectiveCard> cards = PrivateObjectiveFactory.getPrivateObjectives();
         for (PrivateObjectiveCard c : cards)

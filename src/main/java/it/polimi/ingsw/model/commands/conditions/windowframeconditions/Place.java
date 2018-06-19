@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.*;
 
+/**
+ * Checks if the die can be placed in a particular position.
+ */
 public class Place implements Condition {
 
     private boolean placing;
@@ -17,6 +20,13 @@ public class Place implements Condition {
     private boolean shade;
     private String errorMessage = ERR_RULE_ERROR;
 
+    /**
+     * Generates a new place-checker instance.
+     * @see it.polimi.ingsw.model.commands.rules.Rule
+     * @param placing True if the Placing rule should be followed
+     * @param color True if the Color rule should be followed
+     * @param shade True if the Shade rule should be followed
+     */
     public Place(boolean placing, boolean color, boolean shade) {
         this.placing = placing;
         this.color = color;

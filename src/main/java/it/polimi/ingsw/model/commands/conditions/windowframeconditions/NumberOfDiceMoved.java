@@ -9,14 +9,22 @@ import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_SMALL;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.EQUAL_TO;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.SMALLER_THAN;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Checks the number of dice moved during this turn.
+ */
 public class NumberOfDiceMoved implements Condition {
 
-    private static final String DEFAULT_ERROR_MESSAGE = "Bad JSON format.";
     private String typeOfComparison;
     private String bound;
 
+    /**
+     * Generates a new checker based on the passed arguments.
+     * @param typeOfComparison Identifies if the comparison should be >=, < or ==
+     * @param bound Identifies the comparison boundary
+     */
     public NumberOfDiceMoved(String typeOfComparison, String bound) {
         this.typeOfComparison = typeOfComparison;
         this.bound = bound;
@@ -26,7 +34,7 @@ public class NumberOfDiceMoved implements Condition {
         try {
             return parseInt(bound);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE + " " + e.getMessage());
+            throw new IllegalArgumentException(BAD_JSON + " " + e.getMessage());
         }
     }
 
@@ -41,7 +49,7 @@ public class NumberOfDiceMoved implements Condition {
                 return (gd, args) -> gd.getDiceMoved().size() == getBound();
             default:
         }
-        throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE);
+        throw new IllegalArgumentException(BAD_JSON);
     }
 
     @Override
@@ -55,6 +63,6 @@ public class NumberOfDiceMoved implements Condition {
                 return ERR_DIFFERENT_INDEX;
             default:
         }
-        throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE);
+        throw new IllegalArgumentException(BAD_JSON);
     }
 }

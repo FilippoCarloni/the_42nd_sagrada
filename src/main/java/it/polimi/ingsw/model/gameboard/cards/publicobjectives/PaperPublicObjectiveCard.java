@@ -14,6 +14,14 @@ public class PaperPublicObjectiveCard extends AbstractCard implements PublicObje
     private FramePattern pattern;
     private int pointsPerPattern;
 
+    /**
+     * Generates a public objective card, provided its building logic.
+     * @param name Card's name
+     * @param description Card's description
+     * @param id Card's identifier
+     * @param pattern JSON that encodes the pattern logic that the card reads
+     * @param pointsPerPattern number of points per pattern hit on a window frame
+     */
     PaperPublicObjectiveCard(String name, String description, int id, JSONObject pattern, int pointsPerPattern) {
         this.name = name;
         this.description = description;

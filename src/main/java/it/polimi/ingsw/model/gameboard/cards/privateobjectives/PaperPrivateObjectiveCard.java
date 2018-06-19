@@ -12,6 +12,14 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
 
     private Color color;
 
+    /**
+     * Generates a new private objective card, provided required building information.
+     * @param name Card's name
+     * @param description Card's description
+     * @param index Index of color label insertion in the description string
+     * @param color Color that the card references
+     * @param id Card's identifier
+     */
     PaperPrivateObjectiveCard(String name, String description, int index, Color color, int id) {
         this.name = name + color.getLabel();
         this.description = description.substring(0, index) + color.getLabel() + description.substring(index, description.length());

@@ -10,9 +10,10 @@ import java.util.List;
 /**
  * Represents a generic Sagrada Tool Card.
  * A tool card can be active or passive:
- *   - active  : the player must actively end its effect by taking precise actions
- *   - passive : the player is not forced to end the effect; the effect is automatically
- *               shut down when the player takes any generic action
+ * <ul>
+ *     <li>active: the player must actively end its effect by taking precise actions</li>
+ *     <li>passive: the player is not forced to end the effect; the effect is automatically shut down when the player takes any generic action</li>
+ * </ul>
  * A tool card holds a number of favor points. Its activation cost is 1 if there are
  * no favor points on it, otherwise it is 2.
  * A tool card is represented in the game model as both a Command (activator) and a Command generator:

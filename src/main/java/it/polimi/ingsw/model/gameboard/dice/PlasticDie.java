@@ -19,12 +19,22 @@ public class PlasticDie implements Die {
     private Shade shade;
     private final int id;
 
+    /**
+     * Generates a new die instance, ID provided. This constructor should be used by the dice bag.
+     * @param id Integer that uniquely identifies the die
+     */
     PlasticDie(int id) {
         this.id = id;
         this.color = Color.values()[new Random().nextInt(Color.values().length)];
         this.roll();
     }
 
+    /**
+     * Generates a cloned die from the provided information.
+     * @param id Integer that uniquely identifies the die
+     * @param color Die color
+     * @param shade Die shade on the top face
+     */
     public PlasticDie(int id, Color color, Shade shade) {
         if (id < 0)
             throw new IllegalArgumentException(NEGATIVE_INTEGER);

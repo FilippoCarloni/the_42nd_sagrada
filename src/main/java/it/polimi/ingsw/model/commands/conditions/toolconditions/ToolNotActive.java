@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_TOOL_ACTIVE;
 
+/**
+ * Checks if there are no active Tool Cards (of ACTIVE type).
+ * @see it.polimi.ingsw.model.gameboard.cards.tools.ToolCard
+ */
 public class ToolNotActive implements Condition {
 
     @Override

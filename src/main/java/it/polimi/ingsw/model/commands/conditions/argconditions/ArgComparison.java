@@ -10,15 +10,24 @@ import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIFFERENT_INDEX;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_BIG;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_SMALL;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Checks if the argument passed from the user is legal, given the current game status.
+ */
 public class ArgComparison implements Condition {
 
-    private static final String DEFAULT_ERROR_MESSAGE = "Bad JSON format.";
     private String typeOfComparison;
     private int index;
     private String bound;
 
+    /**
+     * Generates a new argument checker from the given parameters.
+     * @param typeOfComparison A string that identifies the type of comparison (>=, < or ==)
+     * @param index The index in the argument array that should be checked
+     * @param bound The bound that the argument should be confronted to
+     */
     public ArgComparison(String typeOfComparison, int index, String bound) {
         this.typeOfComparison = typeOfComparison;
         this.index = index;
@@ -42,7 +51,7 @@ public class ArgComparison implements Condition {
                     return parseInt(bound);
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE + " " + e.getMessage());
+            throw new IllegalArgumentException(BAD_JSON + " " + e.getMessage());
         }
     }
 
@@ -57,7 +66,7 @@ public class ArgComparison implements Condition {
                 return (gd, args) -> args[index] == getBound(gd);
             default:
         }
-        throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE);
+        throw new IllegalArgumentException(BAD_JSON);
     }
 
     @Override
@@ -71,6 +80,6 @@ public class ArgComparison implements Condition {
                 return ERR_DIFFERENT_INDEX;
             default:
         }
-        throw new IllegalArgumentException(DEFAULT_ERROR_MESSAGE);
+        throw new IllegalArgumentException(BAD_JSON);
     }
 }

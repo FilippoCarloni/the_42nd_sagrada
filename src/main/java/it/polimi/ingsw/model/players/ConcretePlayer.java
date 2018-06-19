@@ -27,6 +27,13 @@ public class ConcretePlayer implements Player{
         this.username=username;
     }
 
+    /**
+     * Generates a player from the state encoded in the given parameters.
+     * @param username Player's username string
+     * @param window Player's current window frame
+     * @param privateObjective Player's private objective card
+     * @param favorPoints Player's number of favor points
+     */
     public ConcretePlayer(String username, WindowFrame window, PrivateObjectiveCard privateObjective, int favorPoints) {
         this.username = username;
         this.window = window;

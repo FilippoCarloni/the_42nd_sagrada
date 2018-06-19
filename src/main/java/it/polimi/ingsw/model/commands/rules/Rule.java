@@ -7,15 +7,17 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
  * Represents a Sagrada die placing rule.
  * Every placing move of a Sagrada player must obey some conditions.
  * These conditions can be divided in three categories:
- *     - Color rules: a die cannot be placed in a cell that holds a color constraint
- *       different from the die color; a die cannot be places adjacent orthogonally
- *       to another same color die
- *     - Shade rules: a die cannot be placed in a cell that holds a shade constraint
- *       different from the die shade; a die cannot be places adjacent orthogonally
- *       to another same shade die
- *     - Placing rule: a die must be placed adjacent orthogonally or diagonally to
- *       another die; if the window frame does not contain any die, the die must be
- *       placed in a boundary cell.
+ * <ul>
+ *     <li>Color rules: a die cannot be placed in a cell that holds a color constraint
+ *     different from the die color; a die cannot be places adjacent orthogonally
+ *     to another same color die</li>
+ *     <li>Shade rules: a die cannot be placed in a cell that holds a shade constraint
+ *     different from the die shade; a die cannot be places adjacent orthogonally
+ *     to another same shade die</li>
+ *     <li>Placing rule: a die must be placed adjacent orthogonally or diagonally to
+ *     another die; if the window frame does not contain any die, the die must be
+ *     placed in a boundary cell</li>
+ * </ul>
  */
 public interface Rule {
 

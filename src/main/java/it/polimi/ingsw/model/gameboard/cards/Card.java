@@ -5,9 +5,11 @@ import it.polimi.ingsw.model.utility.JSONSerializable;
 /**
  * Represents any Sagrada card.
  * Sagrada card types are:
- *     - public objective
- *     - private objective
- *     - tool
+ * <ul>
+ *     <li>public objective</li>
+ *     <li>private objective</li>
+ *     <li>tool</li>
+ * </ul>
  */
 public interface Card extends Drawable, JSONSerializable {
 

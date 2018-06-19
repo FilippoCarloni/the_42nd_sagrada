@@ -27,7 +27,7 @@ public interface Game {
     /**
      * Returns a list of private objectives that should be shared between the players
      * in order to start a new match (1x player).
-     *
+     * <br>
      * NOTE: for a game to start, is required a list of players. All of the players
      * in the list must have a not-null private objective and a not-null window frame.
      * This method allows private objective picking outside of the "concrete" game context.
@@ -44,7 +44,7 @@ public interface Game {
     /**
      * Returns a list of window frames that should be shared between the players
      * in order to start a new match (4x player).
-     *
+     * <br>
      * NOTE: for a game to start, is required a list of players. All of the players
      * in the list must have a not-null private objective and a not-null window frame.
      * This method allows window frame picking outside of the "concrete" game context.
@@ -76,7 +76,7 @@ public interface Game {
     /**
      * Reverts a command.
      * This method ALWAYS executes, so it can revert even "pass" commands.
-     *
+     * <br>
      * NOTE: if used not for testing or debugging, but for usual play,
      * you should externally check if it's the current player's turn
      * and if the "undo" action is available according to Sagrada rules.
@@ -92,7 +92,7 @@ public interface Game {
 
     /**
      * This method ALWAYS executes, redoing a taken action during the game.
-     *
+     * <br>
      * NOTE: if used not for testing or debugging, but for usual play,
      * you should externally check if it's the current player's turn
      * and if the "redo" action is available.

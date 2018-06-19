@@ -6,15 +6,9 @@ import static java.lang.Integer.parseInt;
 
 /**
  * Represents the unique identifier of a window frame cell.
- * Window frames are modelled as 2D planes and their cells are identifies by a tuple (row, column):
- *
- *        0   1   2   3   4 < column index
- *     0 [ ] [ ] [ ] [ ] [ ]
- *     1 [ ] [ ] [ ] [ ] [ ]
- *     2 [ ] [ ] [ ] [ ] [ ]
- *     3 [ ] [ ] [ ] [ ] [ ]
- *     ^
- *     row index
+ * Window frames are modelled as 2D planes and their cells are identifies by a tuple (rowIndex, columnIndex).
+ * <br>
+ * NOTE: 0 <= rowIndex < 4 and 0 <= columnIndex < 5.
  */
 public final class Coordinate {
 

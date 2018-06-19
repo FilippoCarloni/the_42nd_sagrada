@@ -22,6 +22,14 @@ public class PaperWindowFrame implements WindowFrame {
     private Map<Coordinate, Color> colorConstraints;
     private Map<Coordinate, Shade> shadeConstraints;
 
+    /**
+     * Generates a new window frame instance from the information provided.
+     * @param name Window's name
+     * @param difficulty Window's difficulty
+     * @param dice Map of dice that the window is holding
+     * @param colorConstraints Map of the window's color constraints
+     * @param shadeConstraints Map of the window's shade constraints
+     */
     public PaperWindowFrame(String name, int difficulty, Map<Coordinate, Die> dice, Map<Coordinate, Color> colorConstraints, Map<Coordinate, Shade> shadeConstraints) {
         this.name = name;
         this.difficulty = difficulty;

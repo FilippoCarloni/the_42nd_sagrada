@@ -12,13 +12,22 @@ import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.Integer.parseInt;
 
+/**
+ * Generates condition instances from JSON encoding.
+ */
 public final class ConditionFactory {
 
     private ConditionFactory() {}
 
+    /**
+     * Generates a condition instance form the information contained in a JSON object.
+     * @param obj The JSON object that contains the information about the condition
+     * @return An Condition instance
+     */
     public static Condition getCondition(JSONObject obj) {
 
         switch (obj.get(JSONTag.CONDITION).toString()) {
@@ -54,6 +63,6 @@ public final class ConditionFactory {
                 return new Share(obj.get(OBJECT).toString(), obj.get(POOL).toString(), parseBoolean(obj.get(VALUE_IF_EMPTY).toString()));
             default:
         }
-        throw new IllegalArgumentException("Passed string doesn't identify any valid condition.");
+        throw new IllegalArgumentException(BAD_JSON);
     }
 }

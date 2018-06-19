@@ -17,6 +17,7 @@ import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
 
 /**
  * Implements the Game interface unifying the game data and the command manager with a generic structure.
+ * <br>
  * NOTE: the game data represents the raw data of the game (can be treated as a database of the game information)
  * while the command manager represents the rule manager (can be treated as the game logic)
  */
@@ -24,12 +25,20 @@ public class ConcreteGame implements Game {
 
     private CommandManager commandManager;
 
+    /**
+     * Generates a new game status (data + rule logic) from a valid list of players.
+     * @param players A List of players
+     */
     public ConcreteGame(List<Player> players) {
         if (players == null)
             throw new NullPointerException(NULL_PARAMETER);
         commandManager = new DequeCommandManager(new ConcreteGameData(players));
     }
 
+    /**
+     * Generates a game status (data + rule logic) from the provided game data.
+     * @param gameData Current status of the game data
+     */
     public ConcreteGame(GameData gameData) {
         if (gameData == null)
             throw new NullPointerException(NULL_PARAMETER);

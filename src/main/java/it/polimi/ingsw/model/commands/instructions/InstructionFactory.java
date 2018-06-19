@@ -15,11 +15,20 @@ import it.polimi.ingsw.model.utility.JSONTag;
 import org.json.simple.JSONObject;
 
 import static it.polimi.ingsw.model.commands.instructions.InstructionID.*;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 
+/**
+ * Generates instruction instances from JSON encoding.
+ */
 public class InstructionFactory {
 
     private InstructionFactory() {}
 
+    /**
+     * Generates an instruction instance form the information contained in a JSON object.
+     * @param obj The JSON object that contains the information about the instruction
+     * @return An Instruction instance
+     */
     public static Instruction getInstruction(JSONObject obj) {
         switch (obj.get(JSONTag.INSTRUCTION).toString()) {
             case INS_PICK_DIE_FROM_POOL:
@@ -56,7 +65,7 @@ public class InstructionFactory {
             case INS_RETURN_DIE_TO_BAG:
                 return new ReturnDieToDiceBag();
             default:
-                throw new IllegalArgumentException("Passed string doesn't identify any valid instruction.");
+                throw new IllegalArgumentException(BAD_JSON);
         }
     }
 }

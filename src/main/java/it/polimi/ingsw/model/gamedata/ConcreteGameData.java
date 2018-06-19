@@ -40,6 +40,12 @@ public class ConcreteGameData implements GameData {
     private List<Die> diceMoved;
     private boolean undoAvailable;
 
+    /**
+     * Generates a starting game status, provided a valid list of players.
+     * In order to be valid, a list of players must have at least 2 players and its size should not
+     * exceed 4; players'parameters such as window frame and private objective should be not-null.
+     * @param players A List of correctly initialized players
+     */
     ConcreteGameData(List<Player> players) {
         turnManager = GameDataFactory.getTurnManager(players);
         roundTrack = GameDataFactory.getRoundTrack();
@@ -51,6 +57,22 @@ public class ConcreteGameData implements GameData {
         clear();
     }
 
+    /**
+     * Generates a new game status that encodes the information provided in the parameters.
+     * @param roundTrack Current round track
+     * @param diceBag Current dice bag
+     * @param dicePool Current dice pool
+     * @param publicObjectiveCards Public objectives of the game
+     * @param tools Tool cards of the game
+     * @param turnManager Current turn manager
+     * @param pickedDie Currently picked die (could be null)
+     * @param diePlaced Boolean true if a die was already placed
+     * @param activeToolID Identifies the currently activated ACTIVE tool card
+     * @param passiveToolID Identifies the currently activated PASSIVE tool card
+     * @param toolActivated Boolean true if there's an active tool card currently
+     * @param diceMoved List of moved dice during this turn (could be null)
+     * @param undoAvailable Boolean true if the player is allowed to undo his/her last action
+     */
     public ConcreteGameData(RoundTrack roundTrack, DiceBag diceBag, List<Die> dicePool,
                             List<PublicObjectiveCard> publicObjectiveCards, List<ToolCard> tools,
                             TurnManager turnManager, Die pickedDie, boolean diePlaced, int activeToolID,

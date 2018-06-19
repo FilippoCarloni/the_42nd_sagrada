@@ -15,15 +15,16 @@ import java.util.Map;
 /**
  * Represents the data holder of a particular instant of a Sagrada game.
  * In particular, the GameData stores information about:
- *   - round track
- *   - dice bag
- *   - dice pool
- *   - tool cards
- *   - public objectives
- *   - players
- *   - turn state
- *   - particular turn information regarding current player actions
- *
+ * <ul>
+ *     <li>round track</li>
+ *     <li>dice bag</li>
+ *     <li>dice pool</li>
+ *     <li>tool cards</li>
+ *     <li>public objectives</li>
+ *     <li>players</li>
+ *     <li>turn state</li>
+ *     <li>particular turn information regarding current player actions</li>
+ * </ul>
  * In addition, it can generate a score map calculated on the current status
  * and can be serialized in a JSON object.
  */
@@ -108,7 +109,7 @@ public interface GameData extends JSONSerializable {
 
     /**
      * Returns the ID of the currently activated tool card of active type.
-     *
+     * <br>
      * NOTE: if there are no active tool cards this method return 0;
      * tool cards can be active (their effect must be ended by the player) or passive
      * (their effect is automatically terminated). This method fetches only for
@@ -125,7 +126,7 @@ public interface GameData extends JSONSerializable {
 
     /**
      * Returns the ID of the currently activated tool card of passive type.
-     *
+     * <br>
      * NOTE: if there are no active tool cards this method return 0;
      * tool cards can be active (their effect must be ended by the player) or passive
      * (their effect is automatically terminated). This method fetches only for

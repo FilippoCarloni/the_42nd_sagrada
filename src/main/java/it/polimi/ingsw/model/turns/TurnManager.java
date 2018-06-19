@@ -7,16 +7,18 @@ import java.util.List;
 
 /**
  * Represents the class that manages the player order of Sagrada turns.
- * Sagrada is a game based on drafting, and the turn order embraces that policy.
- * Let's make an example:
- *   " Alice, Bob and Carol are playing a Sagrada game.
- *     Let's assume that it's Alice's turn and the players in clockwise order are Alice -> Bob -> Carol.
- *     The turn order of this round is: Alice -> Bob -> Carol -> Carol -> Bob -> Alice.
- *     The next round starts with a Bob turn, as he follows Alice in the clockwise order.
- *     The second turn order is: Bob -> Carol -> Alice -> Alice -> Carol -> Bob.
- *     The next round starts with a Carol turn, as he follows Bob in the clockwise order.
- *     The third turn order is: Carol -> Alice -> Bob -> Bob -> Alice -> Carol.
- *     This turn order structures repeats until the end of the game. "
+ * Sagrada is a game based on drafting, and the turn order embraces that policy.<br>
+ * Let's make an example: Alice, Bob and Carol are playing a Sagrada game.
+ * <ul>
+ *     <li>Let's assume that it's Alice's turn and the players in clockwise order are Alice -> Bob -> Carol;
+ *     the turn order of this round is: Alice -> Bob -> Carol -> Carol -> Bob -> Alice</li>
+ *     <li>The turn order of this round is: Alice -> Bob -> Carol -> Carol -> Bob -> Alice;
+ *     the next round starts with a Bob turn, as he follows Alice in the clockwise order</li>
+ *     <li>The second turn order is: Bob -> Carol -> Alice -> Alice -> Carol -> Bob;
+ *     the next round starts with a Carol turn, as she follows Bob in the clockwise order</li>
+ *     <li>The third turn order is: Carol -> Alice -> Bob -> Bob -> Alice -> Carol</li>
+ * </ul>
+ * This turn order structure repeats until the end of the game.
  */
 public interface TurnManager extends JSONSerializable {
 

@@ -6,10 +6,17 @@ import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIE_NOT_PICKED;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIE_PICKED;
 
+/**
+ * Checks if a die was already picked from the dice pool this turn.
+ */
 public class DiePicked implements Condition {
 
     private boolean value;
 
+    /**
+     * Generates a new checker instance from the passed value.
+     * @param value The value that the diePicked status of the current GameData should equal
+     */
     public DiePicked(boolean value) {
         this.value = value;
     }

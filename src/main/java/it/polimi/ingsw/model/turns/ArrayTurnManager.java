@@ -30,6 +30,7 @@ public class ArrayTurnManager implements TurnManager {
     /**
      * Generates a Sagrada turn manager that holds the drafting logic.
      * It is implemented with an array-like structure.
+     * @param players List of players of the game
      */
     public ArrayTurnManager(List<Player> players) {
         if (players == null)
@@ -44,6 +45,15 @@ public class ArrayTurnManager implements TurnManager {
         advanceTurn();
     }
 
+    /**
+     * Generates a new turn manager that loads the provided information.
+     * @param roundStarting Boolean that identifies if this is the first turn of the round
+     * @param roundEnding Boolean that identifies if this is the last turn of the round
+     * @param players List of players of the game
+     * @param playerTurns List that identifies the player order of this round
+     * @param turnIndex Integer that identifies whose turn is from the playerTurns array
+     * @param firstPlayerIndex Integer that identifies who was the first player of the round
+     */
     public ArrayTurnManager(boolean roundStarting, boolean roundEnding, List<Player> players, List<String> playerTurns, int turnIndex, int firstPlayerIndex) {
         this.roundStarting = roundStarting;
         this.roundEnding = roundEnding;

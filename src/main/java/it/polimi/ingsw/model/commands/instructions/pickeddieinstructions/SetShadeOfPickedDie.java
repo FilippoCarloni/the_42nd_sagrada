@@ -6,10 +6,21 @@ import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gamedata.GameData;
 import it.polimi.ingsw.model.utility.Shade;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
+
+/**
+ * Sets the selected shade to the picked die.
+ * The shade can be a generic one or a particular one (increment, decrement or flip).
+ */
 public class SetShadeOfPickedDie implements Instruction {
 
     private String argument;
 
+    /**
+     * Generates a particular shade setter based on a string argument.
+     * This setter can be an increment, decrement, flip or generic one.
+     * @param argument A string argument
+     */
     public SetShadeOfPickedDie(String argument) {
         this.argument = argument;
     }
@@ -47,7 +58,7 @@ public class SetShadeOfPickedDie implements Instruction {
                 gameData.setPickedDie(flip(gameData.getPickedDie()));
                 break;
             default:
-                throw new IllegalArgumentException("Bad JSON argument: " + argument);
+                throw new IllegalArgumentException(BAD_JSON);
         }
     }
 }

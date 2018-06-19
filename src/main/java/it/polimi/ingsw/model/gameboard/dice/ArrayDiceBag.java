@@ -35,6 +35,10 @@ public class ArrayDiceBag implements DiceBag {
         Collections.shuffle(dice);
     }
 
+    /**
+     * Generates a new dice bag filled with the provided list of dice.
+     * @param dice A List of Die instances
+     */
     public ArrayDiceBag(List<Die> dice) {
         if (dice == null)
             throw new NullPointerException(NULL_PARAMETER);

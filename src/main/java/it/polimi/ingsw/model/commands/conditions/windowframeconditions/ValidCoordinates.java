@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.gameboard.windowframes.Coordinate;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INVALID_COORDINATES;
 
+/**
+ * Generates a window frame coordinates validator.
+ */
 public class ValidCoordinates implements Condition {
 
     @Override

@@ -14,6 +14,11 @@ public enum Color {
     private String id;
     private String label;
 
+    /**
+     * Generates a new Color enum value.
+     * @param id Character that uniquely identifies the color
+     * @param label Label that identifies uniquely the color by its name
+     */
     Color(String id, String label) {
         this.id = id;
         this.label = label;
@@ -22,11 +27,13 @@ public enum Color {
     /**
      * Returns a color from a unique identifier.
      * The possible identifiers are:
-     *   - R : color red
-     *   - G : color green
-     *   - Y : color yellow
-     *   - B : color blue
-     *   - P : color purple
+     * <ul>
+     *     <li>R: red</li>
+     *     <li>G: green</li>
+     *     <li>Y: yellow</li>
+     *     <li>B: blue</li>
+     *     <li>P: purple</li>
+     * </ul>
      * @param id A string ID
      * @return A Color enum value, or null if the ID doesn't match with any color
      */
@@ -40,11 +47,13 @@ public enum Color {
     /**
      * Returns a color from a unique label.
      * The possible labels are:
-     *   - red    : color red
-     *   - green  : color green
-     *   - yellow : color yellow
-     *   - blue   : color blue
-     *   - purple : color purple
+     * <ul>
+     *     <li>red: color red</li>
+     *     <li>green: color green</li>
+     *     <li>yellow: color yellow</li>
+     *     <li>blue: color blue</li>
+     *     <li>purple: color purple</li>
+     * </ul>
      * @param label A string label
      * @return A Color enum value, or null if the label doesn't match with any color
      */

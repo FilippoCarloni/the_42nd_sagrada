@@ -4,6 +4,12 @@ import it.polimi.ingsw.model.commands.instructions.Instruction;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.OBJECT_NOT_EXISTS;
+
+/**
+ * On Tool Card activation, removes favor points from the current player
+ * and gives the removed favor points to the activated Tool Card.
+ */
 public class ManageFavorPoints implements Instruction {
 
     @Override
@@ -22,6 +28,6 @@ public class ManageFavorPoints implements Instruction {
                 return;
             }
         }
-        throw new IllegalArgumentException("Something went wrong in tool card activation: this tool does not exist in this game.");
+        throw new IllegalArgumentException(OBJECT_NOT_EXISTS);
     }
 }

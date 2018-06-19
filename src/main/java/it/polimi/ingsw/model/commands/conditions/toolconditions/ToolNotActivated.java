@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_TOOL_ACTIVATED;
 
+/**
+ * Checks if a Tool Card was not activated during this turn.
+ */
 public class ToolNotActivated implements Condition {
 
     @Override

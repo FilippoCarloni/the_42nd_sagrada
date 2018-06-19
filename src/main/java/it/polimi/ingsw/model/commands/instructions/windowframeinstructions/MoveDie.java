@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.commands.instructions.windowframeinstructions;
 import it.polimi.ingsw.model.commands.instructions.Instruction;
 import it.polimi.ingsw.model.gamedata.GameData;
 
+/**
+ * Moves a die from a position of the window frame to another one.
+ */
 public class MoveDie implements Instruction {
 
     @Override

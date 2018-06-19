@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.*;
 
+/**
+ * Checks if the movement command is rule-compliant.
+ */
 public class Move implements Condition {
 
     private boolean placing;
@@ -17,6 +20,13 @@ public class Move implements Condition {
     private boolean shade;
     private String errorMessage = ERR_RULE_ERROR;
 
+    /**
+     * Generates a new movement-checker.
+     * @see it.polimi.ingsw.model.commands.rules.Rule
+     * @param placing True if the Placing rule should be checked
+     * @param color True if the Color rule should be checked
+     * @param shade True if the Shade rule should be checked
+     */
     public Move(boolean placing, boolean color, boolean shade) {
         this.placing = placing;
         this.color = color;

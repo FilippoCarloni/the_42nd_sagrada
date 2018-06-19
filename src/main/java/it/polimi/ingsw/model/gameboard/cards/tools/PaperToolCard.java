@@ -22,6 +22,15 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
     private JSONObject activator;
     private JSONArray commands;
 
+    /**
+     * Generates a new tool card instance, provided the building information.
+     * @param name Card's name
+     * @param description Card's description
+     * @param id Card's identifier
+     * @param activeEffect Boolean true if the card is of ACTIVE type
+     * @param activator JSON that encodes the activation logic
+     * @param commands JSON that encodes the custom commands logic
+     */
     PaperToolCard(String name, String description, int id, boolean activeEffect, JSONObject activator, JSONArray commands) {
         this.id = id;
         this.name = name;

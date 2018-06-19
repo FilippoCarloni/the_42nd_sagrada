@@ -33,6 +33,12 @@ public class PaperRoundTrack implements RoundTrack {
         diceOnSlot = new int[this.totalNumberOfRounds];
     }
 
+    /**
+     * Generates a new round track instance from the provided information.
+     * @param currentRoundNumber Tells how many rounds have already been played
+     * @param dice List of the dice currently present on the round track
+     * @param diceOnSlot Tells how many dice are present in every single slot of the round track
+     */
     public PaperRoundTrack(int currentRoundNumber, List<Die> dice, int[] diceOnSlot) {
         this.currentRoundNumber = currentRoundNumber;
         this.totalNumberOfRounds = Parameters.TOTAL_NUMBER_OF_ROUNDS;

@@ -31,6 +31,10 @@ public class DequeCommandManager implements CommandManager {
     private Deque<JSONObject> redoCommands;
     private GameData gameData;
 
+    /**
+     * Generates a new command manager.
+     * @param gameData Game data in a starting state
+     */
     public DequeCommandManager(GameData gameData) {
         this.gameData = gameData;
         undoCommands = new ArrayDeque<>();

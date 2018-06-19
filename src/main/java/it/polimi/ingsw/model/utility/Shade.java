@@ -15,19 +15,24 @@ public enum Shade {
 
     private int value;
 
+    /**
+     * Generates a Shade enum value.
+     * @param value The positive integer that is represented by the Shade
+     */
     Shade(int value) {
         this.value = value;
     }
 
     /**
-     * Returns a shade from a unique integer value.
-     * The possible values are:
-     *   - 1 : lightest shade
-     *   - 2 : lighter shade
-     *   - 3 : light shade
-     *   - 4 : dark shade
-     *   - 5 : darker shade
-     *   - 6 : darkest shade
+     * <p>Returns a shade from a unique integer value. The possible values are:</p>
+     * <ol>
+     *   <li>lightest shade</li>
+     *   <li>lighter shade</li>
+     *   <li>light shade</li>
+     *   <li>dark shade</li>
+     *   <li>darker shade</li>
+     *   <li>darkest shade</li>
+     * </ol>
      * @param value A shade integer
      * @return A Shade enum value, or null if the integer doesn't match with any shade
      */
@@ -36,14 +41,15 @@ public enum Shade {
     }
 
     /**
-     * Returns a shade from a unique integer value, passed as string.
-     * The possible values are:
-     *   - 1 : lightest shade
-     *   - 2 : lighter shade
-     *   - 3 : light shade
-     *   - 4 : dark shade
-     *   - 5 : darker shade
-     *   - 6 : darkest shade
+     * <p>Returns a shade from a unique integer value, passed as string. The possible values are:</p>
+     * <ol>
+     *     <li>lightest shade</li>
+     *     <li>lighter shade</li>
+     *     <li>light shade</li>
+     *     <li>dark shade</li>
+     *     <li>darker shade</li>
+     *     <li>darkest shade</li>
+     * </ol>
      * @param s A string value
      * @return A Shade enum value, or null if the string doesn't match with any shade
      */

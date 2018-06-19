@@ -11,8 +11,10 @@ import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
 
 /**
  * Decorates a Rule with the Sagrada shade rule:
- *   - two dice that share the same shade can't be placed orthogonally adjacent
- *   - a die must respect the shade constraint of the window frame
+ * <ul>
+ *     <li>two dice that share the same shade can't be placed orthogonally adjacent</li>
+ *     <li>a die must respect the shade constraint of the window frame</li>
+ * </ul>
  */
 public class ShadeRule extends RuleDecorator {
 

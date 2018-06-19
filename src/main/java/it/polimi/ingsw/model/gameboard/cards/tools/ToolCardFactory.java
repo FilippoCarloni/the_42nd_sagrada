@@ -28,10 +28,12 @@ public final class ToolCardFactory {
 
     /**
      * Returns the tool card instances from file.
-     *
+     * <br>
      * NOTE: Parameters.USE_COMPLETE_RULES can be used to manage tool card loading:
-     *   - true  : loads tool cards from 1 to 12
-     *   - false : loads tool cards from 1 to 6
+     * <ul>
+     *     <li>true: loads tool cards from 1 to 12</li>
+     *     <li>false: loads tool cards from 1 to 6</li>
+     * </ul>
      * @see Parameters
      * @return A List of tool card instances
      */

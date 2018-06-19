@@ -26,7 +26,7 @@ public interface CommandManager {
     /**
      * Reverts the game status to the previous one.
      * If there are no previous states, this method just does nothing.
-     *
+     * <br>
      * NOTE: this method ALWAYS executes, even if a player is not allowed to undo his/her action.
      * This feature allows deeper testing and gives complete control of the game status.
      */
@@ -41,7 +41,7 @@ public interface CommandManager {
     /**
      * Forwards the game status to the next one.
      * If there are no next states, this method just does nothing.
-     *
+     * <br>
      * NOTE: this method ALWAYS executes, giving complete control of the game status.
      */
     void redoCommand();

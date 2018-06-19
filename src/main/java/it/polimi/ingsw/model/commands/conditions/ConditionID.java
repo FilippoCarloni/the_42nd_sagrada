@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.commands.conditions;
 
+/**
+ * Holds the JSON tags for condition fetching.
+ */
 public class ConditionID {
 
     private ConditionID() {}

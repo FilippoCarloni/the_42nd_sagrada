@@ -18,6 +18,10 @@ public abstract class AbstractDeck implements Deck {
 
     private ArrayList<Drawable> cards;
 
+    /**
+     * Adds a card to the drawable pool.
+     * @param card A Drawable instance
+     */
     protected void add(Drawable card) {
         if (card == null) throw new NullPointerException(NULL_PARAMETER);
         if (cards == null) cards = new ArrayList<>();

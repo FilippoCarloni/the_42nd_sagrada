@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.commands.instructions;
 
+/**
+ * Holds the JSON tags for instruction fetching.
+ */
 public final class InstructionID {
 
     private InstructionID() {}

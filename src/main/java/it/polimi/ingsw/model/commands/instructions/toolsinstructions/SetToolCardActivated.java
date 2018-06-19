@@ -5,6 +5,11 @@ import it.polimi.ingsw.model.commands.instructions.Instruction;
 import it.polimi.ingsw.model.gameboard.cards.tools.ToolCard;
 import it.polimi.ingsw.model.gamedata.GameData;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.OBJECT_NOT_EXISTS;
+
+/**
+ * Sets the toolCardActivated state to true and updates the current activeToolIDs.
+ */
 public class SetToolCardActivated implements Instruction {
 
     @Override
@@ -18,6 +23,6 @@ public class SetToolCardActivated implements Instruction {
                 return;
             }
         }
-        throw new IllegalArgumentException("Something went wrong in tool card activation: this tool does not exist in this game.");
+        throw new IllegalArgumentException(OBJECT_NOT_EXISTS);
     }
 }

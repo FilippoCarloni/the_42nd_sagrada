@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.commands.instructions.Instruction;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gamedata.GameData;
 
+/**
+ * Swaps the picked die with one present on the Round Track.
+ */
 public class SwapFromRoundTrack implements Instruction {
 
     @Override

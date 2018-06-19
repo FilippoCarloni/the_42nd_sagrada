@@ -11,6 +11,9 @@ import java.util.List;
  */
 public class WindowFrameDeck extends AbstractDeck {
 
+    /**
+     * Generates a new window frame deck instance.
+     */
     public WindowFrameDeck() {
         List<WindowFrame> frames = WindowFrameFactory.getWindowFrames();
         for (WindowFrame frame : frames)

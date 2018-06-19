@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class ToolDeck extends AbstractDeck {
 
+    /**
+     * Generates a new tool deck instance.
+     */
     public ToolDeck() {
         List<ToolCard> tools = ToolCardFactory.getTools();
         for (ToolCard c : tools)

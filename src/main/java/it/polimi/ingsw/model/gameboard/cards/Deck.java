@@ -10,7 +10,8 @@ public interface Deck {
     /**
      * Draws an object from the deck.
      * The returned object should be casted to the desired type, for example:
-     *     PublicObjectiveCard pc = (PublicObjectiveCard) new PublicObjectiveDeck().draw();
+     * <br>
+     * PublicObjectiveCard pc = (PublicObjectiveCard) new PublicObjectiveDeck().draw();
      * @return A Drawable object
      */
     Drawable draw();

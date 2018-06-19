@@ -12,15 +12,23 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_NO_SHARING_DIE_1;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_NO_SHARING_DIE_2;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 
+/**
+ * Checks if the die present in a particular pool shares a particular feature.
+ */
 public class Share implements Condition {
-
-    private static final String DEFAULT_ERROR = "Bad JSON format.";
 
     private String object;
     private String pool;
     private boolean valueIfEmpty;
 
+    /**
+     * Generates a new share-checker from the given parameters.
+     * @param object Feature to be shared (color or shade)
+     * @param pool Pool from which take the die (dice pool, round track, dice moved pool)
+     * @param valueIfEmpty Value to be returned when the pool doesn't contain any die
+     */
     public Share(String object, String pool, boolean valueIfEmpty) {
         this.object = object;
         this.pool = pool;
@@ -37,7 +45,7 @@ public class Share implements Condition {
                 return gameData.getDicePool();
             default:
         }
-        throw new IllegalArgumentException(DEFAULT_ERROR);
+        throw new IllegalArgumentException(BAD_JSON);
     }
 
     @Override
@@ -50,7 +58,7 @@ public class Share implements Condition {
                 return dice.stream().map(Die::getShade).collect(Collectors.toList()).contains(die.getShade());
             else if (object.equals(COLOR))
                 return dice.stream().map(Die::getColor).collect(Collectors.toList()).contains(die.getColor());
-            throw new IllegalArgumentException(DEFAULT_ERROR);
+            throw new IllegalArgumentException(BAD_JSON);
         };
     }
 

@@ -7,11 +7,13 @@ import java.util.List;
 /**
  * Represents the Sagrada dice bag. It holds 90 dice that can be randomly picked from it.
  * Of the 90 dice,
- *     - 18 are RED,
- *     - 18 are YELLOW,
- *     - 18 are BLUE,
- *     - 18 are GREEN,
- *     - 18 are PURPLE
+ * <ul>
+ *     <li>18 are red</li>
+ *     <li>18 are yellow</li>
+ *     <li>18 are blue</li>
+ *     <li>18 are green</li>
+ *     <li>18 are purple</li>
+ * </ul>
  */
 public interface DiceBag extends JSONSerializable {
 
