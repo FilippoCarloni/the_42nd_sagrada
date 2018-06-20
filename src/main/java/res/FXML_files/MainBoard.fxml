@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
@@ -59,6 +60,7 @@
                               <Font size="25.0" />
                            </font>
                         </Label>
+                        <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="281.0" layoutY="389.0" onMouseClicked="#showPrivateObjective" stroke="BLACK" strokeType="INSIDE" width="25.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane fx:id="roundTrackAnchorPane" layoutX="-1.0" layoutY="130.0" prefHeight="150.0" prefWidth="540.0">
@@ -82,35 +84,26 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <MenuButton layoutX="12.0" layoutY="12.0" mnemonicParsing="false" popupSide="RIGHT" text="Actions">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="End your turn">
-                           <graphic>
-                              <Button alignment="CENTER" maxHeight="30.0" maxWidth="140.0" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#pass" prefHeight="30.0" prefWidth="140.0" text="Pass" />
-                           </graphic>
-                        </MenuItem>
-                      <MenuItem mnemonicParsing="false" text="Delete your last action">
-                           <graphic>
-                              <Button alignment="CENTER" maxHeight="30.0" maxWidth="140.0" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#undo" prefHeight="30.0" prefWidth="140.0" text="Undo" />
-                           </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Revert undo">
-                           <graphic>
-                              <Button alignment="CENTER" maxHeight="30.0" maxWidth="140.0" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#redo" prefHeight="30.0" prefWidth="140.0" text="Redo" />
-                           </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Show your Private Objective card">
-                           <graphic>
-                              <Button alignment="CENTER" maxHeight="30.0" maxWidth="140.0" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#showPrivateObjective" prefHeight="30.0" prefWidth="140.0" text="Private Objective" />
-                           </graphic>
-                        </MenuItem>
-                        <MenuItem mnemonicParsing="false" text="Close game">
-                           <graphic>
-                              <Button alignment="CENTER" maxHeight="30.0" maxWidth="140.0" minHeight="30.0" minWidth="140.0" mnemonicParsing="false" onAction="#quit" prefHeight="30.0" prefWidth="140.0" text="Quit" />
-                           </graphic>
-                        </MenuItem>
-                    </items>
-                  </MenuButton>
+                  <Button layoutX="13.0" layoutY="21.0" mnemonicParsing="false" onAction="#pass" text="PASS">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="150.0" layoutY="21.0" mnemonicParsing="false" onAction="#undo" text="UNDO">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="309.0" layoutY="21.0" mnemonicParsing="false" onAction="#redo" text="REDO">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="472.0" layoutY="21.0" mnemonicParsing="false" onAction="#quit" text="QUIT">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">

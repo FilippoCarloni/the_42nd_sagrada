@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.cards.toolcards.GrozingPliersController">
+   <children>
+      <StackPane fx:id="increaseStackPane" layoutX="14.0" layoutY="100.0" prefHeight="100.0" prefWidth="100.0">
+         <children>
+            <Canvas fx:id="increaseCanvas" height="100.0" width="100.0" />
+         </children>
+      </StackPane>
+      <StackPane fx:id="decreaseStackPane" layoutX="286.0" layoutY="100.0" prefHeight="100.0" prefWidth="100.0">
+         <children>
+            <Canvas fx:id="decreaseCanvas" height="100.0" width="100.0" />
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

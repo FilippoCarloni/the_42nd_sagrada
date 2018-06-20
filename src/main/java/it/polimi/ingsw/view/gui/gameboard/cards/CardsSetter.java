@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard.cards;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
+import it.polimi.ingsw.view.gui.gameboard.cards.toolcards.ToolCardsManagement;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.scene.image.Image;
 import org.json.simple.JSONArray;
@@ -24,29 +24,30 @@ public class CardsSetter {
     //Setter for public cards, on Game Board
     public static List<ImageView> setPublicCards(JSONArray json, String directory, boolean toolCards) {
         List<ImageView> cards = new ArrayList<>();
+
         for (int i = 0; i < json.size(); i++) {
-            cards.add(loadFromFile(json.get(i), directory));
+            int id =parseInt(((JSONObject)json.get(i)).get(JSONTag.CARD_ID).toString());
+            cards.add(loadFromFile(id, directory));
             if(toolCards){
-                int id =parseInt(((JSONObject)json.get(i)).get(JSONTag.CARD_ID).toString());
-                cards.get(i).setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("tool " + id));
+                new ToolCardsManagement().toolBehaviourSetter(cards.get(i), id);
             }
             setCardsDimension(cards.get(i), GUIParameters.CARDS_ON_GAME_BOARD_WIDTH, GUIParameters.CARDS_ON_GAME_BOARD_HEIGHT);
         }
         return cards;
     }
 
-    //Setter for Private Objective card, for now just on Window Frame Choice screen
+    //Setter for Private Objective card on Window Frame Choice screen
     public static ImageView setPrivateCard(JSONObject json) {
-        ImageView card = loadFromFile(json, GUIParameters.PRIV_OBJ_DIRECTORY);
+        int id = parseInt(json.get(JSONTag.CARD_ID).toString());
+
+        ImageView card = loadFromFile(id, GUIParameters.PRIV_OBJ_DIRECTORY);
         setCardsDimension(card, GUIParameters.CARD_ON_MAP_CHOICE_WIDTH, GUIParameters.CARD_ON_MAP_CHOICE_HEIGHT);
         return card;
     }
 
     //Helpers for previous methods
-    private static ImageView loadFromFile(Object jsonCard, String directory) {
+    private static ImageView loadFromFile(int id,  String directory) {
         try{
-            JSONObject jsonObject = (JSONObject) jsonCard;
-            int id =parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
             InputStream is;
             is = new FileInputStream(GUIParameters.DEFAULT_DIRECTORY + directory + "/" + id + ".jpg");
             return new ImageView(new Image(is));

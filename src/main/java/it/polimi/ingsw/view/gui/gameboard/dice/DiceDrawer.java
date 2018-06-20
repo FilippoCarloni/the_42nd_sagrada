@@ -16,17 +16,27 @@ import java.util.List;
 
 public class DiceDrawer {
 
-    //Used only the first time, to fill Dice Pool with Canvas and StackPane
-    public static void dicePoolFiller(GridPane dicePoolGrid, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool, int numDiceOnDicePool){
-        for(int i = 0; i < numDiceOnDicePool; i++){
+    /**
+     * Used to fill an horizontal GridPane with Canvas and StackPane, to set it ready to be drawn
+     * @param gridToFill: horizontal GridPane to fill with Canvas and StackPane
+     * @param panesOnDicePool: List<StackPane> in which will be put all StackPanes initialized
+     * @param canvasOnDicePool: List<Canvas> in which will be put all Canvas initialized
+     * @param numDice: integer, it represents the number of StackPane and Canvas that will be initialized and put on gridToFill
+     * @param isDicePool: boolean, it helps managing click events on Dice Pool
+     */
+    public static void diceFiller(GridPane gridToFill, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool, int numDice, boolean isDicePool){
+        for(int i = 0; i < numDice; i++){
             StackPane pane = new StackPane();
-            dicePoolGrid.add(pane, i, 0);
+            gridToFill.add(pane, i, 0);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
-            int finalI = i + 1;             //Need this because in lambda expressions I can't use not final variables (Intellij made it)
-            canvas.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("pick " + finalI));
+            if(isDicePool) {
+                //Need this finalI because in lambda expressions I can't use not final variables
+                int finalI = i + 1;
+                canvas.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("pick " + finalI));
+            }
         }
     }
 

@@ -15,6 +15,8 @@ public final class GUIParameters {
     public static final String MAP_CHOICE_SCENE_TITLE = "Map Choice";
     public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
     public static final String PRIVATE_OBJECTIVE_TITLE = "Private Objective";
+    public static final String GROZING_PLIERS_TITLE = "Grozing Pliers Activated";
+    public static final String FLUX_REMOVER_TITLE = "Flux Remover Activated";
 
     //Scenes dimensions
     public static final double CONNECTION_LOGIN_SCENE_WIDTH = 600;
@@ -23,6 +25,8 @@ public final class GUIParameters {
     public static final double SCREEN_HEIGHT = 720;
     public static final double PRIVATE_OBJECTIVE_SCENE_WIDTH = 240;
     public static final double PRIVATE_OBJECTIVE_SCENE_HEIGHT = 400;
+    public static final double TOOL_CARDS_WIDTH = 400;
+    public static final double TOOL_CARDS_HEIGHT = 300;
 
     //Elements on Game Board static dimensions
     public static final double PLAYER_1_GRID_X = 10;
@@ -36,6 +40,7 @@ public final class GUIParameters {
 
     //Constraints
     public static final int MAX_NUM_TURNS = 10;
+    public static final int NUM_SHADES = 6;
 
     //Colors
     public static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
@@ -67,6 +72,8 @@ public final class GUIParameters {
     public static final String MAP_CHOICE_FXML_PATH = "WindowFrameChoice.fxml";
     public static final String GAME_BOARD_FXML_PATH = "MainBoard.fxml";
     public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveScreen.fxml";
+    public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
+    public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";
 
     //Error messages
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard.windowframes;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.scene.canvas.Canvas;
@@ -17,50 +16,85 @@ import static java.lang.Integer.parseInt;
 
 public class WindowFrameDrawer {
 
-    //Called only the first time we go to game board, to set every StackPane and Canvas on window frames
-    public static void frameFiller(List<Canvas> canvasArrayList, List<StackPane> stackPanes, GridPane gridPane, double scale, boolean editable){
+    /**
+     * Called only the first time we go to game board, to set every StackPane and Canvas on window frames
+     * @param canvasOnWindowFrame: List<Canvas> in which all Canvas on the specified window frame will be stored
+     * @param stackPanesOnWindowFrame: List<StackPane> in which all StackPane on the specified window frame will be stored
+     * @param windowFrame: the GridPane which will contain the drawn window frame
+     * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
+     *             with different dimensions
+     * @param clickable: boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
+     */
+    public static void frameFiller(List<Canvas> canvasOnWindowFrame, List<StackPane> stackPanesOnWindowFrame, GridPane windowFrame, double scale, boolean clickable){
         for (int row = 0; row < GUIParameters.MAX_WINDOW_FRAMES_ROWS; row++) {
             for (int column = 0; column < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS; column++) {
                 StackPane pane = new StackPane();
-                gridPane.add(pane, column, row);
+                windowFrame.add(pane, column, row);
                 Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale);
                 pane.getChildren().add(canvas);
-                stackPanes.add(pane);
-                canvasArrayList.add(canvas);
-                if(editable) {
-                    int finalColumn = column + 1;
-                    int finalRow = row + 1;
-                    pane.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("place " + finalRow + " " + finalColumn));
+                stackPanesOnWindowFrame.add(pane);
+                canvasOnWindowFrame.add(canvas);
+                if(clickable) {
+                    new WindowEvents().clickEventsOnWindowFrame(pane, row + 1, column + 1, false);
                 }
             }
         }
     }
 
-    //Called every move made, to reset all Canvas and StackPane to default values
-    public static void frameReset(JSONObject json, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean editable){
+    /**
+     * Called every move made, to reset all Canvas and StackPane to default values; after the reset step it calls the framePainterManager
+     * which re-draw the entire window frame
+     * @param windowFrame: JSONObject containing all information about the window frame to draw
+     * @param canvasOnWindowFrame: List<Canvas> containing all Canvas on the specified window frame
+     * @param panesOnWindowFrame: List<StackPane> containing all StackPane on the specified window frame
+     * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
+     *             with different dimensions
+     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
+     */
+    public static void frameReset(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean clickable){
         for(int i = 0; i < GUIParameters.MAX_WINDOW_FRAMES_ROWS * GUIParameters.MAX_WINDOW_FRAMES_COLUMNS; i++){
             panesOnWindowFrame.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
             canvasOnWindowFrame.get(i).getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale);
         }
-        framePainterManager(json, canvasOnWindowFrame, panesOnWindowFrame, scale, editable);
+        framePainterManager(windowFrame, canvasOnWindowFrame, panesOnWindowFrame, scale, clickable);
     }
 
-    //Called after a reset, to re-draw window frame after a move
-    public static void framePainterManager(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean  editable) {
+    /**
+     * Called after a reset; manager method for re-drawing window frames
+     * @param windowFrame: JSONObject containing all information about the window frame to draw
+     * @param canvasOnWindowFrame: List<Canvas> containing all Canvas on the specified window frame
+     * @param panesOnWindowFrame: List<StackPane> containing all StackPane on the specified window frame
+     * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
+     *             with different dimensions
+     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
+     */
+    public static void framePainterManager(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean clickable) {
         JSONArray windowFrameConstraints = (JSONArray) windowFrame.get(JSONTag.COORDINATES);
         for(int i = 0; i < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS * GUIParameters.MAX_WINDOW_FRAMES_ROWS; i++) {
             canvasOnWindowFrame(canvasOnWindowFrame.get(i).getGraphicsContext2D(), scale);
-            framePainter(canvasOnWindowFrame.get(i).getGraphicsContext2D(), panesOnWindowFrame.get(i), (JSONObject) windowFrameConstraints.get(i), scale, editable);
+            framePainter(canvasOnWindowFrame.get(i).getGraphicsContext2D(), panesOnWindowFrame.get(i), (JSONObject) windowFrameConstraints.get(i), i, scale, clickable);
         }
     }
 
-    //Called by frame filler, to draw and paint window frames basing on constraints
-    private static void framePainter(GraphicsContext gc, StackPane pane, JSONObject constraint, double scale, boolean editable) {
+    /**
+     * Called by frame filler; method that will manage the window frame drawing, switching between constraints
+     * @param gc: GraphicContext of canvas, in which will be drawn (if needed) the shade constraint or the put die
+     * @param pane: StackPane which will be colored (if needed) with the constraint or the put dice color
+     * @param constraint: JSONObject containing all information about constraints in the specified cell
+     * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
+     *             with different dimensions
+     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
+     */
+    private static void framePainter(GraphicsContext gc, StackPane pane, JSONObject constraint, int positionIntoLists, double scale, boolean clickable) {
         JSONObject die = (JSONObject) constraint.get(JSONTag.DIE);
 
         if(die != null){
-            if(editable)
-                pane.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("move"));
+            if(clickable)
+                new WindowEvents().clickEventsOnWindowFrame(pane, rowAndColumnFromListIndex(positionIntoLists)[0], rowAndColumnFromListIndex(positionIntoLists)[1], true);
             int shade = parseInt(die.get(JSONTag.SHADE).toString());
             String color = die.get(JSONTag.COLOR).toString();
             DiceDrawer.dicePointsDrawer(shade, color, gc, pane, scale);
@@ -80,7 +114,22 @@ public class WindowFrameDrawer {
                 5);
     }
 
+    /**
+     * Function that calculate the right position into window frame (in terms of row and column) from the position into the List
+     * @param listIndex position of element into the list
+     * @return array of int containing row position and column position into the window frame
+     */
+    static int[] rowAndColumnFromListIndex(int listIndex){
+        int column = (listIndex % GUIParameters.MAX_WINDOW_FRAMES_COLUMNS) + 1;
+        int row = (listIndex / GUIParameters.MAX_WINDOW_FRAMES_COLUMNS) + 1;
+
+        return new int[]{row, column};
+    }
+
     private WindowFrameDrawer(){
 
     }
+
+
+
 }

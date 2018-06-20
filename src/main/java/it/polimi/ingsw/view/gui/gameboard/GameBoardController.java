@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackDrawer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
+import it.polimi.ingsw.view.gui.settings.GUIColor;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -26,37 +28,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 //TODO: add image on Anchor Pane Main Player Background
+//TODO: add stylesheets files (.css)
 //TODO: add favor points
 //TODO: add round track
 //TODO: add a button that will display all dice on round track
 //TODO: add new windows with messages written
+//TODO: take a look on bugs
+//TODO: add points counter at the end of the match
 
 public class GameBoardController {
 
-    //Round Track StackPane and Canvas containers
+    /**
+     * Round Track StackPane and Canvas containers
+     */
     private ArrayList<StackPane> panesOnRoundTrack = new ArrayList<>();
     private ArrayList<Canvas> canvasOnRoundTrack = new ArrayList<>();
 
-    //Player's names and window frames containers
+    /**
+     * Player's names and window frames containers
+     */
     private ArrayList<Label> playersNameLabels = new ArrayList<>();
     private ArrayList<GridPane> playersGrids = new ArrayList<>();
 
-    //Element to draw window frames containers
+    /**
+     * Element to draw window frames containers
+     */
     private Map<Integer, ArrayList<Canvas>> canvasOnGrids;
     private Map<Integer, ArrayList<StackPane>> panesOnGrids;
 
-    //Element to draw dice pool containers
+    /**
+     * Element to draw dice pool containers
+     */
     private ArrayList<StackPane> panesOnDicePool = new ArrayList<>();
     private ArrayList<Canvas> canvasOnDicePool = new ArrayList<>();
 
-    //JSON containers
+    /**
+     * JSON containers
+     */
     private JSONArray players;
     private JSONObject mainPlayer;
 
-    //Round Track reference
+    /**
+     * Round Track reference
+     */
     private RoundTrackDrawer rDrawer;
 
     @FXML
@@ -85,8 +103,10 @@ public class GameBoardController {
     private GridPane diceGrid;
     @FXML
     private GridPane gridCards;
+    @FXML
+    private Rectangle privateObjectiveRectangle;
 
-    //Setters
+    //Setters and getters
     private void setGrid(){
         windowFramePlayer1.setTranslateX(GUIParameters.PLAYER_1_GRID_X);
         windowFramePlayer1.setTranslateY(GUIParameters.PLAYER_1_GRID_Y);
@@ -112,6 +132,9 @@ public class GameBoardController {
                 panesOnGrids.put(i, new ArrayList<>());
             }
         }
+    }
+    public List<StackPane> getPanesOnWindowFrame(){
+        return panesOnGrids.get(getPlayer1ByUsername(players));
     }
 
     //Main Player getter
@@ -152,6 +175,10 @@ public class GameBoardController {
             gridCards.add(toolCards.get(j), i, 0);
             gridCards.add(pubObjCards.get(j), i, 2);
         }
+    }
+    private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
+        int id = parseInt(privateObjectiveCard.get(JSONTag.CARD_ID).toString());
+        privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
     }
 
     //Methods used by buttons into Actions menu
@@ -216,7 +243,8 @@ public class GameBoardController {
 
         rDrawer.roundTrackFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
         fillFirstTimeMap();
-        DiceDrawer.dicePoolFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size());
+        privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
+        DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size(), true);
         updater(json);
         addCardsOnGameBoard(json);
 
