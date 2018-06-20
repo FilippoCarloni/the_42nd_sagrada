@@ -15,9 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,17 +38,16 @@ import static jdk.nashorn.internal.objects.Global.print;
 //TODO: add favor points
 //TODO: add round track
 //TODO: add a button that will display all dice on round track
-//TODO: add new windows with messages written
+//TODO: append messages to messageTextArea
 //TODO: take a look on bugs
 //TODO: add points counter at the end of the match
 
 public class GameBoardController {
 
     /**
-     * Round Track StackPane and Canvas containers
+     * Round Track StackPane container
      */
     private ArrayList<StackPane> panesOnRoundTrack = new ArrayList<>();
-    private ArrayList<Canvas> canvasOnRoundTrack = new ArrayList<>();
 
     /**
      * Player's names and window frames containers
@@ -105,6 +106,13 @@ public class GameBoardController {
     private GridPane gridCards;
     @FXML
     private Rectangle privateObjectiveRectangle;
+    @FXML
+    private StackPane draftedDieStackPane;
+    @FXML
+    private Canvas draftedDieCanvas;
+    @FXML
+    private TextArea messageTextArea;
+
 
     //Setters and getters
     private void setGrid(){
@@ -181,7 +189,12 @@ public class GameBoardController {
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
     }
 
-    //Methods used by buttons into Actions menu
+    //Messages printing into TextArea
+    public void setMessageText(String message){
+        messageTextArea.appendText(message);
+    }
+
+    //Methods used by action buttons
     public void pass(){
         GuiManager.getInstance().getConnectionController().send("pass");
     }
@@ -224,7 +237,20 @@ public class GameBoardController {
                 j++;
             }
         }
+        manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
+    }
+    private void manageDraftedDie(JSONObject json){
+        draftedDieCanvas.getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5);
+        draftedDieStackPane.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
+        if(json.get(JSONTag.PICKED_DIE) != null) {
+            JSONObject draftedDie = (JSONObject) json.get(JSONTag.PICKED_DIE);
+            //Problems when a tool card that modifies his value is activated
+            int value = parseInt((draftedDie.get(JSONTag.SHADE)).toString());
+            String color = draftedDie.get(JSONTag.COLOR).toString();
+
+            DiceDrawer.dicePointsDrawer(value, color, draftedDieCanvas.getGraphicsContext2D(), draftedDieStackPane, 1.5);
+        }
     }
 
     //First game board draw, called by initialize
@@ -241,7 +267,7 @@ public class GameBoardController {
         setPlayersNameLabels();
         setMaps();
 
-        rDrawer.roundTrackFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
+        rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack);
         fillFirstTimeMap();
         privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
         DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size(), true);
@@ -257,6 +283,7 @@ public class GameBoardController {
     public void initialize(){
         GuiManager.getInstance().setGameBoard(this);
         JSONObject json = GuiManager.getInstance().getGameBoardMessage();
+        messageTextArea.setEditable(false);
         firstUpdate(json);
     }
 }

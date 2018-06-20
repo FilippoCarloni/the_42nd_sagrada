@@ -62,7 +62,7 @@ public class GuiManager {
                             gameBoard.gameBoardUpdate(gameBoardMessage);
                         break;
                     case ERROR_MESSAGE:
-                        print(MessageType.decodeMessageContent(message));
+                        gameBoard.setMessageText(MessageType.decodeMessageContent(message));
                         break;
                     case PRE_GAME_CHOICE:
                         lobbyController.getPlayButton().setDisable(false);

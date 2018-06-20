@@ -26,6 +26,7 @@ public class GrozingPliersController {
 
     private void sendCommand(String command, ActionEvent event){
         GuiManager.getInstance().getConnectionController().send(command);
+        //This launch a CastException, I can't do it like this
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 

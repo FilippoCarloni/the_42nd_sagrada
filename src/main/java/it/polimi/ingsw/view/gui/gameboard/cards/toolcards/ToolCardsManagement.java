@@ -16,6 +16,8 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+//TODO:
+
 public class ToolCardsManagement {
 
     public void toolBehaviourSetter(ImageView toolCardImage, int id){
@@ -55,7 +57,7 @@ public class ToolCardsManagement {
     }
 
     /**
-     * Flux Remover tool card allows you to choose a new value for the drafted die; it needs a new small screen to choose
+     * Flux Remover tool card allows you to choose a new value for a new drafted die; it needs a new small screen to choose
      * the value you wont.
      */
     private void fluxRemoverManagement(){

@@ -15,6 +15,8 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: fix the "color bug" and the closing problem
+
 public class FluxRemoverController {
 
     private List<StackPane> panesBetweenChoose = new ArrayList<>();

@@ -84,26 +84,37 @@
                         </GridPane>
                      </children>
                   </AnchorPane>
-                  <Button layoutX="13.0" layoutY="21.0" mnemonicParsing="false" onAction="#pass" text="PASS">
+                  <Button layoutX="382.0" layoutY="416.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#pass" prefHeight="31.0" prefWidth="65.0" text="PASS">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="150.0" layoutY="21.0" mnemonicParsing="false" onAction="#undo" text="UNDO">
+                  <Button layoutX="465.0" layoutY="460.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#undo" prefHeight="31.0" prefWidth="65.0" text="UNDO">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="309.0" layoutY="21.0" mnemonicParsing="false" onAction="#redo" text="REDO">
+                  <Button layoutX="382.0" layoutY="460.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#redo" prefHeight="31.0" prefWidth="65.0" text="REDO">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="472.0" layoutY="21.0" mnemonicParsing="false" onAction="#quit" text="QUIT">
+                  <Button layoutX="465.0" layoutY="416.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#quit" prefHeight="31.0" prefWidth="65.0" text="QUIT">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
+                  <StackPane fx:id="draftedDieStackPane" layoutX="415.0" layoutY="558.0" maxHeight="90.0" maxWidth="90.0" minHeight="90.0" minWidth="90.0" prefHeight="90.0" prefWidth="90.0">
+                     <children>
+                        <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
+                     </children>
+                  </StackPane>
+                  <Label alignment="CENTER" layoutX="422.0" layoutY="522.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" prefHeight="25.0" prefWidth="75.0" text="Drafted die">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextArea fx:id="messageTextArea" layoutX="-1.0" layoutY="8.0" prefHeight="54.0" prefWidth="540.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
