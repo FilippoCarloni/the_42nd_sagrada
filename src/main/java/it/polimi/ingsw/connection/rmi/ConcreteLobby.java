@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.rmi;
 import it.polimi.ingsw.connection.client.RemoteObserver;
 import it.polimi.ingsw.connection.server.CentralServer;
-import it.polimi.ingsw.connection.server.Session;
+import it.polimi.ingsw.connection.server.ServerSession;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
@@ -29,8 +29,8 @@ public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
         }
         return session;
     }
-    public void disconnect(Session userSession)throws RemoteException {
-        server.disconnect(userSession);
+    public void disconnect(ServerSession userServerSession)throws RemoteException {
+        server.disconnect(userServerSession);
         throw new RemoteException("error, and it is a very big problem!");
     }
     public GameManager getGame(String userSessionID) throws RemoteException {

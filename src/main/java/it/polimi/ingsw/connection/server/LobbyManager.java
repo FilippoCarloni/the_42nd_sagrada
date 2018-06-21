@@ -14,7 +14,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class LobbyManager extends Observable{
     private boolean open;
-    private List<WrappedPlayer> players;
+    private List<OnLinePlayer> players;
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(2);
     private ScheduledFuture<?> timer;
@@ -24,7 +24,7 @@ public class LobbyManager extends Observable{
         timer=null;
         players=new ArrayList<>();
     }
-    public synchronized boolean add(WrappedPlayer player) {
+    public synchronized boolean add(OnLinePlayer player) {
         Runnable task= this::endWaiting;
         Runnable cleaner = this::playerCleaner;
         if(players.contains(player))
@@ -56,7 +56,7 @@ public class LobbyManager extends Observable{
             this.beeperHandle.cancel(true);
         }
     }
-    synchronized List<WrappedPlayer> waitStart(){
+    synchronized List<OnLinePlayer> waitStart(){
         while (open) {
             try {
                 wait();
@@ -67,8 +67,8 @@ public class LobbyManager extends Observable{
         return players;
     }
     private synchronized void playerCleaner(){
-        List<WrappedPlayer> noActive=new ArrayList<>();
-            for( WrappedPlayer p: this.players)
+        List<OnLinePlayer> noActive=new ArrayList<>();
+            for( OnLinePlayer p: this.players)
                 if(!p.getObserver().isAlive()) {
                     noActive.add(p);
                     this.deleteObserver(p.getObserver());
@@ -76,7 +76,7 @@ public class LobbyManager extends Observable{
                     this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername()+" has leaved the match lobby!",MessageType.GENERIC_MESSAGE));
                 }
 
-            for(WrappedPlayer p:noActive)
+            for(OnLinePlayer p:noActive)
                 this.players.remove(p);
             if(this.players.isEmpty())
                 this.beeperHandle.cancel(false);

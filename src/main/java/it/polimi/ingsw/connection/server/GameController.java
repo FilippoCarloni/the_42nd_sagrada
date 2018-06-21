@@ -31,8 +31,8 @@ public class GameController extends Observable{
     private static final Logger logger=Logger.getLogger(GameController.class.getName());
     private static final int POOLED_THREAD = 3;
     private Game game;
-    private final List<WrappedPlayer> players;
-    private final List<WrappedPlayer> disconnected;
+    private final List<OnLinePlayer> players;
+    private final List<OnLinePlayer> disconnected;
     private ScheduledFuture<?> beeperHandle;
     private final CentralServer server;
     private ScheduledFuture<?> timer;
@@ -40,20 +40,20 @@ public class GameController extends Observable{
             Executors.newScheduledThreadPool(POOLED_THREAD);
     private List<WindowFrame> windowFrames;
     private List<Integer> windowChoices;
-    GameController(CentralServer server, List<WrappedPlayer> players) {
+    GameController(CentralServer server, List<OnLinePlayer> players) {
         this.server=server;
         this.players = new ArrayList<>(players);
         this.windowChoices=new ArrayList<>();
         for(int i=0;i<this.players.size();i++)
             this.windowChoices.add(1);
         getPreGameFrames(players.size());
-        for (WrappedPlayer p: players)
+        for (OnLinePlayer p: players)
             addObserver(p.getObserver());
         beeperHandle=null;
         disconnected= new ArrayList<>();
         final Runnable cleaner = () -> {
             synchronized (this.disconnected) {
-                for (WrappedPlayer p : this.players)
+                for (OnLinePlayer p : this.players)
                     if (!p.getObserver().isAlive() && !disconnected.contains(p)) {
                         this.deleteObserver(p.getObserver());
                         this.disconnected.add(p);
@@ -71,31 +71,33 @@ public class GameController extends Observable{
                 closeGame();
         }
         ;
-        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 1, new Settings().gameRefresh, MILLISECONDS);
+        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 0, new Settings().gameRefresh, MILLISECONDS);
         startTimer();
         scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
     }
 
     public synchronized void setMap(String sessionID,int window) throws ServerException {
-        WrappedPlayer player=this.getPlayer(sessionID);
+        OnLinePlayer player=this.getPlayer(sessionID);
         if(gameNotStarted()&&window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
             windowChoices.set(players.indexOf(player),window);
     }
 
     private synchronized void setWindowsFrame() {
-        for( WrappedPlayer p: players){
+        for( OnLinePlayer p: players){
             p.getPlayer().setWindowFrame(windowFrames.get(windowChoices.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
         }
         game = new ConcreteGame(players
                 .stream()
-                .map(WrappedPlayer::getPlayer)
+                .map(OnLinePlayer::getPlayer)
                 .collect(Collectors.toList()));
         isTurnOf();
         sendStatus();
     }
+
     private boolean gameNotStarted(){
         return game == null;
     }
+
     @SuppressWarnings("unchecked")
     private void getPreGameFrames(int numPlayers){
         List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(numPlayers);
@@ -103,7 +105,7 @@ public class GameController extends Observable{
         JSONArray encodedFrames;
         windowFrames=Game.getWindowFrames(numPlayers);
         int j=0;
-        for(WrappedPlayer p:players){
+        for(OnLinePlayer p:players){
             jsonObject=new JSONObject();
             p.getPlayer().setPrivateObjective(privateObjectiveCards.remove(0));
             jsonObject.put(JSONTag.PRIVATE_OBJECTIVE,p.getPlayer().getPrivateObjective().encode());
@@ -118,6 +120,7 @@ public class GameController extends Observable{
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         boolean passed=false;
+        System.out.println("p");
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
         if(!isMyTurn(sessionID)) {
@@ -169,12 +172,12 @@ public class GameController extends Observable{
     }
 
     public synchronized String getStatus(String sessionID) throws ServerException{
-        WrappedPlayer player=getPlayer(sessionID);
+        OnLinePlayer player=getPlayer(sessionID);
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
-    private WrappedPlayer getPlayer(String sessionID) throws ServerException{
-        List<WrappedPlayer> player=players.parallelStream().filter(x -> x.getSession().getID().equals(sessionID))
+    private OnLinePlayer getPlayer(String sessionID) throws ServerException{
+        List<OnLinePlayer> player=players.parallelStream().filter(x -> x.getServerSession().getID().equals(sessionID))
                 .collect(Collectors.toList());
         if(player.size() != 1) {
             logger.log(Level.SEVERE, "Hacker !!!, not playing user are trying to enter in a match");
@@ -183,7 +186,7 @@ public class GameController extends Observable{
         return player.get(0);
     }
 
-    boolean reconnect(WrappedPlayer player){
+    boolean reconnect(OnLinePlayer player){
         synchronized (disconnected) {
             if (isPlaying(player)&&disconnected.contains(player)&& player.getObserver().isAlive()) {
                 this.setChanged();
@@ -204,8 +207,9 @@ public class GameController extends Observable{
         this.server.closeGame(this);
         this.timer.cancel(true);
         this.beeperHandle.cancel(true);
+
     }
-    synchronized boolean isPlaying(WrappedPlayer player){
+    synchronized boolean isPlaying(OnLinePlayer player){
         return players.stream().filter(x-> x.equals(player)).count() == 1;
     }
 
@@ -245,14 +249,14 @@ public class GameController extends Observable{
 
     private void printScore(){
         String out="";
-        for (WrappedPlayer p : players)
+        for (OnLinePlayer p : players)
             out = out.concat(p.getPlayer().getUsername() + ":" + Integer.toString(game.getScore().get(p.getPlayer())) + "\n");
         out=out.concat("Ready to start a new game!");
         this.setChanged();
         this.notifyObservers(MessageType.encodeMessage(out,MessageType.GENERIC_MESSAGE));
     }
 
-    List<WrappedPlayer> getPlayers(){
+    List<OnLinePlayer> getPlayers(){
         return new ArrayList<>(players);
     }
 

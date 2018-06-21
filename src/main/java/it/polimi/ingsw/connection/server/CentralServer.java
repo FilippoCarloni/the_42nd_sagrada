@@ -18,8 +18,8 @@ public class CentralServer {
 
         private List<WrappedGameController> gameControllers;
         private Logger logger=Logger.getLogger(CentralServer.class.getName());
-        private List<WrappedPlayer> players;
-        private List<WrappedPlayer>  disconnectedPlayer;
+        private List<OnLinePlayer> players;
+        private List<OnLinePlayer>  disconnectedPlayer;
         private List<LobbyManager> lobbyManagers;
         private Observable observable;
         CentralServer() {
@@ -32,23 +32,23 @@ public class CentralServer {
         }
 
         public synchronized String connect(String username,GameObserver obs) throws ServerException {
-            WrappedPlayer x;
+            OnLinePlayer x;
             String filtered=username.trim();
             if(!Pattern.compile("^[a-zA-Z0-9_-]{4,12}$").asPredicate().test(filtered))
                 throw new ServerException(NOT_VALID_USERNAME,SERVER_ERROR);
-            for (WrappedPlayer s : players)
-                if (s.getPlayer().getUsername().compareToIgnoreCase((filtered))==0) {
+            for (OnLinePlayer s : players)
+                if (s.getUsername().compareToIgnoreCase((filtered))==0) {
                     throw new ServerException(ALREADY_EXISTING_USERNAME,SERVER_ERROR);
                 }
-            x=new WrappedPlayer(filtered,obs);
+            x=new OnLinePlayer(filtered,obs);
             players.add(x);
             observable.addObserver(obs);
-            logger.info(() -> filtered+" is connected with sessionID: "+x.getSession().getID());
-            return x.getSession().getID();
+            logger.info(() -> filtered+" is connected with sessionID: "+x.getServerSession().getID());
+            return x.getServerSession().getID();
         }
-        public synchronized void disconnect(Session userSession)throws RemoteException {
-            for (WrappedPlayer s : players)
-                if (s.getSession().getID().equals(userSession.getID())) {
+        public synchronized void disconnect(ServerSession userServerSession)throws RemoteException {
+            for (OnLinePlayer s : players)
+                if (s.getServerSession().getID().equals(userServerSession.getID())) {
                     if (s.isPlaying()) {
                         disconnectedPlayer.add(s);
                         return;
@@ -64,13 +64,13 @@ public class CentralServer {
             WrappedGameController game;
             LobbyManager lobbyManager=null;
             boolean find=false;
-            List<WrappedPlayer> player;
+            List<OnLinePlayer> player;
             int counterGame;
-            List<WrappedPlayer> waiting;
+            List<OnLinePlayer> waiting;
             synchronized (this) {
                 counterGame= gameControllers.size() + 1;
                 player = players.stream().filter(
-                        x -> x.getSession().getID().equals(userSessionID)).collect(Collectors.toList());
+                        x -> x.getServerSession().getID().equals(userSessionID)).collect(Collectors.toList());
                 if (player.size() != 1) {
                     throw new ServerException(NOT_LOGGED + userSessionID,SERVER_ERROR);
                 }
@@ -107,7 +107,7 @@ public class CentralServer {
             return currentGame(player.get(0));
         }
 
-        private WrappedGameController currentGame(WrappedPlayer player){
+        private WrappedGameController currentGame(OnLinePlayer player){
             List<WrappedGameController> game=new ArrayList<>();
             if(player.isPlaying())
                  game=gameControllers.parallelStream().filter(x -> x.getGameController().isPlaying(player)).collect(Collectors.toList());
@@ -123,9 +123,9 @@ public class CentralServer {
             }
         }
         public synchronized String restoreSession(String oldSessionID, GameObserver obs) throws ServerException{
-            List<WrappedPlayer> player = players.stream().filter(
-                    x -> x.getSession().getID().equals(oldSessionID)).collect(Collectors.toList());
-            Session newSession;
+            List<OnLinePlayer> player = players.stream().filter(
+                    x -> x.isMySessionID(oldSessionID)).collect(Collectors.toList());
+            ServerSession newServerSession;
             if (player.size() != 1) {
                 throw new ServerException(NOT_EXISTING_SESSION+": "+ oldSessionID,SERVER_ERROR);
             }
@@ -136,10 +136,9 @@ public class CentralServer {
                 observable.addObserver(obs);
                 player.get(0).setObserver(obs);
             }
-            newSession=new Session(player.get(0).getPlayer().getUsername(),"");
-            player.get(0).setSession(newSession);
-            logger.info(()->"Restored session of "+player.get(0).getPlayer().getUsername()+" :"+oldSessionID+" -> "+newSession.getID());
-            return newSession.getID();
+            newServerSession = player.get(0).refreshSession();
+            logger.info(()->"Restored session of "+player.get(0).getPlayer().getUsername()+" :"+oldSessionID+" -> "+ newServerSession.getID());
+            return newServerSession.getID();
         }
 
         @Override

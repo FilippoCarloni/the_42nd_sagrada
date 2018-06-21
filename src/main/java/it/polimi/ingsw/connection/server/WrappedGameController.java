@@ -12,25 +12,19 @@ import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.RMI_ER
 public class WrappedGameController{
     private GameManager remoteGame;
     private GameController gameController;
-    private ConcreteGameManager game;
 
-    WrappedGameController(CentralServer server,List<WrappedPlayer> players) throws ServerException {
+    WrappedGameController(CentralServer server,List<OnLinePlayer> players) throws ServerException {
         this.gameController=new GameController(server, players);
         try {
-            this.game=new ConcreteGameManager(gameController);
+            this.remoteGame=new ConcreteGameManager(gameController);
         } catch (RemoteException e) {
             throw new ServerException(e.getMessage(),RMI_ERROR);
         }
-        this.remoteGame=game;
     }
-
     public GameManager getRemoteGame() {
         return remoteGame;
     }
 
-    public ConcreteGameManager getGame() {
-        return game;
-    }
     public GameController getGameController() {
         return gameController;
     }
