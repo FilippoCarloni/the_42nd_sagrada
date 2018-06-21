@@ -19,7 +19,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,18 +35,18 @@ import static jdk.nashorn.internal.objects.Global.print;
 //TODO: add image on Anchor Pane Main Player Background
 //TODO: add stylesheets files (.css)
 //TODO: add favor points
-//TODO: add round track
-//TODO: add a button that will display all dice on round track
 //TODO: append messages to messageTextArea
 //TODO: take a look on bugs
 //TODO: add points counter at the end of the match
+//TODO: add that when "x" clicked process killed
 
 public class GameBoardController {
 
     /**
-     * Round Track StackPane container
+     * Round Track StackPane and Canvas container
      */
     private ArrayList<StackPane> panesOnRoundTrack = new ArrayList<>();
+    private ArrayList<Canvas> canvasOnRoundTrack = new ArrayList<>();
 
     /**
      * Player's names and window frames containers
@@ -237,6 +236,10 @@ public class GameBoardController {
                 j++;
             }
         }
+
+        JSONObject roundTrack = (JSONObject) json.get(JSONTag.ROUND_TRACK);
+        rDrawer.roundTrackUpdate(roundTrack, panesOnRoundTrack, canvasOnRoundTrack);
+
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
@@ -245,7 +248,6 @@ public class GameBoardController {
         draftedDieStackPane.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
         if(json.get(JSONTag.PICKED_DIE) != null) {
             JSONObject draftedDie = (JSONObject) json.get(JSONTag.PICKED_DIE);
-            //Problems when a tool card that modifies his value is activated
             int value = parseInt((draftedDie.get(JSONTag.SHADE)).toString());
             String color = draftedDie.get(JSONTag.COLOR).toString();
 
@@ -267,7 +269,8 @@ public class GameBoardController {
         setPlayersNameLabels();
         setMaps();
 
-        rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack);
+        rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
+        roundTrackAnchorPane.setOnMouseClicked(e -> rDrawer.seeAllDice());
         fillFirstTimeMap();
         privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
         DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size(), true);

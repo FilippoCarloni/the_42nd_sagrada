@@ -50,7 +50,7 @@ public class WindowFrameDrawer {
      * @param panesOnWindowFrame: List<StackPane> containing all StackPane on the specified window frame
      * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
      *             with different dimensions
-     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     * @param clickable: boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
      *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
      */
     public static void frameReset(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean clickable){
@@ -68,7 +68,7 @@ public class WindowFrameDrawer {
      * @param panesOnWindowFrame: List<StackPane> containing all StackPane on the specified window frame
      * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
      *             with different dimensions
-     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     * @param clickable: boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
      *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
      */
     public static void framePainterManager(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean clickable) {
@@ -86,7 +86,7 @@ public class WindowFrameDrawer {
      * @param constraint: JSONObject containing all information about constraints in the specified cell
      * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
      *             with different dimensions
-     * @param clickable:boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
+     * @param clickable: boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
      *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
      */
     private static void framePainter(GraphicsContext gc, StackPane pane, JSONObject constraint, int positionIntoLists, double scale, boolean clickable) {
@@ -116,7 +116,7 @@ public class WindowFrameDrawer {
 
     /**
      * Function that calculate the right position into window frame (in terms of row and column) from the position into the List
-     * @param listIndex position of element into the list
+     * @param listIndex: position of element into the list
      * @return array of int containing row position and column position into the window frame
      */
     static int[] rowAndColumnFromListIndex(int listIndex){

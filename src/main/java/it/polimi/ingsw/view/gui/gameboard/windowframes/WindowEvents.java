@@ -10,6 +10,10 @@ class WindowEvents {
 
     private String temporaryCommand;
 
+    WindowEvents(){
+        temporaryCommand = "";
+    }
+
     /**
      * Method that will manage click events on window frame, discriminating between "place" and "move" actions
      * @param pane: StackPane which will handle mouse click events
@@ -21,7 +25,6 @@ class WindowEvents {
         if(dieOnIt){
             pane.setOnMouseClicked(e -> {
                 temporaryCommand = "move " + row + " " + column;
-                System.out.println(temporaryCommand);
                 manageMoveEvents(row, column);
             });
         } else {
@@ -37,7 +40,6 @@ class WindowEvents {
             int tempColumn = WindowFrameDrawer.rowAndColumnFromListIndex(i)[1];
             if(tempRow != oldRow && tempColumn != oldColumn) {
                 panesOnMainWindowFrame.get(i).setOnMouseClicked(e -> {
-                    System.out.println(temporaryCommand + " " + tempRow + " " + tempColumn);
                     GuiManager.getInstance().getConnectionController().send(temporaryCommand + " " + tempRow + " " + tempColumn);
                     resetPlaceAfterClick(panesOnMainWindowFrame);
                 });
@@ -45,6 +47,7 @@ class WindowEvents {
         }
     }
     private void resetPlaceAfterClick(List<StackPane> panesOnMainWindowFrame){
+        temporaryCommand = "";
         for(int i = 0; i < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS * GUIParameters.MAX_WINDOW_FRAMES_ROWS; i++){
             int tempRow = WindowFrameDrawer.rowAndColumnFromListIndex(i)[0];
             int tempColumn = WindowFrameDrawer.rowAndColumnFromListIndex(i)[1];
