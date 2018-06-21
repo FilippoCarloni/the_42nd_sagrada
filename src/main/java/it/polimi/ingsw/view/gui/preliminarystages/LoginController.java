@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.preliminarystages.login;
+package it.polimi.ingsw.view.gui.preliminarystages;
 
 import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.view.gui.GuiManager;
@@ -17,8 +17,13 @@ import java.io.IOException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Controller class for the login screen, the starting screen
+ */
+
 public class LoginController {
 
+    //Default connection type: RMI; able to switch into socket pressing on "slow connection".
     private ConnectionType connectionType = ConnectionType.RMI;
 
     @FXML
@@ -26,12 +31,18 @@ public class LoginController {
     @FXML
     private Label usernameNotValid;
 
-    //Connection selection
+    /**
+     * Method that allows player to switch from the default connection type, RMI, tho a socket one.
+     */
     public void slowConnection(){
         connectionType = ConnectionType.SOCKET;
     }
 
-    //Username and Login Management
+    /**
+     * Method that handle the username sending to the Connection Controller, making a validity control. If the
+     * username chosen is not valid, it prints an alert text, and doesn't allow a login with a not-valid username.
+     * @param event: the ActionEvent generated when a player clicks on the button.
+     */
     public void getUsername(ActionEvent event) {
         GuiManager.setConnectionType(connectionType);
         GuiManager.getInstance().startRefresh();
@@ -49,6 +60,7 @@ public class LoginController {
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.LOBBY_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setOnCloseRequest(e -> System.exit(0));
             stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
             stage.setScene(scene);
         } catch (IOException e) {

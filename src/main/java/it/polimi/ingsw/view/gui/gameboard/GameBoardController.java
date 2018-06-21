@@ -214,11 +214,7 @@ public class GameBoardController {
             print(e.getMessage());
         }
     }
-    public void quit(){
-        GuiManager.getInstance().getConnectionController().send("exit");
-        System.exit(0);
-    }
-
+    
     //Main method, called by the update() method from Gui Manager to handle gui refresh
     public void gameBoardUpdate(JSONObject json){
         players = (JSONArray) ((JSONObject) json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);

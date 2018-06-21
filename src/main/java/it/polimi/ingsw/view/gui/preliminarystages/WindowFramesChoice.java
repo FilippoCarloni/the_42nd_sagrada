@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice;
+package it.polimi.ingsw.view.gui.preliminarystages;
 
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
@@ -30,11 +30,22 @@ import java.util.ArrayList;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Controller class for the window frame choice screen.
+ */
+
 public class WindowFramesChoice {
 
+    //GridPane in which I will draw the map between the player has to choose
     private ArrayList<GridPane> maps = new ArrayList<>();
+
+    //Containers of the maps' names
     private ArrayList<StackPane> names = new ArrayList<>();
+
+    //Containers of the maps' difficulties
     private  ArrayList<StackPane> difficulties = new ArrayList<>();
+
+    //ToggleGroup that will contain all RadioButton for the map choice
     private ToggleGroup group = new ToggleGroup();
 
     @FXML
@@ -76,7 +87,11 @@ public class WindowFramesChoice {
     @FXML
     private Button gameBoardButton;
 
-    //Map Choice Management
+    /**
+     * This four methods are called by the mouse clicking on every RadioButton under the maps.
+     * They call the private method clicked(), sending the number of the chosen map, then the
+     * method sends a message to the Connection Controller, with the number of the chosen map.
+     */
     public void choose1(){
         clicked(1);
     }
@@ -89,6 +104,7 @@ public class WindowFramesChoice {
     public void choose4(){
         clicked(4);
     }
+
     private void clicked(int idMapChosen) {
         GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
     }
@@ -145,22 +161,35 @@ public class WindowFramesChoice {
         difficulties.add(difficultyMap4);
     }
 
-    //Change screen
+    /**
+     * Getter for the gameBoardButton, used by the update() method in GuiManager to make it not disabled.
+     * @return this.gameBoardButton.
+     * @see GuiManager
+     */
+    public Button getGameBoardButton(){
+        return gameBoardButton;
+    }
+
+    /**
+     * Method that switch from the map choice screen to the game board. Used by clicking on the gameBoardButton in this screen, or
+     * by clicking on startButton in the lobby screen if a game is already started.
+     * @param event: the ActionEvent generated when a player clicks on the button.
+     * @see LobbyController
+     */
     public void launchGameBoard(ActionEvent event){
         try {
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.GAME_BOARD_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setOnCloseRequest(e -> {
+                GuiManager.getInstance().getConnectionController().send("exit");
+                System.exit(0);
+            });
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
             stage.setScene(scene);
         } catch (IOException e) {
-            print(e.getMessage());
+            e.printStackTrace();
         }
-    }
-
-    //Getters
-    public Button getGameBoardButton(){
-        return gameBoardButton;
     }
 
     @FXML

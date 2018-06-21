@@ -4,8 +4,8 @@ import it.polimi.ingsw.connection.client.ConnectionController;
 import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
-import it.polimi.ingsw.view.gui.preliminarystages.lobby.LobbyController;
-import it.polimi.ingsw.view.gui.preliminarystages.windowframeschoice.WindowFramesChoice;
+import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
+import it.polimi.ingsw.view.gui.preliminarystages.WindowFramesChoice;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -55,7 +55,7 @@ public class GuiManager {
                             lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
                         break;
                     case GAME_BOARD:
-                        if(gameBoardMessage == null)
+                        if(gameBoardMessage == null && windowFramesChoice != null)
                             windowFramesChoice.getGameBoardButton().setDisable(false);
                         gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         if(gameBoard != null)
@@ -65,7 +65,7 @@ public class GuiManager {
                         gameBoard.setMessageText(MessageType.decodeMessageContent(message));
                         break;
                     case PRE_GAME_CHOICE:
-                        lobbyController.getPlayButton().setDisable(false);
+                        lobbyController.getStartButton().setDisable(false);
                         preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         break;
                     default:
@@ -93,6 +93,9 @@ public class GuiManager {
     }
     public GameBoardController getGameBoard(){
         return gameBoard;
+    }
+    public WindowFramesChoice getWindowFramesChoice(){
+        return windowFramesChoice;
     }
 
     //Setter

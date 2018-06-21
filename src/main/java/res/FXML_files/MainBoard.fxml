@@ -89,17 +89,12 @@
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="465.0" layoutY="460.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#undo" prefHeight="31.0" prefWidth="65.0" text="UNDO">
+                  <Button layoutX="383.0" layoutY="461.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#undo" prefHeight="31.0" prefWidth="65.0" text="UNDO">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button layoutX="382.0" layoutY="460.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#redo" prefHeight="31.0" prefWidth="65.0" text="REDO">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button layoutX="465.0" layoutY="416.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#quit" prefHeight="31.0" prefWidth="65.0" text="QUIT">
+                  <Button layoutX="465.0" layoutY="461.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#redo" prefHeight="31.0" prefWidth="65.0" text="REDO">
                      <font>
                         <Font size="15.0" />
                      </font>
