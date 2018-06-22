@@ -46,7 +46,7 @@ public class LobbyManager extends Observable{
             beeperHandle.cancel(true);
             notifyAll();
         }else if (players.size()==2)
-            timer=scheduler.schedule(task, Settings.WAITINGTIMETOMATCH,MILLISECONDS);
+            timer=scheduler.schedule(task, new Settings().lobbyWaitingTime,MILLISECONDS);
         return true;
     }
     private synchronized void endWaiting(){

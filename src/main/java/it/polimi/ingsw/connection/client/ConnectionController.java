@@ -3,6 +3,7 @@ package it.polimi.ingsw.connection.client;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
+import it.polimi.ingsw.connection.server.ServerSession;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.io.*;
@@ -48,7 +49,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
 
     public ConnectionController(ConnectionType connectionType) throws ConnectException,RemoteException {
         super();
-        sessionID = "";
+        sessionID = ServerSession.INVALID_SESSION_ID;
         gameManger = null;
         lobby = null;
         this.connectionType=connectionType;
@@ -68,7 +69,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
 
     public boolean restore(String username){
         boolean logged=false;
-        if(!sessionID.equals(""))
+        if(!sessionID.equals(ServerSession.INVALID_SESSION_ID))
             return true;
         String response;
         ClientStatus status;

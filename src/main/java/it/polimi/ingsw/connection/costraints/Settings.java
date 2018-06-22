@@ -2,6 +2,7 @@ package it.polimi.ingsw.connection.costraints;
 
 import java.io.FileReader;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public  class Settings{
     private static final int DEFAULT_RMI_PORT=8002;
@@ -16,15 +17,18 @@ public  class Settings{
     private static final int DEFAULT_TURN_TIME=60000;
     private static final String TURN_TIME_TAG="TURN_TIME";
     private static final String GAME_REFRESH_TAG = "GAME_REFRESH";
-    private static final int DEFAULT_GAME_RESFRESH = 101;
-
+    private static final int DEFAULT_GAME_REFRESH = 101;
+    private static final String LOBBY_WAITING_TIME = "LOBBY_WAITING_TIME";
+    private static final int DEFAULT_LOBBY_WAITING_TIME = 9000;
+    private static final Logger logger=Logger.getLogger(Settings.class.getName());
     public Settings() {
         int rmiPort = DEFAULT_RMI_PORT;
         String ipserver = DEFAULT_SERVER_IP;
         int socketPort = DEFAULT_SOCKET_PORT;
         int lobbyRefresh = DEFAULT_LOBBY_REFRESH_TIME;
         int turnTimeRefresh = DEFAULT_TURN_TIME;
-        int gameRefreshTime = DEFAULT_GAME_RESFRESH;
+        int gameRefreshTime = DEFAULT_GAME_REFRESH;
+        int lobbyTime = DEFAULT_LOBBY_WAITING_TIME;
         Properties configFile;
         configFile = new java.util.Properties();
         FileReader reader;
@@ -50,8 +54,12 @@ public  class Settings{
             param = configFile.getProperty(GAME_REFRESH_TAG);
             if (param != null)
                 gameRefreshTime = Integer.parseInt(param);
+            param = configFile.getProperty(LOBBY_WAITING_TIME);
+            if (param != null)
+                lobbyTime = Integer.parseInt(param);
             reader.close();
         } catch (Exception eta) {
+            logger.warning("Error found in the configuration file");
         }
         RMI_PORT = rmiPort;
         IP_SERVER = ipserver;
@@ -59,6 +67,7 @@ public  class Settings{
         lobbyRefreshTime=lobbyRefresh;
         turnTime = turnTimeRefresh;
         gameRefresh = gameRefreshTime;
+        lobbyWaitingTime = lobbyTime;
     }
     /**
      * Default Server port number for Registry connection
@@ -73,7 +82,7 @@ public  class Settings{
     /**
      * The default waiting time in nanosecond to start a match with less than 4 players
      */
-    public static final int WAITINGTIMETOMATCH=9000;
+    public final int lobbyWaitingTime;
     public static final long SERIAL_VERSION_CLIENTSTATUS = 1190476517382928173L;
     public final int SOCKET_PORT;
     public final String IP_SERVER;

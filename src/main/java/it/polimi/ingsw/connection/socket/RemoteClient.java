@@ -105,10 +105,15 @@ public class RemoteClient implements Runnable,GameObserver {
                             }).start();
                             break;
                         case "view":
-                            if(game!=null)
-                                send(game.getStatus(sessionID));
-                            else
-                                send(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
+                            try {
+                                System.out.println(" plppl");
+                                if (game != null)
+                                    send(game.getStatus(sessionID));
+                                else
+                                    send(MessageType.encodeMessage("You are not playing", MessageType.ERROR_MESSAGE));
+                            }catch (ServerException e){
+                                send(MessageType.encodeMessage(e.getMessage(), MessageType.ERROR_MESSAGE));
+                            }
                             break;
                         case "action":
                             if(game != null) {

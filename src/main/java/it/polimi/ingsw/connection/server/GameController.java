@@ -1,8 +1,10 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.costraints.Commands;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
+import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
@@ -12,6 +14,7 @@ import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.omg.CORBA.TRANSACTION_UNAVAILABLE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,11 @@ public class GameController extends Observable{
             Executors.newScheduledThreadPool(POOLED_THREAD);
     private List<WindowFrame> windowFrames;
     private List<Integer> windowChoices;
+    private Settings settings;
+    private boolean activeGame;
     GameController(CentralServer server, List<OnLinePlayer> players) {
         this.server=server;
+        settings = new Settings();
         this.players = new ArrayList<>(players);
         this.windowChoices=new ArrayList<>();
         for(int i=0;i<this.players.size();i++)
@@ -51,8 +57,9 @@ public class GameController extends Observable{
             addObserver(p.getObserver());
         beeperHandle=null;
         disconnected= new ArrayList<>();
+        activeGame = true;
         final Runnable cleaner = () -> {
-            synchronized (this.disconnected) {
+            synchronized (this) {
                 for (OnLinePlayer p : this.players)
                     if (!p.getObserver().isAlive() && !disconnected.contains(p)) {
                         this.deleteObserver(p.getObserver());
@@ -66,12 +73,12 @@ public class GameController extends Observable{
                     this.deleteObservers();
                 }
 
+                if (this.countObservers() == 0)
+                    closeGame();
             }
-            if (this.countObservers() == 0)
-                closeGame();
         }
         ;
-        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 0, new Settings().gameRefresh, MILLISECONDS);
+        beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 0, settings.gameRefresh, MILLISECONDS);
         startTimer();
         scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
     }
@@ -91,7 +98,8 @@ public class GameController extends Observable{
                 .map(OnLinePlayer::getPlayer)
                 .collect(Collectors.toList()));
         isTurnOf();
-        sendStatus();
+        if(!gameEnded())
+            sendStatus();
     }
 
     private boolean gameNotStarted(){
@@ -120,21 +128,22 @@ public class GameController extends Observable{
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         boolean passed=false;
-        System.out.println("p");
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
+        if(gameEnded())
+            throw new ServerException("Game ended",GAME_ERROR);
         if(!isMyTurn(sessionID)) {
             throw new ServerException("Is not your turn!",GAME_ERROR);
         }
         command=command.trim();
         switch (command) {
-            case "undo":
+            case Commands.UNDO:
                 if(game.isUndoAvailable())
                     game.undoCommand();
                 else
                     throw new ServerException("You can not undo",GAME_ERROR);
                 break;
-            case "redo":
+            case Commands.REDO:
                 if(game.isRedoAvailable())
                     game.redoCommand();
                 else
@@ -146,7 +155,7 @@ public class GameController extends Observable{
                 } catch (IllegalCommandException e) {
                     throw new ServerException(e.getMessage(),GAME_ERROR);
                 }
-                if(command.equals("pass")) {
+                if(command.equals(Commands.PASS)) {
                     passed=true;
                 }
                 break;
@@ -168,11 +177,17 @@ public class GameController extends Observable{
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
+        if(gameEnded())
+            throw new ServerException("Game ended",GAME_ERROR);
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
     public synchronized String getStatus(String sessionID) throws ServerException{
         OnLinePlayer player=getPlayer(sessionID);
+        if(gameNotStarted())
+            throw new ServerException("Wait the timer for the map",GAME_ERROR);
+        if(gameEnded())
+            throw new ServerException("Game ended",GAME_ERROR);
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
@@ -186,20 +201,16 @@ public class GameController extends Observable{
         return player.get(0);
     }
 
-    boolean reconnect(OnLinePlayer player){
-        synchronized (disconnected) {
-            if (isPlaying(player)&&disconnected.contains(player)&& player.getObserver().isAlive()) {
-                this.setChanged();
-                this.notifyObservers(MessageType.encodeMessage(player.getPlayer().getUsername()+" is now reconnected",MessageType.GENERIC_MESSAGE));
-                this.addObserver(player.getObserver());
-                this.disconnected.remove(player);
-                if(this.countObservers()==0)
-                    return false;
-            }
+    synchronized boolean reconnect(OnLinePlayer player) {
+        if (isPlaying(player) && disconnected.contains(player) && player.getObserver().isAlive()) {
+            this.setChanged();
+            this.notifyObservers(MessageType.encodeMessage(player.getPlayer().getUsername() + " is now reconnected", MessageType.GENERIC_MESSAGE));
+            this.addObserver(player.getObserver());
+            this.disconnected.remove(player);
+            if (this.countObservers() == 0)
+                return false;
         }
-        synchronized (this) {
-            player.getObserver().update(this, game.getData().encode().toString());
-        }
+        player.getObserver().update(this, game.getData().encode().toString());
         return true;
     }
 
@@ -207,7 +218,7 @@ public class GameController extends Observable{
         this.server.closeGame(this);
         this.timer.cancel(true);
         this.beeperHandle.cancel(true);
-
+        this.activeGame = false;
     }
     synchronized boolean isPlaying(OnLinePlayer player){
         return players.stream().filter(x-> x.equals(player)).count() == 1;
@@ -220,7 +231,7 @@ public class GameController extends Observable{
 
     private void startTimer(){
         Runnable task= this::timerPass;
-        timer=scheduler.schedule(task,new Settings().turnTime,MILLISECONDS);
+        timer=scheduler.schedule(task,settings.turnTime,MILLISECONDS);
     }
 
     private void sendStatus(){
@@ -230,7 +241,7 @@ public class GameController extends Observable{
         boolean notPass=true;
         while(notPass) {
             try {
-                game.executeCommand(game.getCurrentPlayer(), "pass");
+                game.executeCommand(game.getCurrentPlayer(), Commands.PASS);
                 notPass=false;
             } catch (IllegalCommandException e) {
                 game.undoCommand();
@@ -258,6 +269,10 @@ public class GameController extends Observable{
 
     List<OnLinePlayer> getPlayers(){
         return new ArrayList<>(players);
+    }
+
+    private boolean gameEnded(){
+        return !activeGame;
     }
 
     @Override

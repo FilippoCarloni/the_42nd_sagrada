@@ -21,7 +21,6 @@ class WrappedObs extends Observable implements GameObserver, Serializable {
             ro.remoteUpdate(this, arg);
         } catch (RemoteException e) {
             logger.info(() -> "Remote exception update observer:" + e.getMessage() + this);
-            o.deleteObserver(this);
         }
     }
 
