@@ -9,5 +9,6 @@ class ServerMessage {
     static final String NOT_MULTYGAME_WITH_ONE_CLIENT="NO multi client for a single user!";
     static final String ALREADY_EXISTING_USERNAME="Username already used";
     static final String NOT_EXISTING_SESSION="This sessionID not exists";
+    static final String ENDED_GAME = "Game ended";
 
 }

@@ -125,6 +125,9 @@ public class CLI implements Runnable {
                     case PRE_GAME_CHOICE:
                         drawPreGame((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
+                    case CURRENT_PLAYER:
+                        print(CURRENT_PLAYER_MESSAGE+MessageType.decodeMessageContent(message));
+                        break;
                     default:
                         print(UNSUPPORTED_MESSAGE);
                 }

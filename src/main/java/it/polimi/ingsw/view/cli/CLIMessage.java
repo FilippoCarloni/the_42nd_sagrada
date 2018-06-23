@@ -31,4 +31,5 @@ class CLIMessage {
     static final String NOT_EXISTENT_PARAMETER = "There's no matching object for the passed parameter.";
     static final String UNSUPPORTED_MESSAGE = "Message not supported!";
     static final String IMAGE_NOT_FOUND = "No image was found.";
+    static final String CURRENT_PLAYER_MESSAGE = "Current player: ";
 }

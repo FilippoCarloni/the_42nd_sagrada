@@ -4,7 +4,6 @@ import it.polimi.ingsw.connection.costraints.Commands;
 import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
-import it.polimi.ingsw.model.commands.Command;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
@@ -14,7 +13,6 @@ import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.model.utility.Parameters;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.omg.CORBA.TRANSACTION_UNAVAILABLE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.connection.server.ServerMessage.ENDED_GAME;
 import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -97,9 +96,9 @@ public class GameController extends Observable{
                 .stream()
                 .map(OnLinePlayer::getPlayer)
                 .collect(Collectors.toList()));
-        isTurnOf();
         if(!gameEnded())
             sendStatus();
+        isTurnOf();
     }
 
     private boolean gameNotStarted(){
@@ -131,7 +130,7 @@ public class GameController extends Observable{
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
         if(gameEnded())
-            throw new ServerException("Game ended",GAME_ERROR);
+            throw new ServerException(ENDED_GAME,GAME_ERROR);
         if(!isMyTurn(sessionID)) {
             throw new ServerException("Is not your turn!",GAME_ERROR);
         }
@@ -178,7 +177,7 @@ public class GameController extends Observable{
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
         if(gameEnded())
-            throw new ServerException("Game ended",GAME_ERROR);
+            throw new ServerException(ENDED_GAME,GAME_ERROR);
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
@@ -187,7 +186,7 @@ public class GameController extends Observable{
         if(gameNotStarted())
             throw new ServerException("Wait the timer for the map",GAME_ERROR);
         if(gameEnded())
-            throw new ServerException("Game ended",GAME_ERROR);
+            throw new ServerException(ENDED_GAME,GAME_ERROR);
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
@@ -226,7 +225,7 @@ public class GameController extends Observable{
 
     private void isTurnOf(){
         setChanged();
-        notifyObservers(MessageType.encodeMessage("Current player: "+game.getCurrentPlayer().getUsername(),MessageType.GENERIC_MESSAGE));
+        notifyObservers(MessageType.encodeMessage(game.getCurrentPlayer().getUsername(),MessageType.CURRENT_PLAYER));
     }
 
     private void startTimer(){
