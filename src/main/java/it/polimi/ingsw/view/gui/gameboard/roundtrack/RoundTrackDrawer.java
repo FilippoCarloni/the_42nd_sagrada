@@ -20,8 +20,18 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Class that controls the Round Track drawing
+ */
+
 public class RoundTrackDrawer {
 
+    /**
+     * Method that fills the horizontal GridPane with Canvas and StackPane; called only when the main board screen is initialized.
+     * @param roundTrackPane: the horizontal GridPane in which dice will be put.
+     * @param panesOnRoundTrack: List<StackPane>, it contains all StackPane on Round Track.
+     * @param canvasOnRoundTrack: List<Canvas>, it contains all Canvas on Round Track.
+     */
     public void roundTrackStartingFiller(GridPane roundTrackPane, List<StackPane> panesOnRoundTrack, List<Canvas> canvasOnRoundTrack){
         for(int i = 0; i < GUIParameters.MAX_NUM_TURNS; i++){
             StackPane stackPane = new StackPane();
@@ -33,6 +43,13 @@ public class RoundTrackDrawer {
         }
     }
 
+    /**
+     * This method draws the Round Track every turn: after doing a reset he calls the dicePointsDrawer method to re-draw dice on Round Track.
+     * The die visualized on the Round Track is the last one present into the JSONArray dice
+     * @param roundTrack: JSONObject containing all the information about the Round Track.
+     * @param panesOnRoundTrack: List<StackPane>, it contains all StackPane on Round Track.
+     * @param canvasOnRoundTrack: List<Canvas>, it contains all Canvas on Round Track.
+     */
     public void roundTrackUpdate(JSONObject roundTrack, List<StackPane> panesOnRoundTrack, List<Canvas> canvasOnRoundTrack){
         JSONArray dice = (JSONArray) roundTrack.get(JSONTag.ALL_DICE);
         int turnNumber = parseInt(roundTrack.get(JSONTag.CURRENT_ROUND_NUMBER).toString());
@@ -60,6 +77,10 @@ public class RoundTrackDrawer {
 
     }
 
+    /**
+     * This method opens a new screen, in which the player can see all dice present on Round Track. It is called by clicking everywhere on
+     * the AnchorPane containing the Round Track.
+     */
     public void seeAllDice(){
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.ROUND_TRACK_DICE_FXML_PATH));

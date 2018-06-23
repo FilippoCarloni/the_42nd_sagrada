@@ -23,7 +23,6 @@ import static jdk.nashorn.internal.objects.Global.print;
  */
 
 //TODO: put attention on multi-thread for updates --> IT GIVES PROBLEMS TO ME, FIX THEM
-//TODO: use update to receive screen resolution, to make GUI more responsive
 
 public class GuiManager {
 
@@ -48,6 +47,7 @@ public class GuiManager {
     private void update(){
         try {
             String message = getInstance().connectionController.readMessage();
+            System.out.println(message);
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
@@ -69,7 +69,8 @@ public class GuiManager {
                         preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         break;
                     case CURRENT_PLAYER:
-                        gameBoard.setMessageText("Now is playing: " + MessageType.decodeMessageContent(message));
+                        if(gameBoard != null)
+                            gameBoard.setMessageText("Now is playing: " + MessageType.decodeMessageContent(message));
                         break;
                     default:
                         print("Message not supported!");
@@ -96,9 +97,6 @@ public class GuiManager {
     }
     public GameBoardController getGameBoard(){
         return gameBoard;
-    }
-    public WindowFramesChoice getWindowFramesChoice(){
-        return windowFramesChoice;
     }
 
     //Setter

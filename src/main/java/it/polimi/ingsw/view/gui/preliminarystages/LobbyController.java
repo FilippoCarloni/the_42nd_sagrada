@@ -49,7 +49,7 @@ public class LobbyController {
      * @see GuiManager
      */
     public void printConnectionOrDisconnection(String message){
-        textLobby.appendText(message + "\n");
+        textLobby.appendText(" " + message + "\n");
     }
 
     /**
