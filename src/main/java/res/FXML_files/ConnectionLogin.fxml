@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.preliminarystages.LoginController">
+<AnchorPane prefHeight="700.0" prefWidth="600.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.preliminarystages.LoginController">
    <children>
-      <CheckBox layoutX="202.0" layoutY="325.0" mnemonicParsing="false" onAction="#slowConnection" text="Slow Connection" />
-      <TextField fx:id="username" layoutX="178.0" layoutY="239.0" promptText="Username" />
-      <Label fx:id="usernameNotValid" layoutX="178.0" layoutY="128.0" textFill="#f50707" />
-      <Button layoutX="392.0" layoutY="239.0" mnemonicParsing="false" onAction="#getUsername" text="Login" />
+      <BorderPane prefHeight="700.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <JFXCheckBox checkedColor="#3ba1d0" onAction="#slowConnection" stylesheets="@../css/style.css" text="My internet connection is slow" unCheckedColor="#a1a1a1" />
+               </children>
+            </HBox>
+         </bottom>
+         <top>
+            <HBox fx:id="logoBox" alignment="CENTER" prefHeight="100.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="200.0" fitWidth="600.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../images/Sagrada-Logo-CMYK.jpg" />
+                     </image>
+                     <effect>
+                        <Reflection topOpacity="0.16" />
+                     </effect>
+                  </ImageView>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="usernameNotValid" stylesheets="@../css/style.css" text="Insert your username" />
+                  <JFXTextField fx:id="username" focusColor="#3ba1d0" maxWidth="300.0" minWidth="50.0" prefWidth="300.0" promptText="Username" styleClass="text-field" stylesheets="@../css/style.css" unFocusColor="#a1a1a1">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXTextField>
+                  <JFXButton onAction="#getUsername" stylesheets="@../css/style.css" text="Login">
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

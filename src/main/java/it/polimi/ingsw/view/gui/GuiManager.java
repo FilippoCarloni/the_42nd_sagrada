@@ -68,6 +68,9 @@ public class GuiManager {
                         lobbyController.getStartButton().setDisable(false);
                         preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         break;
+                    case CURRENT_PLAYER:
+                        gameBoard.setMessageText("Now is playing: " + MessageType.decodeMessageContent(message));
+                        break;
                     default:
                         print("Message not supported!");
                 }

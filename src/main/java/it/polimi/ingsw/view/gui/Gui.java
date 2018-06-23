@@ -14,7 +14,7 @@ public class Gui extends Application {
         Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.CONNECTION_LOGIN_FXML_PATH));
         primaryStage.setTitle(GUIParameters.CONNECTION_LOGIN_SCENE_TITLE);
 
-        Scene scene = new Scene(parent, GUIParameters.CONNECTION_LOGIN_SCENE_WIDTH, GUIParameters.CONNECTION_LOGIN_SCENE_HEIGHT);
+        Scene scene = new Scene(parent);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

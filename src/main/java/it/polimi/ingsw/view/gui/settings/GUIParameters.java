@@ -75,7 +75,7 @@ public final class GUIParameters {
     public static final String LOBBY_FXML_PATH = "Lobby.fxml";
     public static final String MAP_CHOICE_FXML_PATH = "WindowFrameChoice.fxml";
     public static final String GAME_BOARD_FXML_PATH = "MainBoard.fxml";
-    public static final String ROUNT_TRACK_DICE_FXML_PATH = "RoundTrackVisualizer.fxml";
+    public static final String ROUND_TRACK_DICE_FXML_PATH = "RoundTrackVisualizer.fxml";
     public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveScreen.fxml";
     public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
     public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";

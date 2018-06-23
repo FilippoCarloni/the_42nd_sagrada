@@ -35,7 +35,11 @@ public class LoginController {
      * Method that allows player to switch from the default connection type, RMI, tho a socket one.
      */
     public void slowConnection(){
-        connectionType = ConnectionType.SOCKET;
+        if(connectionType == ConnectionType.RMI) {
+            connectionType = ConnectionType.SOCKET;
+        } else {
+            connectionType = ConnectionType.RMI;
+        }
     }
 
     /**
@@ -64,7 +68,7 @@ public class LoginController {
             stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
             stage.setScene(scene);
         } catch (IOException e) {
-            print(GUIParameters.LOAD_FXML_ERROR);
+            e.printStackTrace();
         }
     }
 

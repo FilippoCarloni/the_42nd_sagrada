@@ -214,7 +214,7 @@ public class GameBoardController {
             print(e.getMessage());
         }
     }
-    
+
     //Main method, called by the update() method from Gui Manager to handle gui refresh
     public void gameBoardUpdate(JSONObject json){
         players = (JSONArray) ((JSONObject) json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);

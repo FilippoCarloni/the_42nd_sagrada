@@ -71,6 +71,10 @@ public class LobbyController {
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
+                stage.setOnCloseRequest(e -> {
+                    GuiManager.getInstance().getConnectionController().send("exit");
+                    System.exit(0);
+                });
                 stage.setScene(scene);
             }
         } catch (IOException e) {

@@ -1,0 +1,52 @@
+.background {
+    -fx-background-color: #303642;
+}
+
+.text-field {
+    -fx-text-fill: #F5F6F7;
+    -fx-font-size: 16px;
+    -fx-font-family: Roboto;
+}
+
+.label {
+    -fx-font-size: 26px;
+    -fx-text-fill: #F5F6F7;
+    -fx-font-family: Roboto;
+}
+
+.main-board-label{
+    -fx-font-size: 17px;
+    -fx-text-fill: #F5F6F7;
+    -fx-font-family: Roboto;
+}
+
+.button {
+    -fx-background-color: #F5F6F7;
+    -fx-font-size: 16px;
+    -fx-font-family: Roboto;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+}
+
+.check-box {
+    -fx-font-size: 16px;
+    -fx-text-fill: #F5F6F7;
+    -fx-font-family: Roboto;
+}
+
+.check-box:hover {
+    -fx-cursor: hand;
+}
+
+.text-area {
+    -fx-text-fill: #F5F6F7;
+    -fx-background-color: #2F4F4F;
+    -fx-font-size: 16px;
+    -fx-font-family: Roboto;
+}
+
+#toolCards {
+    -fx-padding: 0 0 0 30;
+}
