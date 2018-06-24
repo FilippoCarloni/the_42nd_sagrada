@@ -9,6 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import org.json.simple.JSONObject;
 
+import java.net.ConnectException;
+import java.rmi.RemoteException;
+
 public class PrivateObjectiveController {
 
     @FXML
@@ -21,7 +24,7 @@ public class PrivateObjectiveController {
     }
 
     @FXML
-    protected void initialize(){
+    protected void initialize() throws RemoteException, ConnectException {
         privateObjectiveImageView = CardsSetter.setPrivateCard((JSONObject) GuiManager.getInstance().getGameBoard().getMainPlayer().get(JSONTag.PRIVATE_OBJECTIVE));
         apPrivateObjective.getChildren().add(privateObjectiveImageView);
     }

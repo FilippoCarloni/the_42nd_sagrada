@@ -26,6 +26,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import static jdk.nashorn.internal.objects.Global.print;
@@ -106,7 +108,11 @@ public class WindowFramesChoice {
     }
 
     private void clicked(int idMapChosen) {
-        GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
+        try {
+            GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
+        } catch (ConnectException | RemoteException e) {
+            print(e.getMessage());
+        }
     }
     private void addRadioButtonsInToggleGroup(){
         buttonMap1.setToggleGroup(group);
@@ -182,7 +188,11 @@ public class WindowFramesChoice {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setOnCloseRequest(e -> {
-                GuiManager.getInstance().getConnectionController().send("exit");
+                try {
+                    GuiManager.getInstance().getConnectionController().send("exit");
+                } catch (ConnectException | RemoteException e1) {
+                    print(e1.getMessage());
+                }
                 System.exit(0);
             });
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
@@ -193,7 +203,7 @@ public class WindowFramesChoice {
     }
 
     @FXML
-    protected void initialize() {
+    protected void initialize() throws RemoteException, ConnectException {
         GuiManager.getInstance().setWindowFramesChoice(this);
         addRadioButtonsInToggleGroup();
         drawPreGame(GuiManager.getInstance().getPreGameMessage());

@@ -11,7 +11,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
 import org.json.simple.JSONObject;
 
+import java.net.ConnectException;
+import java.rmi.RemoteException;
+
 import static java.lang.Integer.parseInt;
+import static jdk.nashorn.internal.objects.Global.print;
+
+//TODO: fix the closing problem
 
 public class GrozingPliersController {
 
@@ -25,13 +31,17 @@ public class GrozingPliersController {
     private Canvas decreaseCanvas;
 
     private void sendCommand(String command, ActionEvent event){
-        GuiManager.getInstance().getConnectionController().send(command);
+        try {
+            GuiManager.getInstance().getConnectionController().send(command);
+        } catch (ConnectException | RemoteException e) {
+            print(e.getMessage());
+        }
         //This launch a CastException, I can't do it like this
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
     @FXML
-    protected void initialize(){
+    protected void initialize() throws RemoteException, ConnectException {
         JSONObject diePicked = (JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE);
         String color = diePicked.get(JSONTag.COLOR).toString();
         int value = parseInt(diePicked.get(JSONTag.SHADE).toString());

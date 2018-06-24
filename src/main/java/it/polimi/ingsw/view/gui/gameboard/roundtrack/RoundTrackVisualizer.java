@@ -11,7 +11,11 @@ import javafx.scene.layout.StackPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.net.ConnectException;
+import java.rmi.RemoteException;
+
 import static java.lang.Integer.parseInt;
+import static jdk.nashorn.internal.objects.Global.print;
 
 public class RoundTrackVisualizer {
 
@@ -38,14 +42,20 @@ public class RoundTrackVisualizer {
                 String color = ((JSONObject)dice.get(index)).get(JSONTag.COLOR).toString();
                 DiceDrawer.dicePointsDrawer(value, color,  canvas.getGraphicsContext2D(), stackPane, 0.9);
                 int finalIndex = index;
-                stackPane.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("select " + finalIndex));
+                stackPane.setOnMouseClicked(e -> {
+                    try {
+                        GuiManager.getInstance().getConnectionController().send("select " + finalIndex);
+                    } catch (ConnectException | RemoteException e1) {
+                        print(e1.getMessage());
+                    }
+                });
                 index++;
             }
         }
     }
 
     @FXML
-    protected void initialize(){
+    protected void initialize() throws RemoteException, ConnectException {
         JSONObject roundTrack = (JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.ROUND_TRACK);
         allDiceDrawer(roundTrack);
     }

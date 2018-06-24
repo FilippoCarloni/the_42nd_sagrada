@@ -24,6 +24,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +35,8 @@ import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 //TODO: add image on Anchor Pane Main Player Background
-//TODO: add stylesheets files (.css)
 //TODO: add favor points
-//TODO: append messages to messageTextArea
-//TODO: take a look on bugs
 //TODO: add points counter at the end of the match
-//TODO: add that when "x" clicked process killed
 
 public class GameBoardController {
 
@@ -151,10 +149,15 @@ public class GameBoardController {
 
     //Maps and labels management
     private int getPlayer1ByUsername(JSONArray players){
-        for(int i = 0; i < players.size(); i++){
-            if((((JSONObject)players.get(i)).get(JSONTag.USERNAME)).toString().equals(GuiManager.getInstance().getUsernamePlayer1())){
-                return i;
+        try {
+            String usernameMainPlayer = GuiManager.getInstance().getUsernamePlayer1();
+            for (int i = 0; i < players.size(); i++) {
+                if ((((JSONObject) players.get(i)).get(JSONTag.USERNAME)).toString().equals(usernameMainPlayer)) {
+                    return i;
+                }
             }
+        } catch (RemoteException | ConnectException e){
+            print(e.getMessage());
         }
         throw new IllegalArgumentException("Player 1 not found");
     }
@@ -194,13 +197,13 @@ public class GameBoardController {
     }
 
     //Methods used by action buttons
-    public void pass(){
+    public void pass() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send("pass");
     }
-    public void undo(){
+    public void undo() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send("undo");
     }
-    public void redo(){
+    public void redo() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send("redo");
     }
     public void showPrivateObjective(){
@@ -279,7 +282,7 @@ public class GameBoardController {
     }
 
     @FXML
-    public void initialize(){
+    public void initialize() throws RemoteException, ConnectException {
         GuiManager.getInstance().setGameBoard(this);
         JSONObject json = GuiManager.getInstance().getGameBoardMessage();
         messageTextArea.setEditable(false);

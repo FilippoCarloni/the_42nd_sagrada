@@ -14,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -49,13 +51,17 @@ public class LoginController {
      */
     public void getUsername(ActionEvent event) {
         GuiManager.setConnectionType(connectionType);
-        GuiManager.getInstance().startRefresh();
-        boolean isValid = GuiManager.getInstance().getConnectionController().restore(username.getText());
-        if (isValid) {
-            GuiManager.getInstance().setUsernamePlayer1(username.getText());
-            loginToLobby(event);
-        } else
-            usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
+        try {
+            GuiManager.getInstance().startRefresh();
+            boolean isValid = GuiManager.getInstance().getConnectionController().restore(username.getText());
+            if (isValid) {
+                GuiManager.getInstance().setUsernamePlayer1(username.getText());
+                loginToLobby(event);
+            } else
+                usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
+        } catch (ConnectException | RemoteException e) {
+            usernameNotValid.setText("Server not reachable\nTry again later");
+        }
     }
 
     //Change scene Management

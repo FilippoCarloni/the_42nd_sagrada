@@ -13,6 +13,8 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -30,7 +32,7 @@ public class LobbyController {
     /**
      * Method that allows the player to enter the lobby, joining a new game.
       */
-    public void enteredLobby(){
+    public void enteredLobby() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send("play");
     }
 
@@ -72,7 +74,11 @@ public class LobbyController {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
                 stage.setOnCloseRequest(e -> {
-                    GuiManager.getInstance().getConnectionController().send("exit");
+                    try {
+                        GuiManager.getInstance().getConnectionController().send("exit");
+                    } catch (ConnectException | RemoteException e1) {
+                        print(e1.getMessage());
+                    }
                     System.exit(0);
                 });
                 stage.setScene(scene);
@@ -83,7 +89,7 @@ public class LobbyController {
     }
 
     @FXML
-    protected void initialize(){
+    protected void initialize() throws RemoteException, ConnectException {
         GuiManager.getInstance().setLobbyController(this);
         startButton.setDisable(true);
     }

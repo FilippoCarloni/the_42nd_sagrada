@@ -12,11 +12,12 @@ import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO:
 
 public class ToolCardsManagement {
 
@@ -24,18 +25,32 @@ public class ToolCardsManagement {
         if(id == 1){
             //Managing Grozing Pliers behaviour
             toolCardImage.setOnMouseClicked(e -> {
-                GuiManager.getInstance().getConnectionController().send("tool " + id);
-                grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
+                try {
+                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                    grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
+                } catch (ConnectException | RemoteException e1) {
+                    print(e1.getMessage());
+                }
             });
         } else if (id == 11){
             //Managing Flux Remover behaviour
             toolCardImage.setOnMouseClicked(e -> {
-                GuiManager.getInstance().getConnectionController().send("tool " + id);
-                fluxRemoverManagement();
+                try {
+                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                    fluxRemoverManagement();
+                } catch (ConnectException | RemoteException e1) {
+                    print(e1.getMessage());
+                }
             });
         } else {
             //Other tool cards
-            toolCardImage.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("tool " + id));
+            toolCardImage.setOnMouseClicked(e -> {
+                try {
+                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                } catch (ConnectException | RemoteException e1) {
+                    print(e1.getMessage());
+                }
+            });
         }
     }
 
@@ -45,7 +60,7 @@ public class ToolCardsManagement {
      * change his value).
      * @param draftedDie: JSONObject describing the die drafted by the user
      */
-    private void grozingPliersManagement(JSONObject draftedDie){
+    private void grozingPliersManagement(JSONObject draftedDie) throws RemoteException, ConnectException {
         int value = parseInt((draftedDie.get(JSONTag.SHADE)).toString());
         if(value > 1 && value < 6) {
             openScreen(GUIParameters.GROZING_PLIERS_FXML_PATH, GUIParameters.GROZING_PLIERS_TITLE);

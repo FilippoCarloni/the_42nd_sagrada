@@ -12,7 +12,11 @@ import javafx.scene.layout.StackPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 import java.util.List;
+
+import static jdk.nashorn.internal.objects.Global.print;
 
 public class DiceDrawer {
 
@@ -35,7 +39,13 @@ public class DiceDrawer {
             if(isDicePool) {
                 //Need this finalI because in lambda expressions I can't use not final variables
                 int finalI = i + 1;
-                canvas.setOnMouseClicked(e -> GuiManager.getInstance().getConnectionController().send("pick " + finalI));
+                canvas.setOnMouseClicked(e -> {
+                    try {
+                        GuiManager.getInstance().getConnectionController().send("pick " + finalI);
+                    } catch (ConnectException | RemoteException e1) {
+                        print(e1.getMessage());
+                    }
+                });
             }
         }
     }
