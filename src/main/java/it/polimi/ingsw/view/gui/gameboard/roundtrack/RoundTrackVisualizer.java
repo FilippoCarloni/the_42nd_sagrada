@@ -17,6 +17,8 @@ import java.rmi.RemoteException;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+//TODO: find a way to redraw all dice on round track when one is changed after a tool card activation
+
 public class RoundTrackVisualizer {
 
     @FXML
@@ -41,7 +43,7 @@ public class RoundTrackVisualizer {
                 int value = parseInt(((JSONObject)dice.get(index)).get(JSONTag.SHADE).toString());
                 String color = ((JSONObject)dice.get(index)).get(JSONTag.COLOR).toString();
                 DiceDrawer.dicePointsDrawer(value, color,  canvas.getGraphicsContext2D(), stackPane, 0.9);
-                int finalIndex = index;
+                int finalIndex = index + 1;
                 stackPane.setOnMouseClicked(e -> {
                     try {
                         GuiManager.getInstance().getConnectionController().send("select " + finalIndex);

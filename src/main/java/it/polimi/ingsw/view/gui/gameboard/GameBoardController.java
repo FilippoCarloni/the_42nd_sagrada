@@ -34,7 +34,6 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO: add image on Anchor Pane Main Player Background
 //TODO: add favor points
 //TODO: add points counter at the end of the match
 
@@ -76,11 +75,11 @@ public class GameBoardController {
     private RoundTrackDrawer rDrawer;
 
     @FXML
-    private AnchorPane roundTrackAnchorPane;
+    private HBox roundTrackAnchorPane;
     @FXML
     private GridPane roundTrackGrid;
     @FXML
-    private AnchorPane backGroundMainPlayer;
+    private VBox backgroundMainPlayer;
     @FXML
     private GridPane windowFramePlayer1;
     @FXML
@@ -100,7 +99,9 @@ public class GameBoardController {
     @FXML
     private GridPane diceGrid;
     @FXML
-    private GridPane gridCards;
+    private HBox toolCardsHBox;
+    @FXML
+    private HBox publicObjectiveHBox;
     @FXML
     private Rectangle privateObjectiveRectangle;
     @FXML
@@ -113,10 +114,6 @@ public class GameBoardController {
 
     //Setters and getters
     private void setGrid(){
-        windowFramePlayer1.setTranslateX(GUIParameters.PLAYER_1_GRID_X);
-        windowFramePlayer1.setTranslateY(GUIParameters.PLAYER_1_GRID_Y);
-        diceGrid.setGridLinesVisible(false);
-
         playersGrids.add(windowFramePlayer2);
         playersGrids.add(windowFramePlayer3);
         playersGrids.add(windowFramePlayer4);
@@ -181,9 +178,9 @@ public class GameBoardController {
         List<ImageView> toolCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), GUIParameters.TOOL_DIRECTORY, true);
         List<ImageView> pubObjCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), GUIParameters.PUBOBJ_DIRECTORY, false);
 
-        for (int i = 0, j = 0; i < 5 && j < toolCards.size(); i += 2, j++) {
-            gridCards.add(toolCards.get(j), i, 0);
-            gridCards.add(pubObjCards.get(j), i, 2);
+        for(int i = 0; i < toolCards.size(); i++){
+            toolCardsHBox.getChildren().add(toolCards.get(i));
+            publicObjectiveHBox.getChildren().add(pubObjCards.get(i));
         }
     }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
@@ -278,7 +275,7 @@ public class GameBoardController {
 
         pane.getChildren().add(windowFramePlayer1);
         group.getChildren().add(pane);
-        backGroundMainPlayer.getChildren().add(group);
+        backgroundMainPlayer.getChildren().add(group);
     }
 
     @FXML

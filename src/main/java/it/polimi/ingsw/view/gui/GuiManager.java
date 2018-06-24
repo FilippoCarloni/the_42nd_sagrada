@@ -5,7 +5,6 @@ import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
-import it.polimi.ingsw.view.gui.preliminarystages.LoginController;
 import it.polimi.ingsw.view.gui.preliminarystages.WindowFramesChoice;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,9 +21,6 @@ import static jdk.nashorn.internal.objects.Global.print;
  * This class helps managing the Connection Controller and the updating of information.
  * It has to be unique for all the fxml scenes
  */
-
-//TODO: add an error message to print if server is offline, instead of launching a simple NullPointerException (into the GuiManager
-//TODO: singleton constructor)
 
 public class GuiManager {
 
@@ -49,7 +45,6 @@ public class GuiManager {
     private void update(){
         try {
             String message = getInstance().connectionController.readMessage();
-            System.out.println(message);
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:

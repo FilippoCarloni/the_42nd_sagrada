@@ -13,14 +13,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -42,10 +40,10 @@ public class WindowFramesChoice {
     private ArrayList<GridPane> maps = new ArrayList<>();
 
     //Containers of the maps' names
-    private ArrayList<StackPane> names = new ArrayList<>();
+    private ArrayList<Label> names = new ArrayList<>();
 
     //Containers of the maps' difficulties
-    private  ArrayList<StackPane> difficulties = new ArrayList<>();
+    private  ArrayList<Label> difficulties = new ArrayList<>();
 
     //ToggleGroup that will contain all RadioButton for the map choice
     private ToggleGroup group = new ToggleGroup();
@@ -59,13 +57,13 @@ public class WindowFramesChoice {
     @FXML
     private GridPane map4;
     @FXML
-    private StackPane nameMap1;
+    private Label nameMap1;
     @FXML
-    private StackPane nameMap2;
+    private Label nameMap2;
     @FXML
-    private StackPane nameMap3;
+    private Label nameMap3;
     @FXML
-    private StackPane nameMap4;
+    private Label nameMap4;
     @FXML
     private RadioButton buttonMap1;
     @FXML
@@ -75,17 +73,15 @@ public class WindowFramesChoice {
     @FXML
     private RadioButton buttonMap4;
     @FXML
-    private StackPane difficultyMap1;
+    private Label difficultyMap1;
     @FXML
-    private StackPane difficultyMap2;
+    private Label difficultyMap2;
     @FXML
-    private StackPane difficultyMap3;
+    private Label difficultyMap3;
     @FXML
-    private StackPane difficultyMap4;
+    private Label difficultyMap4;
     @FXML
-    private ImageView privateObjCard;
-    @FXML
-    private GridPane privateObjGrid;
+    private VBox privateObjectiveVBox;
     @FXML
     private Button gameBoardButton;
 
@@ -126,8 +122,7 @@ public class WindowFramesChoice {
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
         JSONObject card = (JSONObject) json.get(JSONTag.PRIVATE_OBJECTIVE);
 
-        privateObjCard = CardsSetter.setPrivateCard(card);
-        privateObjGrid.add(privateObjCard, 1, 0);
+        privateObjectiveVBox.getChildren().add(CardsSetter.setPrivateCard(card));
         setMaps();
         setNames();
         setDifficulties();
@@ -136,17 +131,9 @@ public class WindowFramesChoice {
             ArrayList<StackPane> stackPanes = new ArrayList<>();
             WindowFrameDrawer.frameFiller(canvas, stackPanes, maps.get(i), 1, false);
             WindowFrameDrawer.framePainterManager((JSONObject) jsonMaps.get(i), canvas, stackPanes, 1, false);
-            Text name = new Text(((JSONObject)jsonMaps.get(i)).get(JSONTag.NAME).toString());
-            setText(name, names.get(i));
-            Text difficulty = new Text("Difficulty: " + ((Long)(((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).intValue());
-            setText(difficulty, difficulties.get(i));
+            names.get(i).setText(((JSONObject)jsonMaps.get(i)).get(JSONTag.NAME).toString());
+            difficulties.get(i).setText("Difficulty: " + ((Long)(((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).intValue());
         }
-    }
-    private void setText(Text text, StackPane pane){
-        Rectangle rectangle = new Rectangle(305, 30);
-        rectangle.setFill(Color.WHITE);
-        rectangle.setStroke(Color.BLACK);
-        pane.getChildren().addAll(rectangle, text);
     }
     private void setMaps(){
         maps.add(map1);
