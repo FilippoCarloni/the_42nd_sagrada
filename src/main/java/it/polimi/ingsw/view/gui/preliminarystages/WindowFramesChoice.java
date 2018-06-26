@@ -105,7 +105,7 @@ public class WindowFramesChoice {
 
     private void clicked(int idMapChosen) {
         try {
-            GuiManager.getInstance().getConnectionController().send("window " + idMapChosen);
+            GuiManager.getInstance().getConnectionController().send(GUIParameters.WINDOW + idMapChosen);
         } catch (ConnectException | RemoteException e) {
             print(e.getMessage());
         }
@@ -176,7 +176,7 @@ public class WindowFramesChoice {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setOnCloseRequest(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send("exit");
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
                 } catch (ConnectException | RemoteException e1) {
                     print(e1.getMessage());
                 }

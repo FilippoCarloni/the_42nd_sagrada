@@ -44,6 +44,7 @@ public final class GUIParameters {
     public static final String EMPTY_FROM_CONSTRAINTS_COLOR = "default";
     public static final Color NUMBERS_DICE_COLOR = Color.BLACK;
     public static final String DEFAULT_DICE_COLOR = "white";
+    public static final String BACKGROUND_COLOR = "#303642";
 
     //Dimensions to draw dice
     public static final double DICE_RADIUS = 12.5;
@@ -65,15 +66,31 @@ public final class GUIParameters {
     public static final String CONNECTION_LOGIN_FXML_PATH = "ConnectionLogin.fxml";
     public static final String LOBBY_FXML_PATH = "Lobby.fxml";
     public static final String MAP_CHOICE_FXML_PATH = "WindowFrameChoice.fxml";
-    public static final String GAME_BOARD_FXML_PATH = "NewMainBoard.fxml";
+    public static final String GAME_BOARD_FXML_PATH = "MainBoard.fxml";
     public static final String ROUND_TRACK_DICE_FXML_PATH = "RoundTrackVisualizer.fxml";
     public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveScreen.fxml";
     public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
     public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";
 
     //Error messages
+    public static final String SERVER_ERROR = "Server not reachable\nTry again later";
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";
-    public static final String LOAD_FXML_ERROR = "File fxml not found";
+    public static final String MAIN_PLAYER_NOT_FOUND = "Main player not found";
+    public static final String DIE_VALUE_SMALL = "Shade of die must be at least 1";
+
+    //Connection Controller messages
+    public static final String PLAY = "play";
+    public static final String EXIT = "exit";
+    public static final String WINDOW = "window ";
+    public static final String PASS = "pass";
+    public static final String UNDO = "undo";
+    public static final String REDO = "redo";
+    public static final String PICK = "pick ";
+    public static final String MOVE = "move ";
+    public static final String PLACE = "place ";
+    public static final String SELECT = "select ";
+    public static final String INCREASE = "increase";
+    public static final String DECREASE = "decrease";
 
     //Card dimension
     public static final double CARDS_ON_GAME_BOARD_WIDTH = 180;

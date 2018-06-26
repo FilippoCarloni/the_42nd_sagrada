@@ -55,12 +55,12 @@ public class LoginController {
             GuiManager.getInstance().startRefresh();
             boolean isValid = GuiManager.getInstance().getConnectionController().restore(username.getText());
             if (isValid) {
-                GuiManager.getInstance().setUsernamePlayer1(username.getText());
+                GuiManager.getInstance().setUsernameMainPlayer(username.getText());
                 loginToLobby(event);
             } else
                 usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
         } catch (ConnectException | RemoteException e) {
-            usernameNotValid.setText("Server not reachable\nTry again later");
+            usernameNotValid.setText(GUIParameters.SERVER_ERROR);
         }
     }
 
@@ -71,7 +71,7 @@ public class LoginController {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setOnCloseRequest(e -> System.exit(0));
-            stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
+            stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();

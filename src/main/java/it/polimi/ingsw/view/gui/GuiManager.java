@@ -19,7 +19,6 @@ import static jdk.nashorn.internal.objects.Global.print;
 
 /**
  * This class helps managing the Connection Controller and the updating of information.
- * It has to be unique for all the fxml scenes
  */
 
 public class GuiManager {
@@ -27,7 +26,7 @@ public class GuiManager {
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final int REFRESH_RATE = 100;    //milliseconds
     private ConnectionController connectionController;
-    private String usernamePlayer1;
+    private String usernameMainPlayer;
     private LobbyController lobbyController;
     private WindowFramesChoice windowFramesChoice;
     private GameBoardController gameBoard;          //I will use it to update the game board
@@ -36,12 +35,17 @@ public class GuiManager {
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
-    //Scheduler
+    /**
+     * Scheduler, it launch the update() method every REFRESH_RATE milliseconds
+     */
     public void startRefresh() {
         scheduler.scheduleAtFixedRate(this::update, 1, REFRESH_RATE, MILLISECONDS);
     }
 
-    //Updater, managed by the scheduler
+    /**
+     *  Updater, managed by the scheduler. Main method for all GUI processes, he receive messages from the connection controller
+     *  and switches between different cases, depending on the type of the message received.
+     */
     private void update(){
         try {
             String message = getInstance().connectionController.readMessage();
@@ -81,12 +85,14 @@ public class GuiManager {
         }
     }
 
-    //Getter
+    /**
+     * Getters for all needed references present in this class.
+     */
     public ConnectionController getConnectionController(){
         return connectionController;
     }
-    public String getUsernamePlayer1(){
-        return usernamePlayer1;
+    public String getUsernameMainPlayer(){
+        return usernameMainPlayer;
     }
     public JSONObject getPreGameMessage(){
         return preGameMessage;
@@ -98,9 +104,11 @@ public class GuiManager {
         return gameBoard;
     }
 
-    //Setter
-    public void setUsernamePlayer1(String usernamePlayer1){
-        this.usernamePlayer1 = usernamePlayer1;
+    /**
+     * Setters for all variables present in this class.
+     */
+    public void setUsernameMainPlayer(String usernameMainPlayer){
+        this.usernameMainPlayer = usernameMainPlayer;
     }
     public void setLobbyController(LobbyController lobbyController){
         this.lobbyController = lobbyController;
@@ -112,7 +120,10 @@ public class GuiManager {
         this.gameBoard = gameBoard;
     }
 
-    //Singleton constructor for unique Connection Controller
+    /**
+     * Singleton constructor for unique Connection Controller; it has to be the same for all GUI scenes.
+     * @param connectionType: type of connection chosen; used to set a new Connection Controller.
+     */
     public static void setConnectionType(ConnectionType connectionType){
         myConnectionType = connectionType;
     }

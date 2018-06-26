@@ -1,187 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.GameBoardController">
+<AnchorPane styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.GameBoardController">
    <children>
-      <GridPane maxHeight="720.0" maxWidth="1280.0" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="540.0" minWidth="540.0" prefWidth="540.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="740.0" minWidth="740.0" prefWidth="740.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <BorderPane prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="270.0" BorderPane.alignment="CENTER">
                <children>
-                  <GridPane fx:id="diceGrid" gridLinesVisible="true" layoutY="70.0" maxHeight="60.0" maxWidth="540.0" minHeight="60.0" minWidth="540.0" prefHeight="60.0" prefWidth="540.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-                  <AnchorPane fx:id="backgroundMainPlayer" layoutX="40.0" layoutY="280.0" prefHeight="440.0" prefWidth="320.0">
+                  <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Other Players:">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <VBox alignment="TOP_CENTER" prefHeight="221.0" prefWidth="270.0">
                      <children>
-                        <GridPane fx:id="windowFramePlayer1" gridLinesVisible="true" layoutX="10.0" layoutY="138.0" maxHeight="240.0" maxWidth="300.0" minHeight="240.0" minWidth="300.0" prefHeight="240.0" prefWidth="300.0">
+                        <GridPane fx:id="windowFramePlayer2" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                            <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                        <Label fx:id="labelPlayer1" alignment="CENTER" layoutX="10.0" layoutY="378.0" maxHeight="62.0" maxWidth="300.0" minHeight="62.0" minWidth="300.0" prefHeight="62.0" prefWidth="300.0">
-                           <font>
-                              <Font size="25.0" />
-                           </font>
-                        </Label>
-                        <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="40.0" layoutX="281.0" layoutY="389.0" onMouseClicked="#showPrivateObjective" stroke="BLACK" strokeType="INSIDE" width="25.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane fx:id="roundTrackAnchorPane" layoutX="-1.0" layoutY="130.0" prefHeight="150.0" prefWidth="540.0">
-                     <children>
-                        <GridPane fx:id="roundTrackGrid" gridLinesVisible="true" layoutX="2.0" layoutY="48.0" maxHeight="54.0" maxWidth="540.0" minHeight="54.0" minWidth="540.0" prefHeight="54.0" prefWidth="540.0">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
+                           <VBox.margin>
+                              <Insets left="35.0" right="35.0" top="30.0" />
+                           </VBox.margin>
                         </GridPane>
+                        <Label fx:id="labelPlayer2" styleClass="main-board-label" stylesheets="@../css/style.css" />
                      </children>
-                  </AnchorPane>
-                  <Button layoutX="382.0" layoutY="416.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#pass" prefHeight="31.0" prefWidth="65.0" text="PASS">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button layoutX="383.0" layoutY="461.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#undo" prefHeight="31.0" prefWidth="65.0" text="UNDO">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <Button layoutX="465.0" layoutY="461.0" maxHeight="31.0" maxWidth="65.0" minHeight="31.0" minWidth="65.0" mnemonicParsing="false" onAction="#redo" prefHeight="31.0" prefWidth="65.0" text="REDO">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Button>
-                  <StackPane fx:id="draftedDieStackPane" layoutX="415.0" layoutY="558.0" maxHeight="90.0" maxWidth="90.0" minHeight="90.0" minWidth="90.0" prefHeight="90.0" prefWidth="90.0">
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="239.0" prefWidth="270.0">
                      <children>
-                        <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
+                        <GridPane fx:id="windowFramePlayer3" prefHeight="160.0" prefWidth="290.0" stylesheets="@../css/style.css">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <VBox.margin>
+                              <Insets left="35.0" right="35.0" top="20.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <Label fx:id="labelPlayer3" styleClass="main-board-label" stylesheets="@../css/style.css" />
                      </children>
-                  </StackPane>
-                  <Label alignment="CENTER" layoutX="422.0" layoutY="522.0" maxHeight="25.0" maxWidth="75.0" minHeight="25.0" minWidth="75.0" prefHeight="25.0" prefWidth="75.0" text="Drafted die">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <TextArea fx:id="messageTextArea" layoutX="-1.0" layoutY="8.0" prefHeight="54.0" prefWidth="540.0" />
+                  </VBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="270.0">
+                     <children>
+                        <GridPane fx:id="windowFramePlayer4" prefHeight="160.0" prefWidth="290.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="35.0" right="35.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <Label fx:id="labelPlayer4" styleClass="main-board-label" stylesheets="@../css/style.css">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
-            </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+            </VBox>
+         </left>
+         <right>
+            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="340.0" BorderPane.alignment="CENTER">
                <children>
-                  <GridPane fx:id="windowFramePlayer2" layoutX="32.0" layoutY="39.0" maxHeight="160.0" maxWidth="200.0" minHeight="160.0" minWidth="200.0" prefHeight="160.0" prefWidth="200.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-                  <GridPane fx:id="windowFramePlayer3" layoutX="270.0" layoutY="39.0" maxHeight="160.0" maxWidth="200.0" minHeight="160.0" minWidth="200.0" prefHeight="160.0" prefWidth="200.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-                  <GridPane fx:id="windowFramePlayer4" layoutX="513.0" layoutY="39.0" maxHeight="160.0" maxWidth="200.0" minHeight="160.0" minWidth="200.0" prefHeight="160.0" prefWidth="200.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-                  <Label fx:id="labelPlayer2" alignment="CENTER" layoutX="32.0" layoutY="199.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" />
-                  <Label fx:id="labelPlayer3" alignment="CENTER" layoutX="270.0" layoutY="199.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" />
-                  <Label fx:id="labelPlayer4" alignment="CENTER" layoutX="513.0" layoutY="199.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" />
-                  <GridPane fx:id="gridCards" layoutX="50.0" layoutY="254.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="215.0" minHeight="215.0" prefHeight="215.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="215.0" minHeight="215.0" prefHeight="215.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
+                  <JFXTextArea fx:id="messageTextArea" editable="false" prefHeight="183.0" prefWidth="320.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </JFXTextArea>
+                  <Pane prefHeight="159.0" prefWidth="290.0">
+                     <children>
+                        <JFXButton layoutX="14.0" layoutY="14.0" onAction="#undo" prefHeight="37.0" prefWidth="70.0" text="UNDO" />
+                        <JFXButton layoutX="14.0" layoutY="63.0" onAction="#redo" prefHeight="37.0" prefWidth="70.0" text="REDO" />
+                        <JFXButton layoutX="14.0" layoutY="112.0" onAction="#pass" prefHeight="37.0" prefWidth="70.0" text="PASS" />
+                        <Label layoutX="159.0" layoutY="20.0" styleClass="main-board-label" stylesheets="@../css/style.css" text="Drafted die:" />
+                        <StackPane fx:id="draftedDieStackPane" layoutX="163.0" layoutY="60.0" prefHeight="90.0" prefWidth="90.0" styleClass="background" stylesheets="@../css/style.css">
+                           <children>
+                              <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
+                           </children>
+                        </StackPane>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Pane>
+                  <VBox fx:id="backgroundMainPlayer" alignment="BOTTOM_CENTER" prefHeight="348.0" prefWidth="340.0">
+                     <children>
+                        <GridPane fx:id="windowFramePlayer1" prefHeight="240.0" prefWidth="300.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <Label fx:id="labelPlayer1" alignment="CENTER" contentDisplay="RIGHT" prefHeight="58.0" prefWidth="300.0" stylesheets="@../css/style.css">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <StackPane alignment="CENTER_RIGHT" prefHeight="58.0" prefWidth="153.0">
+                                 <children>
+                                    <Label fx:id="favorPointsLabel" alignment="TOP_RIGHT">
+                                       <graphic>
+                                          <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="#f6f7f8" height="37.0" onMouseClicked="#showPrivateObjective" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="25.0" />
+                                       </graphic>
+                                    </Label>
+                                 </children>
+                              </StackPane>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
-            </AnchorPane>
-         </children>
-      </GridPane>
+            </VBox>
+         </right>
+         <center>
+            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" stylesheets="@../css/style.css">
+                           <children>
+                              <GridPane fx:id="diceGrid" prefHeight="60.0" prefWidth="540.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="roundTrackAnchorPane" alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
+                           <children>
+                              <GridPane fx:id="roundTrackGrid" prefHeight="54.0" prefWidth="540.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <HBox.margin>
+                                    <Insets bottom="13.0" left="20.0" right="20.0" top="13.0" />
+                                 </HBox.margin>
+                              </GridPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox fx:id="toolCardsHBox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="670.0">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <VBox fx:id="toolCard1" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="210.0" />
+                              <VBox fx:id="toolCard2" alignment="CENTER" prefHeight="200.0" prefWidth="210.0" />
+                              <VBox fx:id="toolCard3" alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="210.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <HBox fx:id="publicObjectiveHBox" prefHeight="230.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <VBox fx:id="publicObjectiveCard1" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="210.0" />
+                              <VBox fx:id="publicObjectiveCard2" alignment="CENTER" prefHeight="200.0" prefWidth="210.0" />
+                              <VBox fx:id="publicObjectiveCard3" alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="210.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </VBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
    </children>
 </AnchorPane>

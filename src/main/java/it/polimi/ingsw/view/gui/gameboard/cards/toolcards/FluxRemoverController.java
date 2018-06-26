@@ -30,7 +30,7 @@ public class FluxRemoverController {
     private GridPane shadeChoiceGrid;
 
     private void sendValue(int value, ActionEvent event) throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send("select " + value);
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.SELECT + value);
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 

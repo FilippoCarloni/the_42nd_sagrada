@@ -65,9 +65,9 @@ public class ToolCardsManagement {
         if(value > 1 && value < 6) {
             openScreen(GUIParameters.GROZING_PLIERS_FXML_PATH, GUIParameters.GROZING_PLIERS_TITLE);
         } else if(value == 1) {
-            GuiManager.getInstance().getConnectionController().send("increase");
+            GuiManager.getInstance().getConnectionController().send(GUIParameters.INCREASE);
         } else {
-            GuiManager.getInstance().getConnectionController().send("decrease");
+            GuiManager.getInstance().getConnectionController().send(GUIParameters.DECREASE);
         }
     }
 
@@ -83,7 +83,7 @@ public class ToolCardsManagement {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + FXMLFileToOpen));
             Stage stage = new Stage();
-            stage.setTitle(title + " - " + GuiManager.getInstance().getUsernamePlayer1());
+            stage.setTitle(title + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent, GUIParameters.TOOL_CARDS_WIDTH, GUIParameters.TOOL_CARDS_HEIGHT));
             stage.show();
         } catch (IOException e){

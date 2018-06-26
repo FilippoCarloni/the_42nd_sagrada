@@ -33,7 +33,7 @@ public class LobbyController {
      * Method that allows the player to enter the lobby, joining a new game.
       */
     public void enteredLobby() throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send("play");
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.PLAY);
     }
 
     /**
@@ -72,10 +72,10 @@ public class LobbyController {
                 Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.MAP_CHOICE_FXML_PATH));
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
+                stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
                 stage.setOnCloseRequest(e -> {
                     try {
-                        GuiManager.getInstance().getConnectionController().send("exit");
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
                     } catch (ConnectException | RemoteException e1) {
                         print(e1.getMessage());
                     }

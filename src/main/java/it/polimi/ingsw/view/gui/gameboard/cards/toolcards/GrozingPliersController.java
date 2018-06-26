@@ -49,8 +49,8 @@ public class GrozingPliersController {
         DiceDrawer.dicePointsDrawer(value + 1, color, increaseCanvas.getGraphicsContext2D(), increaseStackPane, 1 + GUIParameters.REDUCTION_SCALE);
         DiceDrawer.dicePointsDrawer(value - 1, color, decreaseCanvas.getGraphicsContext2D(), decreaseStackPane, 1 + GUIParameters.REDUCTION_SCALE);
 
-        increaseStackPane.setOnMouseClicked(e -> sendCommand("increase", new ActionEvent()));
-        decreaseStackPane.setOnMouseClicked(e -> sendCommand("decrease", new ActionEvent()));
+        increaseStackPane.setOnMouseClicked(e -> sendCommand(GUIParameters.INCREASE, new ActionEvent()));
+        decreaseStackPane.setOnMouseClicked(e -> sendCommand(GUIParameters.DECREASE, new ActionEvent()));
     }
 
 }

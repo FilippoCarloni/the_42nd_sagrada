@@ -41,7 +41,7 @@ public class DiceDrawer {
                 int finalI = i + 1;
                 canvas.setOnMouseClicked(e -> {
                     try {
-                        GuiManager.getInstance().getConnectionController().send("pick " + finalI);
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.PICK + finalI);
                     } catch (ConnectException | RemoteException e1) {
                         print(e1.getMessage());
                     }
@@ -53,7 +53,7 @@ public class DiceDrawer {
     //Used every move made, to reset colors and shades on dice pool and re-draw it
     public static void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
         for(int i = 0; i < panesOnDicePool.size(); i++){
-            panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
+            panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
             canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(0,0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
         }
         dicePoolDrawer(json, panesOnDicePool, canvasOnDicePool);
@@ -75,7 +75,7 @@ public class DiceDrawer {
     //Utility methods to color and draw dice, used both by dice pool and window frame methods
     public static void dicePointsDrawer(int value, String color, GraphicsContext gc, Node node, double scale) {
         if (value < 1)
-            throw new IllegalArgumentException("Shade of die must be at least 1");
+            throw new IllegalArgumentException(GUIParameters.DIE_VALUE_SMALL);
         int numOfCoordinates = (value * 2) - 1;
         double[] coordinates = GUIShade.findByValue(value).getCoordinates();
         gc.setFill(GUIParameters.NUMBERS_DICE_COLOR);

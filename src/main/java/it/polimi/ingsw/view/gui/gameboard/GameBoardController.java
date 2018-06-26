@@ -34,7 +34,6 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO: add favor points
 //TODO: add points counter at the end of the match
 
 public class GameBoardController {
@@ -42,14 +41,14 @@ public class GameBoardController {
     /**
      * Round Track StackPane and Canvas container
      */
-    private ArrayList<StackPane> panesOnRoundTrack = new ArrayList<>();
-    private ArrayList<Canvas> canvasOnRoundTrack = new ArrayList<>();
+    private ArrayList<StackPane> panesOnRoundTrack;
+    private ArrayList<Canvas> canvasOnRoundTrack;
 
     /**
      * Player's names and window frames containers
      */
-    private ArrayList<Label> playersNameLabels = new ArrayList<>();
-    private ArrayList<GridPane> playersGrids = new ArrayList<>();
+    private ArrayList<Label> playersNameLabels;
+    private ArrayList<GridPane> playersGrids;
 
     /**
      * Element to draw window frames containers
@@ -60,8 +59,14 @@ public class GameBoardController {
     /**
      * Element to draw dice pool containers
      */
-    private ArrayList<StackPane> panesOnDicePool = new ArrayList<>();
-    private ArrayList<Canvas> canvasOnDicePool = new ArrayList<>();
+    private ArrayList<StackPane> panesOnDicePool;
+    private ArrayList<Canvas> canvasOnDicePool;
+
+    /**
+     * Containers for tool and public objective cards
+     */
+    private ArrayList<VBox> toolCardsContainers;
+    private ArrayList<VBox> publicObjectiveContainers;
 
     /**
      * JSON containers
@@ -91,6 +96,8 @@ public class GameBoardController {
     @FXML
     private Label labelPlayer1;
     @FXML
+    private Label favorPointsLabel;
+    @FXML
     private Label labelPlayer2;
     @FXML
     private Label labelPlayer3;
@@ -99,9 +106,17 @@ public class GameBoardController {
     @FXML
     private GridPane diceGrid;
     @FXML
-    private HBox toolCardsHBox;
+    private VBox toolCard1;
     @FXML
-    private HBox publicObjectiveHBox;
+    private VBox toolCard2;
+    @FXML
+    private VBox toolCard3;
+    @FXML
+    private VBox publicObjectiveCard1;
+    @FXML
+    private VBox publicObjectiveCard2;
+    @FXML
+    private VBox publicObjectiveCard3;
     @FXML
     private Rectangle privateObjectiveRectangle;
     @FXML
@@ -114,11 +129,15 @@ public class GameBoardController {
 
     //Setters and getters
     private void setGrid(){
+        playersGrids = new ArrayList<>();
+
         playersGrids.add(windowFramePlayer2);
         playersGrids.add(windowFramePlayer3);
         playersGrids.add(windowFramePlayer4);
     }
     private void setPlayersNameLabels(){
+        playersNameLabels = new ArrayList<>();
+
         playersNameLabels.add(labelPlayer2);
         playersNameLabels.add(labelPlayer3);
         playersNameLabels.add(labelPlayer4);
@@ -126,17 +145,29 @@ public class GameBoardController {
     private void setMaps(){
         canvasOnGrids = new HashMap<>();
         panesOnGrids = new HashMap<>();
-        canvasOnGrids.put(getPlayer1ByUsername(players), new ArrayList<>());
-        panesOnGrids.put(getPlayer1ByUsername(players), new ArrayList<>());
+        canvasOnGrids.put(getMainPlayerByUsername(players), new ArrayList<>());
+        panesOnGrids.put(getMainPlayerByUsername(players), new ArrayList<>());
         for(int i = 0; i < players.size(); i++){
-            if(i != getPlayer1ByUsername(players)){
+            if(i != getMainPlayerByUsername(players)){
                 canvasOnGrids.put(i, new ArrayList<>());
                 panesOnGrids.put(i, new ArrayList<>());
             }
         }
     }
+    private void setCardsContainers(){
+        toolCardsContainers = new ArrayList<>();
+        publicObjectiveContainers = new ArrayList<>();
+
+        toolCardsContainers.add(toolCard1);
+        toolCardsContainers.add(toolCard2);
+        toolCardsContainers.add(toolCard3);
+
+        publicObjectiveContainers.add(publicObjectiveCard1);
+        publicObjectiveContainers.add(publicObjectiveCard2);
+        publicObjectiveContainers.add(publicObjectiveCard3);
+    }
     public List<StackPane> getPanesOnWindowFrame(){
-        return panesOnGrids.get(getPlayer1ByUsername(players));
+        return panesOnGrids.get(getMainPlayerByUsername(players));
     }
 
     //Main Player getter
@@ -145,9 +176,9 @@ public class GameBoardController {
     }
 
     //Maps and labels management
-    private int getPlayer1ByUsername(JSONArray players){
+    private int getMainPlayerByUsername(JSONArray players){
         try {
-            String usernameMainPlayer = GuiManager.getInstance().getUsernamePlayer1();
+            String usernameMainPlayer = GuiManager.getInstance().getUsernameMainPlayer();
             for (int i = 0; i < players.size(); i++) {
                 if ((((JSONObject) players.get(i)).get(JSONTag.USERNAME)).toString().equals(usernameMainPlayer)) {
                     return i;
@@ -156,7 +187,7 @@ public class GameBoardController {
         } catch (RemoteException | ConnectException e){
             print(e.getMessage());
         }
-        throw new IllegalArgumentException("Player 1 not found");
+        throw new IllegalArgumentException(GUIParameters.MAIN_PLAYER_NOT_FOUND);
     }
     private void drawMapAndSetUsername(ArrayList<Canvas> canvasArrayList, ArrayList<StackPane> stackPanes, JSONObject player, Label labelPlayer, double scale, boolean editable){
         labelPlayer.setText(player.get(JSONTag.USERNAME).toString());
@@ -164,9 +195,9 @@ public class GameBoardController {
     }
     private void fillFirstTimeMap(){
         int j = 0;
-        WindowFrameDrawer.frameFiller(canvasOnGrids.get(getPlayer1ByUsername(players)), panesOnGrids.get(getPlayer1ByUsername(players)), windowFramePlayer1, 1, true);
+        WindowFrameDrawer.frameFiller(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), windowFramePlayer1, 1, true);
         for(int i = 0; i < players.size(); i++) {
-            if(i != getPlayer1ByUsername(players)) {
+            if(i != getMainPlayerByUsername(players)) {
                 WindowFrameDrawer.frameFiller(canvasOnGrids.get(i), panesOnGrids.get(i), playersGrids.get(j), GUIParameters.REDUCTION_SCALE, false);
                 j++;
             }
@@ -179,8 +210,8 @@ public class GameBoardController {
         List<ImageView> pubObjCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), GUIParameters.PUBOBJ_DIRECTORY, false);
 
         for(int i = 0; i < toolCards.size(); i++){
-            toolCardsHBox.getChildren().add(toolCards.get(i));
-            publicObjectiveHBox.getChildren().add(pubObjCards.get(i));
+            toolCardsContainers.get(i).getChildren().add(toolCards.get(i));
+            publicObjectiveContainers.get(i).getChildren().add(pubObjCards.get(i));
         }
     }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
@@ -195,19 +226,19 @@ public class GameBoardController {
 
     //Methods used by action buttons
     public void pass() throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send("pass");
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
     }
     public void undo() throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send("undo");
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.UNDO);
     }
     public void redo() throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send("redo");
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.REDO);
     }
     public void showPrivateObjective(){
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
             Stage stage = new Stage();
-            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + " - " + GuiManager.getInstance().getUsernamePlayer1());
+            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent, GUIParameters.PRIVATE_OBJECTIVE_SCENE_WIDTH, GUIParameters.PRIVATE_OBJECTIVE_SCENE_HEIGHT));
             stage.show();
         } catch (IOException e){
@@ -218,16 +249,16 @@ public class GameBoardController {
     //Main method, called by the update() method from Gui Manager to handle gui refresh
     public void gameBoardUpdate(JSONObject json){
         players = (JSONArray) ((JSONObject) json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
-        mainPlayer = (JSONObject) players.get(getPlayer1ByUsername(players));
+        mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
         updater(json);
     }
 
     //Updater support method
     private void updater(JSONObject json){
         int j = 0;
-        drawMapAndSetUsername(canvasOnGrids.get(getPlayer1ByUsername(players)), panesOnGrids.get(getPlayer1ByUsername(players)), mainPlayer, labelPlayer1, 1, true);
+        drawMapAndSetUsername(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), mainPlayer, labelPlayer1, 1, true);
         for(int i = 0; i < players.size(); i++) {
-            if(i != getPlayer1ByUsername(players)) {
+            if(i != getMainPlayerByUsername(players)) {
                 drawMapAndSetUsername(canvasOnGrids.get(i), panesOnGrids.get(i), (JSONObject) players.get(i), playersNameLabels.get(j), GUIParameters.REDUCTION_SCALE, false);
                 j++;
             }
@@ -236,12 +267,14 @@ public class GameBoardController {
         JSONObject roundTrack = (JSONObject) json.get(JSONTag.ROUND_TRACK);
         rDrawer.roundTrackUpdate(roundTrack, panesOnRoundTrack, canvasOnRoundTrack);
 
+        favorPointsLabel.setText("    FP: " + mainPlayer.get(JSONTag.FAVOR_POINTS));
+
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
     private void manageDraftedDie(JSONObject json){
         draftedDieCanvas.getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5);
-        draftedDieStackPane.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
+        draftedDieStackPane.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
         if(json.get(JSONTag.PICKED_DIE) != null) {
             JSONObject draftedDie = (JSONObject) json.get(JSONTag.PICKED_DIE);
             int value = parseInt((draftedDie.get(JSONTag.SHADE)).toString());
@@ -254,7 +287,11 @@ public class GameBoardController {
     //First game board draw, called by initialize
     private void firstUpdate(JSONObject json){
         players = (JSONArray)((JSONObject)json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
-        mainPlayer = (JSONObject) players.get(getPlayer1ByUsername(players));
+        mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
+        panesOnRoundTrack = new ArrayList<>();
+        canvasOnRoundTrack = new ArrayList<>();
+        panesOnDicePool = new ArrayList<>();
+        canvasOnDicePool = new ArrayList<>();
 
         Group group = new Group();
         StackPane pane = new StackPane();
@@ -263,6 +300,7 @@ public class GameBoardController {
 
         setGrid();
         setPlayersNameLabels();
+        setCardsContainers();
         setMaps();
 
         rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);

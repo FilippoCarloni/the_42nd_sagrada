@@ -27,7 +27,7 @@ class WindowEvents {
     void clickEventsOnWindowFrame(StackPane pane, int row, int column, boolean dieOnIt){
         if(dieOnIt){
             pane.setOnMouseClicked(e -> {
-                temporaryCommand = "move " + row + " " + column;
+                temporaryCommand = GUIParameters.MOVE + row + " " + column;
                 try {
                     manageMoveEvents();
                 } catch (RemoteException | ConnectException e1) {
@@ -37,7 +37,7 @@ class WindowEvents {
         } else {
             pane.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send("place " + row + " " + column);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.PLACE + row + " " + column);
                 } catch (ConnectException | RemoteException e1) {
                     print(e1.getMessage());
                 }

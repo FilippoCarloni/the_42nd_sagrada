@@ -79,16 +79,7 @@ public class WindowFrameDrawer {
         }
     }
 
-    /**
-     * Called by frame filler; method that will manage the window frame drawing, switching between constraints
-     * @param gc: GraphicContext of canvas, in which will be drawn (if needed) the shade constraint or the put die
-     * @param pane: StackPane which will be colored (if needed) with the constraint or the put dice color
-     * @param constraint: JSONObject containing all information about constraints in the specified cell
-     * @param scale: double, parameter which makes "scalable" the window frame drawing algorithm, in order to draw all players' window frames
-     *             with different dimensions
-     * @param clickable: boolean which is used to discriminate if we are filling the main player window frame. If it is true, all StackPane
-     *                 into this window frame will handle Mouse Events (in particular Mouse Click Events)
-     */
+
     private static void framePainter(GraphicsContext gc, StackPane pane, JSONObject constraint, int positionIntoLists, double scale, boolean clickable) {
         JSONObject die = (JSONObject) constraint.get(JSONTag.DIE);
 

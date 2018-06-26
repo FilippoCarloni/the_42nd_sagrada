@@ -46,7 +46,7 @@ public class RoundTrackVisualizer {
                 int finalIndex = index + 1;
                 stackPane.setOnMouseClicked(e -> {
                     try {
-                        GuiManager.getInstance().getConnectionController().send("select " + finalIndex);
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.SELECT + finalIndex);
                     } catch (ConnectException | RemoteException e1) {
                         print(e1.getMessage());
                     }
