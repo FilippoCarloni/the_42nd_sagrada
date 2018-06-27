@@ -59,6 +59,11 @@ public enum MessageType {
         }
     }
 
+    /**
+     * Decodes the MessageType of the encodedMeesage.
+     * @param encodedMessage - The encodedMessage.
+     * @return - MessageType. The MessageType of the encodedMessage.
+     */
     public static MessageType decodeMessageType(String encodedMessage){
         try {
             return getMessageTypeFromString(((JSONObject)new JSONParser().parse(encodedMessage)).get(MESSAGE_TAG).toString());
@@ -67,6 +72,11 @@ public enum MessageType {
         }
     }
 
+    /**
+     *
+     * @param tag - The tag in String format.
+     * @return - The MessageType from tag.
+     */
     private static MessageType getMessageTypeFromString(String tag){
         for(MessageType messageType: MessageType.values())
             if(tag.equals(messageType.getTag()))

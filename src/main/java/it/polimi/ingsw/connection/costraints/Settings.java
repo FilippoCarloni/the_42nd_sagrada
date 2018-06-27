@@ -5,6 +5,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 public  class Settings{
+    public static final int MAX_PLAYER_GAME = 4;
+    public static final int MIN_PLAYER_GAME = 2;
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
     private static final String DEFAULT_SERVER_IP="localhost";

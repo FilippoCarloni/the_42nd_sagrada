@@ -161,8 +161,8 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
 
     @Override
-    public boolean isAlive() throws RemoteException {
-        return true;
+    public void ping() throws RemoteException {
+        //Use only ping from the server
     }
 
     public void send(String cmd) {

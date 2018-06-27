@@ -195,7 +195,7 @@ public class GameController extends Observable{
                 .collect(Collectors.toList());
         if(player.size() != 1) {
             logger.log(Level.SEVERE, GAME_VIOLATION);
-            throw new ServerException("Error, you are not playing in this game",SERVER_ERROR);
+            throw new ServerException(GAME_VIOLATION_MESSAGE,SERVER_ERROR);
         }
         return player.get(0);
     }

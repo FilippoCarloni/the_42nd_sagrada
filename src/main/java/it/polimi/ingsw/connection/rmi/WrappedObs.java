@@ -38,7 +38,7 @@ class WrappedObs extends Observable implements GameObserver, Serializable {
     public boolean isAlive() {
         boolean isAlive = true;
         try {
-            ro.isAlive();
+            ro.ping();
         } catch (RemoteException e) {
             isAlive = false;
         }

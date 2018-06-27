@@ -25,5 +25,7 @@ class ServerMessage {
     static final String DISCONNECTED = " is now disconnected";
     static final String RECONNECTED = " is now reconnected";
     static final String GAME_VIOLATION = "Hacker !!!, not playing user are trying to enter in a match";
+    static final String GAME_VIOLATION_MESSAGE = "Error, you are not playing in this game";
+    static final String LOBBY_LEAVING = " has leaved the match lobby!";
 
 }
