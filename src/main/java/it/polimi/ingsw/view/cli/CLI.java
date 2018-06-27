@@ -128,6 +128,9 @@ public class CLI implements Runnable {
                     case CURRENT_PLAYER:
                         print(CURRENT_PLAYER_MESSAGE+MessageType.decodeMessageContent(message));
                         break;
+                    case GAME_STATS:
+                        print(MessageType.decodeMessageContent(message));
+                        break;
                     default:
                         print(UNSUPPORTED_MESSAGE);
                 }

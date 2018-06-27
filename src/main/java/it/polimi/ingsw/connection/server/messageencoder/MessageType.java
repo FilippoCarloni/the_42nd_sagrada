@@ -4,6 +4,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * The MessageType enumeration contains all the typology of messages that the server can send to the client.
+ * it offers the metod to encode and decode the content of the messages.
+ */
 public enum MessageType {
     GENERIC_MESSAGE("generic_message"),
     ERROR_MESSAGE("error_message"),
@@ -17,10 +21,19 @@ public enum MessageType {
     private static final String MESSAGE_CONTENT="message_content";
     private static final String ERROR="Bad JSON file.";
     private static final String INVALID_TAG="Tag not exists";
+
+    /**
+     * Creates a new MessageType.
+     * @param tag - The identification tag of the message.
+     */
     MessageType (String tag){
         this.tag=tag;
     }
 
+    /**
+     * Returns the tag type of the message.
+     * @return - The tag type of the message.
+     */
     public String getTag() {
         return tag;
     }
@@ -33,6 +46,11 @@ public enum MessageType {
         return jsonObject.toString();
     }
 
+    /**
+     * Decodes the message, returns the content of the message.
+     * @param encodedMessage - The encoded message.
+     * @return - The content of the encoded message.
+     */
     public static String decodeMessageContent(String encodedMessage){
         try {
             return ((JSONObject)new JSONParser().parse(encodedMessage)).get(MESSAGE_CONTENT).toString();

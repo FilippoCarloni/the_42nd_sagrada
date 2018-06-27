@@ -8,7 +8,7 @@ public  class Settings{
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
     private static final String DEFAULT_SERVER_IP="localhost";
-    private static final String FILE_CONFIG="./src/main/java/res/network_config/constraints.config";
+    private static final String FILE_CONFIG="src/main/java/res/network_config/constraints.config";
     private static final String IP_SERVER_TAG="IP_SERVER";
     private static final String PORT_SOCKET_TAG="PORT_SOCKET";
     private static final String PORT_RMI_TAG="PORT_RMI";
@@ -59,6 +59,7 @@ public  class Settings{
                 lobbyTime = Integer.parseInt(param);
             reader.close();
         } catch (Exception eta) {
+            eta.printStackTrace();
             logger.warning("Error found in the configuration file");
         }
         RMI_PORT = rmiPort;

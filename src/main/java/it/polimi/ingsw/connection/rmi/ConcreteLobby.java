@@ -10,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Logger;
 
 public class ConcreteLobby extends UnicastRemoteObject implements Lobby {
+    private static final long serialVersionUID = 2757919800697427494L;
     private transient CentralServer server;
     private static final transient Logger logger=Logger.getLogger(ConcreteLobby.class.getName());
 

@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.server.ServerMessage.ENDED_GAME;
+import static it.polimi.ingsw.connection.server.ServerMessage.*;
 import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
@@ -64,11 +64,11 @@ public class GameController extends Observable{
                         this.deleteObserver(p.getObserver());
                         this.disconnected.add(p);
                         this.setChanged();
-                        this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername() + " is now disconnected", MessageType.GENERIC_MESSAGE));
+                        this.notifyObservers(MessageType.encodeMessage(p.getPlayer().getUsername() + DISCONNECTED, MessageType.GENERIC_MESSAGE));
                     }
                 if (this.countObservers() == 1) {
                     this.setChanged();
-                    this.notifyObservers(MessageType.encodeMessage("You win! because you are the only player", MessageType.GENERIC_MESSAGE));
+                    this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GENERIC_MESSAGE));
                     this.deleteObservers();
                 }
 
@@ -128,11 +128,11 @@ public class GameController extends Observable{
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         boolean passed=false;
         if(gameNotStarted())
-            throw new ServerException("Wait the timer for the map",GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
         if(gameEnded())
             throw new ServerException(ENDED_GAME,GAME_ERROR);
         if(!isMyTurn(sessionID)) {
-            throw new ServerException("Is not your turn!",GAME_ERROR);
+            throw new ServerException(NOT_YOUR_TURN,GAME_ERROR);
         }
         command=command.trim();
         switch (command) {
@@ -140,13 +140,13 @@ public class GameController extends Observable{
                 if(game.isUndoAvailable())
                     game.undoCommand();
                 else
-                    throw new ServerException("You can not undo",GAME_ERROR);
+                    throw new ServerException(NOT_UNDO,GAME_ERROR);
                 break;
             case Commands.REDO:
                 if(game.isRedoAvailable())
                     game.redoCommand();
                 else
-                    throw new ServerException("You can not redo",GAME_ERROR);
+                    throw new ServerException(NOT_REDO,GAME_ERROR);
                 break;
             default:
                 try {
@@ -175,7 +175,7 @@ public class GameController extends Observable{
 
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
         if(gameNotStarted())
-            throw new ServerException("Wait the timer for the map",GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
         if(gameEnded())
             throw new ServerException(ENDED_GAME,GAME_ERROR);
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
@@ -184,7 +184,7 @@ public class GameController extends Observable{
     public synchronized String getStatus(String sessionID) throws ServerException{
         OnLinePlayer player=getPlayer(sessionID);
         if(gameNotStarted())
-            throw new ServerException("Wait the timer for the map",GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
         if(gameEnded())
             throw new ServerException(ENDED_GAME,GAME_ERROR);
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
@@ -194,7 +194,7 @@ public class GameController extends Observable{
         List<OnLinePlayer> player=players.parallelStream().filter(x -> x.getServerSession().getID().equals(sessionID))
                 .collect(Collectors.toList());
         if(player.size() != 1) {
-            logger.log(Level.SEVERE, "Hacker !!!, not playing user are trying to enter in a match");
+            logger.log(Level.SEVERE, GAME_VIOLATION);
             throw new ServerException("Error, you are not playing in this game",SERVER_ERROR);
         }
         return player.get(0);
@@ -203,7 +203,7 @@ public class GameController extends Observable{
     synchronized boolean reconnect(OnLinePlayer player) {
         if (isPlaying(player) && disconnected.contains(player) && player.getObserver().isAlive()) {
             this.setChanged();
-            this.notifyObservers(MessageType.encodeMessage(player.getPlayer().getUsername() + " is now reconnected", MessageType.GENERIC_MESSAGE));
+            this.notifyObservers(MessageType.encodeMessage(player.getPlayer().getUsername() + RECONNECTED, MessageType.GENERIC_MESSAGE));
             this.addObserver(player.getObserver());
             this.disconnected.remove(player);
             if (this.countObservers() == 0)
@@ -261,9 +261,8 @@ public class GameController extends Observable{
         String out="";
         for (OnLinePlayer p : players)
             out = out.concat(p.getPlayer().getUsername() + ":" + Integer.toString(game.getScore().get(p.getPlayer())) + "\n");
-        out=out.concat("Ready to start a new game!");
         this.setChanged();
-        this.notifyObservers(MessageType.encodeMessage(out,MessageType.GENERIC_MESSAGE));
+        this.notifyObservers(MessageType.encodeMessage(out,MessageType.GAME_STATS));
     }
 
     List<OnLinePlayer> getPlayers(){
@@ -286,6 +285,6 @@ public class GameController extends Observable{
 
     @Override
     public String toString() {
-        return "GameController";
+        return super.toString();
     }
 }

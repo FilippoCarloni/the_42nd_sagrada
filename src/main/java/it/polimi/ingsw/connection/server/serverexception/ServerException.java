@@ -9,6 +9,10 @@ public class ServerException extends Exception {
 
     @Override
     public String getMessage() {
-        return "["+errorCode+"]: "+super.getMessage();
+        return super.getMessage();
+    }
+
+    public int getErrorCode() {
+        return errorCode;
     }
 }

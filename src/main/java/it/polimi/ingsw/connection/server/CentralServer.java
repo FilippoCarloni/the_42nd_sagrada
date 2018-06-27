@@ -15,7 +15,8 @@ import static it.polimi.ingsw.connection.server.ServerMessage.*;
 import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.SERVER_ERROR;
 
 public class CentralServer {
-
+        private static final int USERNAME_MIN_LENGTH = 4;
+        private static final int USERNAME_MAX_LENGTH = 12;
         private List<WrappedGameController> gameControllers;
         private Logger logger=Logger.getLogger(CentralServer.class.getName());
         private List<OnLinePlayer> players;
@@ -34,7 +35,7 @@ public class CentralServer {
         public synchronized String connect(String username,GameObserver obs) throws ServerException {
             OnLinePlayer x;
             String filtered=username.trim();
-            if(!Pattern.compile("^[a-zA-Z0-9_-]{4,12}$").asPredicate().test(filtered))
+            if(!Pattern.compile("^[a-zA-Z0-9_-]{"+USERNAME_MIN_LENGTH+","+USERNAME_MAX_LENGTH+"}$").asPredicate().test(filtered))
                 throw new ServerException(NOT_VALID_USERNAME,SERVER_ERROR);
             for (OnLinePlayer s : players)
                 if (s.getUsername().compareToIgnoreCase((filtered))==0) {
@@ -43,7 +44,7 @@ public class CentralServer {
             x=new OnLinePlayer(filtered,obs);
             players.add(x);
             observable.addObserver(obs);
-            logger.info(() -> filtered+" is connected with sessionID: "+x.getServerSession().getID());
+            logger.info(() -> filtered+CONNECTED+x.getServerSession().getID());
             return x.getServerSession().getID();
         }
         public synchronized void disconnect(ServerSession userServerSession)throws RemoteException {
@@ -79,7 +80,7 @@ public class CentralServer {
                     if (game.getGameController().reconnect(player.get(0)))
                         return game;
                     else
-                        player.get(0).getObserver().update(observable, MessageType.encodeMessage("Previous match was ended because there are too few players. Starting a new one", MessageType.GENERIC_MESSAGE));
+                        player.get(0).getObserver().update(observable, MessageType.encodeMessage(PREV_MATCH_ENDED, MessageType.GENERIC_MESSAGE));
                 }
                 for (LobbyManager lobby : lobbyManagers) {
                     if (lobby.add(player.get(0))) {
@@ -103,7 +104,7 @@ public class CentralServer {
                     lobbyManagers.remove(lobbyManager);
                 }
             }
-            logger.info(() -> userSessionID + " is entered in match n "+ counterGame);
+            logger.info(() -> userSessionID + ENTERING_MATCH+ counterGame);
             return currentGame(player.get(0));
         }
 
@@ -137,7 +138,7 @@ public class CentralServer {
                 player.get(0).setObserver(obs);
             }
             newServerSession = player.get(0).refreshSession();
-            logger.info(()->"Restored session of "+player.get(0).getPlayer().getUsername()+" :"+oldSessionID+" -> "+ newServerSession.getID());
+            logger.info(()->RESTORED_SESSION+player.get(0).getPlayer().getUsername()+" :"+oldSessionID+" -> "+ newServerSession.getID());
             return newServerSession.getID();
         }
 

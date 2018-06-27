@@ -9,7 +9,7 @@ import java.util.Observable;
 import java.util.logging.Logger;
 
 class WrappedObs extends Observable implements GameObserver, Serializable {
-    private RemoteObserver ro;
+    private transient RemoteObserver ro;
     private static final transient Logger logger=Logger.getLogger(WrappedObs.class.getName());
     WrappedObs(RemoteObserver ro) {
         this.ro = ro;
@@ -23,11 +23,7 @@ class WrappedObs extends Observable implements GameObserver, Serializable {
             logger.info(() -> "Remote exception update observer:" + e.getMessage() + this);
         }
     }
-
-    void removeRemoteObserver(Observable o) {
-        o.deleteObserver(this);
-    }
-
+    
     @Override
     public boolean equals(Object obj) {
         return obj instanceof WrappedObs && ((WrappedObs) obj).ro.equals(ro);

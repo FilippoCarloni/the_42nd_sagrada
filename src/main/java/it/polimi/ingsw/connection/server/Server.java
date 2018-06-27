@@ -25,7 +25,7 @@ public class Server {
         ServerRMI server = new ServerRMI();
         CentralServer centralServer=new CentralServer();
         Lobby lobby=new ConcreteLobby(centralServer);
-        server.addSkeleton("Login", lobby);
+        server.addSkeleton(Lobby.ID, lobby);
         logger.info(() -> ("You can find the exposes object at: " + server.getURL() + "<name_of_the_object>"));
         new Thread(new ServerSocket(centralServer)).start();
     }
