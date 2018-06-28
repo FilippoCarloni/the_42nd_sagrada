@@ -14,6 +14,10 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * Class that manage the window frame drawing,
+ */
+
 public class WindowFrameDrawer {
 
     /**
@@ -36,6 +40,8 @@ public class WindowFrameDrawer {
                 stackPanesOnWindowFrame.add(pane);
                 canvasOnWindowFrame.add(canvas);
                 if(clickable) {
+                    canvas.getStyleClass().clear();
+                    canvas.getStyleClass().add("clickable-canvas");
                     new WindowEvents().clickEventsOnWindowFrame(pane, row + 1, column + 1, false);
                 }
             }

@@ -78,6 +78,8 @@ public class GuiManager {
                             gameBoard.setMessageText(GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n");
                         break;
                     case GAME_STATS:
+                        gameBoard.getContinueButton().setVisible(true);
+                        gameBoard.getContinueButton().setDisable(false);
                         gameStatMessage = MessageType.decodeMessageContent(message);
                         gameBoard.setMessageText(GUIParameters.END_GAME);
                     default:

@@ -18,6 +18,10 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Class that manage the dice drawing,
+ */
+
 public class DiceDrawer {
 
     /**
@@ -33,6 +37,8 @@ public class DiceDrawer {
             StackPane pane = new StackPane();
             gridToFill.add(pane, i, 0);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+            canvas.getStyleClass().clear();
+            canvas.getStyleClass().add("clickable-canvas");
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
@@ -50,7 +56,12 @@ public class DiceDrawer {
         }
     }
 
-    //Used every move made, to reset colors and shades on dice pool and re-draw it
+    /**
+     * Used every move made, to reset colors and shades on dice pool and re-draw it
+     * @param json: JSONObject containing all information about dice on dice pool.
+     * @param panesOnDicePool: List<StackPane> containing all StackPane on dice pool.
+     * @param canvasOnDicePool: List<Canvas> containing all Canvas on dice pool.
+     */
     public static void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
         for(int i = 0; i < panesOnDicePool.size(); i++){
             panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
@@ -72,7 +83,14 @@ public class DiceDrawer {
         }
     }
 
-    //Utility methods to color and draw dice, used both by dice pool and window frame methods
+    /**
+     * Utility methods to color and draw dice, used both by dice pool and window frame methods.
+     * @param value: value of die to draw.
+     * @param color: color of die to draw.
+     * @param gc: GraphicsContext on which die's value will be drawn.
+     * @param node: Node that will take die's color
+     * @param scale: double, parameter which makes "scalable" the dice drawing algorithm.
+     */
     public static void dicePointsDrawer(int value, String color, GraphicsContext gc, Node node, double scale) {
         if (value < 1)
             throw new IllegalArgumentException(GUIParameters.DIE_VALUE_SMALL);

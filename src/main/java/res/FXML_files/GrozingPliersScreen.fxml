@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.cards.toolcards.GrozingPliersController">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.cards.toolcards.GrozingPliersController">
    <children>
-      <StackPane fx:id="increaseStackPane" layoutX="14.0" layoutY="100.0" prefHeight="100.0" prefWidth="100.0">
-         <children>
-            <Canvas fx:id="increaseCanvas" height="100.0" width="100.0" />
-         </children>
-      </StackPane>
-      <StackPane fx:id="decreaseStackPane" layoutX="286.0" layoutY="100.0" prefHeight="100.0" prefWidth="100.0">
-         <children>
-            <Canvas fx:id="decreaseCanvas" height="100.0" width="100.0" />
-         </children>
-      </StackPane>
+      <BorderPane prefHeight="300.0" prefWidth="400.0">
+         <right>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane fx:id="decreaseStackPane" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Canvas fx:id="decreaseCanvas" height="100.0" styleClass="clickable-canvas" width="100.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </StackPane>
+               </children>
+            </VBox>
+         </right>
+         <left>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <StackPane fx:id="increaseStackPane" prefHeight="100.0" prefWidth="100.0">
+                     <children>
+                        <Canvas fx:id="increaseCanvas" height="100.0" styleClass="clickable-canvas" width="100.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </VBox.margin>
+                  </StackPane>
+               </children>
+            </VBox>
+         </left>
+      </BorderPane>
    </children>
 </AnchorPane>

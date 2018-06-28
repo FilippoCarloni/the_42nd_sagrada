@@ -2,8 +2,6 @@ package it.polimi.ingsw.view.gui.settings;
 
 import javafx.scene.paint.Color;
 
-//TODO: refactor where needed
-
 public final class GUIParameters {
 
     private GUIParameters(){}
@@ -14,14 +12,11 @@ public final class GUIParameters {
     public static final String MAP_CHOICE_SCENE_TITLE = "Map Choice";
     public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
     public static final String ROUND_TRACK_TITLE = "Dice on Round Track";
-    public static final String PRIVATE_OBJECTIVE_TITLE = "Private Objective";
     public static final String GROZING_PLIERS_TITLE = "Grozing Pliers Activated";
     public static final String FLUX_REMOVER_TITLE = "Flux Remover Activated";
     public static final String END_GAME_TITLE = "Game Stats";
 
     //Scenes dimensions
-    public static final double PRIVATE_OBJECTIVE_SCENE_WIDTH = 240;
-    public static final double PRIVATE_OBJECTIVE_SCENE_HEIGHT = 400;
     public static final double TOOL_CARDS_WIDTH = 400;
     public static final double TOOL_CARDS_HEIGHT = 300;
 
@@ -69,7 +64,6 @@ public final class GUIParameters {
     public static final String MAP_CHOICE_FXML_PATH = "WindowFrameChoice.fxml";
     public static final String GAME_BOARD_FXML_PATH = "MainBoard.fxml";
     public static final String ROUND_TRACK_DICE_FXML_PATH = "RoundTrackVisualizer.fxml";
-    public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveScreen.fxml";
     public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
     public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";
     public static final String END_GAME_FXML_PATH = "EndGameScreen.fxml";
@@ -95,7 +89,7 @@ public final class GUIParameters {
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
     public static final String NOW_PLAYING = "Now is playing: ";
-    public static final String END_GAME = "Game Ended! Press Pass to continue";
+    public static final String END_GAME = "\nGame Ended!\nPress Continue to see the score.";
 
     //Card dimension
     public static final double CARDS_ON_GAME_BOARD_WIDTH = 180;

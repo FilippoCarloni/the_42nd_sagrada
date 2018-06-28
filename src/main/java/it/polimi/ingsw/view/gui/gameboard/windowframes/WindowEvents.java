@@ -13,6 +13,10 @@ import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Class that manage click events on the main player's window frame.
+ */
+
 class WindowEvents {
 
     private String temporaryCommand;

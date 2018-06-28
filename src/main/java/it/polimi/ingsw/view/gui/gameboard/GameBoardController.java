@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard;
 
+import com.jfoenix.controls.JFXButton;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
@@ -36,7 +37,9 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO: add points counter at the end of the match
+/**
+ * Main Board controller class
+ */
 
 public class GameBoardController {
 
@@ -127,6 +130,8 @@ public class GameBoardController {
     private Canvas draftedDieCanvas;
     @FXML
     private TextArea messageTextArea;
+    @FXML
+    private JFXButton continueButton;
 
 
     //Setters and getters
@@ -171,8 +176,14 @@ public class GameBoardController {
     public List<StackPane> getPanesOnWindowFrame(){
         return panesOnGrids.get(getMainPlayerByUsername(players));
     }
+    public JFXButton getContinueButton(){
+        return continueButton;
+    }
 
-    //Main Player getter
+    /**
+     * Main Player getter
+     * @return a reference to the main player's JSONObject
+     */
     public JSONObject getMainPlayer(){
         return mainPlayer;
     }
@@ -221,35 +232,19 @@ public class GameBoardController {
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
     }
 
-    //Messages printing into TextArea
+    /**
+     * Messages printing into TextArea, called from update() method into GuiManager.
+     * @param message: the message to print.
+     */
     public void setMessageText(String message){
         messageTextArea.appendText(message);
     }
 
-    //Methods used by action buttons
-    public void pass(ActionEvent event) throws RemoteException, ConnectException {
-        if(GuiManager.getInstance().getGameStatMessage() == null) {
-            GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
-        } else {
-            try {
-                GuiManager.getInstance().setGameBoard(null);
-                Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.END_GAME_FXML_PATH));
-                Scene scene = new Scene(parent);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setOnCloseRequest(e -> {
-                    try {
-                        GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                    } catch (ConnectException | RemoteException e1) {
-                        print(e1.getMessage());
-                    }
-                    System.exit(0);
-                });
-                stage.setTitle(GUIParameters.END_GAME_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
-                stage.setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    /**
+     * Methods used by action buttons.
+     */
+    public void pass() throws RemoteException, ConnectException {
+        GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
     }
     public void undo() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.UNDO);
@@ -257,19 +252,31 @@ public class GameBoardController {
     public void redo() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.REDO);
     }
-    public void showPrivateObjective(){
-        try{
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
-            Stage stage = new Stage();
-            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
-            stage.setScene(new Scene(parent, GUIParameters.PRIVATE_OBJECTIVE_SCENE_WIDTH, GUIParameters.PRIVATE_OBJECTIVE_SCENE_HEIGHT));
-            stage.show();
-        } catch (IOException e){
-            print(e.getMessage());
+    public void goToEndGame(ActionEvent event){
+        try {
+            GuiManager.getInstance().setGameBoard(null);
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.END_GAME_FXML_PATH));
+            Scene scene = new Scene(parent);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setOnCloseRequest(e -> {
+                try {
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
+                } catch (ConnectException | RemoteException e1) {
+                    print(e1.getMessage());
+                }
+                System.exit(0);
+            });
+            stage.setTitle(GUIParameters.END_GAME_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    //Main method, called by the update() method from Gui Manager to handle gui refresh
+    /**
+     * Main method, called by the update() method from Gui Manager to handle gui refresh.
+     * @param json: the JSONObject containing all the information to re-draw all gui elements.
+     */
     public void gameBoardUpdate(JSONObject json){
         try {
             if(GuiManager.getInstance().getGameStatMessage() == null) {

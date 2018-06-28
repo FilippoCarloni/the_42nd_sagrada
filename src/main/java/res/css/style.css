@@ -30,13 +30,18 @@
     -fx-cursor: hand;
 }
 
+.clickable-canvas {
+    -fx-cursor: hand;
+}
+
+.usable-cards {
+    -fx-cursor: hand;
+}
+
 .check-box {
     -fx-font-size: 16px;
     -fx-text-fill: #F5F6F7;
     -fx-font-family: Roboto;
-}
-
-.check-box:hover {
     -fx-cursor: hand;
 }
 

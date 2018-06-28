@@ -17,11 +17,22 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Class that manage all cards setting.
+ */
+
 public class CardsSetter {
 
     private CardsSetter(){}
 
-    //Setter for public cards, on Game Board
+    /**
+     * Setter for public cards, on Game Board.
+     * @param json: JSONArray containing all information about cards.
+     * @param directory: directory in which I will take the cards' images
+     * @param toolCards: boolean that says if we are setting tool cards, in order to set on them
+     *                 proper click events.
+     * @return a List containing all ImageView,  with the cards' images inside them
+     */
     public static List<ImageView> setPublicCards(JSONArray json, String directory, boolean toolCards) {
         List<ImageView> cards = new ArrayList<>();
 
@@ -29,6 +40,8 @@ public class CardsSetter {
             int id =parseInt(((JSONObject)json.get(i)).get(JSONTag.CARD_ID).toString());
             cards.add(loadFromFile(id, directory));
             if(toolCards){
+                cards.get(i).getStyleClass().clear();
+                cards.get(i).getStyleClass().add("usable-cards");
                 new ToolCardsManagement().toolBehaviourSetter(cards.get(i), id);
             }
             setCardsDimension(cards.get(i), GUIParameters.CARDS_ON_GAME_BOARD_WIDTH, GUIParameters.CARDS_ON_GAME_BOARD_HEIGHT);
@@ -36,7 +49,11 @@ public class CardsSetter {
         return cards;
     }
 
-    //Setter for Private Objective card on Window Frame Choice screen
+    /**
+     * Setter for Private Objective card on Window Frame Choice screen.
+     * @param json: JSONObject containing the information about the private objective card.
+     * @return an ImageView, with the card's image inside id.
+     */
     public static ImageView setPrivateCard(JSONObject json) {
         int id = parseInt(json.get(JSONTag.CARD_ID).toString());
 
