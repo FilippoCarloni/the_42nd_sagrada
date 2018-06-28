@@ -90,7 +90,8 @@ public class LobbyController {
 
     @FXML
     protected void initialize() throws RemoteException, ConnectException {
-        GuiManager.getInstance().setLobbyController(this);
+        if(GuiManager.getInstance().getLobbyController() == null)
+            GuiManager.getInstance().setLobbyController(this);
         startButton.setDisable(true);
     }
 }

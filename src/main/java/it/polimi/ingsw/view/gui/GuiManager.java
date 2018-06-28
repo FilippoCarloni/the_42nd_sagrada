@@ -6,6 +6,7 @@ import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
 import it.polimi.ingsw.view.gui.preliminarystages.WindowFramesChoice;
+import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -29,9 +30,10 @@ public class GuiManager {
     private String usernameMainPlayer;
     private LobbyController lobbyController;
     private WindowFramesChoice windowFramesChoice;
-    private GameBoardController gameBoard;          //I will use it to update the game board
+    private GameBoardController gameBoard;
     private JSONObject preGameMessage;
-    private JSONObject gameBoardMessage = null;
+    private JSONObject gameBoardMessage;
+    private String gameStatMessage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -73,10 +75,13 @@ public class GuiManager {
                         break;
                     case CURRENT_PLAYER:
                         if(gameBoard != null)
-                            gameBoard.setMessageText("Now is playing: " + MessageType.decodeMessageContent(message) + "\n");
+                            gameBoard.setMessageText(GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n");
                         break;
+                    case GAME_STATS:
+                        gameStatMessage = MessageType.decodeMessageContent(message);
+                        gameBoard.setMessageText(GUIParameters.END_GAME);
                     default:
-                        print("Message not supported!");
+                        print(GUIParameters.MESSAGE_ERROR);
                 }
             }
         }
@@ -100,8 +105,14 @@ public class GuiManager {
     public JSONObject getGameBoardMessage(){
         return gameBoardMessage;
     }
+    public String getGameStatMessage() {
+        return gameStatMessage;
+    }
     public GameBoardController getGameBoard(){
         return gameBoard;
+    }
+    public LobbyController getLobbyController() {
+        return lobbyController;
     }
 
     /**
@@ -135,5 +146,8 @@ public class GuiManager {
     }
     private GuiManager(ConnectionType connectionType) throws ConnectException, RemoteException{
         connectionController = new ConnectionController(connectionType);
+        lobbyController = null;
+        gameStatMessage = null;
+        gameBoardMessage = null;
     }
 }

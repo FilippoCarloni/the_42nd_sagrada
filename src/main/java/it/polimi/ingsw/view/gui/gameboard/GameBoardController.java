@@ -8,9 +8,11 @@ import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackDrawer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
 import it.polimi.ingsw.view.gui.settings.GUIColor;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -225,8 +227,29 @@ public class GameBoardController {
     }
 
     //Methods used by action buttons
-    public void pass() throws RemoteException, ConnectException {
-        GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
+    public void pass(ActionEvent event) throws RemoteException, ConnectException {
+        if(GuiManager.getInstance().getGameStatMessage() == null) {
+            GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
+        } else {
+            try {
+                GuiManager.getInstance().setGameBoard(null);
+                Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.END_GAME_FXML_PATH));
+                Scene scene = new Scene(parent);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setOnCloseRequest(e -> {
+                    try {
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
+                    } catch (ConnectException | RemoteException e1) {
+                        print(e1.getMessage());
+                    }
+                    System.exit(0);
+                });
+                stage.setTitle(GUIParameters.END_GAME_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     public void undo() throws RemoteException, ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.UNDO);
@@ -248,9 +271,15 @@ public class GameBoardController {
 
     //Main method, called by the update() method from Gui Manager to handle gui refresh
     public void gameBoardUpdate(JSONObject json){
-        players = (JSONArray) ((JSONObject) json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
-        mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
-        updater(json);
+        try {
+            if(GuiManager.getInstance().getGameStatMessage() == null) {
+                players = (JSONArray) ((JSONObject) json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
+                mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
+                updater(json);
+            }
+        } catch (ConnectException | RemoteException e) {
+            print(e.getMessage());
+        }
     }
 
     //Updater support method

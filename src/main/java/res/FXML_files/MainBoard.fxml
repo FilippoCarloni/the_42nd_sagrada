@@ -20,7 +20,7 @@
    <children>
       <BorderPane prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="270.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="270.0" BorderPane.alignment="CENTER">
                <children>
                   <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Other Players:">
                      <VBox.margin>
@@ -104,29 +104,34 @@
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="340.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="2000.0" prefWidth="340.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXTextArea fx:id="messageTextArea" editable="false" prefHeight="183.0" prefWidth="320.0">
-                     <VBox.margin>
-                        <Insets left="10.0" right="10.0" top="10.0" />
-                     </VBox.margin>
-                  </JFXTextArea>
-                  <Pane prefHeight="159.0" prefWidth="290.0">
+                  <HBox alignment="CENTER" prefHeight="197.0" prefWidth="1000.0">
                      <children>
-                        <JFXButton layoutX="14.0" layoutY="14.0" onAction="#undo" prefHeight="37.0" prefWidth="70.0" text="UNDO" />
-                        <JFXButton layoutX="14.0" layoutY="63.0" onAction="#redo" prefHeight="37.0" prefWidth="70.0" text="REDO" />
-                        <JFXButton layoutX="14.0" layoutY="112.0" onAction="#pass" prefHeight="37.0" prefWidth="70.0" text="PASS" />
-                        <Label layoutX="159.0" layoutY="20.0" styleClass="main-board-label" stylesheets="@../css/style.css" text="Drafted die:" />
-                        <StackPane fx:id="draftedDieStackPane" layoutX="163.0" layoutY="60.0" prefHeight="90.0" prefWidth="90.0" styleClass="background" stylesheets="@../css/style.css">
-                           <children>
-                              <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
-                           </children>
-                        </StackPane>
+                        <JFXTextArea fx:id="messageTextArea" editable="false" prefHeight="183.0" prefWidth="500.0">
+                           <HBox.margin>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </HBox.margin>
+                        </JFXTextArea>
                      </children>
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Pane>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="198.0" prefWidth="1000.0">
+                     <children>
+                        <Pane prefHeight="159.0" prefWidth="340.0">
+                           <children>
+                              <JFXButton layoutX="14.0" layoutY="14.0" onAction="#undo" prefHeight="37.0" prefWidth="70.0" text="UNDO" />
+                              <JFXButton layoutX="14.0" layoutY="63.0" onAction="#redo" prefHeight="37.0" prefWidth="70.0" text="REDO" />
+                              <JFXButton layoutX="14.0" layoutY="112.0" onAction="#pass" prefHeight="37.0" prefWidth="70.0" text="PASS" />
+                              <Label layoutX="159.0" layoutY="20.0" styleClass="main-board-label" stylesheets="@../css/style.css" text="Drafted die:" />
+                              <StackPane fx:id="draftedDieStackPane" layoutX="163.0" layoutY="60.0" prefHeight="90.0" prefWidth="90.0" styleClass="background" stylesheets="@../css/style.css">
+                                 <children>
+                                    <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
                   <VBox fx:id="backgroundMainPlayer" alignment="BOTTOM_CENTER" prefHeight="348.0" prefWidth="340.0">
                      <children>
                         <GridPane fx:id="windowFramePlayer1" prefHeight="240.0" prefWidth="300.0">
@@ -169,7 +174,7 @@
             </VBox>
          </right>
          <center>
-            <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="2000.0" prefWidth="2000.0" BorderPane.alignment="CENTER">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -230,7 +235,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox fx:id="toolCardsHBox" alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="670.0">
+                        <HBox fx:id="toolCardsHBox" alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
@@ -247,7 +252,7 @@
                   </VBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox fx:id="publicObjectiveHBox" prefHeight="230.0" prefWidth="200.0">
+                        <HBox fx:id="publicObjectiveHBox" alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>

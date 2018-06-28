@@ -17,6 +17,7 @@ public final class GUIParameters {
     public static final String PRIVATE_OBJECTIVE_TITLE = "Private Objective";
     public static final String GROZING_PLIERS_TITLE = "Grozing Pliers Activated";
     public static final String FLUX_REMOVER_TITLE = "Flux Remover Activated";
+    public static final String END_GAME_TITLE = "Game Stats";
 
     //Scenes dimensions
     public static final double PRIVATE_OBJECTIVE_SCENE_WIDTH = 240;
@@ -71,12 +72,14 @@ public final class GUIParameters {
     public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveScreen.fxml";
     public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
     public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";
+    public static final String END_GAME_FXML_PATH = "EndGameScreen.fxml";
 
     //Error messages
     public static final String SERVER_ERROR = "Server not reachable\nTry again later";
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";
     public static final String MAIN_PLAYER_NOT_FOUND = "Main player not found";
     public static final String DIE_VALUE_SMALL = "Shade of die must be at least 1";
+    public static final String MESSAGE_ERROR = "Message not supported!";
 
     //Connection Controller messages
     public static final String PLAY = "play";
@@ -91,6 +94,8 @@ public final class GUIParameters {
     public static final String SELECT = "select ";
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
+    public static final String NOW_PLAYING = "Now is playing: ";
+    public static final String END_GAME = "Game Ended! Press Pass to continue";
 
     //Card dimension
     public static final double CARDS_ON_GAME_BOARD_WIDTH = 180;
