@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackDrawer;
+import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackVisualizer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
 import it.polimi.ingsw.view.gui.settings.GUIColor;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
@@ -80,9 +81,10 @@ public class GameBoardController {
     private JSONObject mainPlayer;
 
     /**
-     * Round Track reference
+     * Round Track references
      */
     private RoundTrackDrawer rDrawer;
+    private RoundTrackVisualizer rVisualizer;
 
     @FXML
     private HBox roundTrackAnchorPane;
@@ -179,6 +181,9 @@ public class GameBoardController {
     public JFXButton getContinueButton(){
         return continueButton;
     }
+    public void setrVisualizer(RoundTrackVisualizer rVisualizer) {
+        this.rVisualizer = rVisualizer;
+    }
 
     /**
      * Main Player getter
@@ -255,6 +260,7 @@ public class GameBoardController {
     public void goToEndGame(ActionEvent event){
         try {
             GuiManager.getInstance().setGameBoard(null);
+            GuiManager.getInstance().setGameBoardMessage(null);
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.END_GAME_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -302,6 +308,9 @@ public class GameBoardController {
 
         JSONObject roundTrack = (JSONObject) json.get(JSONTag.ROUND_TRACK);
         rDrawer.roundTrackUpdate(roundTrack, panesOnRoundTrack, canvasOnRoundTrack);
+        if(rVisualizer != null){
+            rVisualizer.allDiceDrawer(roundTrack);
+        }
 
         favorPointsLabel.setText("    FP: " + mainPlayer.get(JSONTag.FAVOR_POINTS));
 
@@ -328,6 +337,7 @@ public class GameBoardController {
         canvasOnRoundTrack = new ArrayList<>();
         panesOnDicePool = new ArrayList<>();
         canvasOnDicePool = new ArrayList<>();
+        rVisualizer = null;
 
         Group group = new Group();
         StackPane pane = new StackPane();

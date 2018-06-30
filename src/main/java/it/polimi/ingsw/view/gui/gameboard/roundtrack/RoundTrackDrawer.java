@@ -15,6 +15,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.rmi.RemoteException;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -89,6 +91,13 @@ public class RoundTrackDrawer {
             Stage stage = new Stage();
             stage.setTitle(GUIParameters.ROUND_TRACK_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
+            stage.setOnCloseRequest(e -> {
+                try {
+                    GuiManager.getInstance().getGameBoard().setrVisualizer(null);
+                } catch (ConnectException | RemoteException e1) {
+                    e1.printStackTrace();
+                }
+            });
             stage.show();
         } catch (IOException e){
             print(e.getMessage());

@@ -73,14 +73,7 @@ public class LobbyController {
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
-                stage.setOnCloseRequest(e -> {
-                    try {
-                        GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                    } catch (ConnectException | RemoteException e1) {
-                        print(e1.getMessage());
-                    }
-                    System.exit(0);
-                });
+                GuiManager.setOnCloseRequest(stage);
                 stage.setScene(scene);
             }
         } catch (IOException e) {
@@ -90,8 +83,7 @@ public class LobbyController {
 
     @FXML
     protected void initialize() throws RemoteException, ConnectException {
-        if(GuiManager.getInstance().getLobbyController() == null)
-            GuiManager.getInstance().setLobbyController(this);
+        GuiManager.getInstance().setLobbyController(this);
         startButton.setDisable(true);
     }
 }

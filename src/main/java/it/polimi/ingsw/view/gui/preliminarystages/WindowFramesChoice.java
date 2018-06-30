@@ -174,14 +174,7 @@ public class WindowFramesChoice {
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.GAME_BOARD_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setOnCloseRequest(e -> {
-                try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                } catch (ConnectException | RemoteException e1) {
-                    print(e1.getMessage());
-                }
-                System.exit(0);
-            });
+            GuiManager.setOnCloseRequest(stage);
             stage.setTitle(GUIParameters.MAIN_SCENE_TITLE);
             stage.setScene(scene);
         } catch (IOException e) {

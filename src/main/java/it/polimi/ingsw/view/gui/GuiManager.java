@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
 import it.polimi.ingsw.view.gui.preliminarystages.WindowFramesChoice;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -54,7 +55,7 @@ public class GuiManager {
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
-                        if(gameBoard == null)
+                        if(lobbyController != null)
                             lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
                         if(gameBoard != null)
                             gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
@@ -82,6 +83,7 @@ public class GuiManager {
                         gameBoard.getContinueButton().setDisable(false);
                         gameStatMessage = MessageType.decodeMessageContent(message);
                         gameBoard.setMessageText(GUIParameters.END_GAME);
+                        break;
                     default:
                         print(GUIParameters.MESSAGE_ERROR);
                 }
@@ -113,9 +115,6 @@ public class GuiManager {
     public GameBoardController getGameBoard(){
         return gameBoard;
     }
-    public LobbyController getLobbyController() {
-        return lobbyController;
-    }
 
     /**
      * Setters for all variables present in this class.
@@ -131,6 +130,28 @@ public class GuiManager {
     }
     public void setGameBoard(GameBoardController gameBoard){
         this.gameBoard = gameBoard;
+    }
+    public void setGameBoardMessage(JSONObject gameBoardMessage) {
+        this.gameBoardMessage = gameBoardMessage;
+    }
+    public void setGameStatMessage(String gameStatMessage) {
+        this.gameStatMessage = gameStatMessage;
+    }
+
+    /**
+     * Method that set the stages behaviour on close request: it sends the message "exit" to the connection controller,
+     * to signal the disconnection, and then it kills the process with a System.exit(0).
+     * @param stage: the stage on which the behaviour will be set.
+     */
+    public final static void setOnCloseRequest(Stage stage){
+        stage.setOnCloseRequest(e -> {
+            try {
+                getInstance().connectionController.send(GUIParameters.EXIT);
+            } catch (ConnectException | RemoteException e1) {
+                e1.printStackTrace();
+            }
+            System.exit(0);
+        });
     }
 
     /**

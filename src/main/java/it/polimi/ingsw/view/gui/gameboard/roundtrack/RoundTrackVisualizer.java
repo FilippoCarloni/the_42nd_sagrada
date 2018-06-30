@@ -24,7 +24,7 @@ public class RoundTrackVisualizer {
     @FXML
     private GridPane allDiceOnRoundTrackGridPane;
 
-    private void allDiceDrawer(JSONObject roundTrack){
+    public void allDiceDrawer(JSONObject roundTrack){
         JSONArray dice = (JSONArray) roundTrack.get(JSONTag.ALL_DICE);
         int turnNumber = parseInt(roundTrack.get(JSONTag.CURRENT_ROUND_NUMBER).toString());
         int index = 0;
@@ -60,6 +60,7 @@ public class RoundTrackVisualizer {
 
     @FXML
     protected void initialize() throws RemoteException, ConnectException {
+        GuiManager.getInstance().getGameBoard().setrVisualizer(this);
         JSONObject roundTrack = (JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.ROUND_TRACK);
         allDiceDrawer(roundTrack);
     }

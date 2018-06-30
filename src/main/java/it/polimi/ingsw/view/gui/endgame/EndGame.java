@@ -38,14 +38,7 @@ public class EndGame {
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.LOBBY_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setOnCloseRequest(e -> {
-                try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                } catch (ConnectException | RemoteException e1) {
-                    print(e1.getMessage());
-                }
-                System.exit(0);
-            });
+            GuiManager.setOnCloseRequest(stage);
             stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
@@ -57,6 +50,7 @@ public class EndGame {
     @FXML
     protected void initialize() throws RemoteException, ConnectException {
         String gameStat = GuiManager.getInstance().getGameStatMessage();
+        GuiManager.getInstance().setGameStatMessage(null);
         String[] players = gameStat.split("\n");
         for(int i = 0; i < players.length; i++){
             String[] player = players[i].split(":");
