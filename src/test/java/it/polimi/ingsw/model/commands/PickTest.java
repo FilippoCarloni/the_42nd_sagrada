@@ -15,8 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PickTest {
 
     /**
-     * Testing basic picking functionality:
-     * it is not integrated with other commands, as the picking one is the first to be implemented.
+     * Testing basic picking functionality.
      */
     @Test
     void pickTest() {
@@ -31,5 +30,9 @@ class PickTest {
         g.undoCommand();
         wrappedLegalCommand(g, players.get(0), "pick 1");
         assertEquals(d, g.getData().getPickedDie());
+        wrappedIllegalCommand(g, players.get(0), "pass");
+        wrappedLegalCommand(g, players.get(0), "place 1 1");
+        wrappedIllegalCommand(g, players.get(0), "pick 2");
+        wrappedLegalCommand(g, players.get(0), "pass");
     }
 }

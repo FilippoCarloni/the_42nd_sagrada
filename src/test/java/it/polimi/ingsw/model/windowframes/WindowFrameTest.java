@@ -6,48 +6,61 @@ import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.gameboard.windowframes.*;
 import it.polimi.ingsw.model.utility.JSONFactory;
-import it.polimi.ingsw.model.utility.Parameters;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
+import static it.polimi.ingsw.model.TestHelper.areWindowFramesEqual;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WindowFrameTest {
 
+    private DiceBag db;
+
+    private WindowFrame loadWindowFrame() {
+        db = new ArrayDiceBag();
+        return (WindowFrame) new WindowFrameDeck().draw();
+    }
+
     /**
-     * Checks if placing and moving operations behave correctly.
+     * Checks the correct behavior when expected a null value returned.
      */
     @Test
-    void placeAndMoveTest() {
-        Deck d = new WindowFrameDeck();
-        DiceBag db = new ArrayDiceBag();
-        WindowFrame w = (WindowFrame) d.draw();
-
-        assertEquals(null, w.getDie(0, 0));
-        assertEquals(null, w.getDie(-1, 0));
-        assertEquals(null, w.getColorConstraint(8, 0));
-        assertEquals(null, w.getShadeConstraint(0, 9));
+    void nullTest() {
+        WindowFrame w = loadWindowFrame();
+        assertNull(w.getDie(0, 0));
+        assertNull(w.getDie(-1, 0));
+        assertNull(w.getColorConstraint(8, 0));
+        assertNull(w.getShadeConstraint(0, 9));
+        assertTrue(w.isEmpty(0, 0));
         assertThrows(NullPointerException.class, () -> w.put(null, 0, 0));
+    }
 
+    /**
+     * Checks if placing operations behave correctly.
+     * Checks if moving operations behave correctly.
+     */
+    @Test
+    void placingTest() {
+        // PLACING
+        WindowFrame w = loadWindowFrame();
         Die die = db.pick();
         w.put(die, 0, 0);
-        assertEquals(false, w.isEmpty(0, 0));
+        assertFalse(w.isEmpty(0, 0));
         assertEquals(die, w.getDie(0, 0));
         assertNotEquals(db.pick(), w.getDie(0, 0));
         assertThrows(IllegalArgumentException.class, () -> w.put(db.pick(), 0, 0));
         w.put(db.pick(), 0, 1);
 
+        // MOVING
         assertThrows(IllegalArgumentException.class, () -> w.move(0, 0, 0, 1));
         assertThrows(IllegalArgumentException.class, () -> w.move(1, 1, 0, 0));
-
         w.move(0, 0, 1, 1);
         assertEquals(die, w.getDie(1, 1));
         assertEquals(2, w.getDice().size());
-
-        assertEquals(die, w.pick(1, 1));
+        assertEquals(die, w.pick(1, 1)); // the die is removed from the frame
         assertEquals(1, w.getDice().size());
-        assertEquals(null, w.pick(1, 1));
+        assertNull(w.pick(1, 1));
         assertTrue(w.getName().length() > 0);
         assertTrue(w.getDifficulty() >= 3);
         assertTrue(w.getDifficulty() <= 6);
@@ -84,34 +97,13 @@ class WindowFrameTest {
      */
     @Test
     void testJSON() {
-        DiceBag db = new ArrayDiceBag();
-        Deck d = new WindowFrameDeck();
-        WindowFrame w = (WindowFrame) d.draw();
+        WindowFrame w = loadWindowFrame();
         w.put(db.pick(), 2, 3);
         w.put(db.pick(), 1, 1);
         w.put(db.pick(), 0, 0);
         w.put(db.pick(), 3, 4);
         w.put(db.pick(), 3, 3);
-
         WindowFrame clonedW = JSONFactory.getWindowFrame(w.encode());
-
-        assertEquals(w.getName(), clonedW.getName());
-        assertEquals(w.getDifficulty(), clonedW.getDifficulty());
-
-        for (int i = 0; i < Parameters.MAX_ROWS; i++) {
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++) {
-                assertEquals(w.getDie(i, j), clonedW.getDie(i, j));
-                assertEquals(w.getColorConstraint(i, j), clonedW.getColorConstraint(i, j));
-                assertEquals(w.getShadeConstraint(i, j), clonedW.getShadeConstraint(i, j));
-            }
-        }
-    }
-
-    @Test
-    void toStringTest() {
-        WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
-        w.put(new ArrayDiceBag().pick(), 0, 0);
-        String s = w.toString();
-        //System.out.println(s);
+        areWindowFramesEqual(w, clonedW);
     }
 }

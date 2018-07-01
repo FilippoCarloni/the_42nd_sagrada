@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.utility.ExceptionMessage.INDEX_OUT_OF_BOUND;
+
 /**
  * Represents a generic Sagrada game.
  * It holds all the game data that can be extracted as a GameData object, serializable as JSON
@@ -36,7 +38,7 @@ public interface Game {
      */
     static List<PrivateObjectiveCard> getPrivateObjectives(int numOfPlayers) {
         if (numOfPlayers < 2 || numOfPlayers > Parameters.MAX_PLAYERS)
-            throw new IllegalArgumentException("You entered an invalid player number.");
+            throw new IllegalArgumentException(INDEX_OUT_OF_BOUND);
         return new PrivateObjectiveDeck().draw(numOfPlayers)
                 .stream().map(po -> (PrivateObjectiveCard) po).collect(Collectors.toList());
     }
@@ -53,7 +55,7 @@ public interface Game {
      */
     static List<WindowFrame> getWindowFrames(int numOfPlayers) {
         if (numOfPlayers < 2 || numOfPlayers > Parameters.MAX_PLAYERS)
-            throw new IllegalArgumentException("You entered an invalid player number.");
+            throw new IllegalArgumentException(INDEX_OUT_OF_BOUND);
         return new WindowFrameDeck().draw(numOfPlayers * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
                 .stream().map(po -> (WindowFrame) po).collect(Collectors.toList());
     }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.dice;
 import it.polimi.ingsw.model.gameboard.dice.ArrayDiceBag;
 import it.polimi.ingsw.model.gameboard.dice.DiceBag;
 import it.polimi.ingsw.model.gameboard.dice.Die;
+import it.polimi.ingsw.model.gameboard.dice.PlasticDie;
 import it.polimi.ingsw.model.utility.Color;
 import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Shade;
@@ -45,9 +46,13 @@ class DiceTest {
         assertEquals(a.hashCode(), JSONFactory.getDie(a.encode()).hashCode());
     }
 
+    /**
+     * Tests Exception calling.
+     */
     @Test
-    void toStringTest() {
-        String s = new ArrayDiceBag().pick().toString();
-        //System.out.println(s);
+    void exceptionTest() {
+        assertThrows(IllegalArgumentException.class, () -> new PlasticDie(-1, Color.RED, Shade.LIGHT));
+        assertThrows(NullPointerException.class, () -> new PlasticDie(1, null, Shade.LIGHT));
+        assertThrows(NullPointerException.class, () -> new PlasticDie(1, Color.RED, null));
     }
 }

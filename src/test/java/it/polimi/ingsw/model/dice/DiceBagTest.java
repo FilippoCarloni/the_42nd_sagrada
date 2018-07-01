@@ -24,16 +24,11 @@ class DiceBagTest {
     void areDiceInTheBagCorrect() {
         DiceBag db = new ArrayDiceBag();
         ArrayList<Die> dice = new ArrayList<>(db.pick(90));
-        assertEquals(18, dice.stream().
-                map(Die::getColor).filter(c -> c == Color.RED).count());
-        assertEquals(18, dice.stream().
-                map(Die::getColor).filter(c -> c == Color.YELLOW).count());
-        assertEquals(18, dice.stream().
-                map(Die::getColor).filter(c -> c == Color.BLUE).count());
-        assertEquals(18, dice.stream().
-                map(Die::getColor).filter(c -> c == Color.GREEN).count());
-        assertEquals(18, dice.stream().
-                map(Die::getColor).filter(c -> c == Color.PURPLE).count());
+        assertEquals(18, dice.stream().map(Die::getColor).filter(c -> c == Color.RED).count());
+        assertEquals(18, dice.stream().map(Die::getColor).filter(c -> c == Color.YELLOW).count());
+        assertEquals(18, dice.stream().map(Die::getColor).filter(c -> c == Color.BLUE).count());
+        assertEquals(18, dice.stream().map(Die::getColor).filter(c -> c == Color.GREEN).count());
+        assertEquals(18, dice.stream().map(Die::getColor).filter(c -> c == Color.PURPLE).count());
         assertThrows(NoSuchElementException.class, db::pick);
     }
 
@@ -63,6 +58,7 @@ class DiceBagTest {
      */
     @Test
     void testJSON() {
+        assertThrows(NullPointerException.class, () -> new ArrayDiceBag(null));
         DiceBag db = new ArrayDiceBag();
         db.pick();
         db.pick();

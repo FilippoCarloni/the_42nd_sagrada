@@ -24,7 +24,7 @@ import static java.lang.Integer.parseInt;
  * Generates window frames from .wfr files in the Parameters.WINDOW_PATTERNS_PATH directory.
  * @see Parameters
  */
-public final class WindowFrameFactory {
+final class WindowFrameFactory {
 
     private WindowFrameFactory() {}
 
@@ -35,7 +35,7 @@ public final class WindowFrameFactory {
      * @see Parameters
      * @return A List of loaded window frames
      */
-    public static List<WindowFrame> getWindowFrames() {
+    static List<WindowFrame> getWindowFrames() {
         List<WindowFrame> frames = new ArrayList<>();
         try (Stream<Path> paths = Files.walk(Paths.get(Parameters.WINDOW_PATTERNS_PATH))) {
             paths.filter(Files::isRegularFile).forEach(path -> frames.add(getWindowFrame(path.toString())));
@@ -46,8 +46,6 @@ public final class WindowFrameFactory {
     }
 
     private static WindowFrame getWindowFrame(String path) {
-        if (path == null)
-            throw new NullPointerException(NULL_PARAMETER);
         Map<Coordinate, Color> colorConstraints = new HashMap<>();
         Map<Coordinate, Shade> shadeConstraints = new HashMap<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {

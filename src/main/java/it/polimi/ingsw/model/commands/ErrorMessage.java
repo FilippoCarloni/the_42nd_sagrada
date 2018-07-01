@@ -8,9 +8,10 @@ public final class ErrorMessage {
 
     private ErrorMessage() {}
 
-    static final String ERR_GENERIC_MESSAGE = "[!] Command not executed, here are the possible causes: ";
-    static final String ERR_COMMAND_NOT_EXISTS = "This command does not exist in the context of this turn. Try checking the syntax or activate the correct tool card.";
+    static final String ERR_GENERIC_MESSAGE = "Command not executed: ";
+    static final String ERR_COMMAND_NOT_EXISTS = "This command is not currently available. Try checking the syntax or activate a tool card.";
     static final String ERR_NOT_YOUR_TURN = "It'n not your turn.";
+    static final String GAME_FINISHED = "The game is ended. You can't perform any more actions.";
 
     public static final String ERR_DIE_NOT_PICKED = "You should pick a die.";
     public static final String ERR_DIE_PICKED = "You picked a die this turn.";

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_COMMAND_NOT_EXISTS;
 import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_GENERIC_MESSAGE;
+import static it.polimi.ingsw.model.commands.ErrorMessage.GAME_FINISHED;
 import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static it.polimi.ingsw.model.utility.ExceptionMessage.BROKEN_PATH;
 
@@ -74,6 +75,8 @@ public class DequeCommandManager implements CommandManager {
 
     @Override
     public void executeCommand(Player player, String cmd) throws IllegalCommandException {
+        if (gameData.getRoundTrack().isGameFinished())
+            throw new IllegalCommandException(GAME_FINISHED);
         List<String> errorMessages = new ArrayList<>();
         for (Command c : getValidCommands(player, cmd)) {
             try {
@@ -89,9 +92,9 @@ public class DequeCommandManager implements CommandManager {
         StringBuilder sb = new StringBuilder();
         sb.append(ERR_GENERIC_MESSAGE);
         if (errorMessages.isEmpty())
-            sb.append("\n\t").append(ERR_COMMAND_NOT_EXISTS);
+            sb.append("\n").append(ERR_COMMAND_NOT_EXISTS);
         for (String s : errorMessages)
-            sb.append("\n\t").append(s);
+            sb.append("\n").append(s);
         throw new IllegalCommandException(sb.toString());
     }
 

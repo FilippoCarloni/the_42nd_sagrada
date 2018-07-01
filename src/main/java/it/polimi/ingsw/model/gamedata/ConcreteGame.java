@@ -30,8 +30,6 @@ public class ConcreteGame implements Game {
      * @param players A List of players
      */
     public ConcreteGame(List<Player> players) {
-        if (players == null)
-            throw new NullPointerException(NULL_PARAMETER);
         commandManager = new DequeCommandManager(new ConcreteGameData(players));
     }
 
@@ -40,8 +38,7 @@ public class ConcreteGame implements Game {
      * @param gameData Current status of the game data
      */
     public ConcreteGame(GameData gameData) {
-        if (gameData == null)
-            throw new NullPointerException(NULL_PARAMETER);
+        if (gameData == null) throw new NullPointerException(NULL_PARAMETER);
         commandManager = new DequeCommandManager(gameData);
     }
 

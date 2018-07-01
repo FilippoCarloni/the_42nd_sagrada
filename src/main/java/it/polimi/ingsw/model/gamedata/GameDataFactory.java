@@ -38,7 +38,7 @@ class GameDataFactory {
      * Generates a 90-dice dice bag.
      * @return A DiceBag object
      */
-    public static DiceBag getDiceBag() {
+    static DiceBag getDiceBag() {
         return new ArrayDiceBag();
     }
 
@@ -56,7 +56,7 @@ class GameDataFactory {
      * Picks randomly 3 public objectives.
      * @return A List of 3 random public objectives
      */
-    public static List<PublicObjectiveCard> getPublicObjectives() {
+    static List<PublicObjectiveCard> getPublicObjectives() {
         List<PublicObjectiveCard> pos = new ArrayList<>();
         Deck d = new PublicObjectiveDeck();
         for (int i = 0; i < Parameters.PUBLIC_OBJECTIVES; i++)

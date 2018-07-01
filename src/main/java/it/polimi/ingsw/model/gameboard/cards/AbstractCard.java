@@ -43,4 +43,14 @@ public abstract class AbstractCard implements Card {
     public String toString() {
         return "#" + id + ": " + name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Card && id == ((Card) o).getID();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

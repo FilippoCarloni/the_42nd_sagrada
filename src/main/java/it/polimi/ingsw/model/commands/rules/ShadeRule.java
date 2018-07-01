@@ -29,6 +29,7 @@ public class ShadeRule extends RuleDecorator {
     private boolean check(Die die, WindowFrame windowFrame, int row, int column) {
         if (die == null || windowFrame == null)
             throw new NullPointerException(NULL_PARAMETER);
+        checkLegalCoordinates(row, column);
         Shade dieShade = die.getShade();
         List<Die> windowDice = new ArrayList<>();
         Die d;
@@ -49,7 +50,6 @@ public class ShadeRule extends RuleDecorator {
 
     @Override
     public boolean canBePlaced(Die die, WindowFrame windowFrame, int row, int column) {
-        return check(die, windowFrame, row, column) &&
-                (decoratedRule == null || decoratedRule.canBePlaced(die, windowFrame, row, column));
+        return check(die, windowFrame, row, column) && (decoratedRule == null || decoratedRule.canBePlaced(die, windowFrame, row, column));
     }
 }

@@ -35,6 +35,7 @@ public class PlacingRule extends RuleDecorator {
     private boolean check(Die die, WindowFrame windowFrame, int row, int column) {
         if (die == null || windowFrame == null)
             throw new NullPointerException(NULL_PARAMETER);
+        checkLegalCoordinates(row, column);
         return ifMapEmpty(windowFrame, row, column) ||
             (windowFrame.getDie(row - 1, column - 1) != null) ||
             (windowFrame.getDie(row - 1, column) != null) ||
@@ -48,7 +49,6 @@ public class PlacingRule extends RuleDecorator {
 
     @Override
     public boolean canBePlaced(Die die, WindowFrame windowFrame, int row, int column) {
-        return check(die, windowFrame, row, column) &&
-                (decoratedRule == null || decoratedRule.canBePlaced(die, windowFrame, row, column));
+        return check(die, windowFrame, row, column) && (decoratedRule == null || decoratedRule.canBePlaced(die, windowFrame, row, column));
     }
 }

@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
 /**
  * Generates Public Objective Cards from JSON files.
  */
-public final class PublicObjectiveFactory {
+final class PublicObjectiveFactory {
 
     private PublicObjectiveFactory() {}
 
@@ -29,7 +29,7 @@ public final class PublicObjectiveFactory {
      * Generates the list of Public Objective Cards from a JSON configuration file.
      * @return A List of public objectives
      */
-    public static List<PublicObjectiveCard> getPublicObjectives() {
+    static List<PublicObjectiveCard> getPublicObjectives() {
         try {
             String content = new String(Files.readAllBytes(Paths.get(Parameters.PUBLIC_OBJECTIVES_PATH)));
             JSONObject parsedContent = (JSONObject) new JSONParser().parse(content);

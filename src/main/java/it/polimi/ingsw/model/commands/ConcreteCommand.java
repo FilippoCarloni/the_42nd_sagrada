@@ -60,8 +60,7 @@ public class ConcreteCommand implements Command {
     public int[] getArgs() {
         try {
             String[] stringArgs = cmd.split(ARG_SEPARATOR);
-            if (stringArgs.length == 0)
-                return new int[0];
+            if (stringArgs.length == 0) return new int[0];
             int[] args = new int[stringArgs.length - 1];
             for (int i = 1; i < stringArgs.length; i++)
                 args[i - 1] = parseInt(stringArgs[i]) - 1;
@@ -99,10 +98,5 @@ public class ConcreteCommand implements Command {
             gameData.setUndoAvailable(undoable);
             performInstructions();
         }
-    }
-
-    @Override
-    public String toString() {
-        return player.getUsername() + ": " + cmd;
     }
 }

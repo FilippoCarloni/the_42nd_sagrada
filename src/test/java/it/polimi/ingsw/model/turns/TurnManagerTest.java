@@ -2,297 +2,180 @@ package it.polimi.ingsw.model.turns;
 
 import it.polimi.ingsw.model.utility.JSONFactory;
 import it.polimi.ingsw.model.utility.Parameters;
-import it.polimi.ingsw.model.players.ConcretePlayer;
 import it.polimi.ingsw.model.players.Player;
-import it.polimi.ingsw.model.turns.ArrayTurnManager;
-import it.polimi.ingsw.model.turns.TurnManager;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static it.polimi.ingsw.model.TestHelper.getPlayerList;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TurnManagerTest {
 
+    private static void assertTurn(TurnManager turnManager, List<Player> players, int index, boolean roundStarting, boolean roundEnding, boolean isSecondTurn) {
+        assertEquals(roundStarting, turnManager.isRoundStarting());
+        assertEquals(roundEnding, turnManager.isRoundEnding());
+        assertEquals(players.get(index), turnManager.getCurrentPlayer());
+        assertEquals(isSecondTurn, turnManager.isSecondTurn());
+        turnManager.advanceTurn();
+    }
+
+    /**
+     * Throws exceptions for illegal arguments.
+     */
     @Test
     void testIllegalArgument() {
-        Player p = new ConcretePlayer("player");
-        ArrayList<Player> list = new ArrayList<>();
-        assertThrows(IllegalArgumentException.class, () -> new ArrayTurnManager(list));
-        list.add(p);
-        assertThrows(IllegalArgumentException.class, () -> new ArrayTurnManager(list));
+        assertThrows(NullPointerException.class, () -> new ArrayTurnManager(null));
+        assertThrows(IllegalArgumentException.class, () -> new ArrayTurnManager(getPlayerList(0, false)));
+        assertThrows(IllegalArgumentException.class, () -> new ArrayTurnManager(getPlayerList(1, false)));
     }
 
+    /**
+     * Checks turn order of a 2-player game.
+     */
     @Test
     void testTwoPlayers() {
-        Player a = new ConcretePlayer("a");
-        Player b = new ConcretePlayer("b");
-        ArrayList<Player> players = new ArrayList<>();
-
-        players.add(a);
-        players.add(b);
+        List<Player> players = getPlayerList(2, false);
         TurnManager tm = new ArrayTurnManager(players);
-
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
-            assertEquals(true, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(true, tm.isRoundEnding());
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
+            // player0 first
+            assertTurn(tm, players, 0, true, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, true, true);
+            // player1 first
+            assertTurn(tm, players, 1, true, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 1, false, true, true);
         }
     }
 
+    /**
+     * Checks turn order of a 3-player game.
+     */
     @Test
     void testThreePlayers() {
-        Player a = new ConcretePlayer("a");
-        Player b = new ConcretePlayer("b");
-        Player c = new ConcretePlayer("c");
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(a);
-        players.add(b);
-        players.add(c);
+        List<Player> players = getPlayerList(3, false);
         TurnManager tm = new ArrayTurnManager(players);
-
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
-            assertEquals(true, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(true, tm.isRoundEnding());
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
+            // player0 first
+            assertTurn(tm, players, 0, true, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 2, false, false, false);
+            assertTurn(tm, players, 2, false, false, true);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, true, true);
+            // player1 first
+            assertTurn(tm, players, 1, true, false, false);
+            assertTurn(tm, players, 2, false, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 2, false, false, true);
+            assertTurn(tm, players, 1, false, true, true);
+            // player2 first
+            assertTurn(tm, players, 2, true, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 2, false, true, true);
         }
     }
 
+    /**
+     * Checks turn order of a 4-player game.
+     */
     @Test
     void testFourPlayers() {
-        Player a = new ConcretePlayer("a");
-        Player b = new ConcretePlayer("b");
-        Player c = new ConcretePlayer("c");
-        Player d = new ConcretePlayer("d");
-        ArrayList<Player> players = new ArrayList<>();
-
-        players.add(a);
-        players.add(b);
-        players.add(c);
-        players.add(d);
+        List<Player> players = getPlayerList(4, false);
         TurnManager tm = new ArrayTurnManager(players);
-
         for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS; i++) {
-            assertEquals(true, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(false, tm.isRoundEnding());
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            assertEquals(false, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            assertEquals(true, tm.isSecondTurn());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(c, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(b, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(a, tm.getCurrentPlayer());
-            tm.advanceTurn();
-            assertEquals(false, tm.isRoundStarting());
-            assertEquals(true, tm.isRoundEnding());
-            assertEquals(d, tm.getCurrentPlayer());
-            tm.advanceTurn();
+            // player0 first
+            assertTurn(tm, players, 0, true, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 2, false, false, false);
+            assertTurn(tm, players, 3, false, false, false);
+            assertTurn(tm, players, 3, false, false, true);
+            assertTurn(tm, players, 2, false, false, true);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, true, true);
+            // player1 first
+            assertTurn(tm, players, 1, true, false, false);
+            assertTurn(tm, players, 2, false, false, false);
+            assertTurn(tm, players, 3, false, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 3, false, false, true);
+            assertTurn(tm, players, 2, false, false, true);
+            assertTurn(tm, players, 1, false, true, true);
+            // player2 first
+            assertTurn(tm, players, 2, true, false, false);
+            assertTurn(tm, players, 3, false, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 3, false, false, true);
+            assertTurn(tm, players, 2, false, true, true);
+            // player3 first
+            assertTurn(tm, players, 3, true, false, false);
+            assertTurn(tm, players, 0, false, false, false);
+            assertTurn(tm, players, 1, false, false, false);
+            assertTurn(tm, players, 2, false, false, false);
+            assertTurn(tm, players, 2, false, false, true);
+            assertTurn(tm, players, 1, false, false, true);
+            assertTurn(tm, players, 0, false, false, true);
+            assertTurn(tm, players, 3, false, true, true);
         }
     }
 
+    /**
+     * Tests the 2-turns-in-a-row functionality used by one tool card.
+     */
     @Test
-    void testAdditionalFunctionality() {
-        Player a = new ConcretePlayer("a");
-        Player b = new ConcretePlayer("b");
-        ArrayList<Player> players = new ArrayList<>();
-
-        players.add(a);
-        players.add(b);
+    void testTwoTurns() {
+        List<Player> players = getPlayerList(2, false);
         TurnManager tm = new ArrayTurnManager(players);
-
-        assertEquals(a, tm.getCurrentPlayer());
+        assertEquals(players.get(0), tm.getCurrentPlayer());
         tm.takeTwoTurns();
         tm.advanceTurn();
-        assertEquals(a, tm.getCurrentPlayer());
+        assertEquals(players.get(0), tm.getCurrentPlayer());
         assertThrows(NoSuchElementException.class, tm::takeTwoTurns);
         tm.advanceTurn();
-        assertEquals(b, tm.getCurrentPlayer());
+        assertEquals(players.get(1), tm.getCurrentPlayer());
         tm.advanceTurn();
-        assertEquals(b, tm.getCurrentPlayer());
+        assertEquals(players.get(1), tm.getCurrentPlayer());
         tm.advanceTurn();
-        assertEquals(b, tm.getCurrentPlayer());
+        assertEquals(players.get(1), tm.getCurrentPlayer());
         tm.takeTwoTurns();
         tm.advanceTurn();
-        assertEquals(b, tm.getCurrentPlayer());
+        assertEquals(players.get(1), tm.getCurrentPlayer());
         tm.advanceTurn();
-        assertEquals(a, tm.getCurrentPlayer());
+        assertEquals(players.get(0), tm.getCurrentPlayer());
         tm.advanceTurn();
-        assertEquals(a, tm.getCurrentPlayer());
+        assertEquals(players.get(0), tm.getCurrentPlayer());
     }
 
+    /**
+     * Tests JSON cloning correctness.
+     */
     @Test
     void testJSON() {
-        Player a = new ConcretePlayer("a");
-        Player b = new ConcretePlayer("b");
-        Player c = new ConcretePlayer("c");
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(a);
-        players.add(b);
-        players.add(c);
+        List<Player> players = getPlayerList(3, false);
         TurnManager tm = new ArrayTurnManager(players);
         TurnManager tmClone = JSONFactory.getTurnManager(tm.encode());
-
-        for (int i = 0; i < 30; i++) {
-            assertEquality(tm, tmClone);
-            advance(tm, tmClone);
+        for (int i = 0; i < Parameters.TOTAL_NUMBER_OF_ROUNDS * 3; i++) { // 30 total turns: it's like a 15-round game
+            assertTurn(tmClone, players, players.indexOf(tm.getCurrentPlayer()), tm.isRoundStarting(), tm.isRoundEnding(), tm.isSecondTurn());
+            tm.advanceTurn();
         }
-
         tm.takeTwoTurns();
         tmClone.takeTwoTurns();
-        assertEquality(tm, tmClone);
-        advance(tm, tmClone);
-        assertEquality(tm, tmClone);
-        advance(tm, tmClone);
-        assertEquality(tm, tmClone);
-    }
-
-    private void assertEquality(TurnManager tm, TurnManager tmClone) {
-        assertEquals(tm.getCurrentPlayer().getUsername(), tmClone.getCurrentPlayer().getUsername());
-        assertEquals(tm.isSecondTurn(), tmClone.isSecondTurn());
-        assertEquals(tm.isRoundEnding(), tmClone.isRoundEnding());
-        assertEquals(tm.isRoundStarting(), tmClone.isRoundStarting());
-    }
-
-    private void advance(TurnManager tm, TurnManager tmClone) {
-        tm.takeTwoTurns();
-        tmClone.takeTwoTurns();
+        assertTurn(tmClone, players, players.indexOf(tm.getCurrentPlayer()), tm.isRoundStarting(), tm.isRoundEnding(), tm.isSecondTurn());
+        tm.advanceTurn();
+        assertTurn(tmClone, players, players.indexOf(tm.getCurrentPlayer()), tm.isRoundStarting(), tm.isRoundEnding(), tm.isSecondTurn());
+        tm.advanceTurn();
+        assertTurn(tmClone, players, players.indexOf(tm.getCurrentPlayer()), tm.isRoundStarting(), tm.isRoundEnding(), tm.isSecondTurn());
     }
 }

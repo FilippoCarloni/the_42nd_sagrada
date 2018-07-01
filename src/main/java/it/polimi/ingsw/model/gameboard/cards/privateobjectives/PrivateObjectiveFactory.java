@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
  * Generates the Private Objective Cards of Sagrada Game.
  * Every private objective corresponds to a different Sagrada Color.
  */
-public final class PrivateObjectiveFactory {
+final class PrivateObjectiveFactory {
 
     private PrivateObjectiveFactory() {}
 
@@ -29,7 +29,7 @@ public final class PrivateObjectiveFactory {
      * Returns the list of public objectives, one for every game color.
      * @return A List of public objectives
      */
-    public static List<PrivateObjectiveCard> getPrivateObjectives() {
+    static List<PrivateObjectiveCard> getPrivateObjectives() {
         try {
             String content = new String(Files.readAllBytes(Paths.get(Parameters.PRIVATE_OBJECTIVES_PATH)));
             JSONObject parsedContent = (JSONObject) new JSONParser().parse(content);

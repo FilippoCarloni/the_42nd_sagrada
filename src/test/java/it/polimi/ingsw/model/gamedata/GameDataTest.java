@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.gamedata;
 
 import it.polimi.ingsw.model.gameboard.cards.Card;
-import it.polimi.ingsw.model.gameboard.cards.Deck;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.gameboard.cards.privateobjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
@@ -19,41 +18,48 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static it.polimi.ingsw.model.TestHelper.areWindowFramesEqual;
+import static it.polimi.ingsw.model.TestHelper.getPlayerList;
+import static it.polimi.ingsw.model.utility.ExceptionMessage.BAD_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameDataTest {
 
-    private List<Player> initializePlayers(int numOfPlayers) {
-        List<Player> players = new ArrayList<>();
-        Deck po = new PrivateObjectiveDeck();
-        Deck wf = new WindowFrameDeck();
-        for (int i = 0; i < numOfPlayers; i++) {
-            Player p = new ConcretePlayer("player" + i);
-            p.setWindowFrame((WindowFrame) wf.draw());
-            p.setPrivateObjective((PrivateObjectiveCard) po.draw());
-            players.add(p);
-        }
-        return players;
-    }
-
+    /**
+     * Checks the constructor initialization: players should be > 1 and <= 4 and everyone must have a window frame and a private objective.
+     */
     @Test
     void testPlayerCorrectness() {
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(new ArrayList<>()));
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(getPlayerList(1, true)));
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(getPlayerList(2, false)));
+        assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(getPlayerList(5, true)));
         List<Player> players = new ArrayList<>();
-        players.add(new ConcretePlayer("foo"));
+        Player p1 = new ConcretePlayer("foo");
+        Player p2 = new ConcretePlayer("foo");
+        players.add(p1);
+        players.add(p2);
+        p1.setWindowFrame((WindowFrame) new WindowFrameDeck().draw());
+        p1.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
+        p2.setWindowFrame((WindowFrame) new WindowFrameDeck().draw());
         assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(players));
-        players.add(new ConcretePlayer("baz"));
+        p2.setPrivateObjective((PrivateObjectiveCard) new PrivateObjectiveDeck().draw());
         assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(players));
-        players.add(new ConcretePlayer("foo"));
-        assertThrows(IllegalArgumentException.class, () -> new ConcreteGame(players));
+        // deeper check is needed, because there's no valid constructor for ConcreteGame(null)
+        assertThrows(NullPointerException.class, () -> GameDataFactory.getTurnManager(null));
     }
 
+    /**
+     * Tests the correct cloning behavior.
+     */
     @Test
     void testJSON() {
         int numOfPlayers = (int) (Math.random() * 3 + 2);
-        List<Player> players = initializePlayers(numOfPlayers);
+        List<Player> players = getPlayerList(numOfPlayers, true);
         GameData data = new ConcreteGameData(players);
         try {
             GameData dataClone = JSONFactory.getGameData((JSONObject) new JSONParser().parse(data.encode().toString()));
@@ -61,33 +67,34 @@ class GameDataTest {
             assertTrue(data.getRoundTrack().getVisibleDice().containsAll(dataClone.getRoundTrack().getVisibleDice()));
             assertEquals(data.getTurnManager().getCurrentPlayer(), dataClone.getTurnManager().getCurrentPlayer());
             assertTrue(data.getTurnManager().getPlayers().containsAll(dataClone.getTurnManager().getPlayers()));
+            assertTrue(data.getPublicObjectives().containsAll(dataClone.getPublicObjectives()));
             assertEquals(numOfPlayers * 2 + 1, data.getDicePool().size());
             assertTrue(data.getDicePool().containsAll(dataClone.getDicePool()));
             List<Player> originalPlayers = data.getTurnManager().getPlayers();
             List<Player> clonedPlayers = dataClone.getTurnManager().getPlayers();
             for (int i = 0; i < originalPlayers.size(); i++) {
-                WindowFrame frame = originalPlayers.get(i).getWindowFrame();
-                WindowFrame clonedFrame = clonedPlayers.get(i).getWindowFrame();
-                for (int j = 0; j < Parameters.MAX_ROWS; j++) {
-                    for (int k = 0; k < Parameters.MAX_COLUMNS; k++) {
-                        assertEquals(frame.getDie(j, k), clonedFrame.getDie(j, k));
-                        assertEquals(frame.getColorConstraint(j, k), clonedFrame.getColorConstraint(j, k));
-                        assertEquals(frame.getShadeConstraint(j, k), clonedFrame.getShadeConstraint(j, k));
-                    }
-                }
+                if (originalPlayers.get(i).getPrivateObjective() == null) {
+                    assertNull(originalPlayers.get(i).getPrivateObjective());
+                    assertNull(clonedPlayers.get(i).getPrivateObjective());
+                } else assertEquals(originalPlayers.get(i).getPrivateObjective().getID(), clonedPlayers.get(i).getPrivateObjective().getID());
+                areWindowFramesEqual(originalPlayers.get(i).getWindowFrame(), clonedPlayers.get(i).getWindowFrame());
             }
             for (int i : data.getCurrentScore().values())
-                assertTrue(i == 0);
+                assertEquals(0, i);
             for (int i : dataClone.getCurrentScore().values())
-                assertTrue(i == 0);
+                assertEquals(0, i);
         } catch (ParseException e) {
-            throw new IllegalArgumentException("Bad JSON file.");
+            throw new IllegalArgumentException(BAD_JSON);
         }
     }
 
+    /**
+     * Every player should receive a custom JSON that encodes the game data:
+     * the dice bag is not present and only the player that made the request has the private object encoded.
+     */
     @Test
     void testJSONCalledByPlayer() {
-        List<Player> players = initializePlayers((int) (Math.random() * 3 + 2));
+        List<Player> players = getPlayerList((int) (Math.random() * 3 + 2), true);
         Game g = new ConcreteGame(players);
         int index = (int) (Math.random() * players.size());
         JSONObject encodedData = g.getData(players.get(index));
@@ -102,8 +109,12 @@ class GameDataTest {
             else
                 assertFalse(encodedPlayer.containsKey(JSONTag.PRIVATE_OBJECTIVE));
         }
+        assertThrows(IllegalArgumentException.class, () -> g.getData(new ConcretePlayer("AnotherPlayer")));
     }
 
+    /**
+     * Tests the picking methods called at the start of the game to initialize players'maps.
+     */
     @Test
     void testPicking() {
         assertThrows(IllegalArgumentException.class, () -> Game.getWindowFrames(1));
@@ -113,12 +124,13 @@ class GameDataTest {
             List<PrivateObjectiveCard> privateObjectiveCards = Game.getPrivateObjectives(i);
             assertEquals(i, privateObjectiveCards.size());
             assertEquals(i * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE, frames.size());
+            // asserts no duplications
             Set<String> frameNames = frames.stream().map(WindowFrame::getName).collect(Collectors.toSet());
             Set<String> cardNames = privateObjectiveCards.stream().map(Card::getName).collect(Collectors.toSet());
             assertEquals(i, cardNames.size());
             assertEquals(i * Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE, frameNames.size());
         }
-        assertThrows(IllegalArgumentException.class, () -> Game.getWindowFrames(5));
-        assertThrows(IllegalArgumentException.class, () -> Game.getPrivateObjectives(5));
+        assertThrows(IllegalArgumentException.class, () -> Game.getWindowFrames(Parameters.MAX_PLAYERS + 1));
+        assertThrows(IllegalArgumentException.class, () -> Game.getPrivateObjectives(Parameters.MAX_PLAYERS + 1));
     }
 }

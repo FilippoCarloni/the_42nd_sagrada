@@ -76,7 +76,7 @@ public class PlasticDie implements Die {
 
     @Override
     public boolean equals(Object o) {
-        return o != null && o instanceof Die && o instanceof PlasticDie && this.id == ((PlasticDie) o).id;
+        return o instanceof Die && o instanceof PlasticDie && this.id == ((PlasticDie) o).id;
     }
 
     @Override
