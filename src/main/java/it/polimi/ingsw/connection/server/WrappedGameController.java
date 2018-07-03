@@ -7,7 +7,6 @@ import it.polimi.ingsw.connection.server.serverexception.ServerException;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.RMI_ERROR;
 
 /**
  * The WrappedGameController class contains a GameManager a GameController.
@@ -29,7 +28,7 @@ public class WrappedGameController{
         try {
             this.remoteGame=new ConcreteGameManager(gameController);
         } catch (RemoteException e) {
-            throw new ServerException(e.getMessage(),RMI_ERROR);
+            throw new ServerException(e.getMessage());
         }
     }
 

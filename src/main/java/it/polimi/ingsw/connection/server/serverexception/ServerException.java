@@ -1,18 +1,16 @@
 package it.polimi.ingsw.connection.server.serverexception;
 
+/**
+ * The ServerException is the class that rapresents all the Exception in the Server.
+ */
 public class ServerException extends Exception {
-    private final int errorCode;
-    public ServerException(String message, int errorCode){
+
+    /**
+     * Create an ServerException from the mesagge.
+     * @param message - String that contains the error.
+     */
+    public ServerException(String message) {
         super(message);
-        this.errorCode=errorCode;
     }
 
-    @Override
-    public String getMessage() {
-        return super.getMessage();
-    }
-
-    public int getErrorCode() {
-        return errorCode;
-    }
 }

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 public  class Settings{
     public static final int MAX_PLAYER_GAME = 4;
     public static final int MIN_PLAYER_GAME = 2;
+
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
     private static final String DEFAULT_SERVER_IP="localhost";
@@ -61,7 +62,6 @@ public  class Settings{
                 lobbyTime = Integer.parseInt(param);
             reader.close();
         } catch (Exception eta) {
-            eta.printStackTrace();
             logger.warning("Error found in the configuration file");
         }
         RMI_PORT = rmiPort;
@@ -93,5 +93,5 @@ public  class Settings{
     public final int lobbyRefreshTime;
     public final int turnTime;
     public final int gameRefresh;
-    public static final String LOBBY_RMI_ID = "Login";
+    public static final String LOBBY_RMI_ID = "Lobby";
 }

@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.connection.server.ServerMessage.*;
-import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.SERVER_ERROR;
 
 public class CentralServer {
         private static final int USERNAME_MIN_LENGTH = 4;
@@ -33,10 +32,10 @@ public class CentralServer {
             OnLinePlayer x;
             String filtered=username.trim();
             if(!Pattern.compile("^[a-zA-Z0-9_-]{"+USERNAME_MIN_LENGTH+","+USERNAME_MAX_LENGTH+"}$").asPredicate().test(filtered))
-                throw new ServerException(NOT_VALID_USERNAME,SERVER_ERROR);
+                throw new ServerException(NOT_VALID_USERNAME);
             for (OnLinePlayer s : players)
                 if (s.getUsername().compareToIgnoreCase((filtered))==0) {
-                    throw new ServerException(ALREADY_EXISTING_USERNAME,SERVER_ERROR);
+                    throw new ServerException(ALREADY_EXISTING_USERNAME);
                 }
             x=new OnLinePlayer(filtered,obs);
             players.add(x);
@@ -57,7 +56,7 @@ public class CentralServer {
                 player = players.stream().filter(
                         x -> x.getServerSession().getID().equals(userSessionID)).collect(Collectors.toList());
                 if (player.size() != 1) {
-                    throw new ServerException(NOT_LOGGED + userSessionID,SERVER_ERROR);
+                    throw new ServerException(NOT_LOGGED + userSessionID);
                 }
                 game = currentGame(player.get(0));
                 if (game != null) {
@@ -112,10 +111,10 @@ public class CentralServer {
                     x -> x.isMySessionID(oldSessionID)).collect(Collectors.toList());
             ServerSession newServerSession;
             if (player.size() != 1) {
-                throw new ServerException(NOT_EXISTING_SESSION+": "+ oldSessionID,SERVER_ERROR);
+                throw new ServerException(NOT_EXISTING_SESSION+": "+ oldSessionID);
             }
             if(player.get(0).getObserver().isAlive())
-                throw new ServerException(NOT_MULTYGAME_WITH_ONE_CLIENT,SERVER_ERROR);
+                throw new ServerException(NOT_MULTYGAME_WITH_ONE_CLIENT);
             else {
                 observable.deleteObserver(player.get(0).getObserver());
                 observable.addObserver(obs);

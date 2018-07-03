@@ -18,7 +18,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-public class ConnectionController extends UnicastRemoteObject implements RemoteObserver{
+public class ConnectionController implements RemoteObserver, Serializable {
     private transient GameManager gameManger;
     private transient String sessionID;
     private transient Lobby lobby;
@@ -27,6 +27,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     private transient Scanner in;
     private transient ConnectionType connectionType;
     private transient MessageBuffer messages;
+    private transient RemoteObserver clientRMI;
 
     private class ReaderThread implements Runnable {
 
@@ -49,7 +50,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         }
     }
 
-    public ConnectionController(ConnectionType connectionType) throws ConnectException,RemoteException {
+    public ConnectionController(ConnectionType connectionType) throws ConnectException {
         super();
         sessionID = ServerSession.INVALID_SESSION_ID;
         gameManger = null;
@@ -106,7 +107,7 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
 
     private void rmiConnection() throws ConnectException {
-        //
+
         try {
             System.setProperty("java.rmi.server.hostname", Inet4Address.getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {
@@ -114,12 +115,15 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         }
         try {
             Registry reg = LocateRegistry.getRegistry(new Settings().IP_SERVER, new Settings().RMI_PORT);
-            lobby = (Lobby) reg.lookup("Login");
-
+            lobby = (Lobby) reg.lookup(Settings.LOBBY_RMI_ID);
         } catch (NotBoundException|RemoteException e) {
            throw new ConnectException(e.getMessage());
         }
-
+        try {
+            clientRMI = (RemoteObserver) UnicastRemoteObject.exportObject(this, 0);
+        } catch (RemoteException e) {
+            throw new ConnectException(e.getMessage());
+        }
     }
 
     private void socketConnection() throws ConnectException {
@@ -136,9 +140,8 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
         String response;
         if (connectionType==ConnectionType.RMI)
             try {
-                sessionID = lobby.connect(name, this);
+                sessionID = lobby.connect(name, clientRMI);
             } catch (RemoteException e) {
-               // messages.add(e.getMessage())
                 return false;
             }
         else

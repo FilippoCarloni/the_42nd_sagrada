@@ -16,6 +16,7 @@ public enum MessageType {
     PRE_GAME_CHOICE("pre_game_choice"),
     SESSION("session"),
     CURRENT_PLAYER("current_player");
+
     private String tag;
     private static final String MESSAGE_TAG="tag";
     private static final String MESSAGE_CONTENT="message_content";

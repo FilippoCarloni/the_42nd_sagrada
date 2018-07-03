@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static it.polimi.ingsw.connection.server.ServerMessage.*;
-import static it.polimi.ingsw.connection.server.serverexception.ErrorCode.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
@@ -68,7 +67,8 @@ public class GameController extends Observable{
                     }
                 if (this.countObservers() == 1) {
                     this.setChanged();
-                    this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GAME_STATS));
+                    this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GENERIC_MESSAGE));
+                    this.printScore();
                     this.deleteObservers();
                 }
 
@@ -127,11 +127,11 @@ public class GameController extends Observable{
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         if(gameNotStarted())
-            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW);
         if(gameEnded())
-            throw new ServerException(ENDED_GAME,GAME_ERROR);
+            throw new ServerException(ENDED_GAME);
         if(!isMyTurn(sessionID)) {
-            throw new ServerException(NOT_YOUR_TURN,GAME_ERROR);
+            throw new ServerException(NOT_YOUR_TURN);
         }
         command=command.trim();
         switch (command) {
@@ -139,19 +139,19 @@ public class GameController extends Observable{
                 if(game.isUndoAvailable())
                     game.undoCommand();
                 else
-                    throw new ServerException(NOT_UNDO,GAME_ERROR);
+                    throw new ServerException(NOT_UNDO);
                 break;
             case Commands.REDO:
                 if(game.isRedoAvailable())
                     game.redoCommand();
                 else
-                    throw new ServerException(NOT_REDO,GAME_ERROR);
+                    throw new ServerException(NOT_REDO);
                 break;
             default:
                 try {
                     game.executeCommand(this.getPlayer(sessionID).getPlayer(), command);
                 } catch (IllegalCommandException e) {
-                    throw new ServerException(e.getMessage(),GAME_ERROR);
+                    throw new ServerException(e.getMessage());
                 }
                 if(command.equals(Commands.PASS)) {
                         if (game.isGameEnded()) {
@@ -171,18 +171,18 @@ public class GameController extends Observable{
 
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
         if(gameNotStarted())
-            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW);
         if(gameEnded())
-            throw new ServerException(ENDED_GAME,GAME_ERROR);
+            throw new ServerException(ENDED_GAME);
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
     public synchronized String getStatus(String sessionID) throws ServerException{
         OnLinePlayer player=getPlayer(sessionID);
         if(gameNotStarted())
-            throw new ServerException(WAIT_WINDOW,GAME_ERROR);
+            throw new ServerException(WAIT_WINDOW);
         if(gameEnded())
-            throw new ServerException(ENDED_GAME,GAME_ERROR);
+            throw new ServerException(ENDED_GAME);
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
@@ -191,7 +191,7 @@ public class GameController extends Observable{
                 .collect(Collectors.toList());
         if(player.size() != 1) {
             logger.log(Level.SEVERE, GAME_VIOLATION);
-            throw new ServerException(GAME_VIOLATION_MESSAGE,SERVER_ERROR);
+            throw new ServerException(GAME_VIOLATION_MESSAGE);
         }
         return player.get(0);
     }
