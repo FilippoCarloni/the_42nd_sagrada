@@ -11,9 +11,17 @@ import static it.polimi.ingsw.model.TestHelper.init;
 import static it.polimi.ingsw.model.TestHelper.wrappedIllegalCommand;
 import static it.polimi.ingsw.model.TestHelper.wrappedLegalCommand;
 import static it.polimi.ingsw.model.utility.Parameters.USE_COMPLETE_RULES;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class GlazingHammerTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Before drafting condition</li>
+     *     <li>Undo unavailable</li>
+     * </ul>
+     */
     @Test
     void test() {
         if (USE_COMPLETE_RULES) {
@@ -28,14 +36,24 @@ class GlazingHammerTest {
             g.undoCommand();
             g.undoCommand();
             wrappedLegalCommand(g, players.get(0), "tool 7");
+            assertFalse(g.isUndoAvailable());
             wrappedLegalCommand(g, players.get(0), "pick 1");
-            if (g.getData().getPickedDie().getShade().equals(Shade.LIGHTEST)) {
-                wrappedIllegalCommand(g, players.get(0), "place 1 2");
-            } else {
-                wrappedLegalCommand(g, players.get(0), "place 1 2");
-                wrappedIllegalCommand(g, players.get(0), "tool 7");
-                wrappedLegalCommand(g, players.get(0), "pass");
-            }
+            // the die can't be placed in (1, 2)
+            lightest(g, players);
+            // the die can be placed in (1, 2)
+            dark(g, players);
         }
+    }
+
+    private void lightest(Game g, List<Player> players) {
+        g.getData().getPickedDie().setShade(Shade.LIGHTEST);
+        wrappedIllegalCommand(g, players.get(0), "place 1 2");
+    }
+
+    private void dark(Game g, List<Player> players) {
+        g.getData().getPickedDie().setShade(Shade.DARK);
+        wrappedLegalCommand(g, players.get(0), "place 1 2");
+        wrappedIllegalCommand(g, players.get(0), "tool 7");
+        wrappedLegalCommand(g, players.get(0), "pass");
     }
 }

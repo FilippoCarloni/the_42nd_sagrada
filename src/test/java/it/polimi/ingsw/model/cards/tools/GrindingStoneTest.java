@@ -15,6 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GrindingStoneTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Tool activation</li>
+     *     <li>Tool tear down</li>
+     *     <li>Die flipping</li>
+     * </ul>
+     */
     @Test
     void test() {
         if (USE_COMPLETE_RULES) {

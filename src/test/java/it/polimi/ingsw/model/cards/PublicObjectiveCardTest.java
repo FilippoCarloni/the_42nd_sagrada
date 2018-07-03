@@ -14,14 +14,17 @@ import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
+import static it.polimi.ingsw.model.TestHelper.PRINT_PUBLIC_OBJECTIVES;
+import static it.polimi.ingsw.model.TestHelper.fillMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PublicObjectiveCardTest {
 
-    // TODO: add single-card tests
-
+    /**
+     * Asserts the correct size of the deck.
+     */
     @Test
     void isDeckCorrect() {
         Deck d = new PublicObjectiveDeck();
@@ -30,31 +33,30 @@ class PublicObjectiveCardTest {
         assertThrows(NoSuchElementException.class, d::draw);
     }
 
+    /**
+     * Evaluates score points on a generic frame and prints the values.
+     */
     @Test
     void printCards() {
-        DiceBag db = new ArrayDiceBag();
         Deck frames = new WindowFrameDeck();
         Deck d = new PublicObjectiveDeck();
         WindowFrame w = (WindowFrame) frames.draw();
-        for (int i = 0; i < Parameters.MAX_ROWS; i++)
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
-                w.put(db.pick(), i, j);
-        System.out.println(w);
+        fillMap(w);
+        if (PRINT_PUBLIC_OBJECTIVES)
+            System.out.println(w);
         while (d.size() > 0) {
             PublicObjectiveCard c = (PublicObjectiveCard) d.draw();
-            System.out.println("Value points for " + c.getName() + ": " + c.getValuePoints(w));
+            int vp = c.getValuePoints(w);
+            assertTrue(vp >= 0);
+            assertTrue(vp <= 25); // 5 (Color Column Variety) * #columns = 5 * 5 = 25 (maximum value possible for a single public objective)
+            if (PRINT_PUBLIC_OBJECTIVES)
+                System.out.println("Value points for " + c.getName() + ": " + c.getValuePoints(w));
         }
     }
 
-    @Test
-    void assertZeroForEmptyMaps() {
-        Deck frames = new WindowFrameDeck();
-        Deck d = new PublicObjectiveDeck();
-        WindowFrame w = (WindowFrame) frames.draw();
-        while (d.size() > 0)
-            assertEquals(0, ((PublicObjectiveCard) d.draw()).getValuePoints(w));
-    }
-
+    /**
+     * Asserts that every card returns 0 score points on an empty window frame.
+     */
     @Test
     void emptyMapTest() {
         WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
@@ -63,14 +65,14 @@ class PublicObjectiveCardTest {
             assertTrue((((PublicObjectiveCard) d.draw()).getValuePoints(w) == 0));
     }
 
+    /**
+     * Tests the correct cloning procedure for public objective cards.
+     */
     @Test
     void testJSON() {
         Deck d = new PublicObjectiveDeck();
-        DiceBag db = new ArrayDiceBag();
         WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
-        for (int i = 0; i < Parameters.MAX_ROWS; i++)
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
-                w.put(db.pick(), i, j);
+        fillMap(w);
         while (d.size() > 0) {
             PublicObjectiveCard card = (PublicObjectiveCard) d.draw();
             PublicObjectiveCard cardClone = JSONFactory.getPublicObjectiveCard(card.encode());

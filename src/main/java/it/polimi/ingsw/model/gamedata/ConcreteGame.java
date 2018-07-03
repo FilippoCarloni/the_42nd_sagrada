@@ -84,7 +84,7 @@ public class ConcreteGame implements Game {
 
     @Override
     public GameData getData() {
-        return JSONFactory.getGameData(commandManager.getCurrentData().encode());
+        return commandManager.getCurrentData();
     }
 
     @Override

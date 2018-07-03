@@ -21,6 +21,9 @@ class PickTest {
     void pickTest() {
         Game g = init("gen_2p_01");
         List<Player> players = g.getData().getPlayers();
+        wrappedIllegalCommand(g, players.get(0), "pick a");
+        wrappedIllegalCommand(g, players.get(0), "pic 1");
+        wrappedIllegalCommand(g, players.get(0), " pick  1");
         wrappedIllegalCommand(g, players.get(1), "pick 1");
         wrappedIllegalCommand(g, players.get(0), "pick 0");
         wrappedIllegalCommand(g, players.get(0), "pick 6");

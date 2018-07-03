@@ -19,6 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FluxRemover {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Tool activation</li>
+     *     <li>Pass without changing shade or placing</li>
+     *     <li>Pass after placing without selecting a new shade</li>
+     *     <li>Pass after placing and selecting a new shade</li>
+     *     <li>Tool tear down</li>
+     * </ul>
+     */
     @Test
     void test() {
         if (USE_COMPLETE_RULES) {
@@ -32,32 +42,50 @@ class FluxRemover {
             assertEquals(0, g.getData().getActiveToolID());
             Die die = g.getData().getPickedDie();
             assertFalse(g.getData().getDicePool().contains(die));
-            if (g.getData().getPickedDie().getColor().equals(Color.RED)) {
-                wrappedLegalCommand(g, players.get(0), "pass");
-                assertTrue(g.getData().getDicePool().contains(die));
-            } else if (g.getData().getPickedDie().getShade().equals(Shade.LIGHTEST)) {
-                wrappedIllegalCommand(g, players.get(0), "place 1 2");
-                wrappedIllegalCommand(g, players.get(0), "select 0");
-                wrappedIllegalCommand(g, players.get(0), "select 7");
-                wrappedLegalCommand(g, players.get(0), "select 1");
-                g.undoCommand();
-                wrappedLegalCommand(g, players.get(0), "select 6");
-                wrappedIllegalCommand(g, players.get(0), "select 5");
-                wrappedLegalCommand(g, players.get(0), "place 1 2");
-                wrappedLegalCommand(g, players.get(0), "pass");
-                assertFalse(g.getData().getDicePool().contains(die));
-            } else {
-                wrappedLegalCommand(g, players.get(0), "place 1 2");
-                wrappedIllegalCommand(g, players.get(0), "select 2");
-                g.undoCommand();
-                wrappedLegalCommand(g, players.get(0), "select 2");
-                assertEquals(Shade.LIGHTER, g.getData().getPickedDie().getShade());
-                wrappedIllegalCommand(g, players.get(0), "select 3");
-                wrappedIllegalCommand(g, players.get(0), "tool 11");
-                wrappedLegalCommand(g, players.get(0), "place 1 2");
-                wrappedLegalCommand(g, players.get(0), "pass");
-                assertFalse(g.getData().getDicePool().contains(die));
-            }
+            // case of direct pass without placing the die
+            directPass(g, players, die);
+            // case of shade selection and place
+            blueLightest(g, players, die);
+            // case of direct place
+            blueDark(g, players, die);
         }
+    }
+
+    private void directPass(Game g, List<Player> players, Die die) {
+        wrappedLegalCommand(g, players.get(0), "pass");
+        assertTrue(g.getData().getDicePool().contains(die));
+        g.undoCommand();
+    }
+
+    private void blueLightest(Game g, List<Player> players, Die die) {
+        g.getData().getPickedDie().setShade(Shade.LIGHTEST);
+        g.getData().getPickedDie().setColor(Color.BLUE);
+        wrappedIllegalCommand(g, players.get(0), "place 1 2");
+        wrappedIllegalCommand(g, players.get(0), "select 0");
+        wrappedIllegalCommand(g, players.get(0), "select 7");
+        wrappedLegalCommand(g, players.get(0), "select 1");
+        g.undoCommand();
+        wrappedLegalCommand(g, players.get(0), "select 6");
+        wrappedIllegalCommand(g, players.get(0), "select 5");
+        wrappedLegalCommand(g, players.get(0), "place 1 2");
+        wrappedLegalCommand(g, players.get(0), "pass");
+        assertFalse(g.getData().getDicePool().contains(die));
+        g.undoCommand();
+        g.undoCommand();
+        g.undoCommand();
+    }
+
+    private void blueDark(Game g, List<Player> players, Die die) {
+        g.getData().getPickedDie().setShade(Shade.DARK);
+        wrappedLegalCommand(g, players.get(0), "place 1 2");
+        wrappedIllegalCommand(g, players.get(0), "select 2");
+        g.undoCommand();
+        wrappedLegalCommand(g, players.get(0), "select 2");
+        assertEquals(Shade.LIGHTER, g.getData().getPickedDie().getShade());
+        wrappedIllegalCommand(g, players.get(0), "select 3");
+        wrappedIllegalCommand(g, players.get(0), "tool 11");
+        wrappedLegalCommand(g, players.get(0), "place 1 2");
+        wrappedLegalCommand(g, players.get(0), "pass");
+        assertFalse(g.getData().getDicePool().contains(die));
     }
 }

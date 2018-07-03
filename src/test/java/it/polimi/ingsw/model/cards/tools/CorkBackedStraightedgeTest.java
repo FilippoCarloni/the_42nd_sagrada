@@ -13,9 +13,18 @@ import static it.polimi.ingsw.model.TestHelper.wrappedIllegalCommand;
 import static it.polimi.ingsw.model.TestHelper.wrappedLegalCommand;
 import static it.polimi.ingsw.model.utility.Parameters.USE_COMPLETE_RULES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CorkBackedStraightedgeTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Correct tool activation</li>
+     *     <li>Tool tear down</li>
+     *     <li>Placing according to the tool rules</li>
+     * </ul>
+     */
     @Test
     void test() {
         if (USE_COMPLETE_RULES) {
@@ -26,8 +35,9 @@ class CorkBackedStraightedgeTest {
             wrappedIllegalCommand(g, players.get(0), "place 4 5");
             wrappedLegalCommand(g, players.get(0), "tool 9");
             wrappedIllegalCommand(g, players.get(0), "pass");
-            assertEquals(null, g.getCurrentPlayer().getWindowFrame().getDie(3, 4));
+            assertNull(g.getCurrentPlayer().getWindowFrame().getDie(3, 4));
             wrappedLegalCommand(g, players.get(0), "place 4 5");
+            wrappedIllegalCommand(g, players.get(0), "tool 9");
             assertEquals(Shade.LIGHT, g.getCurrentPlayer().getWindowFrame().getDie(3, 4).getShade());
             assertEquals(Color.PURPLE, g.getCurrentPlayer().getWindowFrame().getDie(3, 4).getColor());
             wrappedLegalCommand(g, players.get(0), "pass");

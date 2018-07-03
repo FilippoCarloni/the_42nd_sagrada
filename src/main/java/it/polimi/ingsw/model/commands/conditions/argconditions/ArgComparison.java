@@ -18,6 +18,19 @@ import static java.lang.Integer.parseInt;
  */
 public class ArgComparison implements Condition {
 
+    public static String getErrorFromArgument(String typeOfComparison) {
+        switch (typeOfComparison) {
+            case GREATER_THAN:
+                return ERR_INDEX_TOO_SMALL;
+            case SMALLER_THAN:
+                return ERR_INDEX_TOO_BIG;
+            case EQUAL_TO:
+                return ERR_DIFFERENT_INDEX;
+            default:
+        }
+        throw new IllegalArgumentException(BAD_JSON);
+    }
+
     private String typeOfComparison;
     private int index;
     private String bound;
@@ -71,15 +84,6 @@ public class ArgComparison implements Condition {
 
     @Override
     public String getErrorMessage() {
-        switch (typeOfComparison) {
-            case GREATER_THAN:
-                return ERR_INDEX_TOO_SMALL;
-            case SMALLER_THAN:
-                return ERR_INDEX_TOO_BIG;
-            case EQUAL_TO:
-                return ERR_DIFFERENT_INDEX;
-            default:
-        }
-        throw new IllegalArgumentException(BAD_JSON);
+        return getErrorFromArgument(typeOfComparison);
     }
 }

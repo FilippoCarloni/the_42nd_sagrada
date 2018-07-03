@@ -14,6 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LensCutterTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Tool activation</li>
+     *     <li>Tool tear down (ID check)</li>
+     *     <li>Select with argument out of bound</li>
+     *     <li>Swapping dice from round track</li>
+     * </ul>
+     */
     @Test
     void test() {
         Game g = init("gen_2p_02");

@@ -15,6 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EglomiseBrushTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Favor points check</li>
+     *     <li>Tool activation</li>
+     *     <li>Tool tear down</li>
+     *     <li>Correct moving according to the tool rules</li>
+     * </ul>
+     */
     @Test
     void test() {
         Game g = init("gen_2p_01");

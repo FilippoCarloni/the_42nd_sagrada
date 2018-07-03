@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.gameboard.dice.Die;
 import it.polimi.ingsw.model.utility.Shade;
 import it.polimi.ingsw.model.gameboard.windowframes.WindowFrame;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
@@ -31,16 +30,7 @@ public class ShadeRule extends RuleDecorator {
             throw new NullPointerException(NULL_PARAMETER);
         checkLegalCoordinates(row, column);
         Shade dieShade = die.getShade();
-        List<Die> windowDice = new ArrayList<>();
-        Die d;
-        d = windowFrame.getDie(row, column - 1);
-        if (d != null) windowDice.add(d);
-        d = windowFrame.getDie(row - 1, column);
-        if (d != null) windowDice.add(d);
-        d = windowFrame.getDie(row, column + 1);
-        if (d != null) windowDice.add(d);
-        d = windowFrame.getDie(row + 1, column);
-        if (d != null) windowDice.add(d);
+        List<Die> windowDice = appendDice(windowFrame, row, column);
         for (Die windowDie : windowDice)
             if (windowDie.getShade().equals(dieShade))
                 return false;

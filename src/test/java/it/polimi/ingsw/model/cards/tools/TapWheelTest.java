@@ -14,8 +14,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TapWheelTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Tool activation</li>
+     *     <li>Tool card tear down on generic command execution</li>
+     *     <li>Pass without moving</li>
+     * </ul>
+     */
     @Test
-    void test1() {
+    void passDirectly() {
         if (USE_COMPLETE_RULES) {
             Game g = init("gen_2p_04");
             List<Player> players = g.getData().getPlayers();
@@ -29,8 +37,15 @@ class TapWheelTest {
         }
     }
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Moving rules</li>
+     *     <li>Move one die, then pass</li>
+     * </ul>
+     */
     @Test
-    void test2() {
+    void moveOneDie() {
         if (USE_COMPLETE_RULES) {
             Game g = init("gen_2p_04");
             List<Player> players = g.getData().getPlayers();
@@ -47,8 +62,15 @@ class TapWheelTest {
         }
     }
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Move two dice</li>
+     *     <li>Tool tear down</li>
+     * </ul>
+     */
     @Test
-    void test3() {
+    void moveTwoDice() {
         if (USE_COMPLETE_RULES) {
             Game g = init("gen_2p_04");
             List<Player> players = g.getData().getPlayers();
@@ -64,16 +86,20 @@ class TapWheelTest {
             assertEquals(0, g.getData().getActiveToolID());
             assertEquals(0, g.getData().getPassiveToolID());
             wrappedLegalCommand(g, players.get(0), "pass");
-            System.out.println(g.getData());
         }
     }
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Illegal die movement when there'n no matching color on the round track</li>
+     * </ul>
+     */
     @Test
-    void test4() {
+    void noMatchingColor() {
         if (USE_COMPLETE_RULES) {
             Game g = init("gen_2p_05");
             List<Player> players = g.getData().getPlayers();
-            System.out.println(g.getData());
             wrappedLegalCommand(g, players.get(0), "tool 12");
             wrappedLegalCommand(g, players.get(0), "pick 1");
             wrappedIllegalCommand(g, players.get(0), "tool 12");

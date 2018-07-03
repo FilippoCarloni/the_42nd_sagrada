@@ -14,11 +14,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 
+import static it.polimi.ingsw.model.TestHelper.fillMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PrivateObjectiveCardTest {
 
+    /**
+     * Checks the correct size of the deck.
+     */
     @Test
     void isDeckCorrect() {
         Deck d = new PrivateObjectiveDeck();
@@ -28,14 +32,14 @@ class PrivateObjectiveCardTest {
         assertThrows(NoSuchElementException.class, d::draw);
     }
 
+    /**
+     * Checks the correct evaluation of final score on a randomly filled frame.
+     */
     @Test
     void areCalculationsCorrect() {
-        DiceBag db = new ArrayDiceBag();
         PrivateObjectiveCard c = (PrivateObjectiveCard) new PrivateObjectiveDeck().draw();
         WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
-        for (int i = 0; i < Parameters.MAX_ROWS; i++)
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
-                w.put(db.pick(), i, j);
+        fillMap(w);
         int res = 0;
         for (Die d : w.getDice())
             if (d.getColor().equals(c.getColor()))
@@ -43,14 +47,14 @@ class PrivateObjectiveCardTest {
         assertEquals(c.getValuePoints(w), res);
     }
 
+    /**
+     * Asserts the correct cloning procedure of a private objective card.
+     */
     @Test
     void testJSON() {
         Deck d = new PrivateObjectiveDeck();
-        DiceBag db = new ArrayDiceBag();
         WindowFrame w = (WindowFrame) new WindowFrameDeck().draw();
-        for (int i = 0; i < Parameters.MAX_ROWS; i++)
-            for (int j = 0; j < Parameters.MAX_COLUMNS; j++)
-                w.put(db.pick(), i, j);
+        fillMap(w);
         while (d.size() > 0) {
             PrivateObjectiveCard card = (PrivateObjectiveCard) d.draw();
             PrivateObjectiveCard cardClone = JSONFactory.getPrivateObjectiveCard(card.encode());

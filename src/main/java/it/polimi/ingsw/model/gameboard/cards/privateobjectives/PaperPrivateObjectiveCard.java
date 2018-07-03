@@ -40,4 +40,14 @@ class PaperPrivateObjectiveCard extends AbstractCard implements PrivateObjective
                 .map(Die::getShade)
                 .mapToInt(Shade::getValue).sum();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

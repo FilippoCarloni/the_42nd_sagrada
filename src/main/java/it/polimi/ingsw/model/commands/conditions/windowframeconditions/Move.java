@@ -41,22 +41,23 @@ public class Move implements Condition {
             Die die = window.pick(args[0], args[1]);
             if (placing) {
                 value = new PlacingRule().canBePlaced(die, window, args[2], args[3]);
-                if (!value)
-                    errorMessage = ERR_PLACING_ERROR;
+                errorMessage = setError(value, ERR_PLACING_ERROR);
             }
             if (value && color) {
                 value = new ColorRule().canBePlaced(die, window, args[2], args[3]);
-                if (!value)
-                    errorMessage = ERR_COLOR_ERROR;
+                errorMessage = setError(value, ERR_COLOR_ERROR);
             }
             if (value && shade) {
                 value = new ShadeRule().canBePlaced(die, window, args[2], args[3]);
-                if (!value)
-                    errorMessage = ERR_SHADE_ERROR;
+                errorMessage = setError(value, ERR_SHADE_ERROR);
             }
             gameData.getTurnManager().getCurrentPlayer().getWindowFrame().put(die, args[0], args[1]);
             return value;
         };
+    }
+
+    private String setError(boolean value, String error) {
+        return value ? errorMessage : error;
     }
 
     @Override

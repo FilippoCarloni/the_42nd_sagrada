@@ -77,4 +77,14 @@ public class PaperToolCard extends AbstractCard implements ToolCard {
         obj.put(JSONTag.FAVOR_POINTS, favorPoints);
         return obj;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

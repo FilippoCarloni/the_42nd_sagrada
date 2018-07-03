@@ -13,6 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LathekinTest {
 
+    /**
+     * Testing
+     * <ul>
+     *     <li>Tool activation</li>
+     *     <li>Tool tear down</li>
+     *     <li>First die movement</li>
+     *     <li>Second die movement</li>
+     *     <li>Same die movement</li>
+     *     <li>Favor points check</li>
+     * </ul>
+     */
     @Test
     void test() {
         Game g = init("gen_2p_02");
@@ -34,6 +45,5 @@ class LathekinTest {
         assertEquals(4, g.getData().getPlayers().get(0).getFavorPoints());
         assertEquals(1, g.getData().getTools().get(2).getFavorPoints());
         assertEquals(0, g.getData().getDiceMoved().size());
-        System.out.println(g.getData());
     }
 }

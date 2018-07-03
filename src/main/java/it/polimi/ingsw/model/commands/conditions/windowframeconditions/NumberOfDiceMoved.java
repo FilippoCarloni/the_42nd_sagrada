@@ -2,10 +2,8 @@ package it.polimi.ingsw.model.commands.conditions.windowframeconditions;
 
 import it.polimi.ingsw.model.commands.conditions.Condition;
 import it.polimi.ingsw.model.commands.conditions.ConditionPredicate;
+import it.polimi.ingsw.model.commands.conditions.argconditions.ArgComparison;
 
-import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_DIFFERENT_INDEX;
-import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_BIG;
-import static it.polimi.ingsw.model.commands.ErrorMessage.ERR_INDEX_TOO_SMALL;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.*;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.EQUAL_TO;
 import static it.polimi.ingsw.model.commands.conditions.ConditionID.SMALLER_THAN;
@@ -54,15 +52,6 @@ public class NumberOfDiceMoved implements Condition {
 
     @Override
     public String getErrorMessage() {
-        switch (typeOfComparison) {
-            case GREATER_THAN:
-                return ERR_INDEX_TOO_SMALL;
-            case SMALLER_THAN:
-                return ERR_INDEX_TOO_BIG;
-            case EQUAL_TO:
-                return ERR_DIFFERENT_INDEX;
-            default:
-        }
-        throw new IllegalArgumentException(BAD_JSON);
+        return ArgComparison.getErrorFromArgument(typeOfComparison);
     }
 }
