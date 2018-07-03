@@ -77,7 +77,7 @@ public class LobbyManager extends Observable{
      * It is called after the timer is closed.
      */
     private synchronized void endWaiting(){
-        if(players.size()>=2) {
+        if(players.size()>=MIN_PLAYER_GAME) {
             this.open = false;
             this.notifyAll();
             this.beeperHandle.cancel(true);

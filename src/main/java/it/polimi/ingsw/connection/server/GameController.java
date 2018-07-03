@@ -68,7 +68,7 @@ public class GameController extends Observable{
                     }
                 if (this.countObservers() == 1) {
                     this.setChanged();
-                    this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GENERIC_MESSAGE));
+                    this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GAME_STATS));
                     this.deleteObservers();
                 }
 
@@ -126,7 +126,6 @@ public class GameController extends Observable{
     }
 
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
-        boolean passed=false;
         if(gameNotStarted())
             throw new ServerException(WAIT_WINDOW,GAME_ERROR);
         if(gameEnded())
@@ -155,22 +154,19 @@ public class GameController extends Observable{
                     throw new ServerException(e.getMessage(),GAME_ERROR);
                 }
                 if(command.equals(Commands.PASS)) {
-                    passed=true;
+                        if (game.isGameEnded()) {
+                            printScore();
+                            closeGame();
+                        } else {
+                            timer.cancel(true);
+                            isTurnOf();
+                            startTimer();
+                        }
                 }
-                break;
         }
-        sendStatus();
-        if(passed) {
-            if(game.isGameEnded()) {
-                printScore();
-                closeGame();
-            }
-            else {
-                timer.cancel(true);
-                isTurnOf();
-                startTimer();
-            }
-        }
+        if(!game.isGameEnded())
+            sendStatus();
+
     }
 
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
@@ -209,7 +205,7 @@ public class GameController extends Observable{
             if (this.countObservers() == 0)
                 return false;
         }
-        player.getObserver().update(this, game.getData().encode().toString());
+        player.getObserver().update(this, game.getData(player.getPlayer()).toString());
         return true;
     }
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
+import it.polimi.ingsw.connection.costraints.Settings;
 import it.polimi.ingsw.connection.rmi.ConcreteLobby;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.rmi.ServerRMI;
@@ -22,11 +23,11 @@ public class Server {
      */
     public static void main(String[] args) throws  AlreadyBoundException, IOException {
         Logger logger = Logger.getLogger(Server.class.getName());
-        ServerRMI server = new ServerRMI();
+        ServerRMI serverRMI = new ServerRMI();
         CentralServer centralServer=new CentralServer();
         Lobby lobby=new ConcreteLobby(centralServer);
-        server.addSkeleton(Lobby.ID, lobby);
-        logger.info(() -> ("You can find the exposes object at: " + server.getURL() + "<name_of_the_object>"));
+        serverRMI.addSkeleton(Settings.LOBBY_RMI_ID, lobby);
+        logger.info(() -> ("You can find the exposes object at: " + serverRMI.getURL() + "<name_of_the_object>"));
         new Thread(new ServerSocket(centralServer)).start();
     }
 }

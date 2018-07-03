@@ -3,7 +3,6 @@ package it.polimi.ingsw.connection.server;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -20,13 +19,11 @@ public class CentralServer {
         private List<WrappedGameController> gameControllers;
         private Logger logger=Logger.getLogger(CentralServer.class.getName());
         private List<OnLinePlayer> players;
-        private List<OnLinePlayer>  disconnectedPlayer;
         private List<LobbyManager> lobbyManagers;
         private Observable observable;
         CentralServer() {
 
             players=new ArrayList<>();
-            disconnectedPlayer=new ArrayList<>();
             gameControllers=new ArrayList<>();
             lobbyManagers=new ArrayList<>();
             observable=new Observable();
@@ -47,20 +44,7 @@ public class CentralServer {
             logger.info(() -> filtered+CONNECTED+x.getServerSession().getID());
             return x.getServerSession().getID();
         }
-        public synchronized void disconnect(ServerSession userServerSession)throws RemoteException {
-            for (OnLinePlayer s : players)
-                if (s.getServerSession().getID().equals(userServerSession.getID())) {
-                    if (s.isPlaying()) {
-                        disconnectedPlayer.add(s);
-                        return;
-                    }
-                    else {
-                        players.remove(s);
-                        return ;
-                    }
-                }
-            throw new RemoteException("error, and it is a very big problem!");
-        }
+
         public  WrappedGameController getGame(String userSessionID) throws ServerException {
             WrappedGameController game;
             LobbyManager lobbyManager=null;

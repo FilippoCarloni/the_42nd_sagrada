@@ -23,8 +23,8 @@ public class OnLinePlayer {
 
     /**
      * Create a new OnLinePlayer.
-     * @param username Username of the OnLinePlayer.
-     * @param obs GameObserver, essential for all the communications from the server to the client.
+     * @param username - Username of the OnLinePlayer.
+     * @param obs - GameObserver, essential for all the communications from the server to the client.
      */
     OnLinePlayer(String username, GameObserver obs) {
         player = new ConcretePlayer(username);
@@ -44,7 +44,7 @@ public class OnLinePlayer {
 
     /**
      *
-     * @return if the OnLinePlayer is current playing.
+     * @return - If the OnLinePlayer is current playing.
      */
     synchronized boolean isPlaying() {
         return playing;
@@ -68,7 +68,7 @@ public class OnLinePlayer {
 
     /**
      * Set a new ServerSession for the OnLinePlayer.
-     * @return The new ServerSession
+     * @return - The new ServerSession
      */
     synchronized ServerSession refreshSession() {
         this.serverSession = new ServerSession(username);
@@ -77,7 +77,7 @@ public class OnLinePlayer {
 
     /**
      *
-     * @return The actual GameObserver associated to the OnLinePlayer.
+     * @return - The actual GameObserver associated to the OnLinePlayer.
      */
     synchronized GameObserver getObserver() {
         return observer;
@@ -94,7 +94,7 @@ public class OnLinePlayer {
     /**
      *
      * @param sessionID A generic sessionID.
-     * @return If the sessionID matches with the respective sessionID of the OnLinePlayr.
+     * @return - If the sessionID matches with the respective sessionID of the OnLinePlayr.
      */
     synchronized boolean isMySessionID(String sessionID) {
         return serverSession.getID().equals(sessionID);
@@ -102,7 +102,7 @@ public class OnLinePlayer {
 
     /**
      *
-     * @return The OnLinePlayer username.
+     * @return - The OnLinePlayer username.
      */
     public String getUsername() {
         return username;

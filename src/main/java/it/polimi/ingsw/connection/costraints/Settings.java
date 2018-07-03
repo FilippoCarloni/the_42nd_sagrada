@@ -93,4 +93,5 @@ public  class Settings{
     public final int lobbyRefreshTime;
     public final int turnTime;
     public final int gameRefresh;
+    public static final String LOBBY_RMI_ID = "Login";
 }

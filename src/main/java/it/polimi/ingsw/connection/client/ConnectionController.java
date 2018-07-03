@@ -8,7 +8,9 @@ import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.io.*;
 import java.net.ConnectException;
+import java.net.Inet4Address;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -104,6 +106,12 @@ public class ConnectionController extends UnicastRemoteObject implements RemoteO
     }
 
     private void rmiConnection() throws ConnectException {
+        //
+        try {
+            System.setProperty("java.rmi.server.hostname", Inet4Address.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            throw new ConnectException(e.getMessage());
+        }
         try {
             Registry reg = LocateRegistry.getRegistry(new Settings().IP_SERVER, new Settings().RMI_PORT);
             lobby = (Lobby) reg.lookup("Login");
