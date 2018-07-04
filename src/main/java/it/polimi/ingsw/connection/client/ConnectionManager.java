@@ -236,7 +236,7 @@ public class ConnectionManager implements RemoteObserver, Serializable {
                     try {
                         gameManger.setMap(sessionID, Integer.parseInt(action[1]));
                     } catch (NumberFormatException e) {
-                        messages.add(MessageType.encodeMessage(e.getMessage(), MessageType.ERROR_MESSAGE));
+                        send(MessageType.encodeMessage(NOT_VALID_NUMBER, MessageType.ERROR_MESSAGE));
                     }
                 } else
                     messages.add(MessageType.encodeMessage(NOT_PLAYING, MessageType.ERROR_MESSAGE));

@@ -86,7 +86,6 @@ public  class Settings{
      * The default waiting time in nanosecond to start a match with less than 4 players
      */
     public final int lobbyWaitingTime;
-    public static final long SERIAL_VERSION_CLIENTSTATUS = 1190476517382928173L;
     public final int SOCKET_PORT;
     public final String IP_SERVER;
     public static final String ANONYMOUS = "ANONYMOUS";

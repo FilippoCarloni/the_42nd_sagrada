@@ -1,7 +1,5 @@
 package it.polimi.ingsw.connection.client;
 
-import it.polimi.ingsw.connection.costraints.Settings;
-
 import java.io.*;
 
 /**
@@ -9,7 +7,7 @@ import java.io.*;
  */
 class ClientStatus implements Serializable {
     private static final String SERIAL_FILE_EXTENSION = ".ser";
-    private static final long serialVersionUID = Settings.SERIAL_VERSION_CLIENTSTATUS;
+    private static final long serialVersionUID = 1190476517382928173L;
     private static final String NAME_OF_FILE = "ClientStatus_";
     private static final String PATH_OF_CLIENT_STATUS = "./";
 

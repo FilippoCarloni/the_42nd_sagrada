@@ -205,7 +205,8 @@ public class GameController extends Observable{
             if (this.countObservers() == 0)
                 return false;
         }
-        player.getObserver().update(this, game.getData(player.getPlayer()).toString());
+        if(!gameNotStarted())
+            player.getObserver().update(this, MessageType.encodeMessage(game.getData(player.getPlayer()).toString(), MessageType.GAME_BOARD));
         return true;
     }
 

@@ -11,7 +11,13 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static it.polimi.ingsw.connection.costraints.ServerMessage.NEW_SOCKET_CLIENT_THREAD;
+import static it.polimi.ingsw.connection.costraints.ServerMessage.SOCKET_SERVER_ERROR;
+import static it.polimi.ingsw.connection.costraints.ServerMessage.SOCKET_SERVER_MESSAGE;
 
+/**
+ * The ServerSocket class listen in a file configured port and manage all the connection over TCP.
+ */
 public class ServerSocket implements Runnable{
 
     private java.net.ServerSocket server;
@@ -19,37 +25,48 @@ public class ServerSocket implements Runnable{
     private ExecutorService th;
     private CentralServer lobby;
     private Logger logger= Logger.getLogger(ServerSocket.class.getName());
-    private int numError;
 
+    /**
+     * Creates a new ServerSocket.
+     * @param lobby - The CentralServer reference.
+     * @throws IOException - Threows a IOException if tehre are issues in the Socket creation phase.
+     */
     public ServerSocket(CentralServer lobby) throws IOException {
         client = null;
         this.lobby=lobby;
         server = new java.net.ServerSocket(new Settings().SOCKET_PORT);
         th = Executors.newCachedThreadPool();
-        numError = 0;
     }
+
+    /**
+     * Listens continuously for new client connection, start a new thread for each new connection.
+     * if the are issues the method stops and close the socket connection of the server.
+     */
     @Override
     public void run() {
-        logger.info(() -> "Server thread started, the server is reachable through socket connection at the port: "+new Settings().SOCKET_PORT);
-        while(numError<10) {
+        boolean noError = true;
+        logger.info(() -> SOCKET_SERVER_MESSAGE+new Settings().SOCKET_PORT);
+        while(noError) {
             try {
                 client = server.accept();
-                logger.info("A client thread is started");
+                logger.info(NEW_SOCKET_CLIENT_THREAD);
                 th.execute(new RemoteClient(client,lobby));
             } catch (IOException e) {
-                numError++;
-                logger.log(Level.SEVERE, "Connection of new client over sockete error", e);
+                noError = false;
+                logger.log(Level.SEVERE, SOCKET_SERVER_ERROR, e);
             }
         }
-        logger.log(Level.SEVERE,"Max number of error in the server");
         close();
     }
 
+    /**
+     * Closes the Server socket connection.
+     */
     private void close() {
         try {
             server.close();
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Connection of new client over socket error", e);
+            logger.log(Level.SEVERE, SOCKET_SERVER_ERROR, e);
         }
     }
 

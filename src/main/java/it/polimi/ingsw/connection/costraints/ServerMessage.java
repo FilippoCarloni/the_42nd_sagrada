@@ -33,5 +33,16 @@ public class ServerMessage {
     public static final String SERVER_DISCONNECTION_ERROR = "Server disconnection";
     public static final String INVALID_MESSAGE = "Invalid message" ;
     public static final String GOOD_BYE = "Good Bye";
-
+    public static final String LOGIN_REQUEST = "Login requested from: ";
+    public static final String GAME_REQUEST = "Restore request from: ";
+    public static final String RESTORE_REQUEST = "Restore request from: ";
+    public static final String STATUS_REQUEST = "Status request from: ";
+    public static final String TURN_REQUEST = "Turn request from: ";
+    public static final String WINDOW_REQUEST = "Set window request from: ";
+    public static final String COMMAND_REQUEST_1 = "Command <";
+    public static final String COMMAND_REQUEST_2 = "> send from: ";
+    public static final String SOCKET_SERVER_MESSAGE =  "Server thread started, the server is reachable through socket connection at the port: ";
+    public static final String NEW_SOCKET_CLIENT_THREAD = "A new client thread is started";
+    public static final String SOCKET_SERVER_ERROR = "Connection of new client over socket error";
+    public static final String NOT_VALID_NUMBER = "Connection of new client over socket error";
 }
