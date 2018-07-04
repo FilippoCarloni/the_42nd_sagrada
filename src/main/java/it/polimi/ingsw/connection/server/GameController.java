@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.server.ServerMessage.*;
+import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 

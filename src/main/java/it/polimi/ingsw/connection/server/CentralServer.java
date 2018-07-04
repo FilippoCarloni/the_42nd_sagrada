@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.server.ServerMessage.*;
+import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
 
 public class CentralServer {
         private static final int USERNAME_MIN_LENGTH = 4;

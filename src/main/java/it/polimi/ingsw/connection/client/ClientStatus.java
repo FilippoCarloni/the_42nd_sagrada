@@ -38,7 +38,7 @@ class ClientStatus implements Serializable {
      *
      * @return - The sessionID associated at the ClientStatus.
      */
-    String getSesssion() {
+    String getSession() {
         return sessionID;
     }
 

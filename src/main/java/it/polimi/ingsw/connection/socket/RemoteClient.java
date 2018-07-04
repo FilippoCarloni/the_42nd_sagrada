@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static it.polimi.ingsw.connection.costraints.Settings.ANONYMOUS;
+import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
 
 public class RemoteClient implements Runnable,GameObserver {
     private Socket client;
@@ -27,9 +28,9 @@ public class RemoteClient implements Runnable,GameObserver {
     private String line;
     private Logger logger= Logger.getLogger(ServerSocket.class.getName());
     private boolean isALive;
-    RemoteClient(Socket s,CentralServer lobby) {
+    RemoteClient(Socket serverSocket,CentralServer lobby) {
         sessionID=ANONYMOUS;
-        client=s;
+        client=serverSocket;
         this.lobby=lobby;
         action="";
         isALive=true;
@@ -45,10 +46,10 @@ public class RemoteClient implements Runnable,GameObserver {
                 line=in.nextLine();
                 if(line.trim().length()>0)
                     logger.info(() ->sessionID+" send: "+line);
-                cmd=line.split(" ");
+                cmd=line.split(COMMAND_SEPARATOR);
                 if(cmd.length>0)
                     switch (cmd[0]) {
-                        case "window":
+                        case WINDOW_COMMAND:
                             if(game!=null)
                             if(cmd.length==2) {
                                 try {
@@ -60,7 +61,7 @@ public class RemoteClient implements Runnable,GameObserver {
                             else
                                 send(MessageType.encodeMessage("you are not playing",MessageType.ERROR_MESSAGE));
                             break;
-                        case "restore":
+                        case RESTORE_COMMAND:
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
                                     try {
@@ -76,7 +77,7 @@ public class RemoteClient implements Runnable,GameObserver {
                                 send(MessageType.encodeMessage("You are already logged",MessageType.ERROR_MESSAGE));
                             break;
 
-                        case "login":
+                        case LOGIN_COMMAND:
                             if(sessionID.equals(ANONYMOUS)) {
                                 if (cmd.length == 2) {
                                     try {
@@ -92,21 +93,20 @@ public class RemoteClient implements Runnable,GameObserver {
                             else
                                 send (MessageType.encodeMessage("You are already logged",MessageType.ERROR_MESSAGE));
                             break;
-                        case "play":
+                        case PLAY_COMMAND:
                             new Thread(() -> {
                                 if(!sessionID.equals(ANONYMOUS)) {
                                     try {
                                         game = lobby.getGame(sessionID).getGameController();
                                     } catch (Exception e) {
-                                        logger.info("Error");
+                                        logger.info(e.getMessage());
                                     }
                                 }else
                                     send (MessageType.encodeMessage("You are not already logged",MessageType.ERROR_MESSAGE));
                             }).start();
                             break;
-                        case "view":
+                        case VIEW_COMMAND:
                             try {
-                                System.out.println(" plppl");
                                 if (game != null)
                                     send(game.getStatus(sessionID));
                                 else
@@ -115,10 +115,10 @@ public class RemoteClient implements Runnable,GameObserver {
                                 send(MessageType.encodeMessage(e.getMessage(), MessageType.ERROR_MESSAGE));
                             }
                             break;
-                        case "action":
+                        case ACTION_COMMAND:
                             if(game != null) {
                                 for (i = 1; i < cmd.length; i++) {
-                                    action = action.concat(" " + cmd[i]);
+                                    action = action.concat(COMMAND_SEPARATOR + cmd[i]);
                                 }
                                 try {
                                     if (!game.isMyTurn(sessionID))
@@ -133,14 +133,14 @@ public class RemoteClient implements Runnable,GameObserver {
                             else
                                 send(MessageType.encodeMessage("You are not playing",MessageType.ERROR_MESSAGE));
                             break;
-                        case "quit":
+                        case QUIT_COMMAND:
                             break;
                         default:
                             send(MessageType.encodeMessage("Command not recognized",MessageType.ERROR_MESSAGE));
                             break;
 
                     }
-            }while(!line.equals("quit"));
+            }while(!line.equals(QUIT_COMMAND));
             in.close();
             out.close();
             client.close();

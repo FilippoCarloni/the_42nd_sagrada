@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.connection.client.ConnectionController;
+import it.polimi.ingsw.connection.client.ConnectionManager;
 import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
@@ -27,7 +27,7 @@ public class GuiManager {
 
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final int REFRESH_RATE = 100;    //milliseconds
-    private ConnectionController connectionController;
+    private ConnectionManager connectionController;
     private String usernameMainPlayer;
     private LobbyController lobbyController;
     private WindowFramesChoice windowFramesChoice;
@@ -97,7 +97,7 @@ public class GuiManager {
     /**
      * Getters for all needed references present in this class.
      */
-    public ConnectionController getConnectionController(){
+    public ConnectionManager getConnectionController(){
         return connectionController;
     }
     public String getUsernameMainPlayer(){
@@ -168,7 +168,7 @@ public class GuiManager {
         return guiManagerInstance;
     }
     private GuiManager(ConnectionType connectionType) throws ConnectException, RemoteException{
-        connectionController = new ConnectionController(connectionType);
+        connectionController = new ConnectionManager(connectionType);
         lobbyController = null;
         gameStatMessage = null;
         gameBoardMessage = null;

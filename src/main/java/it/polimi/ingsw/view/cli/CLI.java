@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.connection.client.ConnectionController;
+import it.polimi.ingsw.connection.client.ConnectionManager;
 import it.polimi.ingsw.connection.client.ConnectionType;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.model.utility.*;
@@ -11,6 +11,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -39,6 +40,7 @@ public class CLI implements Runnable {
     private static final String TOOL_NOT_ACTIVE = "none";
     private static final String DIE_NOT_PICKED = "[ ]";
     private static final String EMPTY_ROUND_TRACK = "empty";
+    private static final String SERVER_ERROR = "Server not reachable";
 
     // Board printer constants
     private static final int PIXEL_WIDTH = 21;
@@ -50,7 +52,7 @@ public class CLI implements Runnable {
     private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/card";
 
     private Scanner scanner;
-    private ConnectionController connectionController;
+    private ConnectionManager connectionController;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private static final int REFRESH_RATE = 100; // milliseconds
 
@@ -82,10 +84,15 @@ public class CLI implements Runnable {
         String username;
         print(INSERT_USERNAME);
         username = scanner.nextLine();
-        while (!connectionController.restore(username)) {
-            print(INVALID_USERNAME);
-            print(INSERT_USERNAME);
-            username = scanner.nextLine();
+        try {
+            while (!connectionController.restore(username)) {
+                print(INVALID_USERNAME);
+                print(INSERT_USERNAME);
+                username = scanner.nextLine();
+            }
+        }catch (NoSuchElementException ex){
+            print(SERVER_ERROR);
+            System.exit(1);
         }
         print(LOGIN_CONFIRMATION);
     }
@@ -96,7 +103,7 @@ public class CLI implements Runnable {
         print(CONNECTION_TYPE_OPTIONS);
         connectionType = scanner.nextLine().equals(CONNECTION_TYPE_FIRST_OPTION) ? ConnectionType.RMI : ConnectionType.SOCKET;
         try {
-            connectionController = new ConnectionController(connectionType);
+            connectionController = new ConnectionManager(connectionType);
         } catch (Exception e) {
             print(CONNECTION_ERROR);
             System.exit(1);

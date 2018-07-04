@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import static it.polimi.ingsw.connection.costraints.Settings.MAX_PLAYER_GAME;
 import static it.polimi.ingsw.connection.costraints.Settings.MIN_PLAYER_GAME;
-import static it.polimi.ingsw.connection.server.ServerMessage.LOBBY_LEAVING;
+import static it.polimi.ingsw.connection.costraints.ServerMessage.LOBBY_LEAVING;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
