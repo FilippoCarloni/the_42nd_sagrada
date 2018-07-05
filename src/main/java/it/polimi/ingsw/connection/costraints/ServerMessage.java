@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.costraints;
 
 /**
- * The ServerMessage class contains the message that the server sends to the clients.
+ * The ServerMessage class contains the constants parts of the messages that the server sends to the clients.
  */
 public class ServerMessage {
     private ServerMessage(){
@@ -45,4 +45,9 @@ public class ServerMessage {
     public static final String NEW_SOCKET_CLIENT_THREAD = "A new client thread is started";
     public static final String SOCKET_SERVER_ERROR = "Connection of new client over socket error";
     public static final String NOT_VALID_NUMBER = "Connection of new client over socket error";
+    public static final String ALREADY_LOGGED = "You are already logged";
+    public static final String SOCKET_WRONG_ARGUMENT = "Bad arguments passed";
+    public static final String SOCKET_ANOMALY_DISCONNECTION = "Anomaly disconnection";
+    public static final String SOCKET_ERROR = "Socket error";
+    public static final String COMMAND_NOT_RECOGNIZED = "Command not recognized";
 }

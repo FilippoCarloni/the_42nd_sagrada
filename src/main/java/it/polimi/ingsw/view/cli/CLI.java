@@ -42,8 +42,8 @@ public class CLI implements Runnable {
     private static final String EMPTY_ROUND_TRACK = "empty";
     private static final String SERVER_ERROR = "Server not reachable";
     private static final String SCORE_TITLE = "+-------------+\n" +
-                                              "| FINAL SCORE |\n" +
-                                              "+-------------+\n";
+            "| FINAL SCORE |\n" +
+            "+-------------+\n";
 
     // Board printer constants
     private static final int PIXEL_WIDTH = 21;
@@ -93,7 +93,7 @@ public class CLI implements Runnable {
                 print(INSERT_USERNAME);
                 username = scanner.nextLine();
             }
-        }catch (NoSuchElementException ex){
+        } catch (NoSuchElementException ex) {
             print(SERVER_ERROR);
             System.exit(1);
         }
@@ -130,23 +130,22 @@ public class CLI implements Runnable {
                         this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     case ERROR_MESSAGE:
-                        System.out.println("message: " + message);
                         print(MessageType.decodeMessageContent(message));
                         break;
                     case PRE_GAME_CHOICE:
-                        drawPreGame((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
+                        drawPreGame((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     case CURRENT_PLAYER:
-                        print(CURRENT_PLAYER_MESSAGE+MessageType.decodeMessageContent(message));
+                        print(CURRENT_PLAYER_MESSAGE + MessageType.decodeMessageContent(message));
                         break;
                     case GAME_STATS:
-                        drawScore((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
+                        drawScore((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     default:
                         print(UNSUPPORTED_MESSAGE);
                 }
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
             print(e.getMessage());
         }
     }
@@ -155,14 +154,14 @@ public class CLI implements Runnable {
         System.out.println(data);
     }
 
-    private void drawPreGame(JSONObject jsonObject){
-        StringBuilder sb=new StringBuilder();
-        String s="";
-        JSONArray windowsFrames=(JSONArray)jsonObject.get(JSONTag.WINDOW_FRAMES);
-        sb.append(drawCard((JSONObject)jsonObject.get(JSONTag.PRIVATE_OBJECTIVE)));
+    private void drawPreGame(JSONObject jsonObject) {
+        StringBuilder sb = new StringBuilder();
+        String s = "";
+        JSONArray windowsFrames = (JSONArray) jsonObject.get(JSONTag.WINDOW_FRAMES);
+        sb.append(drawCard((JSONObject) jsonObject.get(JSONTag.PRIVATE_OBJECTIVE)));
         sb.append("\n");
-        for(Object o: windowsFrames)
-            s=convertToHorizontal(s,drawWindowFrame((JSONObject)o),SEPARATOR);
+        for (Object o : windowsFrames)
+            s = convertToHorizontal(s, drawWindowFrame((JSONObject) o), SEPARATOR);
         sb.append(s);
         print(sb.toString());
     }

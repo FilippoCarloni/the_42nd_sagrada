@@ -21,6 +21,10 @@ import java.util.*;
 import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
 import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
 
+/**
+ * The Connectionmanageer class is the references for the connection.
+ * In particular it permits to send and receive messages over a network communication independently by the connection type chose.
+ */
 public class ConnectionManager implements RemoteObserver, Serializable {
     private transient GameManager gameManger;
     private transient String sessionID;
@@ -32,6 +36,9 @@ public class ConnectionManager implements RemoteObserver, Serializable {
     private transient MessageBuffer messages;
     private transient RemoteObserver clientRMI;
 
+    /**
+     *  Internal class to continuously read thee input from the server over socket.
+     */
     private class ReaderThread implements Runnable {
 
         @Override
@@ -54,6 +61,11 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Creates a new ConnectionManager with a specific ConnectionType.
+     * @param connectionType - Connection type for the communication.
+     * @throws ConnectException - Throws ConenctionException if there are issues.
+     */
     public ConnectionManager(ConnectionType connectionType) throws ConnectException {
         super();
         sessionID = ServerSession.INVALID_SESSION_ID;
@@ -64,6 +76,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         messages = new MessageBuffer();
     }
 
+    /**
+     * Initializes the connection over a specific ConnectionType.
+     * @throws ConnectException - Throws a ConnectionException if there are issues with the connection initializzation.
+     */
     private void initializeConnection() throws ConnectException {
         if (connectionType == ConnectionType.RMI)
             rmiConnection();
@@ -73,6 +89,11 @@ public class ConnectionManager implements RemoteObserver, Serializable {
             throw new ConnectException(NOT_AVAILABLE_CONNECTION_TYPE);
     }
 
+    /**
+     * Restores a Session or creates a new one from the username of the user.
+     * @param username - The username to use to create a Session.
+     * @return - If the creation of the Session is done correctly or not.
+     */
     public boolean restore(String username) {
         boolean logged = false;
         if (!sessionID.equals(ServerSession.INVALID_SESSION_ID))
@@ -109,6 +130,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         return true;
     }
 
+    /**
+     * Cofnigure correcty a connection over RMI.
+     * @throws ConnectException - throws an ConnectionExpetion if there are issues in RMI configuration.
+     */
     private void rmiConnection() throws ConnectException {
 
         try {
@@ -129,6 +154,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Cofnigure correcty a connection over socket.
+     * @throws ConnectException - throws an ConnectionExpetion if there are issues in socket configuration.
+     */
     private void socketConnection() throws ConnectException {
         try {
             client = new Socket(new Settings().IP_SERVER, new Settings().SOCKET_PORT);
@@ -139,6 +168,11 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Trays to log in a server.
+     * @param name - Name of the user to log.
+     * @return - If the login is done correctly or not.
+     */
     private boolean login(String name) {
         String response;
         if (connectionType == ConnectionType.RMI)
@@ -161,23 +195,40 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         return true;
     }
 
+    /**
+     * Reads the next message from the messages buffer.
+     * @return - The next message from the messages buffer.
+     */
     public String readMessage() {
         return messages.getNext();
     }
 
+    /**
+     * Sends an update to the RemoteObserver.
+     * @param observable - The object that genrates the update.
+     * @param updateMsg  The message to send.
+     * @throws RemoteException - Throws if the are problems sending the update.
+     */
     @Override
-    public void remoteUpdate(Object observable, Object o) throws RemoteException {
-        if (o instanceof String)
-            messages.add((String) o);
+    public void remoteUpdate(Object observable, Object updateMsg) throws RemoteException {
+        if (updateMsg instanceof String)
+            messages.add((String) updateMsg);
         else
             throw new RemoteException(INVALID_MESSAGE);
     }
 
+    /**
+     * Pings the RemoteObserver to check if it is alive or not.
+     * */
     @Override
     public void ping() {
         //Use only ping from the server
     }
 
+    /**
+     * Send a command to the server.
+     * @param cmd - Contains the message to send to the server.
+     */
     public void send(String cmd) {
         cmd = cmd.trim();
         String[] action = cmd.split(COMMAND_SEPARATOR);
@@ -199,11 +250,18 @@ public class ConnectionManager implements RemoteObserver, Serializable {
                     default:
                         action(cmd);
                 }
-            } catch (RemoteException | NoSuchElementException e) {
+            } catch (RemoteException e) {
+                messages.add(e.getCause().getMessage());
+
+            } catch (NoSuchElementException e) {
                 messages.add(MessageType.encodeMessage(e.getCause().getMessage(), MessageType.ERROR_MESSAGE));
             }
     }
 
+    /**
+     * Do the play action over the preconfigured connection type.
+     * @throws RemoteException - throws a RemoteException if there are issues.
+     */
     private void play() throws RemoteException{
         if (connectionType == ConnectionType.RMI)
             gameManger = lobby.getGame(sessionID);
@@ -213,6 +271,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Do the game action over the preconfigured connection type.
+     * @throws RemoteException - throws a RemoteException if there are issues.
+     */
     private void action(String cmd) throws RemoteException  {
         if (connectionType == ConnectionType.RMI) {
             if (gameManger != null) {
@@ -228,6 +290,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Do the set window action over the preconfigured connection type.
+     * @throws RemoteException - throws a RemoteException if there are issues.
+     */
     private void setWindow(String cmd) throws RemoteException {
         String []action = cmd.split(COMMAND_SEPARATOR);
         if(action.length == 2)
@@ -246,6 +312,10 @@ public class ConnectionManager implements RemoteObserver, Serializable {
             }
     }
 
+    /**
+     * Do the view action over the preconfigured connection type.
+     * @throws RemoteException - throws a RemoteException if there are issues.
+     */
     private void view() throws RemoteException {
         if (connectionType == ConnectionType.RMI) {
             if (gameManger != null)
@@ -258,16 +328,19 @@ public class ConnectionManager implements RemoteObserver, Serializable {
         }
     }
 
+    /**
+     * Closse the connection versus the server.
+     */
     private void quit(){
         if (connectionType == ConnectionType.SOCKET) {
             out.println(QUIT_COMMAND);
             out.flush();
-        }
-        synchronized (this) {
-            try {
-                client.close();
-            } catch (IOException e) {
-                messages.add(MessageType.encodeMessage(SERVER_DISCONNECTION_ERROR, MessageType.ERROR_MESSAGE));
+            synchronized (this) {
+                try {
+                    client.close();
+                } catch (IOException e) {
+                    messages.add(MessageType.encodeMessage(SERVER_DISCONNECTION_ERROR, MessageType.ERROR_MESSAGE));
+                }
             }
         }
         messages.add(MessageType.encodeMessage(GOOD_BYE, MessageType.GENERIC_MESSAGE));
