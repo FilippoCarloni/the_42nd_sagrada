@@ -15,10 +15,10 @@ public class ServerRMI {
     private int port;
     private Registry registry;
     private Logger logger= Logger.getLogger(ServerRMI.class.getName());
-    private String url = "rmi://"+new Settings().IP_SERVER+":";
+    private String url = "rmi://"+new Settings().serverIP+":";
     public ServerRMI()
     {
-        this.port=new Settings().RMI_PORT;
+        this.port=new Settings().rmiPort;
         setupRegistry();
     }
 
@@ -28,7 +28,7 @@ public class ServerRMI {
     private void setupRegistry(){
         try {
             registry = LocateRegistry.createRegistry(port);
-            System.setProperty("java.rmi.server.hostname",new Settings().IP_SERVER);
+            System.setProperty("java.rmi.server.hostname",new Settings().serverIP);
             // System.setProperty("java.security.policy","./src/main/java/res/network_config/server.policy")
           //  System.setSecurityManager(new SecurityManager())
             this.url += this.port+"/";

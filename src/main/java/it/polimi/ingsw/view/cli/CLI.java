@@ -16,6 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static it.polimi.ingsw.connection.costraints.ConnectionCommands.QUIT_COMMAND;
 import static it.polimi.ingsw.view.ViewMessage.*;
 import static it.polimi.ingsw.view.cli.CLIMessage.*;
 import static java.lang.Integer.parseInt;
@@ -75,6 +76,8 @@ public class CLI implements Runnable {
         message = scanner.nextLine();
         while (message != null) {
             connectionController.send(message);
+            if(message.trim().equals(QUIT_COMMAND))
+                System.exit(0);
             message = scanner.nextLine();
         }
     }

@@ -50,4 +50,5 @@ public class ServerMessage {
     public static final String SOCKET_ANOMALY_DISCONNECTION = "Anomaly disconnection";
     public static final String SOCKET_ERROR = "Socket error";
     public static final String COMMAND_NOT_RECOGNIZED = "Command not recognized";
+    static final String NOT_FOUND_CONFIG_FILE = "Error found in the configuration file";
 }

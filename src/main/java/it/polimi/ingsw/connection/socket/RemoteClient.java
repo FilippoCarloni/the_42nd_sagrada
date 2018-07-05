@@ -19,7 +19,9 @@ import static it.polimi.ingsw.connection.costraints.Settings.ANONYMOUS;
 import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
 
 /**
- * the R
+ * The RemoteClient is the class that manages the connection over socket.
+ * In particular this class wait for new action from the client, and it sends new message to the client relative to the actions.
+ * All the action are passed to the CentralServer.
  */
 public class RemoteClient implements Runnable,GameObserver {
     private Socket client;
@@ -108,6 +110,7 @@ public class RemoteClient implements Runnable,GameObserver {
      * Ask a game to the CentralServer.
      */
     private void play() {
+        logger.info(() -> GAME_REQUEST+sessionID);
         if (!sessionID.equals(ANONYMOUS)) {
             synchronized (this) {
                 if (!gameRequested) {
@@ -150,7 +153,8 @@ public class RemoteClient implements Runnable,GameObserver {
         }
         else
             send(MessageType.encodeMessage(NOT_PLAYING,MessageType.ERROR_MESSAGE));
-
+        String finalAction = action;
+        logger.info(()->COMMAND_REQUEST_1+ finalAction +COMMAND_REQUEST_2+sessionID);
     }
 
     /**
@@ -161,6 +165,7 @@ public class RemoteClient implements Runnable,GameObserver {
         if(sessionID.equals(ANONYMOUS)) {
             if (cmd.length == 2) {
                 try {
+                    logger.info(() -> LOGIN_REQUEST+cmd[1]);
                     sessionID = centralServer.connect(cmd[1],this);
                     send(MessageType.encodeMessage(sessionID,MessageType.SESSION));
                 }catch (ServerException e) {
@@ -182,6 +187,7 @@ public class RemoteClient implements Runnable,GameObserver {
         if(sessionID.equals(ANONYMOUS)) {
             if (cmd.length == 2) {
                 try {
+                    logger.info(() -> RESTORE_REQUEST+cmd[1]);
                     sessionID=centralServer.restoreSession(cmd[1],this);
                     send(MessageType.encodeMessage(sessionID,MessageType.SESSION));
                 }catch(ServerException e){
@@ -192,12 +198,14 @@ public class RemoteClient implements Runnable,GameObserver {
         }
         else
             send(MessageType.encodeMessage(ALREADY_LOGGED,MessageType.ERROR_MESSAGE));
+
     }
 
     /**
      * Sends the game status of the match in which the player is actually enrolled.
      */
     private void view(){
+        logger.info(()->STATUS_REQUEST+sessionID);
         try {
             if (game != null)
                 send(game.getStatus(sessionID));
@@ -212,6 +220,7 @@ public class RemoteClient implements Runnable,GameObserver {
      * @param cmd - Command send from the client.
      */
     private void setWindow(String []cmd) {
+        logger.info(() -> WINDOW_REQUEST + sessionID);
         if(game!=null)
             if(cmd.length==2) {
                 try {

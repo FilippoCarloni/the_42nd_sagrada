@@ -34,7 +34,7 @@ public class ServerSocket implements Runnable{
     public ServerSocket(CentralServer lobby) throws IOException {
         client = null;
         this.lobby=lobby;
-        server = new java.net.ServerSocket(new Settings().SOCKET_PORT);
+        server = new java.net.ServerSocket(new Settings().socketPort);
         th = Executors.newCachedThreadPool();
     }
 
@@ -45,7 +45,7 @@ public class ServerSocket implements Runnable{
     @Override
     public void run() {
         boolean noError = true;
-        logger.info(() -> SOCKET_SERVER_MESSAGE+new Settings().SOCKET_PORT);
+        logger.info(() -> SOCKET_SERVER_MESSAGE+new Settings().socketPort);
         while(noError) {
             try {
                 client = server.accept();

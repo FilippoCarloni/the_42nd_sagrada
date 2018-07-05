@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import static it.polimi.ingsw.connection.costraints.ServerMessage.NOT_FOUND_CONFIG_FILE;
+
 public  class Settings{
     public static final int MAX_PLAYER_GAME = 4;
     public static final int MIN_PLAYER_GAME = 2;
@@ -27,7 +29,6 @@ public  class Settings{
     public Settings() {
         int rmiPort = DEFAULT_RMI_PORT;
         String ipserver = DEFAULT_SERVER_IP;
-        int socketPort = DEFAULT_SOCKET_PORT;
         int lobbyRefresh = DEFAULT_LOBBY_REFRESH_TIME;
         int turnTimeRefresh = DEFAULT_TURN_TIME;
         int gameRefreshTime = DEFAULT_GAME_REFRESH;
@@ -36,6 +37,7 @@ public  class Settings{
         configFile = new java.util.Properties();
         FileReader reader;
         String param;
+        int socketPort = DEFAULT_SOCKET_PORT;
         try {
             reader = new FileReader(FILE_CONFIG);
             configFile.load(reader);
@@ -62,32 +64,23 @@ public  class Settings{
                 lobbyTime = Integer.parseInt(param);
             reader.close();
         } catch (Exception eta) {
-            logger.warning("Error found in the configuration file");
+            logger.warning(NOT_FOUND_CONFIG_FILE);
         }
-        RMI_PORT = rmiPort;
-        IP_SERVER = ipserver;
-        SOCKET_PORT = socketPort;
+        this.rmiPort= rmiPort;
+        serverIP = ipserver;
+        this.socketPort = socketPort;
         lobbyRefreshTime=lobbyRefresh;
         turnTime = turnTimeRefresh;
         gameRefresh = gameRefreshTime;
         lobbyWaitingTime = lobbyTime;
     }
-    /**
-     * Default Server port number for Registry connection
-     *
-     */
-    public final int RMI_PORT;
-    /**
-     * Serial Version Universal Identificator for the Session object
-     */
+    
+    public final int rmiPort;
     public static final long SERIAL_VERSION_UID_SESSION = 1190476516911661470L;
 
-    /**
-     * The default waiting time in nanosecond to start a match with less than 4 players
-     */
     public final int lobbyWaitingTime;
-    public final int SOCKET_PORT;
-    public final String IP_SERVER;
+    public final int socketPort;
+    public final String serverIP;
     public static final String ANONYMOUS = "ANONYMOUS";
     public final int lobbyRefreshTime;
     public final int turnTime;

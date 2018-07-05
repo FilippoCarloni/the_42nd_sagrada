@@ -27,8 +27,15 @@ import java.util.stream.Collectors;
 import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
-
+/**
+ * The GameController class is the controller of the game.
+ * It manages all the call to the game from te OnlinePlayer after have checked if they can do the specific action.
+ * It executes on multiple threads to perform periodic update or to do periodic check on the OnLinePlayer activity.
+ * the main issues in do actions can be: a no playing player try to do an action, an action is do in a wrong moment
+ * the action is wrong.
+ * */
 public class GameController extends Observable{
+
     private static final Logger logger=Logger.getLogger(GameController.class.getName());
     private static final int POOLED_THREAD = 3;
     private Game game;
@@ -43,6 +50,12 @@ public class GameController extends Observable{
     private List<Integer> windowChoices;
     private Settings settings;
     private boolean activeGame;
+
+    /**
+     * Creates a new GameController.
+     * @param server - The CentralServer references.
+     * @param players - The player in the match.
+     */
     GameController(CentralServer server, List<OnLinePlayer> players) {
         this.server=server;
         settings = new Settings();
@@ -70,10 +83,8 @@ public class GameController extends Observable{
                     this.notifyObservers(MessageType.encodeMessage(WIN_ONE_PLAYER, MessageType.GENERIC_MESSAGE));
                     this.printScore();
                     this.deleteObservers();
-                }
-
-                if (this.countObservers() == 0)
                     closeGame();
+                }
             }
         }
         ;
@@ -82,29 +93,47 @@ public class GameController extends Observable{
         scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
     }
 
+    /**
+     * Set the map for the specific player associated to the sessionID.
+     * @param sessionID - The sessionID of the player.
+     * @param window - The window number to set.
+     * @throws ServerException - Throws a ServerException if there are issues.
+     */
     public synchronized void setMap(String sessionID,int window) throws ServerException {
         OnLinePlayer player=this.getPlayer(sessionID);
         if(gameNotStarted()&&window>=1&&window<=Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE)
             windowChoices.set(players.indexOf(player),window);
     }
 
+    /**
+     * Set all the window frames for all the and starts the match if it is possible.
+     */
     private synchronized void setWindowsFrame() {
-        for( OnLinePlayer p: players){
-            p.getPlayer().setWindowFrame(windowFrames.get(windowChoices.get(players.indexOf(p))-1+players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
+        for( OnLinePlayer p: this.players){
+            p.getPlayer().setWindowFrame(this.windowFrames.get(this.windowChoices.get(this.players.indexOf(p))-1+this.players.indexOf(p)*Parameters.NUM_OF_WINDOWS_PER_PLAYER_BEFORE_CHOICE));
         }
-        game = new ConcreteGame(players
+        this.game = new ConcreteGame(this.players
                 .stream()
                 .map(OnLinePlayer::getPlayer)
                 .collect(Collectors.toList()));
-        if(!gameEnded())
-            sendStatus();
-        isTurnOf();
+        if(!this.gameEnded()) {
+            this.sendStatus();
+            this.isTurnOf();
+        }
     }
 
+    /**
+     * Tells if the game is started or not.
+     * @return - If the game is started or not.
+     */
     private boolean gameNotStarted(){
         return game == null;
     }
 
+    /**
+     * Sets the pre-game frames for the player.
+     * @param numPlayers -The number of the players in the match.
+     */
     @SuppressWarnings("unchecked")
     private void getPreGameFrames(int numPlayers){
         List<PrivateObjectiveCard> privateObjectiveCards=Game.getPrivateObjectives(numPlayers);
@@ -125,6 +154,12 @@ public class GameController extends Observable{
         }
     }
 
+    /**
+     * Sends a game action to the game for the specif OnLinePlayer.
+     * @param sessionID - The sessioniD associated to the player.
+     * @param command - The game action to send.
+     * @throws ServerException - Throws a ServerException if there are issues.
+     */
     public synchronized void sendCommand(String sessionID, String command) throws ServerException {
         if(gameNotStarted())
             throw new ServerException(WAIT_WINDOW);
@@ -169,6 +204,12 @@ public class GameController extends Observable{
 
     }
 
+    /**
+     * Tells if is the turn of the OnlinePlayer associated to the sessionID.
+     * @param sessionID - The sessionID of the player.
+     * @return - If is the turn of the player or not.
+     * @throws ServerException- Throws a ServerException if there are issues.
+     */
     public synchronized boolean isMyTurn(String sessionID) throws ServerException  {
         if(gameNotStarted())
             throw new ServerException(WAIT_WINDOW);
@@ -177,6 +218,12 @@ public class GameController extends Observable{
         return game.getCurrentPlayer().getUsername().equals(this.getPlayer(sessionID).getPlayer().getUsername());
     }
 
+    /**
+     *
+     * @param sessionID - The sessionID of the OnLinePlayer.
+     * @return - The specific status for the player.
+     * @throws ServerException- Throws a ServerException if there are issues.
+     */
     public synchronized String getStatus(String sessionID) throws ServerException{
         OnLinePlayer player=getPlayer(sessionID);
         if(gameNotStarted())
@@ -186,6 +233,12 @@ public class GameController extends Observable{
         return MessageType.encodeMessage(game.getData(player.getPlayer()).toString(),MessageType.GAME_BOARD);
     }
 
+    /**
+     *
+     * @param sessionID - The sessionID of the OnLinePlayer.
+     * @return - The relative OnLinePayer associate to the sessionID.
+     * @throws ServerException- Throws a ServerException if the player is not enrolled in the match.
+     */
     private OnLinePlayer getPlayer(String sessionID) throws ServerException{
         List<OnLinePlayer> player=players.parallelStream().filter(x -> x.getServerSession().getID().equals(sessionID))
                 .collect(Collectors.toList());
@@ -196,6 +249,11 @@ public class GameController extends Observable{
         return player.get(0);
     }
 
+    /**
+     * Reconnect the OnLinePlayer to the game if previously disconnected.
+     * @param player - The OnLinePlayer to reconnected.
+     * @return
+     */
     synchronized boolean reconnect(OnLinePlayer player) {
         if (isPlaying(player) && disconnected.contains(player) && player.getObserver().isAlive()) {
             this.setChanged();
@@ -210,29 +268,51 @@ public class GameController extends Observable{
         return true;
     }
 
-    private void closeGame(){
+    /**
+     * Closes the match: stops all the periodic task and sets the game ended.
+     */
+    private synchronized void closeGame(){
         this.server.closeGame(this);
         this.timer.cancel(true);
         this.beeperHandle.cancel(true);
         this.activeGame = false;
     }
+
+    /**
+     * Tells if an OnLinePlayer is enrolled in the match.
+     * @param player - The player to check.
+     * @return - If the player is playing or not in the game.
+     */
     synchronized boolean isPlaying(OnLinePlayer player){
         return players.stream().filter(x-> x.equals(player)).count() == 1;
     }
 
+    /**
+     * Sends to the active OnLinePlayers which player can play in the turn in which it is called.
+     */
     private void isTurnOf(){
         setChanged();
         notifyObservers(MessageType.encodeMessage(game.getCurrentPlayer().getUsername(),MessageType.CURRENT_PLAYER));
     }
 
+    /**
+     * Starts the timer for the turn.
+     */
     private void startTimer(){
         Runnable task= this::timerPass;
         timer=scheduler.schedule(task,settings.turnTime,MILLISECONDS);
     }
 
+    /**
+     * Sends the status of the game to the active OnLinePlayers.
+     */
     private void sendStatus(){
         players.parallelStream().forEach(x -> x.getObserver().update(this, MessageType.encodeMessage(this.game.getData(x.getPlayer()).toString(),MessageType.GAME_BOARD)));
     }
+
+    /**
+     * Passes the turn, called by a periodic task.
+     */
     private synchronized void timerPass(){
         boolean notPass=true;
         while(notPass) {
@@ -254,17 +334,30 @@ public class GameController extends Observable{
             isTurnOf();
     }
 
+    /**
+     * Sends the scores to the OnLinePlayer active.
+     */
     private void printScore(){
-        this.setChanged();
-        this.notifyObservers(MessageType.encodeMessage(game.getScore().toString(), MessageType.GAME_STATS));
+        if (!this.gameNotStarted()){
+            this.setChanged();
+            this.notifyObservers(MessageType.encodeMessage(game.getScore().toString(), MessageType.GAME_STATS));
+        }
     }
 
+    /**
+     *
+     * @return - The list of the OnLinePlayers enrolled in the match.
+     */
     List<OnLinePlayer> getPlayers(){
         return new ArrayList<>(players);
     }
 
-    private boolean gameEnded(){
-        return !activeGame;
+    /**
+     * Tells if the game is ended or not.
+     * @return - If the game is ended or not.
+     */
+    private synchronized boolean gameEnded(){
+        return !this.activeGame;
     }
 
     @Override

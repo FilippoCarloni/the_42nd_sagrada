@@ -142,7 +142,7 @@ public class ConnectionManager implements RemoteObserver, Serializable {
             throw new ConnectException(e.getMessage());
         }
         try {
-            Registry reg = LocateRegistry.getRegistry(new Settings().IP_SERVER, new Settings().RMI_PORT);
+            Registry reg = LocateRegistry.getRegistry(new Settings().serverIP , new Settings().rmiPort);
             lobby = (Lobby) reg.lookup(Settings.LOBBY_RMI_ID);
         } catch (NotBoundException | RemoteException e) {
             throw new ConnectException(e.getMessage());
@@ -160,7 +160,7 @@ public class ConnectionManager implements RemoteObserver, Serializable {
      */
     private void socketConnection() throws ConnectException {
         try {
-            client = new Socket(new Settings().IP_SERVER, new Settings().SOCKET_PORT);
+            client = new Socket(new Settings().serverIP , new Settings().socketPort);
             in = new Scanner(client.getInputStream());
             out = new PrintWriter(client.getOutputStream());
         } catch (IOException ex) {
