@@ -8,7 +8,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.print;
@@ -34,7 +33,7 @@ class WindowEvents {
                 temporaryCommand = GUIParameters.MOVE + row + " " + column;
                 try {
                     manageMoveEvents();
-                } catch (RemoteException | ConnectException e1) {
+                } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
             });
@@ -42,14 +41,14 @@ class WindowEvents {
             pane.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.PLACE + row + " " + column);
-                } catch (ConnectException | RemoteException e1) {
+                } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
             });
         }
     }
 
-    private void manageMoveEvents() throws RemoteException, ConnectException {
+    private void manageMoveEvents() throws ConnectException {
         List<StackPane> panesOnMainWindowFrame = GuiManager.getInstance().getGameBoard().getPanesOnWindowFrame();
 
         for (int i = 0; i < panesOnMainWindowFrame.size(); i++) {
@@ -59,13 +58,13 @@ class WindowEvents {
                 try {
                     GuiManager.getInstance().getConnectionController().send(temporaryCommand + " " + tempRow + " " + tempColumn);
                     resetPlaceAfterClick(panesOnMainWindowFrame);
-                } catch (ConnectException | RemoteException e1) {
+                } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
             });
         }
     }
-    private void resetPlaceAfterClick(List<StackPane> panesOnMainWindowFrame) throws RemoteException, ConnectException {
+    private void resetPlaceAfterClick(List<StackPane> panesOnMainWindowFrame) throws ConnectException {
         temporaryCommand = null;
         for(int i = 0; i < GUIParameters.MAX_WINDOW_FRAMES_COLUMNS * GUIParameters.MAX_WINDOW_FRAMES_ROWS; i++){
             int tempRow = WindowFrameDrawer.rowAndColumnFromListIndex(i)[0];

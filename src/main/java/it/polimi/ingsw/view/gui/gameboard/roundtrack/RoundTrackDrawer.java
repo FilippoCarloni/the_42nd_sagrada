@@ -16,7 +16,6 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
@@ -94,7 +93,7 @@ public class RoundTrackDrawer {
             stage.setOnCloseRequest(e -> {
                 try {
                     GuiManager.getInstance().getGameBoard().setrVisualizer(null);
-                } catch (ConnectException | RemoteException e1) {
+                } catch (ConnectException e1) {
                     e1.printStackTrace();
                 }
             });

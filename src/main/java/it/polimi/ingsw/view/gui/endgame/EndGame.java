@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.endgame;
 
+import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.event.ActionEvent;
@@ -11,11 +12,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -46,21 +49,23 @@ public class EndGame {
         }
     }
 
-
-    @FXML
-    protected void initialize() throws RemoteException, ConnectException {
-        String gameStat = GuiManager.getInstance().getGameStatMessage();
-        GuiManager.getInstance().setGameStatMessage(null);
-        String[] players = gameStat.split("\n");
-        for(int i = 0; i < players.length; i++){
-            String[] player = players[i].split(":");
-            Label username = new Label(player[0]);
-            Label points = new Label(player[1]);
-            username.setAlignment(Pos.CENTER);
-            points.setAlignment(Pos.CENTER);
+    private void setFinalScore(JSONObject gameStat){
+        JSONArray players = (JSONArray) gameStat.get(JSONTag.PLAYERS);
+        for(int i = 0; i < players.size(); i++){
+            Label username = new Label(((JSONObject)players.get(i)).get(JSONTag.USERNAME).toString());
+            Label points = new Label(((JSONObject)players.get(i)).get(JSONTag.SCORE).toString());
+            username.setTextAlignment(TextAlignment.CENTER);
+            points.setTextAlignment(TextAlignment.CENTER);
             resultsGrid.add(username, 0, i + 1);
             resultsGrid.add(points, 1, i + 1);
         }
+    }
 
+
+    @FXML
+    protected void initialize() throws ConnectException {
+        JSONObject gameStat = GuiManager.getInstance().getGameStatMessage();
+        GuiManager.getInstance().setGameStatMessage(null);
+        setFinalScore(gameStat);
     }
 }

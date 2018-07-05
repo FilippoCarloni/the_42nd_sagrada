@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -32,7 +31,7 @@ public class LobbyController {
     /**
      * Method that allows the player to enter the lobby, joining a new game.
       */
-    public void enteredLobby() throws RemoteException, ConnectException {
+    public void enteredLobby() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.PLAY);
     }
 
@@ -82,7 +81,7 @@ public class LobbyController {
     }
 
     @FXML
-    protected void initialize() throws RemoteException, ConnectException {
+    protected void initialize() throws ConnectException {
         GuiManager.getInstance().setLobbyController(this);
         startButton.setDisable(true);
     }

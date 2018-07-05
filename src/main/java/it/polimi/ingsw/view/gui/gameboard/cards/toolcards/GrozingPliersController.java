@@ -12,7 +12,6 @@ import javafx.scene.layout.StackPane;
 import org.json.simple.JSONObject;
 
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
@@ -33,7 +32,7 @@ public class GrozingPliersController {
     private void sendCommand(String command, ActionEvent event){
         try {
             GuiManager.getInstance().getConnectionController().send(command);
-        } catch (ConnectException | RemoteException e) {
+        } catch (ConnectException e) {
             print(e.getMessage());
         }
         //This launch a CastException, I can't do it like this
@@ -41,7 +40,7 @@ public class GrozingPliersController {
     }
 
     @FXML
-    protected void initialize() throws RemoteException, ConnectException {
+    protected void initialize() throws ConnectException {
         JSONObject diePicked = (JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE);
         String color = diePicked.get(JSONTag.COLOR).toString();
         int value = parseInt(diePicked.get(JSONTag.SHADE).toString());

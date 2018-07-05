@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -59,7 +58,7 @@ public class LoginController {
                 loginToLobby(event);
             } else
                 usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
-        } catch (ConnectException | RemoteException e) {
+        } catch (ConnectException e) {
             usernameNotValid.setText(GUIParameters.SERVER_ERROR);
         }
     }

@@ -1,6 +1,15 @@
 package it.polimi.ingsw.view.gui.settings;
 
+import it.polimi.ingsw.connection.server.messageencoder.MessageType;
+import it.polimi.ingsw.model.utility.JSONTag;
 import javafx.scene.paint.Color;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GUIParameters {
 
@@ -44,12 +53,12 @@ public final class GUIParameters {
 
     //Dimensions to draw dice
     public static final double DICE_RADIUS = 12.5;
-    public static final double[] OFFSET_DIE_1 = new double[]{30.0, 30.0};
-    public static final double[] OFFSET_DIE_2 = new double[]{15.0, 15.0, 45.0, 45.0};
-    public static final double[] OFFSET_DIE_3 = new double[]{45.0, 15.0, 30.0, 30.0, 15.0, 45.0};
-    public static final double[] OFFSET_DIE_4 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0};
-    public static final double[] OFFSET_DIE_5 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0, 30.0, 30.0};
-    public static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
+    static final double[] OFFSET_DIE_1 = new double[]{30.0, 30.0};
+    static final double[] OFFSET_DIE_2 = new double[]{15.0, 15.0, 45.0, 45.0};
+    static final double[] OFFSET_DIE_3 = new double[]{45.0, 15.0, 30.0, 30.0, 15.0, 45.0};
+    static final double[] OFFSET_DIE_4 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0};
+    static final double[] OFFSET_DIE_5 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0, 30.0, 30.0};
+    static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
 
     //Directories for cards loading
     public static final String DEFAULT_DIRECTORY = "src/main/java/res/images/cards/";
@@ -96,4 +105,24 @@ public final class GUIParameters {
     public static final double CARDS_ON_GAME_BOARD_HEIGHT = 215;
     public static final double CARD_ON_MAP_CHOICE_WIDTH = 240;
     public static final double CARD_ON_MAP_CHOICE_HEIGHT = 300;
+
+
+    private static ArrayList<String> PLAYERS;
+    public static ArrayList<String> getPLAYERS(String message){
+        if(PLAYERS == null) {
+            try {
+                JSONObject jsonMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+                JSONArray players = (JSONArray) ((JSONObject) jsonMessage.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
+                PLAYERS = new ArrayList<>();
+                for (int i = 0; i < players.size(); i++) {
+                    PLAYERS.add(i, ((JSONObject) players.get(i)).get(JSONTag.USERNAME).toString());
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return PLAYERS;
+    }
+
+
 }

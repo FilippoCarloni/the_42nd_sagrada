@@ -106,7 +106,7 @@ public class WindowFramesChoice {
     private void clicked(int idMapChosen) {
         try {
             GuiManager.getInstance().getConnectionController().send(GUIParameters.WINDOW + idMapChosen);
-        } catch (ConnectException | RemoteException e) {
+        } catch (ConnectException e) {
             print(e.getMessage());
         }
     }

@@ -12,7 +12,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -29,12 +28,13 @@ public class GuiManager {
     private static final int REFRESH_RATE = 100;    //milliseconds
     private ConnectionManager connectionController;
     private String usernameMainPlayer;
+    private String nowPlaying;
     private LobbyController lobbyController;
     private WindowFramesChoice windowFramesChoice;
     private GameBoardController gameBoard;
     private JSONObject preGameMessage;
     private JSONObject gameBoardMessage;
-    private String gameStatMessage;
+    private JSONObject gameStatMessage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -64,6 +64,8 @@ public class GuiManager {
                         if(gameBoardMessage == null && windowFramesChoice != null)
                             windowFramesChoice.getGameBoardButton().setDisable(false);
                         gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+                        if(lobbyController != null && windowFramesChoice == null)
+                            lobbyController.getStartButton().setDisable(false);
                         if(gameBoard != null)
                             gameBoard.gameBoardUpdate(gameBoardMessage);
                         break;
@@ -75,13 +77,13 @@ public class GuiManager {
                         preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         break;
                     case CURRENT_PLAYER:
-                        if(gameBoard != null)
-                            gameBoard.setMessageText(GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n");
+                        nowPlaying = GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n";
                         break;
                     case GAME_STATS:
+                        System.out.println(message);
                         gameBoard.getContinueButton().setVisible(true);
                         gameBoard.getContinueButton().setDisable(false);
-                        gameStatMessage = MessageType.decodeMessageContent(message);
+                        gameStatMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
                         gameBoard.setMessageText(GUIParameters.END_GAME);
                         break;
                     default:
@@ -109,11 +111,14 @@ public class GuiManager {
     public JSONObject getGameBoardMessage(){
         return gameBoardMessage;
     }
-    public String getGameStatMessage() {
+    public JSONObject getGameStatMessage() {
         return gameStatMessage;
     }
     public GameBoardController getGameBoard(){
         return gameBoard;
+    }
+    public String getNowPlaying(){
+        return nowPlaying;
     }
 
     /**
@@ -134,7 +139,7 @@ public class GuiManager {
     public void setGameBoardMessage(JSONObject gameBoardMessage) {
         this.gameBoardMessage = gameBoardMessage;
     }
-    public void setGameStatMessage(String gameStatMessage) {
+    public void setGameStatMessage(JSONObject gameStatMessage) {
         this.gameStatMessage = gameStatMessage;
     }
 
@@ -147,7 +152,7 @@ public class GuiManager {
         stage.setOnCloseRequest(e -> {
             try {
                 getInstance().connectionController.send(GUIParameters.EXIT);
-            } catch (ConnectException | RemoteException e1) {
+            } catch (ConnectException e1) {
                 e1.printStackTrace();
             }
             System.exit(0);
@@ -161,13 +166,13 @@ public class GuiManager {
     public static void setConnectionType(ConnectionType connectionType){
         myConnectionType = connectionType;
     }
-    public static GuiManager getInstance() throws ConnectException, RemoteException{
+    public static GuiManager getInstance() throws ConnectException{
         if(guiManagerInstance == null){
             guiManagerInstance = new GuiManager(myConnectionType);
         }
         return guiManagerInstance;
     }
-    private GuiManager(ConnectionType connectionType) throws ConnectException, RemoteException{
+    private GuiManager(ConnectionType connectionType) throws ConnectException{
         connectionController = new ConnectionManager(connectionType);
         lobbyController = null;
         gameStatMessage = null;

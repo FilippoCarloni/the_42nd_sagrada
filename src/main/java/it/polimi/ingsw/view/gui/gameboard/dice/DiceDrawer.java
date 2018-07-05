@@ -13,7 +13,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.List;
 
 import static jdk.nashorn.internal.objects.Global.print;
@@ -48,7 +47,7 @@ public class DiceDrawer {
                 canvas.setOnMouseClicked(e -> {
                     try {
                         GuiManager.getInstance().getConnectionController().send(GUIParameters.PICK + finalI);
-                    } catch (ConnectException | RemoteException e1) {
+                    } catch (ConnectException e1) {
                         print(e1.getMessage());
                     }
                 });

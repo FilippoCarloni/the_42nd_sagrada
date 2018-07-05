@@ -29,7 +29,6 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -202,7 +201,7 @@ public class GameBoardController {
                     return i;
                 }
             }
-        } catch (RemoteException | ConnectException e){
+        } catch (ConnectException e){
             print(e.getMessage());
         }
         throw new IllegalArgumentException(GUIParameters.MAIN_PLAYER_NOT_FOUND);
@@ -248,13 +247,13 @@ public class GameBoardController {
     /**
      * Methods used by action buttons.
      */
-    public void pass() throws RemoteException, ConnectException {
+    public void pass() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
     }
-    public void undo() throws RemoteException, ConnectException {
+    public void undo() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.UNDO);
     }
-    public void redo() throws RemoteException, ConnectException {
+    public void redo() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.REDO);
     }
     public void goToEndGame(ActionEvent event){
@@ -267,7 +266,7 @@ public class GameBoardController {
             stage.setOnCloseRequest(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                } catch (ConnectException | RemoteException e1) {
+                } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
                 System.exit(0);
@@ -290,7 +289,7 @@ public class GameBoardController {
                 mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
                 updater(json);
             }
-        } catch (ConnectException | RemoteException e) {
+        } catch (ConnectException e) {
             print(e.getMessage());
         }
     }
@@ -312,7 +311,13 @@ public class GameBoardController {
             rVisualizer.allDiceDrawer(roundTrack);
         }
 
-        favorPointsLabel.setText("    FP: " + mainPlayer.get(JSONTag.FAVOR_POINTS));
+        favorPointsLabel.setText(("    FP: " + parseInt(mainPlayer.get(JSONTag.FAVOR_POINTS).toString())));
+        try {
+            if(GuiManager.getInstance().getNowPlaying() != null)
+                setMessageText(GuiManager.getInstance().getNowPlaying());
+        } catch (ConnectException e) {
+            print(e.getMessage());
+        }
 
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
@@ -363,7 +368,7 @@ public class GameBoardController {
     }
 
     @FXML
-    public void initialize() throws RemoteException, ConnectException {
+    public void initialize() throws ConnectException {
         GuiManager.getInstance().setGameBoard(this);
         JSONObject json = GuiManager.getInstance().getGameBoardMessage();
         messageTextArea.setEditable(false);

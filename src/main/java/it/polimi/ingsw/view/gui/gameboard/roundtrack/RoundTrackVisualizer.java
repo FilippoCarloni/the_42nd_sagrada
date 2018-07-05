@@ -12,7 +12,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
@@ -49,7 +48,7 @@ public class RoundTrackVisualizer {
                 stackPane.setOnMouseClicked(e -> {
                     try {
                         GuiManager.getInstance().getConnectionController().send(GUIParameters.SELECT + finalIndex);
-                    } catch (ConnectException | RemoteException e1) {
+                    } catch (ConnectException e1) {
                         print(e1.getMessage());
                     }
                 });
@@ -59,7 +58,7 @@ public class RoundTrackVisualizer {
     }
 
     @FXML
-    protected void initialize() throws RemoteException, ConnectException {
+    protected void initialize() throws ConnectException {
         GuiManager.getInstance().getGameBoard().setrVisualizer(this);
         JSONObject roundTrack = (JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.ROUND_TRACK);
         allDiceDrawer(roundTrack);
