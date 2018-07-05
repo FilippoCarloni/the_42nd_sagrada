@@ -25,9 +25,9 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.net.ConnectException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 /**
@@ -132,7 +132,7 @@ public class WindowFramesChoice {
             WindowFrameDrawer.frameFiller(canvas, stackPanes, maps.get(i), 1, false);
             WindowFrameDrawer.framePainterManager((JSONObject) jsonMaps.get(i), canvas, stackPanes, 1, false);
             names.get(i).setText(((JSONObject)jsonMaps.get(i)).get(JSONTag.NAME).toString());
-            difficulties.get(i).setText("Difficulty: " + ((Long)(((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).intValue());
+            difficulties.get(i).setText(GUIParameters.DIFFICULTY + parseInt(((((JSONObject)jsonMaps.get(i)).get(JSONTag.DIFFICULTY))).toString()));
         }
     }
     private void setMaps(){
@@ -183,7 +183,7 @@ public class WindowFramesChoice {
     }
 
     @FXML
-    protected void initialize() throws RemoteException, ConnectException {
+    protected void initialize() throws ConnectException {
         GuiManager.getInstance().setWindowFramesChoice(this);
         addRadioButtonsInToggleGroup();
         drawPreGame(GuiManager.getInstance().getPreGameMessage());

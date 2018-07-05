@@ -78,9 +78,10 @@ public class GuiManager {
                         break;
                     case CURRENT_PLAYER:
                         nowPlaying = GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n";
+                        if(gameBoard != null)
+                            gameBoard.setMessageText(nowPlaying);
                         break;
                     case GAME_STATS:
-                        System.out.println(message);
                         gameBoard.getContinueButton().setVisible(true);
                         gameBoard.getContinueButton().setDisable(false);
                         gameStatMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));

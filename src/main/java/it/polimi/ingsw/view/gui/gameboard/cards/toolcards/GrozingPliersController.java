@@ -16,7 +16,9 @@ import java.net.ConnectException;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
-//TODO: fix the closing problem
+/**
+ * Controller class for the Grozing Pliers tool card screen.
+ */
 
 public class GrozingPliersController {
 
@@ -28,6 +30,21 @@ public class GrozingPliersController {
     private StackPane decreaseStackPane;
     @FXML
     private Canvas decreaseCanvas;
+
+    /**
+     * Method, called by clicking on "increase" button, that allows the player to increase by 1 the value of the drafted die.
+     * @param event: the ActionEvent generated when a player clicks on the button.
+     */
+    public void increase(ActionEvent event){
+        sendCommand(GUIParameters.INCREASE, event);
+    }
+    /**
+     * Method, called by clicking on "decrease" button, that allows the player to decrease by 1 the value of the drafted die.
+     * @param event: the ActionEvent generated when a player clicks on the button.
+     */
+    public void decrease(ActionEvent event){
+        sendCommand(GUIParameters.DECREASE, event);
+    }
 
     private void sendCommand(String command, ActionEvent event){
         try {
@@ -47,9 +64,6 @@ public class GrozingPliersController {
 
         DiceDrawer.dicePointsDrawer(value + 1, color, increaseCanvas.getGraphicsContext2D(), increaseStackPane, 1 + GUIParameters.REDUCTION_SCALE);
         DiceDrawer.dicePointsDrawer(value - 1, color, decreaseCanvas.getGraphicsContext2D(), decreaseStackPane, 1 + GUIParameters.REDUCTION_SCALE);
-
-        increaseStackPane.setOnMouseClicked(e -> sendCommand(GUIParameters.INCREASE, new ActionEvent()));
-        decreaseStackPane.setOnMouseClicked(e -> sendCommand(GUIParameters.DECREASE, new ActionEvent()));
     }
 
 }

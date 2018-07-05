@@ -43,45 +43,31 @@ import static jdk.nashorn.internal.objects.Global.print;
 
 public class GameBoardController {
 
-    /**
-     * Round Track StackPane and Canvas container
-     */
+    //Round Track StackPane and Canvas container
     private ArrayList<StackPane> panesOnRoundTrack;
     private ArrayList<Canvas> canvasOnRoundTrack;
 
-    /**
-     * Player's names and window frames containers
-     */
+    //Player's names and window frames containers
     private ArrayList<Label> playersNameLabels;
     private ArrayList<GridPane> playersGrids;
 
-    /**
-     * Element to draw window frames containers
-     */
+    //Element to draw window frames containers
     private Map<Integer, ArrayList<Canvas>> canvasOnGrids;
     private Map<Integer, ArrayList<StackPane>> panesOnGrids;
 
-    /**
-     * Element to draw dice pool containers
-     */
+    //Element to draw dice pool containers
     private ArrayList<StackPane> panesOnDicePool;
     private ArrayList<Canvas> canvasOnDicePool;
 
-    /**
-     * Containers for tool and public objective cards
-     */
+    //Containers for tool and public objective cards
     private ArrayList<VBox> toolCardsContainers;
     private ArrayList<VBox> publicObjectiveContainers;
 
-    /**
-     * JSON containers
-     */
+    //JSON containers
     private JSONArray players;
     private JSONObject mainPlayer;
 
-    /**
-     * Round Track references
-     */
+    //Round Track references
     private RoundTrackDrawer rDrawer;
     private RoundTrackVisualizer rVisualizer;
 
@@ -101,8 +87,6 @@ public class GameBoardController {
     private GridPane windowFramePlayer4;
     @FXML
     private Label labelPlayer1;
-    @FXML
-    private Label favorPointsLabel;
     @FXML
     private Label labelPlayer2;
     @FXML
@@ -236,6 +220,18 @@ public class GameBoardController {
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
     }
 
+    public void seePrivateObjective(){
+        try{
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
+            Stage stage = new Stage();
+            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setScene(new Scene(parent));
+            stage.show();
+        } catch (IOException e){
+            print(e.getMessage());
+        }
+    }
+
     /**
      * Messages printing into TextArea, called from update() method into GuiManager.
      * @param message: the message to print.
@@ -311,14 +307,6 @@ public class GameBoardController {
             rVisualizer.allDiceDrawer(roundTrack);
         }
 
-        favorPointsLabel.setText(("    FP: " + parseInt(mainPlayer.get(JSONTag.FAVOR_POINTS).toString())));
-        try {
-            if(GuiManager.getInstance().getNowPlaying() != null)
-                setMessageText(GuiManager.getInstance().getNowPlaying());
-        } catch (ConnectException e) {
-            print(e.getMessage());
-        }
-
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
@@ -334,7 +322,7 @@ public class GameBoardController {
         }
     }
 
-    //First game board draw, called by initialize
+    //First game board draw, called by initialize()
     private void firstUpdate(JSONObject json){
         players = (JSONArray)((JSONObject)json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
         mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
@@ -361,6 +349,13 @@ public class GameBoardController {
         DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size(), true);
         updater(json);
         addCardsOnGameBoard(json);
+
+        try {
+            if(GuiManager.getInstance().getNowPlaying() != null)
+                setMessageText(GuiManager.getInstance().getNowPlaying());
+        } catch (ConnectException e) {
+            print(e.getMessage());
+        }
 
         pane.getChildren().add(windowFramePlayer1);
         group.getChildren().add(pane);

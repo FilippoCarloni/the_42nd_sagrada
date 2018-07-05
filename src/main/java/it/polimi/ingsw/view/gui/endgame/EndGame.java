@@ -6,7 +6,6 @@ import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,7 +32,7 @@ public class EndGame {
 
     /**
      * Method called when the user click on the button "Return to Lobby", it allows the player to
-     * come back to lobby end eventually start a new game.
+     * come back to lobby and eventually start a new game.
      * @param event: the ActionEvent generated when a player clicks on the button.
      */
     public void returnToLobby(ActionEvent event){

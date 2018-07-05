@@ -1,15 +1,6 @@
 package it.polimi.ingsw.view.gui.settings;
 
-import it.polimi.ingsw.connection.server.messageencoder.MessageType;
-import it.polimi.ingsw.model.utility.JSONTag;
 import javafx.scene.paint.Color;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public final class GUIParameters {
 
@@ -21,6 +12,7 @@ public final class GUIParameters {
     public static final String MAP_CHOICE_SCENE_TITLE = "Map Choice";
     public static final String MAIN_SCENE_TITLE = "Sagrada Board Game";
     public static final String ROUND_TRACK_TITLE = "Dice on Round Track";
+    public static final String PRIVATE_OBJECTIVE_TITLE = "Private Objective Card";
     public static final String GROZING_PLIERS_TITLE = "Grozing Pliers Activated";
     public static final String FLUX_REMOVER_TITLE = "Flux Remover Activated";
     public static final String END_GAME_TITLE = "Game Stats";
@@ -43,13 +35,14 @@ public final class GUIParameters {
     public static final int MAX_NUM_TURNS = 10;
     public static final int NUM_SHADES = 6;
 
-    //Colors
+    //Style
     public static final String BACKGROUND_COLOR_STRING = "-fx-background-color: ";
     public static final String DEFAULT_GRID_COLOR = "white";
     public static final String EMPTY_FROM_CONSTRAINTS_COLOR = "default";
     public static final Color NUMBERS_DICE_COLOR = Color.BLACK;
     public static final String DEFAULT_DICE_COLOR = "white";
     public static final String BACKGROUND_COLOR = "#303642";
+    public static final String CLICKABLE_CANVAS = "clickable-canvas";
 
     //Dimensions to draw dice
     public static final double DICE_RADIUS = 12.5;
@@ -76,6 +69,7 @@ public final class GUIParameters {
     public static final String GROZING_PLIERS_FXML_PATH = "GrozingPliersScreen.fxml";
     public static final String FLUX_REMOVER_FXML_PATH = "FluxRemoverScreen.fxml";
     public static final String END_GAME_FXML_PATH = "EndGameScreen.fxml";
+    public static final String PRIVATE_OBJECTIVE_FXML_PATH = "PrivateObjectiveFavorPoints.fxml";
 
     //Error messages
     public static final String SERVER_ERROR = "Server not reachable\nTry again later";
@@ -83,6 +77,7 @@ public final class GUIParameters {
     public static final String MAIN_PLAYER_NOT_FOUND = "Main player not found";
     public static final String DIE_VALUE_SMALL = "Shade of die must be at least 1";
     public static final String MESSAGE_ERROR = "Message not supported!";
+    static final String FIND_ERROR = " not valid, please insert a new one";
 
     //Connection Controller messages
     public static final String PLAY = "play";
@@ -106,23 +101,8 @@ public final class GUIParameters {
     public static final double CARD_ON_MAP_CHOICE_WIDTH = 240;
     public static final double CARD_ON_MAP_CHOICE_HEIGHT = 300;
 
-
-    private static ArrayList<String> PLAYERS;
-    public static ArrayList<String> getPLAYERS(String message){
-        if(PLAYERS == null) {
-            try {
-                JSONObject jsonMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
-                JSONArray players = (JSONArray) ((JSONObject) jsonMessage.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
-                PLAYERS = new ArrayList<>();
-                for (int i = 0; i < players.size(); i++) {
-                    PLAYERS.add(i, ((JSONObject) players.get(i)).get(JSONTag.USERNAME).toString());
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return PLAYERS;
-    }
+    //Other
+    public static final String DIFFICULTY = "Difficulty: ";
 
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,12 +16,17 @@
                <children>
                   <StackPane fx:id="decreaseStackPane" prefHeight="100.0" prefWidth="100.0">
                      <children>
-                        <Canvas fx:id="decreaseCanvas" height="100.0" styleClass="clickable-canvas" width="100.0" />
+                        <Canvas fx:id="decreaseCanvas" height="100.0" width="100.0" />
                      </children>
                      <VBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
                   </StackPane>
+                  <JFXButton onAction="#decrease" stylesheets="@../css/style.css" text="DECREASE">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </JFXButton>
                </children>
             </VBox>
          </right>
@@ -29,12 +35,17 @@
                <children>
                   <StackPane fx:id="increaseStackPane" prefHeight="100.0" prefWidth="100.0">
                      <children>
-                        <Canvas fx:id="increaseCanvas" height="100.0" styleClass="clickable-canvas" width="100.0" />
+                        <Canvas fx:id="increaseCanvas" height="100.0" width="100.0" />
                      </children>
                      <VBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
                   </StackPane>
+                  <JFXButton onAction="#increase" stylesheets="@../css/style.css" text="INCREASE">
+                     <VBox.margin>
+                        <Insets top="50.0" />
+                     </VBox.margin>
+                  </JFXButton>
                </children>
             </VBox>
          </left>

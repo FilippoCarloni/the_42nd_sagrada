@@ -158,15 +158,7 @@
                               <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
                            </VBox.margin>
                            <graphic>
-                              <StackPane alignment="CENTER_RIGHT" prefHeight="58.0" prefWidth="153.0">
-                                 <children>
-                                    <Label fx:id="favorPointsLabel" alignment="TOP_RIGHT">
-                                       <graphic>
-                                          <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="#f6f7f8" height="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="25.0" />
-                                       </graphic>
-                                    </Label>
-                                 </children>
-                              </StackPane>
+                              <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="#f6f7f8" height="37.0" onMouseClicked="#seePrivateObjective" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="25.0" />
                            </graphic>
                         </Label>
                      </children>

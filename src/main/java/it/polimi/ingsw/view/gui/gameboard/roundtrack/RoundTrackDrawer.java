@@ -75,7 +75,7 @@ public class RoundTrackDrawer {
             //With this call I will draw the last die of the specified turn on the round track
             DiceDrawer.dicePointsDrawer(value, color,  canvasOnRoundTrack.get(i).getGraphicsContext2D(), panesOnRoundTrack.get(i), 0.9);
             canvasOnRoundTrack.get(i).getStyleClass().clear();
-            canvasOnRoundTrack.get(i).getStyleClass().add("clickable-canvas");
+            canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE_CANVAS);
         }
 
     }

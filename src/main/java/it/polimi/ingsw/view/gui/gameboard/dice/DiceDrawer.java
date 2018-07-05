@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import java.net.ConnectException;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 /**
@@ -37,7 +38,7 @@ public class DiceDrawer {
             gridToFill.add(pane, i, 0);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
             canvas.getStyleClass().clear();
-            canvas.getStyleClass().add("clickable-canvas");
+            canvas.getStyleClass().add(GUIParameters.CLICKABLE_CANVAS);
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
@@ -76,7 +77,7 @@ public class DiceDrawer {
             StackPane pane = panesOnDicePool.get(i);
             Canvas canvas = canvasOnDicePool.get(i);
             String color = (String) ((JSONObject) o).get(JSONTag.COLOR);
-            int shade = ((Long) ((JSONObject) o).get(JSONTag.SHADE)).intValue();
+            int shade = parseInt((((JSONObject) o).get(JSONTag.SHADE)).toString());
             dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane, 1);
             i++;
         }
