@@ -255,11 +255,8 @@ public class GameController extends Observable{
     }
 
     private void printScore(){
-        String out="";
-        for (OnLinePlayer p : players)
-            out = out.concat(p.getPlayer().getUsername() + ":" + Integer.toString(game.getScore().get(p.getPlayer())) + "\n");
         this.setChanged();
-        this.notifyObservers(MessageType.encodeMessage(out,MessageType.GAME_STATS));
+        this.notifyObservers(MessageType.encodeMessage(game.getScore().toString(), MessageType.GAME_STATS));
     }
 
     List<OnLinePlayer> getPlayers(){

@@ -115,9 +115,9 @@ public interface Game {
 
     /**
      * Maps the players to their respective scores, according to the CURRENT game status.
-     * @return A map that maps players to a positive integer value
+     * @return A JSON object that maps players to a positive integer value
      */
-    Map<Player, Integer> getScore();
+    JSONObject getScore();
 
     /**
      * Exposes a copy of the entire game data. This method is useful for testing purposes.

@@ -41,6 +41,9 @@ public class CLI implements Runnable {
     private static final String DIE_NOT_PICKED = "[ ]";
     private static final String EMPTY_ROUND_TRACK = "empty";
     private static final String SERVER_ERROR = "Server not reachable";
+    private static final String SCORE_TITLE = "+-------------+\n" +
+                                              "| FINAL SCORE |\n" +
+                                              "+-------------+\n";
 
     // Board printer constants
     private static final int PIXEL_WIDTH = 21;
@@ -127,6 +130,7 @@ public class CLI implements Runnable {
                         this.draw((JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     case ERROR_MESSAGE:
+                        System.out.println("message: " + message);
                         print(MessageType.decodeMessageContent(message));
                         break;
                     case PRE_GAME_CHOICE:
@@ -136,7 +140,7 @@ public class CLI implements Runnable {
                         print(CURRENT_PLAYER_MESSAGE+MessageType.decodeMessageContent(message));
                         break;
                     case GAME_STATS:
-                        print(MessageType.decodeMessageContent(message));
+                        drawScore((JSONObject)new JSONParser().parse(MessageType.decodeMessageContent(message)));
                         break;
                     default:
                         print(UNSUPPORTED_MESSAGE);
@@ -409,5 +413,19 @@ public class CLI implements Runnable {
         for (int j = 0; j < PIXEL_WIDTH; j++) sb.append("_");
         sb.append("|\n");
         return sb.toString();
+    }
+
+    private void drawScore(JSONObject score) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(SCORE_TITLE);
+        JSONArray players = (JSONArray) score.get(JSONTag.PLAYERS);
+        for (Object o : players) {
+            sb.append("> ");
+            sb.append(((JSONObject) o).get(JSONTag.USERNAME));
+            sb.append("\t:\t");
+            sb.append(((JSONObject) o).get(JSONTag.SCORE));
+            sb.append("\n");
+        }
+        print(sb.toString());
     }
 }

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -79,10 +78,7 @@ class GameDataTest {
                 } else assertEquals(originalPlayers.get(i).getPrivateObjective().getID(), clonedPlayers.get(i).getPrivateObjective().getID());
                 areWindowFramesEqual(originalPlayers.get(i).getWindowFrame(), clonedPlayers.get(i).getWindowFrame());
             }
-            for (int i : data.getCurrentScore().values())
-                assertEquals(0, i);
-            for (int i : dataClone.getCurrentScore().values())
-                assertEquals(0, i);
+            assertEquals(data.getCurrentScore().toString(), dataClone.getCurrentScore().toString());
         } catch (ParseException e) {
             throw new IllegalArgumentException(BAD_JSON);
         }

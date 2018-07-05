@@ -10,7 +10,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.List;
-import java.util.Map;
 
 import static it.polimi.ingsw.model.utility.ExceptionMessage.NOT_MATCHING_PARAMETER;
 import static it.polimi.ingsw.model.utility.ExceptionMessage.NULL_PARAMETER;
@@ -78,7 +77,7 @@ public class ConcreteGame implements Game {
     }
 
     @Override
-    public Map<Player, Integer> getScore() {
+    public JSONObject getScore() {
         return commandManager.getCurrentData().getCurrentScore();
     }
 

@@ -34,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class TestHelper {
 
-    public static final boolean PRINT_PUBLIC_OBJECTIVES = false;
-    private static final boolean PRINT_CMD_ERRORS = false;
+    public static final boolean PRINT_PUBLIC_OBJECTIVES = true;
+    private static final boolean PRINT_CMD_ERRORS = true;
     private static final String PASS = "pass";
     private static final int MAX_NUMBER_OF_REVERTS = 50;
     private static final String GAME_STATE_PATH = "src/test/java/res/model/";

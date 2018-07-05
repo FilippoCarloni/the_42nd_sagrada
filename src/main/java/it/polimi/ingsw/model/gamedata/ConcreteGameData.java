@@ -124,7 +124,8 @@ public class ConcreteGameData implements GameData {
     }
 
     @Override
-    public Map<Player, Integer> getCurrentScore() {
+    @SuppressWarnings("unchecked")
+    public JSONObject getCurrentScore() {
         Map<Player, Integer> scoreMap = new HashMap<>();
         for (Player p : turnManager.getPlayers()) {
             int playerScore = 0;
@@ -138,7 +139,16 @@ public class ConcreteGameData implements GameData {
             if (playerScore < 0) playerScore = 0;
             scoreMap.put(JSONFactory.getPlayer(p.encode()), playerScore);
         }
-        return scoreMap;
+        JSONObject encodedMap = new JSONObject();
+        JSONArray players = new JSONArray();
+        for (Map.Entry<Player, Integer> entry : scoreMap.entrySet()) {
+            JSONObject player = new JSONObject();
+            player.put(JSONTag.USERNAME, entry.getKey().getUsername());
+            player.put(JSONTag.SCORE, entry.getValue());
+            players.add(player);
+        }
+        encodedMap.put(JSONTag.PLAYERS, players);
+        return encodedMap;
     }
 
     @Override

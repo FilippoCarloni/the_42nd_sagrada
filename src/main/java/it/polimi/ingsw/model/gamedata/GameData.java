@@ -8,9 +8,9 @@ import it.polimi.ingsw.model.gameboard.roundtrack.RoundTrack;
 import it.polimi.ingsw.model.players.Player;
 import it.polimi.ingsw.model.turns.TurnManager;
 import it.polimi.ingsw.model.utility.JSONSerializable;
+import org.json.simple.JSONObject;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents the data holder of a particular instant of a Sagrada game.
@@ -37,9 +37,9 @@ public interface GameData extends JSONSerializable {
 
     /**
      * Generates a map containing the player score based on the current status of the game.
-     * @return A Map that connects players to a positive score integer
+     * @return A JSON object that connects players to a positive score integer
      */
-    Map<Player, Integer> getCurrentScore();
+    JSONObject getCurrentScore();
 
     /**
      * Returns the game round track.

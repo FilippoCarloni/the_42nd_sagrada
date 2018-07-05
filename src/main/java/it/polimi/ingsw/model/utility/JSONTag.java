@@ -90,4 +90,7 @@ public final class JSONTag {
 
     //pre-game choice
     public static final String WINDOW_FRAMES = "window_frames";
+
+    // final score
+    public static final String SCORE = "score";
 }
