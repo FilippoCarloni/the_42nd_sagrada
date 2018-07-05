@@ -16,6 +16,10 @@ import java.net.ConnectException;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Controller class for RoundTrackVisualizer screen; it shows to the player all dice on round track.
+ */
+
 //TODO: find a way to redraw all dice on round track when one is changed after a tool card activation
 
 public class RoundTrackVisualizer {
@@ -23,6 +27,15 @@ public class RoundTrackVisualizer {
     @FXML
     private GridPane allDiceOnRoundTrackGridPane;
 
+    /**
+     * Method that draws all dice on the round track, when the round track screen is opened; it is also used by the
+     * update() method into GameBoardController to re-draw the dice on round track if there has been some changes.
+     * @param roundTrack: a JSONObject containing all information about round track:
+     *                  <ol>
+     *                      <li>How many dice are on every slot</li>
+     *                      <li>Which dice are on round track</li>
+     *                  </ol>
+     */
     public void allDiceDrawer(JSONObject roundTrack){
         JSONArray dice = (JSONArray) roundTrack.get(JSONTag.ALL_DICE);
         int turnNumber = parseInt(roundTrack.get(JSONTag.CURRENT_ROUND_NUMBER).toString());

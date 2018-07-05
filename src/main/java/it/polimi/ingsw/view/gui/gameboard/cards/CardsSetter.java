@@ -50,7 +50,7 @@ public class CardsSetter {
     }
 
     /**
-     * Setter for Private Objective card on Window Frame Choice screen.
+     * Setter for Private Objective card on Window Frame Choice screen, and on Private Objective screen.
      * @param json: JSONObject containing the information about the private objective card.
      * @return an ImageView, with the card's image inside id.
      */

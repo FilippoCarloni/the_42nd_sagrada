@@ -35,6 +35,7 @@ public class GuiManager {
     private JSONObject preGameMessage;
     private JSONObject gameBoardMessage;
     private JSONObject gameStatMessage;
+    private static Stage stage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -55,8 +56,11 @@ public class GuiManager {
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
-                        if(lobbyController != null)
+                        if (stage == null)
+                            stage = lobbyController.getStage();
+                        if(lobbyController != null) {
                             lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
+                        }
                         if(gameBoard != null)
                             gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
                         break;
@@ -120,6 +124,9 @@ public class GuiManager {
     }
     public String getNowPlaying(){
         return nowPlaying;
+    }
+    public Stage getStage(){
+        return stage;
     }
 
     /**

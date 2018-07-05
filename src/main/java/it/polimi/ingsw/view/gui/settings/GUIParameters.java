@@ -103,6 +103,7 @@ public final class GUIParameters {
 
     //Other
     public static final String DIFFICULTY = "Difficulty: ";
+    public static final String TOOL = "tool ";
 
 
 }

@@ -26,7 +26,7 @@
          <bottom>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton alignment="CENTER" onAction="#enteredLobby" prefHeight="40.0" prefWidth="165.0" stylesheets="@../css/style.css" text="ENTER INTO LOBBY">
+                  <JFXButton fx:id="playButton" alignment="CENTER" onAction="#enteredLobby" prefHeight="40.0" prefWidth="165.0" stylesheets="@../css/style.css" text="ENTER INTO LOBBY">
                      <HBox.margin>
                         <Insets right="200.0" />
                      </HBox.margin>

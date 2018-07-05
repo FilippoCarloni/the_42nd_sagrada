@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view.gui.preliminarystages;
 
+import com.jfoenix.controls.JFXButton;
 import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,7 +24,7 @@ import static jdk.nashorn.internal.objects.Global.print;
 public class LobbyController {
 
     @FXML
-    private Button startButton;
+    private JFXButton startButton;
     @FXML
     private TextArea textLobby;
 
@@ -62,6 +62,10 @@ public class LobbyController {
         return startButton;
     }
 
+    public Stage getStage() {
+        return (Stage) startButton.getScene().getWindow();
+    }
+
     //Change scene Management
     private void lobbyToPreGameOrToGame(ActionEvent event){
         try {
@@ -70,13 +74,14 @@ public class LobbyController {
             } else {
                 Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.MAP_CHOICE_FXML_PATH));
                 Scene scene = new Scene(parent);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Stage stage = GuiManager.getInstance().getStage();
                 stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
                 GuiManager.setOnCloseRequest(stage);
                 stage.setScene(scene);
+                stage.show();
             }
         } catch (IOException e) {
-            print(e.getMessage());
+            e.printStackTrace();
         }
     }
 

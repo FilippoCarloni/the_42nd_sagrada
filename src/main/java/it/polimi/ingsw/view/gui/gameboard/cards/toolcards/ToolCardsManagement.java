@@ -17,15 +17,24 @@ import java.net.ConnectException;
 import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
+/**
+ * Class that handle the tool cards management.
+ */
 
 public class ToolCardsManagement {
 
+    /**
+     * Main method to handle tool cards. It distinguish between the two tool cards that will need a new screen (Grozing Pliers
+     * and Flux Remover) and the others, and then set the behaviour by setting methods on mouse clicked.
+     * @param toolCardImage: the ImageView containing the specific tool card, on which will be set the behaviour on click.
+     * @param id: the tool card id, used to distinguish between Grozing Pliers, Flux Remover and others.
+     */
     public void toolBehaviourSetter(ImageView toolCardImage, int id){
         if(id == 1){
             //Managing Grozing Pliers behaviour
             toolCardImage.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
@@ -35,7 +44,7 @@ public class ToolCardsManagement {
             //Managing Flux Remover behaviour
             toolCardImage.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     fluxRemoverManagement();
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
@@ -45,7 +54,7 @@ public class ToolCardsManagement {
             //Other tool cards
             toolCardImage.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send("tool " + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }

@@ -38,7 +38,8 @@ import static java.lang.Integer.parseInt;
 import static jdk.nashorn.internal.objects.Global.print;
 
 /**
- * Main Board controller class
+ * Main Board controller class.
+ * It contains all methods that handle the drawing and updating of the game board.
  */
 
 public class GameBoardController {
@@ -119,7 +120,7 @@ public class GameBoardController {
     private JFXButton continueButton;
 
 
-    //Setters and getters
+    //Private Setters
     private void setGrid(){
         playersGrids = new ArrayList<>();
 
@@ -158,12 +159,28 @@ public class GameBoardController {
         publicObjectiveContainers.add(publicObjectiveCard2);
         publicObjectiveContainers.add(publicObjectiveCard3);
     }
+
+    /**
+     * Getter of the List containing all StackPane of the main player.
+     * @return a List of StackPane.
+     */
     public List<StackPane> getPanesOnWindowFrame(){
         return panesOnGrids.get(getMainPlayerByUsername(players));
     }
+
+    /**
+     * Getter for the continue button; used by the GuiManager to make te button visible and clickable at the end of
+     * the match.
+     * @return a reference to the continue button.
+     */
     public JFXButton getContinueButton(){
         return continueButton;
     }
+
+    /**
+     * Public setter for the RoundTrackVisualizer, used when the round track is open by a player
+     * @param rVisualizer: a reference to the current RoundTrackVisualizer.
+     */
     public void setrVisualizer(RoundTrackVisualizer rVisualizer) {
         this.rVisualizer = rVisualizer;
     }
@@ -177,7 +194,7 @@ public class GameBoardController {
     }
 
     //Maps and labels management
-    private int getMainPlayerByUsername(JSONArray players){
+    private static int getMainPlayerByUsername(JSONArray players){
         try {
             String usernameMainPlayer = GuiManager.getInstance().getUsernameMainPlayer();
             for (int i = 0; i < players.size(); i++) {
@@ -220,6 +237,10 @@ public class GameBoardController {
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
     }
 
+    /**
+     * Method set on Action on the Private Objective Rectangle, it opens a screen containing the number of remaining
+     * Favor Points, and the Private Objective Card.
+     */
     public void seePrivateObjective(){
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
@@ -241,7 +262,13 @@ public class GameBoardController {
     }
 
     /**
-     * Methods used by action buttons.
+     * Methods used by action buttons; all this methods send a command to the Connection Controller.
+     * The possible commands are:
+     * <ol>
+     *     <li>pass</li>
+     *     <li>undo</li>
+     *     <li>redo</li>
+     * </ol>
      */
     public void pass() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
@@ -252,6 +279,12 @@ public class GameBoardController {
     public void redo() throws ConnectException {
         GuiManager.getInstance().getConnectionController().send(GUIParameters.REDO);
     }
+
+    /**
+     * Method set on Action on the Continue button. The button become visible only at the end of the match and
+     * change the scene, going from the main board to the points visualization.
+     * @param event: the ActionEvent generated when a player clicks on the button.
+     */
     public void goToEndGame(ActionEvent event){
         try {
             GuiManager.getInstance().setGameBoard(null);
@@ -322,15 +355,9 @@ public class GameBoardController {
         }
     }
 
-    //First game board draw, called by initialize()
+    //First game board draw, called by initialize(), and support methods
     private void firstUpdate(JSONObject json){
-        players = (JSONArray)((JSONObject)json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
-        mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
-        panesOnRoundTrack = new ArrayList<>();
-        canvasOnRoundTrack = new ArrayList<>();
-        panesOnDicePool = new ArrayList<>();
-        canvasOnDicePool = new ArrayList<>();
-        rVisualizer = null;
+        initializeGlobalVariables(json);
 
         Group group = new Group();
         StackPane pane = new StackPane();
@@ -342,13 +369,7 @@ public class GameBoardController {
         setCardsContainers();
         setMaps();
 
-        rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
-        roundTrackAnchorPane.setOnMouseClicked(e -> rDrawer.seeAllDice());
-        fillFirstTimeMap();
-        privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
-        DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, ((JSONArray) json.get(JSONTag.DICE_POOL)).size(), true);
-        updater(json);
-        addCardsOnGameBoard(json);
+        callFirsFillers(json);
 
         try {
             if(GuiManager.getInstance().getNowPlaying() != null)
@@ -360,6 +381,24 @@ public class GameBoardController {
         pane.getChildren().add(windowFramePlayer1);
         group.getChildren().add(pane);
         backgroundMainPlayer.getChildren().add(group);
+    }
+    private void initializeGlobalVariables(JSONObject json){
+        players = (JSONArray)((JSONObject)json.get(JSONTag.TURN_MANAGER)).get(JSONTag.PLAYERS);
+        mainPlayer = (JSONObject) players.get(getMainPlayerByUsername(players));
+        panesOnRoundTrack = new ArrayList<>();
+        canvasOnRoundTrack = new ArrayList<>();
+        panesOnDicePool = new ArrayList<>();
+        canvasOnDicePool = new ArrayList<>();
+        rVisualizer = null;
+    }
+    private void callFirsFillers(JSONObject json){
+        rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
+        roundTrackAnchorPane.setOnMouseClicked(e -> rDrawer.seeAllDice());
+        fillFirstTimeMap();
+        privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
+        DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, (players.size() * 2) + 1, true);
+        updater(json);
+        addCardsOnGameBoard(json);
     }
 
     @FXML

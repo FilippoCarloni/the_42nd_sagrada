@@ -73,7 +73,7 @@ public class LoginController {
             stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
-            print(e.getMessage());
+            e.printStackTrace();
         }
     }
 
