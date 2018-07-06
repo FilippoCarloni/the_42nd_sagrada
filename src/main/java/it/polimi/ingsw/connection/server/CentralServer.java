@@ -103,11 +103,11 @@ public class CentralServer {
                 if (currentGame(player.get(0)) == null) {
                     waiting.parallelStream().forEach(x -> x.setPlaying(true));
                     gameControllers.add(new WrappedGameController(this, waiting));
-                    waiting.clear();
                     lobbyManagers.remove(lobbyManager);
                     counterGame= gameControllers.size() + 1;
                     for(OnLinePlayer p: waiting)
                         logger.info(() -> p.getServerSession().getID() + ENTERING_MATCH+ counterGame);
+                    waiting.clear();
                 }
             }
             return currentGame(player.get(0));
@@ -118,7 +118,7 @@ public class CentralServer {
      * @param player - The OnLinePlayer to check.
      * @return - The WrappedGameController in which the player is actually playing, null if the player is not playing.
      */
-    private WrappedGameController currentGame(OnLinePlayer player){
+    private synchronized WrappedGameController currentGame(OnLinePlayer player){
             List<WrappedGameController> game=new ArrayList<>();
             if(player.isPlaying())
                  game=gameControllers.parallelStream().filter(x -> x.getGameController().isPlaying(player)).collect(Collectors.toList());
