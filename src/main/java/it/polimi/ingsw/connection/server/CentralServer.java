@@ -100,15 +100,16 @@ public class CentralServer {
             }
             waiting=lobbyManager.waitStart();
             synchronized (this) {
-                counterGame= gameControllers.size() + 1;
                 if (currentGame(player.get(0)) == null) {
                     waiting.parallelStream().forEach(x -> x.setPlaying(true));
                     gameControllers.add(new WrappedGameController(this, waiting));
                     waiting.clear();
                     lobbyManagers.remove(lobbyManager);
+                    counterGame= gameControllers.size() + 1;
+                    for(OnLinePlayer p: waiting)
+                        logger.info(() -> p.getServerSession().getID() + ENTERING_MATCH+ counterGame);
                 }
             }
-            logger.info(() -> userSessionID + ENTERING_MATCH+ counterGame);
             return currentGame(player.get(0));
         }
 

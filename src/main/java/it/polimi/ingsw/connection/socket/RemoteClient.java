@@ -35,12 +35,12 @@ public class RemoteClient implements Runnable,GameObserver {
 
     /**
      * Creates a new RemoteClient.
-     * @param serverSocket - the socket connection with the client.
+     * @param clientSocket - the socket connection with the client.
      * @param centralServer - References to the CentralServer instance.
      */
-    RemoteClient(Socket serverSocket,CentralServer centralServer) {
+    RemoteClient(Socket clientSocket,CentralServer centralServer) {
         sessionID=ANONYMOUS;
-        client=serverSocket;
+        client=clientSocket;
         this.centralServer=centralServer;
         gameRequested = false;
         isALive=true;
