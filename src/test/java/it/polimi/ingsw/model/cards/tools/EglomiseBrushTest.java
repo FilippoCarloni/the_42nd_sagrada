@@ -42,6 +42,11 @@ class EglomiseBrushTest {
         assertFalse(g.getCurrentPlayer().getWindowFrame().isEmpty(0, 0));
         assertTrue(g.getCurrentPlayer().getWindowFrame().isEmpty(3, 2));
         wrappedIllegalCommand(g, players.get(0), "move 1 1 1 1");
+        wrappedIllegalCommand(g, players.get(0), "move 0 1 4 3");
+        wrappedIllegalCommand(g, players.get(0), "move 1 1 1 0");
+        wrappedIllegalCommand(g, players.get(0), "move 1 1 4 ");
+        wrappedIllegalCommand(g, players.get(0), "move 1 1 4 3 0");
+        wrappedIllegalCommand(g, players.get(0), "Mmove 1 1 4 3");
         wrappedLegalCommand(g, players.get(0), "move 1 1 4 3");
         assertTrue(g.getCurrentPlayer().getWindowFrame().isEmpty(0, 0));
         assertFalse(g.getCurrentPlayer().getWindowFrame().isEmpty(3, 2));
