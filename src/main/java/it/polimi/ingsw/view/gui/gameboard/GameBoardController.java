@@ -20,7 +20,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -64,6 +63,13 @@ public class GameBoardController {
     private ArrayList<VBox> toolCardsContainers;
     private ArrayList<VBox> publicObjectiveContainers;
 
+    private ArrayList<Label> toolsTitle;
+    private ArrayList<TextArea> toolsDescription;
+    private ArrayList<Label> toolsFavorPoints;
+
+    private ArrayList<Label> publicObjectivesTitle;
+    private ArrayList<TextArea> publicObjectivesDescription;
+
     //JSON containers
     private JSONArray players;
     private JSONObject mainPlayer;
@@ -102,6 +108,36 @@ public class GameBoardController {
     private VBox toolCard2;
     @FXML
     private VBox toolCard3;
+    @FXML
+    private Label toolTitle1;
+    @FXML
+    private Label toolTitle2;
+    @FXML
+    private Label toolTitle3;
+    @FXML
+    private TextArea toolDescription1;
+    @FXML
+    private TextArea toolDescription2;
+    @FXML
+    private TextArea toolDescription3;
+    @FXML
+    private Label favorPointsOnTool1;
+    @FXML
+    private Label favorPointsOnTool2;
+    @FXML
+    private Label favorPointsOnTool3;
+    @FXML
+    private Label publicObjectiveTitle1;
+    @FXML
+    private Label publicObjectiveTitle2;
+    @FXML
+    private Label publicObjectiveTitle3;
+    @FXML
+    private TextArea publicObjectiveDescription1;
+    @FXML
+    private TextArea publicObjectiveDescription2;
+    @FXML
+    private TextArea publicObjectiveDescription3;
     @FXML
     private VBox publicObjectiveCard1;
     @FXML
@@ -158,6 +194,35 @@ public class GameBoardController {
         publicObjectiveContainers.add(publicObjectiveCard1);
         publicObjectiveContainers.add(publicObjectiveCard2);
         publicObjectiveContainers.add(publicObjectiveCard3);
+    }
+    private void setToolCardsContainers(){
+        toolsTitle = new ArrayList<>();
+        toolsDescription = new ArrayList<>();
+        toolsFavorPoints = new ArrayList<>();
+
+        toolsTitle.add(toolTitle1);
+        toolsTitle.add(toolTitle2);
+        toolsTitle.add(toolTitle3);
+
+        toolsDescription.add(toolDescription1);
+        toolsDescription.add(toolDescription2);
+        toolsDescription.add(toolDescription3);
+
+        toolsFavorPoints.add(favorPointsOnTool1);
+        toolsFavorPoints.add(favorPointsOnTool2);
+        toolsFavorPoints.add(favorPointsOnTool3);
+    }
+    private void setPublicObjectiveContainers(){
+        publicObjectivesTitle = new ArrayList<>();
+        publicObjectivesDescription = new ArrayList<>();
+
+        publicObjectivesTitle.add(publicObjectiveTitle1);
+        publicObjectivesTitle.add(publicObjectiveTitle2);
+        publicObjectivesTitle.add(publicObjectiveTitle3);
+
+        publicObjectivesDescription.add(publicObjectiveDescription1);
+        publicObjectivesDescription.add(publicObjectiveDescription2);
+        publicObjectivesDescription.add(publicObjectiveDescription3);
     }
 
     /**
@@ -224,17 +289,17 @@ public class GameBoardController {
 
     //Cards management
     private void addCardsOnGameBoard(JSONObject json){
-        List<ImageView> toolCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), GUIParameters.TOOL_DIRECTORY, true);
-        List<ImageView> pubObjCards = CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), GUIParameters.PUBOBJ_DIRECTORY, false);
+        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), toolCardsContainers, toolsTitle, toolsDescription, true);
+        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), publicObjectiveContainers, publicObjectivesTitle, publicObjectivesDescription, false);
 
-        for(int i = 0; i < toolCards.size(); i++){
-            toolCardsContainers.get(i).getChildren().add(toolCards.get(i));
-            publicObjectiveContainers.get(i).getChildren().add(pubObjCards.get(i));
+        for(Label l : toolsFavorPoints){
+            l.setText("Favor Points: 0");
         }
     }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
         int id = parseInt(privateObjectiveCard.get(JSONTag.CARD_ID).toString());
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
+        privateObjectiveRectangle.getStyleClass().add(GUIParameters.CLICKABLE);
     }
 
     /**
@@ -340,6 +405,8 @@ public class GameBoardController {
             rVisualizer.allDiceDrawer(roundTrack);
         }
 
+        updateFavorPointsOnToolCards((JSONArray) json.get(JSONTag.TOOLS));
+
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
@@ -352,6 +419,12 @@ public class GameBoardController {
             String color = draftedDie.get(JSONTag.COLOR).toString();
 
             DiceDrawer.dicePointsDrawer(value, color, draftedDieCanvas.getGraphicsContext2D(), draftedDieStackPane, 1.5);
+        }
+    }
+    private void updateFavorPointsOnToolCards(JSONArray json){
+        for(int i = 0; i < json.size(); i++){
+            int favorPoints = parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString());
+            toolsFavorPoints.get(i).setText("Favor Points: " + favorPoints);
         }
     }
 
@@ -367,9 +440,12 @@ public class GameBoardController {
         setGrid();
         setPlayersNameLabels();
         setCardsContainers();
+        setToolCardsContainers();
+        setPublicObjectiveContainers();
         setMaps();
 
         callFirsFillers(json);
+        updater(json);
 
         try {
             if(GuiManager.getInstance().getNowPlaying() != null)
@@ -397,7 +473,6 @@ public class GameBoardController {
         fillFirstTimeMap();
         privateObjectiveRectangleFiller((JSONObject) mainPlayer.get(JSONTag.PRIVATE_OBJECTIVE));
         DiceDrawer.diceFiller(diceGrid, panesOnDicePool, canvasOnDicePool, (players.size() * 2) + 1, true);
-        updater(json);
         addCardsOnGameBoard(json);
     }
 

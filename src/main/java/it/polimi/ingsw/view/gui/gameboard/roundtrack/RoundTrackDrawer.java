@@ -62,7 +62,8 @@ public class RoundTrackDrawer {
 
         //Reset of round track draw
         for(int i = 0; i < panesOnRoundTrack.size(); i++){
-            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 0.9, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 0.9);
+            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK,
+                    GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             panesOnRoundTrack.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
         }
 
@@ -75,7 +76,7 @@ public class RoundTrackDrawer {
             //With this call I will draw the last die of the specified turn on the round track
             DiceDrawer.dicePointsDrawer(value, color,  canvasOnRoundTrack.get(i).getGraphicsContext2D(), panesOnRoundTrack.get(i), 0.9);
             canvasOnRoundTrack.get(i).getStyleClass().clear();
-            canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE_CANVAS);
+            canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE);
         }
 
     }

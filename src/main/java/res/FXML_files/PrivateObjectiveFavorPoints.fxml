@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.shape.Rectangle?>
 
 <AnchorPane prefHeight="450.0" prefWidth="300.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.cards.privateobjective.PrivateObjectiveFavorPointsController">
    <children>
@@ -17,13 +18,34 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="104.0" prefWidth="300.0">
                      <children>
-                        <Label fx:id="favorPointsLabel" />
+                        <Label fx:id="favorPointsLabel" alignment="CENTER" />
                      </children>
                   </HBox>
-                  <HBox fx:id="root" alignment="CENTER" prefHeight="243.0" prefWidth="300.0">
+                  <HBox alignment="CENTER" prefHeight="243.0" prefWidth="300.0">
                      <VBox.margin>
                         <Insets bottom="30.0" />
                      </VBox.margin>
+                     <children>
+                        <VBox fx:id="privateObjectiveContainer" alignment="TOP_CENTER" prefHeight="243.0" prefWidth="200.0" styleClass="cards" stylesheets="@../css/style.css">
+                           <children>
+                              <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="main-board-label" stylesheets="@../css/style.css">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="#eceff2" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" top="15.0" />
+                                 </VBox.margin>
+                              </Rectangle>
+                              <JFXTextArea fx:id="privateObjectiveTextArea" editable="false" focusColor="#4d4d4d" prefHeight="105.0" prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </JFXTextArea>
+                           </children>
+                        </VBox>
+                     </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="72.0" prefWidth="300.0">
                      <children>

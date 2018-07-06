@@ -81,7 +81,7 @@ public class LobbyController {
                 stage.show();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            print(e.getMessage());
         }
     }
 

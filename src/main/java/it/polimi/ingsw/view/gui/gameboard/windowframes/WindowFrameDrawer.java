@@ -41,7 +41,7 @@ public class WindowFrameDrawer {
                 canvasOnWindowFrame.add(canvas);
                 if(clickable) {
                     canvas.getStyleClass().clear();
-                    canvas.getStyleClass().add(GUIParameters.CLICKABLE_CANVAS);
+                    canvas.getStyleClass().add(GUIParameters.CLICKABLE);
                     new WindowEvents().clickEventsOnWindowFrame(pane, row + 1, column + 1, false);
                 }
             }
