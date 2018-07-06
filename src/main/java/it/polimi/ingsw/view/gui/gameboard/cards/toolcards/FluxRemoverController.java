@@ -18,6 +18,10 @@ import java.util.List;
 
 //TODO: fix the "color bug"
 
+/**
+ * Controller class for the Flux Remover tool card screen.
+ */
+
 public class FluxRemoverController {
 
     private List<StackPane> panesBetweenChoose;
@@ -27,7 +31,8 @@ public class FluxRemoverController {
     private GridPane shadeChoiceGrid;
 
     /**
-     * Methods used by the radio buttons on the flux remover screen, to send the new shade of the die.
+     * Methods used by the radio buttons on the flux remover screen, to send the new shade of the die and to close
+     * the window after the choice.
      * @param event: the ActionEvent generated when a player clicks on the button.
      * @throws ConnectException if the connection controller is not reachable.
      */

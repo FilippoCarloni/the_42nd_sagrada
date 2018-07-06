@@ -60,7 +60,6 @@ public class EndGame {
         }
     }
 
-
     @FXML
     protected void initialize() throws ConnectException {
         JSONObject gameStat = GuiManager.getInstance().getGameStatMessage();

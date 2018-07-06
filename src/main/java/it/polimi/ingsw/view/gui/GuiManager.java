@@ -35,7 +35,6 @@ public class GuiManager {
     private JSONObject preGameMessage;
     private JSONObject gameBoardMessage;
     private JSONObject gameStatMessage;
-    private static Stage stage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -56,8 +55,6 @@ public class GuiManager {
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
-                        if (stage == null)
-                            stage = lobbyController.getStage();
                         if(lobbyController != null) {
                             lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
                         }
@@ -102,51 +99,109 @@ public class GuiManager {
     }
 
     /**
-     * Getters for all needed references present in this class.
+     * Getter for the connection controller.
+     * @return a reference to the Connection controller.
      */
     public ConnectionManager getConnectionController(){
         return connectionController;
     }
+
+    /**
+     * Getter for the username of the main player; used by every class into the preliminary stage to set into the title the
+     * main player username, and by the game board to set the main player username over his window frame.
+     * @return a String containing main player's username.
+     */
     public String getUsernameMainPlayer(){
         return usernameMainPlayer;
     }
+
+    /**
+     * Getter for the pre game message, used by the window frame choice controller to draw the pre game screen
+     * @return a JSONObject containing all information about the pre game screen to draw.
+     */
     public JSONObject getPreGameMessage(){
         return preGameMessage;
     }
+
+    /**
+     * Getter for the game board message.
+     * @return a JSONObject containing all information about the actual game state.
+     */
     public JSONObject getGameBoardMessage(){
         return gameBoardMessage;
     }
+
+    /**
+     * Getter for the game stat message, containing the final score of the ended match. Used by the end game screen controller
+     * to draw the final score.
+     * @return a JSONObject containing all information about the final score of the ended match.
+     */
     public JSONObject getGameStatMessage() {
         return gameStatMessage;
     }
+
+    /**
+     * Getter for the game board controller.
+     * @return a reference to the game board controller.
+     */
     public GameBoardController getGameBoard(){
         return gameBoard;
     }
+
+    /**
+     * Getter for the username of the currently playing player. Used into the game board controller to write into the message
+     * text area who is playing.
+     * @return a String containing the username of the currently playing player.
+     */
     public String getNowPlaying(){
         return nowPlaying;
     }
-    public Stage getStage(){
-        return stage;
-    }
 
     /**
-     * Setters for all variables present in this class.
+     * Setter for the main player username variable.
+     * @param usernameMainPlayer: a String containing main player's username.
      */
     public void setUsernameMainPlayer(String usernameMainPlayer){
         this.usernameMainPlayer = usernameMainPlayer;
     }
+
+    /**
+     * Setter for the lobby controller reference.
+     * @param lobbyController: a reference to the actual lobby controller.
+     */
     public void setLobbyController(LobbyController lobbyController){
         this.lobbyController = lobbyController;
     }
+
+    /**
+     * Setter for the window frame choice reference.
+     * @param windowFramesChoice: a reference to the actual window frame choice controller.
+     */
     public void setWindowFramesChoice(WindowFramesChoice windowFramesChoice){
         this.windowFramesChoice = windowFramesChoice;
     }
+
+    /**
+     * Setter for the game board controller reference.
+     * @param gameBoard: a reference to the actual game board controller.
+     */
     public void setGameBoard(GameBoardController gameBoard){
         this.gameBoard = gameBoard;
     }
+
+    /**
+     * Setter for the JSONObject containing the game board message; it will contain all information about the
+     * actual game status.
+     * @param gameBoardMessage: a JSONObject containing all information about the actual game status.
+     */
     public void setGameBoardMessage(JSONObject gameBoardMessage) {
         this.gameBoardMessage = gameBoardMessage;
     }
+
+    /**
+     * Setter for the JSONObject containing the game stat message; it will contain the final score of the ended game.
+     * @param gameStatMessage: a JSONObject containing the final score of the ended game.
+     */
     public void setGameStatMessage(JSONObject gameStatMessage) {
         this.gameStatMessage = gameStatMessage;
     }

@@ -19,6 +19,9 @@
     -fx-text-fill: #F5F6F7;
     -fx-font-family: Roboto;
 }
+.players-label{
+    -fx-text-fill: black;
+}
 
 .button {
     -fx-background-color: #F5F6F7;
@@ -33,9 +36,6 @@
 .clickable {
     -fx-cursor: hand;
 }
-.cards{
-    -fx-background-color: #618685;
-}
 
 .check-box {
     -fx-font-size: 16px;
@@ -45,27 +45,45 @@
 }
 
 .text-area {
-    -fx-text-fill: #F5F6F7;
-    -fx-background-color: #2F4F4F;
+    -fx-text-fill: #454140;
+    -fx-background-color:  #cfe0e8;
     -fx-font-size: 16px;
     -fx-font-family: Roboto;
 }
 
-.tool-public-objective-text-area{
+.lobby-text-area{
     -fx-text-fill: #F5F6F7;
     -fx-background-color: #2F4F4F;
+}
+
+.cards{
+    -fx-background-color: #d6d4e0;
+}
+
+.tool-cards{
+    -fx-background-color: #fefbd8;
+}
+
+.cards-text-area{
+    -fx-text-fill: #484f4f;
+    -fx-background-color: #b8a9c9;
     -fx-font-size: 13px;
     -fx-font-family: Roboto;
 }
+
+.tool-text-area{
+    -fx-text-fill: #484f4f;
+    -fx-background-color: #c4b7a6;
+}
+
 .cards-title-label{
     -fx-font-size: 15px;
-    -fx-text-fill: #F5F6F7;
+    -fx-text-fill: #484f4f;
     -fx-font-family: Roboto;
 }
-.tool-favor-points-label{
-    -fx-font-size: 14px;
-    -fx-text-fill: #F5F6F7;
-    -fx-font-family: Roboto;
+
+.tool-title-label{
+    -fx-text-fill: #7e4a35;
 }
 
 #toolCards {

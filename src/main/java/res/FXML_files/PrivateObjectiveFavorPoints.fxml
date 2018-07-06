@@ -28,7 +28,7 @@
                      <children>
                         <VBox fx:id="privateObjectiveContainer" alignment="TOP_CENTER" prefHeight="243.0" prefWidth="200.0" styleClass="cards" stylesheets="@../css/style.css">
                            <children>
-                              <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="main-board-label" stylesheets="@../css/style.css">
+                              <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -38,7 +38,7 @@
                                     <Insets bottom="10.0" top="15.0" />
                                  </VBox.margin>
                               </Rectangle>
-                              <JFXTextArea fx:id="privateObjectiveTextArea" editable="false" focusColor="#4d4d4d" prefHeight="105.0" prefWidth="200.0">
+                              <JFXTextArea fx:id="privateObjectiveTextArea" editable="false" focusColor="#4d4d4d" prefHeight="105.0" prefWidth="200.0" styleClass="cards-text-area" stylesheets="@../css/style.css">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>

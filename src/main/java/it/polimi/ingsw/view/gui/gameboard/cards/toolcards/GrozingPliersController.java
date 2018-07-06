@@ -46,6 +46,7 @@ public class GrozingPliersController {
         sendCommand(GUIParameters.DECREASE, event);
     }
 
+    //Method that sends the right command to the connection controller
     private void sendCommand(String command, ActionEvent event){
         try {
             GuiManager.getInstance().getConnectionController().send(command);

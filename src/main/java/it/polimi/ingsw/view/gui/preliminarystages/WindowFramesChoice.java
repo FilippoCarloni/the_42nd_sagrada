@@ -33,10 +33,10 @@ import static jdk.nashorn.internal.objects.Global.print;
 
 public class WindowFramesChoice {
 
-    //GridPane in which I will draw the map between the player has to choose
+    //Container of the maps
     private ArrayList<GridPane> maps = new ArrayList<>();
 
-    //Containers of the maps' names
+    //Container of the maps' names
     private ArrayList<Label> names = new ArrayList<>();
 
     //Containers of the maps' difficulties
@@ -104,6 +104,7 @@ public class WindowFramesChoice {
         clicked(4);
     }
 
+    //Support methods for map choice
     private void clicked(int idMapChosen) {
         try {
             GuiManager.getInstance().getConnectionController().send(GUIParameters.WINDOW + idMapChosen);

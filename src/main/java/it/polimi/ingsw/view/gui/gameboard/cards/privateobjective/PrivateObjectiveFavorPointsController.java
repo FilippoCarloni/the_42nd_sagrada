@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui.gameboard.cards.privateobjective;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
+import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -40,7 +41,7 @@ public class PrivateObjectiveFavorPointsController {
 
     @FXML
     protected void initialize() throws ConnectException {
-        favorPointsLabel.setText(("Favor Points: " + parseInt(GuiManager.getInstance().getGameBoard().getMainPlayer().get(JSONTag.FAVOR_POINTS).toString())));
+        favorPointsLabel.setText((GUIParameters.FAVOR_POINTS + parseInt(GuiManager.getInstance().getGameBoard().getMainPlayer().get(JSONTag.FAVOR_POINTS).toString())));
         CardsSetter.setPrivateCard((JSONObject)GuiManager.getInstance().getGameBoard().getMainPlayer().get(JSONTag.PRIVATE_OBJECTIVE), privateObjectiveTitle, privateObjectiveRectangle, privateObjectiveTextArea);
     }
 }

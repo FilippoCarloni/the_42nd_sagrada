@@ -7,7 +7,7 @@ import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
@@ -26,13 +26,13 @@ public class ToolCardsManagement {
     /**
      * Main method to handle tool cards. It distinguish between the two tool cards that will need a new screen (Grozing Pliers
      * and Flux Remover) and the others, and then set the behaviour by setting methods on mouse clicked.
-     * @param toolCardContainer: the VBox containing the specific tool card, on which will be set the behaviour on click.
+     * @param toolCardTitle: the Label containing the specific tool card title, on which will be set the behaviour on click.
      * @param id: the tool card id, used to distinguish between Grozing Pliers, Flux Remover and others.
      */
-    public void toolBehaviourSetter(VBox toolCardContainer, int id){
+    public void toolBehaviourSetter(Label toolCardTitle, int id){
         if(id == 1){
             //Managing Grozing Pliers behaviour
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
@@ -42,7 +42,7 @@ public class ToolCardsManagement {
             });
         } else if (id == 11){
             //Managing Flux Remover behaviour
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     fluxRemoverManagement();
@@ -52,7 +52,7 @@ public class ToolCardsManagement {
             });
         } else {
             //Other tool cards
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                 } catch (ConnectException e1) {

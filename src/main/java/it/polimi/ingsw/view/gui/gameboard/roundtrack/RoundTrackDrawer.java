@@ -74,7 +74,7 @@ public class RoundTrackDrawer {
             int value = parseInt(((JSONObject)dice.get(index)).get(JSONTag.SHADE).toString());
             String color = ((JSONObject)dice.get(index)).get(JSONTag.COLOR).toString();
             //With this call I will draw the last die of the specified turn on the round track
-            DiceDrawer.dicePointsDrawer(value, color,  canvasOnRoundTrack.get(i).getGraphicsContext2D(), panesOnRoundTrack.get(i), 0.9);
+            DiceDrawer.dicePointsDrawer(value, color,  canvasOnRoundTrack.get(i).getGraphicsContext2D(), panesOnRoundTrack.get(i), GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             canvasOnRoundTrack.get(i).getStyleClass().clear();
             canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE);
         }

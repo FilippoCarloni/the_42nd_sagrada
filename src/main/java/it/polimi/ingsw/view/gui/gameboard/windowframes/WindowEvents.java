@@ -21,7 +21,11 @@ class WindowEvents {
     private String temporaryCommand;
 
     /**
-     * Method that will manage click events on window frame, discriminating between "place" and "move" actions
+     * Method that will manage click events on window frame, discriminating between "place" and "move" actions.
+     * If there is a die into the selected position, temporary command will be initialized to "move row column", and
+     * will be called manageMoveEvents() method, to handle move actions.
+     * If there is not a die into the selected position, the command will be set to "place row column", to allow the player
+     * to put a die into the selected position.
      * @param pane: StackPane which will handle mouse click events
      * @param row: row position of pane into the window frame
      * @param column: column position of pane into the window frame
