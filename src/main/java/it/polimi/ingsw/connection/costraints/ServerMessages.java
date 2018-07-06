@@ -3,14 +3,14 @@ package it.polimi.ingsw.connection.costraints;
 /**
  * The ServerMessage class contains the constants parts of the messages that the server sends to the clients.
  */
-public class ServerMessage {
-    private ServerMessage(){
+public class ServerMessages {
+    private ServerMessages(){
         
     }
 
     public static final String NOT_LOGGED="You are not logged ";
     public static final String NOT_VALID_USERNAME="The username is not valid!";
-    public static final String NOT_MULTYGAME_WITH_ONE_CLIENT="NO multi client for a single user!";
+    public static final String NOT_MULTY_GAME_WITH_ONE_CLIENT="NO multi client for a single user!";
     public static final String ALREADY_EXISTING_USERNAME="Username already used";
     public static final String NOT_EXISTING_SESSION="This sessionID not exists";
     public static final String ENDED_GAME = "Game ended";
@@ -51,4 +51,5 @@ public class ServerMessage {
     public static final String SOCKET_ERROR = "Socket error";
     public static final String COMMAND_NOT_RECOGNIZED = "Command not recognized";
     static final String NOT_FOUND_CONFIG_FILE = "Error found in the configuration file";
+    public static final String WAITING_MESSAGE = "Waiting others players ...";
 }

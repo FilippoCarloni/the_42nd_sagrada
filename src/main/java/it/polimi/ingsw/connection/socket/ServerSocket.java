@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.NEW_SOCKET_CLIENT_THREAD;
-import static it.polimi.ingsw.connection.costraints.ServerMessage.SOCKET_SERVER_ERROR;
-import static it.polimi.ingsw.connection.costraints.ServerMessage.SOCKET_SERVER_MESSAGE;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.NEW_SOCKET_CLIENT_THREAD;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.SOCKET_SERVER_ERROR;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.SOCKET_SERVER_MESSAGE;
 
 /**
  * The ServerSocket class listen in a file configured port and manage all the connection over TCP.

@@ -10,9 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
+import static it.polimi.ingsw.connection.costraints.ServerMessages.WAITING_MESSAGE;
 import static it.polimi.ingsw.connection.costraints.Settings.MAX_PLAYER_GAME;
 import static it.polimi.ingsw.connection.costraints.Settings.MIN_PLAYER_GAME;
-import static it.polimi.ingsw.connection.costraints.ServerMessage.LOBBY_LEAVING;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.LOBBY_LEAVING;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
@@ -53,7 +54,7 @@ public class LobbyManager extends Observable{
             return true;
         if(!open)
             return false;
-        player.getObserver().update(this,MessageType.encodeMessage("Waiting others players ...",MessageType.GENERIC_MESSAGE));
+        player.getObserver().update(this,MessageType.encodeMessage(WAITING_MESSAGE,MessageType.GENERIC_MESSAGE));
         this.addObserver(player.getObserver());
         players.parallelStream().forEach(x -> {
             x.getObserver().update(this, MessageType.encodeMessage(player.getPlayer().getUsername() + " is connected to this game lobby!",MessageType.GENERIC_MESSAGE));

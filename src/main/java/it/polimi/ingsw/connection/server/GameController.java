@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
@@ -90,7 +90,7 @@ public class GameController extends Observable{
         ;
         beeperHandle=scheduler.scheduleAtFixedRate(cleaner, 0, settings.gameRefresh, MILLISECONDS);
         startTimer();
-        scheduler.schedule(this::setWindowsFrame,10000,MILLISECONDS );
+        scheduler.schedule(this::setWindowsFrame,settings.windowWaitingTime,MILLISECONDS );
     }
 
     /**

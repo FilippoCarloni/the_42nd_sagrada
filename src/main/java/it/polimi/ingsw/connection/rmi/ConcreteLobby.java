@@ -8,9 +8,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.GAME_REQUEST;
-import static it.polimi.ingsw.connection.costraints.ServerMessage.LOGIN_REQUEST;
-import static it.polimi.ingsw.connection.costraints.ServerMessage.RESTORE_REQUEST;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.GAME_REQUEST;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.LOGIN_REQUEST;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.RESTORE_REQUEST;
 
 /**
  * The Concretelobby class implements the Lobby interface.

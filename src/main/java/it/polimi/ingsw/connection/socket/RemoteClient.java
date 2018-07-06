@@ -14,7 +14,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
 import static it.polimi.ingsw.connection.costraints.Settings.ANONYMOUS;
 import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
 

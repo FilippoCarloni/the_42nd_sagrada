@@ -18,7 +18,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.*;
+import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
 import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
 
 /**

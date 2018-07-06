@@ -4,11 +4,30 @@ import java.io.FileReader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessage.NOT_FOUND_CONFIG_FILE;
 
+import static it.polimi.ingsw.connection.costraints.ServerMessages.NOT_FOUND_CONFIG_FILE;
+
+/**
+ * The Settings class contains all the general settings for the connections, game and others settings for the connection package.
+ * The values of the settings are loaded by the4 config file, if it is no found the dafault value are loaded.
+ *
+ */
 public  class Settings{
     public static final int MAX_PLAYER_GAME = 4;
     public static final int MIN_PLAYER_GAME = 2;
+
+    public final int rmiPort;
+    public static final long SERIAL_VERSION_UID_SESSION = 1190476516911661470L;
+
+    public final int lobbyWaitingTime;
+    public final int socketPort;
+    public final String serverIP;
+    public static final String ANONYMOUS = "ANONYMOUS";
+    public final int lobbyRefreshTime;
+    public final int turnTime;
+    public final int gameRefresh;
+    public final int windowWaitingTime;
+    public static final String LOBBY_RMI_ID = "Lobby";
 
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
@@ -25,19 +44,23 @@ public  class Settings{
     private static final int DEFAULT_GAME_REFRESH = 101;
     private static final String LOBBY_WAITING_TIME = "LOBBY_WAITING_TIME";
     private static final int DEFAULT_LOBBY_WAITING_TIME = 9000;
+    private static final int DEFAULT_WINDOW_TIMER = 10000;
+    private static final String WINDOW_WAITING_TIME = "WINDOW_WAITING_TIME";
     private static final Logger logger=Logger.getLogger(Settings.class.getName());
+
     public Settings() {
-        int rmiPort = DEFAULT_RMI_PORT;
+        int rmiPortConnection = DEFAULT_RMI_PORT;
         String ipserver = DEFAULT_SERVER_IP;
         int lobbyRefresh = DEFAULT_LOBBY_REFRESH_TIME;
         int turnTimeRefresh = DEFAULT_TURN_TIME;
         int gameRefreshTime = DEFAULT_GAME_REFRESH;
         int lobbyTime = DEFAULT_LOBBY_WAITING_TIME;
+        int windowTime = DEFAULT_WINDOW_TIMER;
         Properties configFile;
         configFile = new java.util.Properties();
         FileReader reader;
         String param;
-        int socketPort = DEFAULT_SOCKET_PORT;
+        int socketPortConnection = DEFAULT_SOCKET_PORT;
         try {
             reader = new FileReader(FILE_CONFIG);
             configFile.load(reader);
@@ -46,10 +69,10 @@ public  class Settings{
                 ipserver = param;
             param = configFile.getProperty(PORT_SOCKET_TAG);
             if (param != null)
-                socketPort = Integer.parseInt(param);
+                socketPortConnection = Integer.parseInt(param);
             param = configFile.getProperty(PORT_RMI_TAG);
             if (param != null)
-                rmiPort = Integer.parseInt(param);
+                rmiPortConnection = Integer.parseInt(param);
             param = configFile.getProperty(LOBBY_REFRESH_TIMR_TAG);
             if (param != null)
                 lobbyRefresh = Integer.parseInt(param);
@@ -63,27 +86,22 @@ public  class Settings{
             if (param != null)
                 lobbyTime = Integer.parseInt(param);
             reader.close();
+            param = configFile.getProperty(WINDOW_WAITING_TIME);
+            if (param != null)
+                windowTime = Integer.parseInt(param);
+            reader.close();
         } catch (Exception eta) {
             logger.warning(NOT_FOUND_CONFIG_FILE);
         }
-        this.rmiPort= rmiPort;
+        rmiPort= rmiPortConnection;
+        windowWaitingTime = windowTime;
         serverIP = ipserver;
-        this.socketPort = socketPort;
+        socketPort = socketPortConnection;
         lobbyRefreshTime=lobbyRefresh;
         turnTime = turnTimeRefresh;
         gameRefresh = gameRefreshTime;
         lobbyWaitingTime = lobbyTime;
     }
     
-    public final int rmiPort;
-    public static final long SERIAL_VERSION_UID_SESSION = 1190476516911661470L;
 
-    public final int lobbyWaitingTime;
-    public final int socketPort;
-    public final String serverIP;
-    public static final String ANONYMOUS = "ANONYMOUS";
-    public final int lobbyRefreshTime;
-    public final int turnTime;
-    public final int gameRefresh;
-    public static final String LOBBY_RMI_ID = "Lobby";
 }
