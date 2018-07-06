@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui.gameboard.roundtrack;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -95,7 +95,7 @@ public class RoundTrackDrawer {
                 try {
                     GuiManager.getInstance().getGameBoard().setrVisualizer(null);
                 } catch (ConnectException e1) {
-                    e1.printStackTrace();
+                    print(e1.getMessage());
                 }
             });
             stage.show();

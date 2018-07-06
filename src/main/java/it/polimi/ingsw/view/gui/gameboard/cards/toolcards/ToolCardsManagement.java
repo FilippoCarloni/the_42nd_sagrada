@@ -2,8 +2,8 @@ package it.polimi.ingsw.view.gui.gameboard.cards.toolcards;
 
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -87,9 +87,9 @@ public class ToolCardsManagement {
         openScreen(GUIParameters.FLUX_REMOVER_FXML_PATH, GUIParameters.FLUX_REMOVER_TITLE);
     }
 
-    private void openScreen(String FXMLFileToOpen, String title){
+    private void openScreen(String fxmlFileToOpen, String title){
         try{
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + FXMLFileToOpen));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + fxmlFileToOpen));
             Stage stage = new Stage();
             stage.setTitle(title + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent, GUIParameters.TOOL_CARDS_WIDTH, GUIParameters.TOOL_CARDS_HEIGHT));

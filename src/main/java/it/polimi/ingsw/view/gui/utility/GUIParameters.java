@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.settings;
+package it.polimi.ingsw.view.gui.utility;
 
 import javafx.scene.paint.Color;
 

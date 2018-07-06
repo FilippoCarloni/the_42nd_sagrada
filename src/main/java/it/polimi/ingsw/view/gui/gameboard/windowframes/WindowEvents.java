@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.gameboard.windowframes;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.scene.layout.StackPane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

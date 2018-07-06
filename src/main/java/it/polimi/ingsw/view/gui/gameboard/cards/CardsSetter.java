@@ -2,15 +2,15 @@ package it.polimi.ingsw.view.gui.gameboard.cards;
 
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.gameboard.cards.toolcards.ToolCardsManagement;
-import it.polimi.ingsw.view.gui.settings.GUIColor;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIColor;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.shape.Rectangle;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
@@ -28,7 +28,7 @@ public class CardsSetter {
      * @param toolCards: boolean that says if we are setting tool cards, in order to set on them
      *                 proper click events.
      */
-    public static void setPublicCards(JSONArray json, ArrayList<Label> titles, ArrayList<TextArea> descriptions, boolean toolCards) {
+    public static void setPublicCards(JSONArray json, List<Label> titles, List<TextArea> descriptions, boolean toolCards) {
         for (int i = 0; i < json.size(); i++) {
             drawCards((JSONObject) json.get(i), titles.get(i), descriptions.get(i));
             if(toolCards){

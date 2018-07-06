@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui.gameboard.dice;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
-import it.polimi.ingsw.view.gui.settings.GUIShade;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIShade;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
