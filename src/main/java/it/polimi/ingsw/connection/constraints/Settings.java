@@ -1,11 +1,11 @@
-package it.polimi.ingsw.connection.costraints;
+package it.polimi.ingsw.connection.constraints;
 
 import java.io.FileReader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.NOT_FOUND_CONFIG_FILE;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.NOT_FOUND_CONFIG_FILE;
 
 /**
  * The Settings class contains all the general settings for the connections, game and others settings for the connection package.

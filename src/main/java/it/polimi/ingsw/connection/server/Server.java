@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.constraints.Settings;
 import it.polimi.ingsw.connection.rmi.ConcreteLobby;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.rmi.ServerRMI;

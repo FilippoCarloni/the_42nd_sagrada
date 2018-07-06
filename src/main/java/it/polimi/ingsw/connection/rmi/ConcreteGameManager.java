@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Logger;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.*;
 
 /**
  * The ConcreteGameManager is the game references for the RMI connection.

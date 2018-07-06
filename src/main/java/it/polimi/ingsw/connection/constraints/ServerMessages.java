@@ -1,4 +1,4 @@
-package it.polimi.ingsw.connection.costraints;
+package it.polimi.ingsw.connection.constraints;
 
 /**
  * The ServerMessage class contains the constants parts of the messages that the server sends to the clients.

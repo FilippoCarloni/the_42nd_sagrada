@@ -1,7 +1,7 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.costraints.Commands;
-import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.constraints.Commands;
+import it.polimi.ingsw.connection.constraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 import it.polimi.ingsw.model.commands.IllegalCommandException;
@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**

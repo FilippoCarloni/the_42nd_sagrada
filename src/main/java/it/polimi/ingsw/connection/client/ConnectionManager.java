@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.client;
 
-import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.constraints.Settings;
 import it.polimi.ingsw.connection.rmi.GameManager;
 import it.polimi.ingsw.connection.rmi.Lobby;
 import it.polimi.ingsw.connection.server.ServerSession;
@@ -18,8 +18,8 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
-import static it.polimi.ingsw.connection.costraints.ConnectionCommands.*;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.*;
+import static it.polimi.ingsw.connection.constraints.ConnectionCommands.*;
 
 /**
  * The Connectionmanageer class is the references for the connection.

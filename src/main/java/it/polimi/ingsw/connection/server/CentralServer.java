@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.*;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.*;
 
 /**
  * The CentralServer class manages the authentication phase, the restore phase and the get game phase.

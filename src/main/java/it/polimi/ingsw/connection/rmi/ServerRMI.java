@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.rmi;
 
-import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.constraints.Settings;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.util.logging.Level;

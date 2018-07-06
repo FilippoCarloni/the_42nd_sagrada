@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.costraints.Settings;
+import it.polimi.ingsw.connection.constraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import static it.polimi.ingsw.connection.costraints.ServerMessages.WAITING_MESSAGE;
-import static it.polimi.ingsw.connection.costraints.Settings.MAX_PLAYER_GAME;
-import static it.polimi.ingsw.connection.costraints.Settings.MIN_PLAYER_GAME;
-import static it.polimi.ingsw.connection.costraints.ServerMessages.LOBBY_LEAVING;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.WAITING_MESSAGE;
+import static it.polimi.ingsw.connection.constraints.Settings.MAX_PLAYER_GAME;
+import static it.polimi.ingsw.connection.constraints.Settings.MIN_PLAYER_GAME;
+import static it.polimi.ingsw.connection.constraints.ServerMessages.LOBBY_LEAVING;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**

@@ -16,7 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static it.polimi.ingsw.connection.costraints.ConnectionCommands.QUIT_COMMAND;
+import static it.polimi.ingsw.connection.constraints.ConnectionCommands.QUIT_COMMAND;
 import static it.polimi.ingsw.view.ViewMessage.*;
 import static it.polimi.ingsw.view.cli.CLIMessage.*;
 import static java.lang.Integer.parseInt;

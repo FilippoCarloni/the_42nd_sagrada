@@ -1,4 +1,4 @@
-package it.polimi.ingsw.connection.costraints;
+package it.polimi.ingsw.connection.constraints;
 
 /**
  * The Commands class contains the game commands that perform a particular action.

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.connection.costraints;
+package it.polimi.ingsw.connection.constraints;
 
 /**
  * The ConnectionCommands contains all the commands send by the client to the server.
