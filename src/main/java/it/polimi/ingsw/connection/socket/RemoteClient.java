@@ -3,6 +3,7 @@ package it.polimi.ingsw.connection.socket;
 import it.polimi.ingsw.connection.server.CentralServer;
 import it.polimi.ingsw.connection.server.GameController;
 import it.polimi.ingsw.connection.server.GameObserver;
+import it.polimi.ingsw.connection.server.WrappedGameController;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
 
@@ -117,7 +118,11 @@ public class RemoteClient implements Runnable,GameObserver {
                     gameRequested = true;
                     new Thread(() -> {
                         try {
-                            game = centralServer.getGame(sessionID).getGameController();
+                            WrappedGameController wrappedGameController;
+                            wrappedGameController = centralServer.getGame(sessionID);
+                            if(wrappedGameController != null)
+                               game = wrappedGameController.getGameController();
+
                         } catch (ServerException e) {
                             logger.info(e.getMessage());
                         } finally {
