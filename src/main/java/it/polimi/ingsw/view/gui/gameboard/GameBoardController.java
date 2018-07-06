@@ -278,7 +278,7 @@ public class GameBoardController {
      * @param message: the message to print.
      */
     public void setMessageText(String message){
-        messageTextArea.appendText(message);
+        messageTextArea.appendText(" " + message);
     }
 
     /**

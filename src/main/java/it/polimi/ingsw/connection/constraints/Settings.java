@@ -8,8 +8,8 @@ import java.util.logging.Logger;
 import static it.polimi.ingsw.connection.constraints.ServerMessages.NOT_FOUND_CONFIG_FILE;
 
 /**
- * The Settings class contains all the general utility for the connections, game and others utility for the connection package.
- * The values of the utility are loaded by the4 config file, if it is no found the dafault value are loaded.
+ * The Settings class contains all the general settings for the connections, game and others settings for the connection package.
+ * The values of the settings are loaded by the config file, if it is not found the default values are loaded.
  *
  */
 public  class Settings{

@@ -32,7 +32,7 @@
                   </Label>
                   <VBox alignment="TOP_CENTER" prefHeight="221.0" prefWidth="270.0">
                      <children>
-                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-opacity: 0.8; -fx-background-color: white;">
                            <children>
                               <GridPane fx:id="windowFramePlayer2" gridLinesVisible="true" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
                                 <columnConstraints>
@@ -59,7 +59,7 @@
                         </StackPane>
                         <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white; -fx-opacity: 0.8;">
                                  <children>
                                     <Label fx:id="labelPlayer2" stylesheets="@../css/style.css">
                                        <styleClass>
@@ -81,7 +81,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="239.0" prefWidth="270.0">
                      <children>
-                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white; -fx-opacity: 0.8;">
                            <children>
                               <GridPane fx:id="windowFramePlayer3" gridLinesVisible="true" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
                                 <columnConstraints>
@@ -108,7 +108,7 @@
                         </StackPane>
                         <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-background-color: white;">
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-opacity: 0.8; -fx-background-color: white;">
                                  <children>
                                     <Label fx:id="labelPlayer3" stylesheets="@../css/style.css">
                                        <styleClass>
@@ -130,7 +130,7 @@
                   </VBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="270.0">
                      <children>
-                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white; -fx-opacity: 0.8;">
                            <children>
                               <GridPane fx:id="windowFramePlayer4" gridLinesVisible="true" prefHeight="160.0" prefWidth="290.0">
                                 <columnConstraints>
@@ -157,7 +157,7 @@
                         </StackPane>
                         <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
                            <children>
-                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-background-color: white;">
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-background-color: white; -fx-opacity: 0.8;">
                                  <children>
                                     <Label fx:id="labelPlayer4" stylesheets="@../css/style.css">
                                        <styleClass>
