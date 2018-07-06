@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui.gameboard.cards.toolcards;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -46,6 +46,7 @@ public class GrozingPliersController {
         sendCommand(GUIParameters.DECREASE, event);
     }
 
+    //Method that sends the right command to the connection controller
     private void sendCommand(String command, ActionEvent event){
         try {
             GuiManager.getInstance().getConnectionController().send(command);

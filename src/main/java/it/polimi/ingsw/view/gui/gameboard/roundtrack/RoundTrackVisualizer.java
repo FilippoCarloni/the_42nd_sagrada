@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view.gui.gameboard.roundtrack;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
@@ -19,8 +19,6 @@ import static jdk.nashorn.internal.objects.Global.print;
 /**
  * Controller class for RoundTrackVisualizer screen; it shows to the player all dice on round track.
  */
-
-//TODO: find a way to redraw all dice on round track when one is changed after a tool card activation
 
 public class RoundTrackVisualizer {
 

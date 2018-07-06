@@ -2,14 +2,14 @@ package it.polimi.ingsw.view.gui.gameboard;
 
 import com.jfoenix.controls.JFXButton;
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackDrawer;
 import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackVisualizer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
-import it.polimi.ingsw.view.gui.settings.GUIColor;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIColor;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,14 +59,9 @@ public class GameBoardController {
     private ArrayList<StackPane> panesOnDicePool;
     private ArrayList<Canvas> canvasOnDicePool;
 
-    //Containers for tool and public objective cards
-    private ArrayList<VBox> toolCardsContainers;
-    private ArrayList<VBox> publicObjectiveContainers;
-
+    //Public cards elements containers
     private ArrayList<Label> toolsTitle;
     private ArrayList<TextArea> toolsDescription;
-    private ArrayList<Label> toolsFavorPoints;
-
     private ArrayList<Label> publicObjectivesTitle;
     private ArrayList<TextArea> publicObjectivesDescription;
 
@@ -103,12 +98,6 @@ public class GameBoardController {
     @FXML
     private GridPane diceGrid;
     @FXML
-    private VBox toolCard1;
-    @FXML
-    private VBox toolCard2;
-    @FXML
-    private VBox toolCard3;
-    @FXML
     private Label toolTitle1;
     @FXML
     private Label toolTitle2;
@@ -121,12 +110,6 @@ public class GameBoardController {
     @FXML
     private TextArea toolDescription3;
     @FXML
-    private Label favorPointsOnTool1;
-    @FXML
-    private Label favorPointsOnTool2;
-    @FXML
-    private Label favorPointsOnTool3;
-    @FXML
     private Label publicObjectiveTitle1;
     @FXML
     private Label publicObjectiveTitle2;
@@ -138,12 +121,6 @@ public class GameBoardController {
     private TextArea publicObjectiveDescription2;
     @FXML
     private TextArea publicObjectiveDescription3;
-    @FXML
-    private VBox publicObjectiveCard1;
-    @FXML
-    private VBox publicObjectiveCard2;
-    @FXML
-    private VBox publicObjectiveCard3;
     @FXML
     private Rectangle privateObjectiveRectangle;
     @FXML
@@ -183,22 +160,12 @@ public class GameBoardController {
             }
         }
     }
-    private void setCardsContainers(){
-        toolCardsContainers = new ArrayList<>();
-        publicObjectiveContainers = new ArrayList<>();
-
-        toolCardsContainers.add(toolCard1);
-        toolCardsContainers.add(toolCard2);
-        toolCardsContainers.add(toolCard3);
-
-        publicObjectiveContainers.add(publicObjectiveCard1);
-        publicObjectiveContainers.add(publicObjectiveCard2);
-        publicObjectiveContainers.add(publicObjectiveCard3);
-    }
-    private void setToolCardsContainers(){
+    private void setPublicCardsElements(){
         toolsTitle = new ArrayList<>();
         toolsDescription = new ArrayList<>();
-        toolsFavorPoints = new ArrayList<>();
+
+        publicObjectivesTitle = new ArrayList<>();
+        publicObjectivesDescription = new ArrayList<>();
 
         toolsTitle.add(toolTitle1);
         toolsTitle.add(toolTitle2);
@@ -207,14 +174,6 @@ public class GameBoardController {
         toolsDescription.add(toolDescription1);
         toolsDescription.add(toolDescription2);
         toolsDescription.add(toolDescription3);
-
-        toolsFavorPoints.add(favorPointsOnTool1);
-        toolsFavorPoints.add(favorPointsOnTool2);
-        toolsFavorPoints.add(favorPointsOnTool3);
-    }
-    private void setPublicObjectiveContainers(){
-        publicObjectivesTitle = new ArrayList<>();
-        publicObjectivesDescription = new ArrayList<>();
 
         publicObjectivesTitle.add(publicObjectiveTitle1);
         publicObjectivesTitle.add(publicObjectiveTitle2);
@@ -243,7 +202,7 @@ public class GameBoardController {
     }
 
     /**
-     * Public setter for the RoundTrackVisualizer, used when the round track is open by a player
+     * Public setter for the RoundTrackVisualizer, used when the round track is open by a player.
      * @param rVisualizer: a reference to the current RoundTrackVisualizer.
      */
     public void setrVisualizer(RoundTrackVisualizer rVisualizer) {
@@ -251,7 +210,7 @@ public class GameBoardController {
     }
 
     /**
-     * Main Player getter
+     * Main Player getter.
      * @return a reference to the main player's JSONObject
      */
     public JSONObject getMainPlayer(){
@@ -289,12 +248,8 @@ public class GameBoardController {
 
     //Cards management
     private void addCardsOnGameBoard(JSONObject json){
-        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), toolCardsContainers, toolsTitle, toolsDescription, true);
-        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), publicObjectiveContainers, publicObjectivesTitle, publicObjectivesDescription, false);
-
-        for(Label l : toolsFavorPoints){
-            l.setText("Favor Points: 0");
-        }
+        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), toolsTitle, toolsDescription, true);
+        CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), publicObjectivesTitle, publicObjectivesDescription, false);
     }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
         int id = parseInt(privateObjectiveCard.get(JSONTag.CARD_ID).toString());
@@ -368,7 +323,7 @@ public class GameBoardController {
             stage.setTitle(GUIParameters.END_GAME_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
-            e.printStackTrace();
+            print(e.getMessage());
         }
     }
 
@@ -405,26 +360,20 @@ public class GameBoardController {
             rVisualizer.allDiceDrawer(roundTrack);
         }
 
-        updateFavorPointsOnToolCards((JSONArray) json.get(JSONTag.TOOLS));
-
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }
     private void manageDraftedDie(JSONObject json){
-        draftedDieCanvas.getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * 1.5);
+        draftedDieCanvas.getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.INCREMENT_FOR_DRAFTED_DIE,
+                GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.INCREMENT_FOR_DRAFTED_DIE);
         draftedDieStackPane.setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
+        draftedDieStackPane.setStyle(GUIParameters.BORDER_COLOR_STRING + GUIParameters.BORDER_COLOR);
         if(json.get(JSONTag.PICKED_DIE) != null) {
             JSONObject draftedDie = (JSONObject) json.get(JSONTag.PICKED_DIE);
             int value = parseInt((draftedDie.get(JSONTag.SHADE)).toString());
             String color = draftedDie.get(JSONTag.COLOR).toString();
 
-            DiceDrawer.dicePointsDrawer(value, color, draftedDieCanvas.getGraphicsContext2D(), draftedDieStackPane, 1.5);
-        }
-    }
-    private void updateFavorPointsOnToolCards(JSONArray json){
-        for(int i = 0; i < json.size(); i++){
-            int favorPoints = parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString());
-            toolsFavorPoints.get(i).setText("Favor Points: " + favorPoints);
+            DiceDrawer.dicePointsDrawer(value, color, draftedDieCanvas.getGraphicsContext2D(), draftedDieStackPane, GUIParameters.INCREMENT_FOR_DRAFTED_DIE);
         }
     }
 
@@ -439,9 +388,7 @@ public class GameBoardController {
 
         setGrid();
         setPlayersNameLabels();
-        setCardsContainers();
-        setToolCardsContainers();
-        setPublicObjectiveContainers();
+        setPublicCardsElements();
         setMaps();
 
         callFirsFillers(json);

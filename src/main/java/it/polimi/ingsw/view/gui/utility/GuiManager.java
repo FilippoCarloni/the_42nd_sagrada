@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui;
+package it.polimi.ingsw.view.gui.utility;
 
 import it.polimi.ingsw.connection.client.ConnectionManager;
 import it.polimi.ingsw.connection.client.ConnectionType;
@@ -6,10 +6,10 @@ import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
 import it.polimi.ingsw.view.gui.preliminarystages.WindowFramesChoice;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.net.ConnectException;
 import java.util.concurrent.Executors;
@@ -35,7 +35,6 @@ public class GuiManager {
     private JSONObject preGameMessage;
     private JSONObject gameBoardMessage;
     private JSONObject gameStatMessage;
-    private static Stage stage;
     private static GuiManager guiManagerInstance;
     private static ConnectionType myConnectionType = ConnectionType.RMI;
 
@@ -56,40 +55,22 @@ public class GuiManager {
             if(message.length() > 0) {
                 switch (MessageType.decodeMessageType(message)) {
                     case GENERIC_MESSAGE:
-                        if (stage == null)
-                            stage = lobbyController.getStage();
-                        if(lobbyController != null) {
-                            lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
-                        }
-                        if(gameBoard != null)
-                            gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
+                        genericMessageBehaviour(message);
                         break;
                     case GAME_BOARD:
-                        if(gameBoardMessage == null && windowFramesChoice != null)
-                            windowFramesChoice.getGameBoardButton().setDisable(false);
-                        gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
-                        if(lobbyController != null && windowFramesChoice == null)
-                            lobbyController.getStartButton().setDisable(false);
-                        if(gameBoard != null)
-                            gameBoard.gameBoardUpdate(gameBoardMessage);
+                        gameBoardBehaviour(message);
                         break;
                     case ERROR_MESSAGE:
-                        gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
+                        errorBehaviour(message);
                         break;
                     case PRE_GAME_CHOICE:
-                        lobbyController.getStartButton().setDisable(false);
-                        preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+                        preGameBehaviour(message);
                         break;
                     case CURRENT_PLAYER:
-                        nowPlaying = GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n";
-                        if(gameBoard != null)
-                            gameBoard.setMessageText(nowPlaying);
+                        currentPlayerBehaviour(message);
                         break;
                     case GAME_STATS:
-                        gameBoard.getContinueButton().setVisible(true);
-                        gameBoard.getContinueButton().setDisable(false);
-                        gameStatMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
-                        gameBoard.setMessageText(GUIParameters.END_GAME);
+                        gameStatsBehaviour(message);
                         break;
                     default:
                         print(GUIParameters.MESSAGE_ERROR);
@@ -101,52 +82,147 @@ public class GuiManager {
         }
     }
 
+    //Update support methods
+    private void genericMessageBehaviour(String message){
+        if(lobbyController != null) {
+            lobbyController.printConnectionOrDisconnection(MessageType.decodeMessageContent(message));
+        }
+        if(gameBoard != null)
+            gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
+    }
+    private void gameBoardBehaviour(String message) throws ParseException {
+        if(gameBoardMessage == null && windowFramesChoice != null)
+            windowFramesChoice.getGameBoardButton().setDisable(false);
+        gameBoardMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+        if(lobbyController != null && windowFramesChoice == null)
+            lobbyController.getStartButton().setDisable(false);
+        if(gameBoard != null)
+            gameBoard.gameBoardUpdate(gameBoardMessage);
+    }
+    private void errorBehaviour(String message){
+        if(gameBoard != null)
+            gameBoard.setMessageText(MessageType.decodeMessageContent(message) + "\n");
+    }
+    private void preGameBehaviour(String message) throws ParseException {
+        lobbyController.getStartButton().setDisable(false);
+        preGameMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+    }
+    private void currentPlayerBehaviour(String message){
+        nowPlaying = GUIParameters.NOW_PLAYING + MessageType.decodeMessageContent(message) + "\n";
+        if(gameBoard != null)
+            gameBoard.setMessageText(nowPlaying);
+    }
+    private void gameStatsBehaviour(String message) throws ParseException {
+        gameBoard.getContinueButton().setVisible(true);
+        gameBoard.getContinueButton().setDisable(false);
+        gameStatMessage = (JSONObject) new JSONParser().parse(MessageType.decodeMessageContent(message));
+        gameBoard.setMessageText(GUIParameters.END_GAME);
+    }
+
     /**
-     * Getters for all needed references present in this class.
+     * Getter for the connection controller.
+     * @return a reference to the Connection controller.
      */
     public ConnectionManager getConnectionController(){
         return connectionController;
     }
+
+    /**
+     * Getter for the username of the main player; used by every class into the preliminary stage to set into the title the
+     * main player username, and by the game board to set the main player username over his window frame.
+     * @return a String containing main player's username.
+     */
     public String getUsernameMainPlayer(){
         return usernameMainPlayer;
     }
+
+    /**
+     * Getter for the pre game message, used by the window frame choice controller to draw the pre game screen
+     * @return a JSONObject containing all information about the pre game screen to draw.
+     */
     public JSONObject getPreGameMessage(){
         return preGameMessage;
     }
+
+    /**
+     * Getter for the game board message.
+     * @return a JSONObject containing all information about the actual game state.
+     */
     public JSONObject getGameBoardMessage(){
         return gameBoardMessage;
     }
+
+    /**
+     * Getter for the game stat message, containing the final score of the ended match. Used by the end game screen controller
+     * to draw the final score.
+     * @return a JSONObject containing all information about the final score of the ended match.
+     */
     public JSONObject getGameStatMessage() {
         return gameStatMessage;
     }
+
+    /**
+     * Getter for the game board controller.
+     * @return a reference to the game board controller.
+     */
     public GameBoardController getGameBoard(){
         return gameBoard;
     }
+
+    /**
+     * Getter for the username of the currently playing player. Used into the game board controller to write into the message
+     * text area who is playing.
+     * @return a String containing the username of the currently playing player.
+     */
     public String getNowPlaying(){
         return nowPlaying;
     }
-    public Stage getStage(){
-        return stage;
-    }
 
     /**
-     * Setters for all variables present in this class.
+     * Setter for the main player username variable.
+     * @param usernameMainPlayer: a String containing main player's username.
      */
     public void setUsernameMainPlayer(String usernameMainPlayer){
         this.usernameMainPlayer = usernameMainPlayer;
     }
+
+    /**
+     * Setter for the lobby controller reference.
+     * @param lobbyController: a reference to the actual lobby controller.
+     */
     public void setLobbyController(LobbyController lobbyController){
         this.lobbyController = lobbyController;
     }
+
+    /**
+     * Setter for the window frame choice reference.
+     * @param windowFramesChoice: a reference to the actual window frame choice controller.
+     */
     public void setWindowFramesChoice(WindowFramesChoice windowFramesChoice){
         this.windowFramesChoice = windowFramesChoice;
     }
+
+    /**
+     * Setter for the game board controller reference.
+     * @param gameBoard: a reference to the actual game board controller.
+     */
     public void setGameBoard(GameBoardController gameBoard){
         this.gameBoard = gameBoard;
     }
+
+    /**
+     * Setter for the JSONObject containing the game board message; it will contain all information about the
+     * actual game status.
+     * @param gameBoardMessage: a JSONObject containing all information about the actual game status.
+     */
     public void setGameBoardMessage(JSONObject gameBoardMessage) {
         this.gameBoardMessage = gameBoardMessage;
     }
+
+    /**
+     * Setter for the JSONObject containing the game stat message; it will contain the final score of the ended game.
+     * @param gameStatMessage: a JSONObject containing the final score of the ended game.
+     */
     public void setGameStatMessage(JSONObject gameStatMessage) {
         this.gameStatMessage = gameStatMessage;
     }
@@ -156,12 +232,12 @@ public class GuiManager {
      * to signal the disconnection, and then it kills the process with a System.exit(0).
      * @param stage: the stage on which the behaviour will be set.
      */
-    public final static void setOnCloseRequest(Stage stage){
+    public static final void setOnCloseRequest(Stage stage){
         stage.setOnCloseRequest(e -> {
             try {
                 getInstance().connectionController.send(GUIParameters.EXIT);
             } catch (ConnectException e1) {
-                e1.printStackTrace();
+                print(e1.getMessage());
             }
             System.exit(0);
         });

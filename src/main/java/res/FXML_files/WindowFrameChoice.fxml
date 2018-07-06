@@ -6,6 +6,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -23,7 +24,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="320.0">
                      <children>
-                        <GridPane fx:id="map1" gridLinesVisible="true" prefHeight="250.0" prefWidth="305.0" stylesheets="@../css/style.css">
+                        <GridPane fx:id="map1" gridLinesVisible="true" prefHeight="250.0" prefWidth="300.0" stylesheets="@../css/style.css">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -32,28 +33,20 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="20.0" />
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label fx:id="nameMap1" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label fx:id="difficultyMap1" alignment="CENTER" layoutX="15.0" layoutY="280.0" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Label fx:id="nameMap1" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name" />
+                        <Label fx:id="difficultyMap1" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty" />
                         <RadioButton fx:id="buttonMap1" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#choose1" prefHeight="17.0" prefWidth="0.0" selected="true" stylesheets="@../css/style.css" text="RadioButton">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="42.0" top="10.0" />
                            </VBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -63,7 +56,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="320.0">
                      <children>
-                        <GridPane fx:id="map2" gridLinesVisible="true" prefHeight="250.0" prefWidth="305.0" stylesheets="@../css/style.css">
+                        <GridPane fx:id="map2" gridLinesVisible="true" prefHeight="250.0" prefWidth="300.0" stylesheets="@../css/style.css">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -78,22 +71,14 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="20.0" />
+                              <Insets left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label fx:id="nameMap2" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label fx:id="difficultyMap2" alignment="CENTER" layoutX="15.0" layoutY="280.0" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Label fx:id="nameMap2" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name" />
+                        <Label fx:id="difficultyMap2" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty" />
                         <RadioButton fx:id="buttonMap2" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#choose2" prefHeight="17.0" prefWidth="0.0" stylesheets="@../css/style.css" text="RadioButton">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="47.0" top="10.0" />
                            </VBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -103,7 +88,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" layoutX="330.0" layoutY="10.0" prefHeight="200.0" prefWidth="320.0">
                      <children>
-                        <GridPane fx:id="map3" gridLinesVisible="true" prefHeight="250.0" prefWidth="305.0" stylesheets="@../css/style.css">
+                        <GridPane fx:id="map3" gridLinesVisible="true" prefHeight="250.0" prefWidth="300.0" stylesheets="@../css/style.css">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -118,22 +103,14 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="20.0" />
+                              <Insets left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label fx:id="nameMap3" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label fx:id="difficultyMap3" alignment="CENTER" layoutX="15.0" layoutY="280.0" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Label fx:id="nameMap3" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name" />
+                        <Label fx:id="difficultyMap3" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty" />
                         <RadioButton fx:id="buttonMap3" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#choose3" prefHeight="17.0" prefWidth="0.0" stylesheets="@../css/style.css" text="RadioButton">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="47.0" top="10.0" />
                            </VBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -143,7 +120,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" layoutX="650.0" layoutY="10.0" prefHeight="200.0" prefWidth="320.0">
                      <children>
-                        <GridPane fx:id="map4" gridLinesVisible="true" prefHeight="250.0" prefWidth="305.0" stylesheets="@../css/style.css">
+                        <GridPane fx:id="map4" gridLinesVisible="true" prefHeight="250.0" prefWidth="300.0" stylesheets="@../css/style.css">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -158,22 +135,14 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="20.0" />
+                              <Insets left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>
                         </GridPane>
-                        <Label fx:id="nameMap4" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label fx:id="difficultyMap4" alignment="CENTER" layoutX="15.0" layoutY="280.0" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        <Label fx:id="nameMap4" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Name" />
+                        <Label fx:id="difficultyMap4" alignment="CENTER" prefWidth="310.0" stylesheets="@../css/style.css" text="Difficulty" />
                         <RadioButton fx:id="buttonMap4" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#choose4" prefHeight="17.0" prefWidth="0.0" stylesheets="@../css/style.css" text="RadioButton">
                            <VBox.margin>
-                              <Insets top="10.0" />
+                              <Insets bottom="47.0" top="10.0" />
                            </VBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -189,7 +158,7 @@
                <children>
                   <VBox fx:id="privateObjectiveVBox" alignment="TOP_CENTER" prefHeight="310.0" prefWidth="400.0">
                      <children>
-                        <Label text="Your private objective card:">
+                        <Label stylesheets="@../css/style.css" text="Your private objective card:">
                            <VBox.margin>
                               <Insets bottom="12.0" top="10.0" />
                            </VBox.margin>
@@ -199,7 +168,7 @@
                               <Insets left="100.0" right="100.0" top="10.0" />
                            </VBox.margin>
                            <children>
-                              <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="main-board-label" stylesheets="@../css/style.css">
+                              <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -209,12 +178,15 @@
                                     <Insets top="15.0" />
                                  </VBox.margin>
                               </Rectangle>
-                              <JFXTextArea fx:id="privateObjectiveDescription" editable="false" focusColor="#4d4d4d">
+                              <JFXTextArea fx:id="privateObjectiveDescription" editable="false" focusColor="#4d4d4d" styleClass="cards-text-area" stylesheets="@../css/style.css">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="15.0" />
                                  </VBox.margin>
                               </JFXTextArea>
                            </children>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                         </VBox>
                      </children>
                   </VBox>

@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui.gameboard.windowframes;
 
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.GridPane;

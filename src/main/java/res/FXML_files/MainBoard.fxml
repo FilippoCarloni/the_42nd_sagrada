@@ -7,6 +7,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -31,75 +32,149 @@
                   </Label>
                   <VBox alignment="TOP_CENTER" prefHeight="221.0" prefWidth="270.0">
                      <children>
-                        <GridPane fx:id="windowFramePlayer2" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                           <children>
+                              <GridPane fx:id="windowFramePlayer2" gridLinesVisible="true" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
                            <VBox.margin>
-                              <Insets left="35.0" right="35.0" top="30.0" />
+                              <Insets left="35.0" right="35.0" top="20.0" />
                            </VBox.margin>
-                        </GridPane>
-                        <Label fx:id="labelPlayer2" styleClass="main-board-label" stylesheets="@../css/style.css" />
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </StackPane>
+                        <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
+                           <children>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                                 <children>
+                                    <Label fx:id="labelPlayer2" stylesheets="@../css/style.css">
+                                       <styleClass>
+                                          <String fx:value="main-board-label" />
+                                          <String fx:value="players-label" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </StackPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="35.0" right="35.0" />
+                           </VBox.margin>
+                        </StackPane>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="239.0" prefWidth="270.0">
                      <children>
-                        <GridPane fx:id="windowFramePlayer3" prefHeight="160.0" prefWidth="290.0" stylesheets="@../css/style.css">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                           <children>
+                              <GridPane fx:id="windowFramePlayer3" gridLinesVisible="true" prefHeight="160.0" prefWidth="200.0" stylesheets="@../css/style.css">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
                            <VBox.margin>
-                              <Insets left="35.0" right="35.0" top="20.0" />
+                              <Insets left="35.0" right="35.0" />
                            </VBox.margin>
-                        </GridPane>
-                        <Label fx:id="labelPlayer3" styleClass="main-board-label" stylesheets="@../css/style.css" />
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </StackPane>
+                        <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
+                           <children>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-background-color: white;">
+                                 <children>
+                                    <Label fx:id="labelPlayer3" stylesheets="@../css/style.css">
+                                       <styleClass>
+                                          <String fx:value="main-board-label" />
+                                          <String fx:value="players-label" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </StackPane>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="35.0" right="35.0" />
+                           </VBox.margin>
+                        </StackPane>
                      </children>
                   </VBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="240.0" prefWidth="270.0">
                      <children>
-                        <GridPane fx:id="windowFramePlayer4" prefHeight="160.0" prefWidth="290.0">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                        <StackPane prefHeight="160.0" prefWidth="200.0" style="-fx-border-color: black; -fx-background-color: white;">
+                           <children>
+                              <GridPane fx:id="windowFramePlayer4" gridLinesVisible="true" prefHeight="160.0" prefWidth="290.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                              </GridPane>
+                           </children>
                            <VBox.margin>
-                              <Insets bottom="10.0" left="35.0" right="35.0" />
+                              <Insets left="35.0" right="35.0" />
                            </VBox.margin>
-                        </GridPane>
-                        <Label fx:id="labelPlayer4" styleClass="main-board-label" stylesheets="@../css/style.css">
+                           <effect>
+                              <DropShadow />
+                           </effect>
+                        </StackPane>
+                        <StackPane prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: black;">
+                           <children>
+                              <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-border-color: grey; -fx-background-color: white;">
+                                 <children>
+                                    <Label fx:id="labelPlayer4" stylesheets="@../css/style.css">
+                                       <styleClass>
+                                          <String fx:value="main-board-label" />
+                                          <String fx:value="players-label" />
+                                       </styleClass>
+                                    </Label>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </StackPane>
+                           </children>
                            <VBox.margin>
-                              <Insets bottom="5.0" />
+                              <Insets bottom="35.0" left="35.0" right="35.0" />
                            </VBox.margin>
-                        </Label>
+                        </StackPane>
                      </children>
                   </VBox>
                </children>
@@ -110,7 +185,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="197.0" prefWidth="1000.0">
                      <children>
-                        <JFXTextArea fx:id="messageTextArea" editable="false" prefHeight="179.0" prefWidth="888.0">
+                        <JFXTextArea fx:id="messageTextArea" editable="false" prefHeight="179.0" prefWidth="888.0" stylesheets="@../css/style.css">
                            <HBox.margin>
                               <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
                            </HBox.margin>
@@ -125,10 +200,13 @@
                               <JFXButton layoutX="14.0" layoutY="63.0" onAction="#redo" prefHeight="37.0" prefWidth="100.0" text="REDO" />
                               <JFXButton layoutX="14.0" layoutY="112.0" onAction="#pass" prefHeight="37.0" prefWidth="100.0" text="PASS" />
                               <Label layoutX="182.0" layoutY="20.0" styleClass="main-board-label" stylesheets="@../css/style.css" text="Drafted die:" />
-                              <StackPane fx:id="draftedDieStackPane" layoutX="181.0" layoutY="55.0" prefHeight="90.0" prefWidth="90.0" styleClass="background" stylesheets="@../css/style.css">
+                              <StackPane fx:id="draftedDieStackPane" layoutX="181.0" layoutY="55.0" prefHeight="90.0" prefWidth="90.0" style="-fx-border-color: black;" styleClass="background" stylesheets="@../css/style.css">
                                  <children>
                                     <Canvas fx:id="draftedDieCanvas" height="90.0" width="90.0" />
                                  </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
                               </StackPane>
                               <JFXButton fx:id="continueButton" disable="true" layoutX="14.0" layoutY="158.0" onAction="#goToEndGame" prefWidth="100.0" text="CONTINUE" visible="false" />
                            </children>
@@ -152,16 +230,16 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <VBox.margin>
-                              <Insets left="20.0" right="20.0" top="10.0" />
+                              <Insets bottom="20.0" left="20.0" right="20.0" />
                            </VBox.margin>
                         </GridPane>
                         <Label fx:id="labelPlayer1" alignment="CENTER" contentDisplay="RIGHT" prefHeight="58.0" prefWidth="300.0" stylesheets="@../css/style.css">
-                           <VBox.margin>
-                              <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-                           </VBox.margin>
                            <graphic>
                               <Rectangle fx:id="privateObjectiveRectangle" arcHeight="5.0" arcWidth="5.0" fill="#f6f7f8" height="37.0" onMouseClicked="#seePrivateObjective" stroke="BLACK" strokeType="INSIDE" strokeWidth="2.0" width="25.0" />
                            </graphic>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </Label>
                      </children>
                   </VBox>
@@ -173,7 +251,16 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" stylesheets="@../css/style.css">
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                              <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Dice Pool:">
+                                 <HBox.margin>
+                                    <Insets left="65.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="65.0" prefWidth="670.0" stylesheets="@../css/style.css">
                            <children>
                               <GridPane fx:id="diceGrid" prefHeight="60.0" prefWidth="540.0">
                                 <columnConstraints>
@@ -190,10 +277,25 @@
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
                               </GridPane>
                            </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" styleClass="main-board-label" stylesheets="@../css/style.css">
+                           <children>
+                              <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Round Track:">
+                                 <HBox.margin>
+                                    <Insets left="65.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox fx:id="roundTrackAnchorPane" alignment="CENTER" prefHeight="80.0" prefWidth="200.0">
@@ -215,12 +317,12 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <HBox.margin>
-                                    <Insets bottom="13.0" left="20.0" right="20.0" top="13.0" />
+                                    <Insets bottom="11.0" left="20.0" right="20.0" top="10.0" />
                                  </HBox.margin>
                               </GridPane>
                            </children>
                            <VBox.margin>
-                              <Insets top="30.0" />
+                              <Insets />
                            </VBox.margin>
                         </HBox>
                      </children>
@@ -241,72 +343,102 @@
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="cards" />
-                                    <String fx:value="usable-cards" />
+                                    <String fx:value="tool-cards" />
                                  </styleClass>
                                  <children>
-                                    <Label fx:id="toolTitle1" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
+                                    <Label fx:id="toolTitle1" alignment="CENTER" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="cards-title-label" />
+                                          <String fx:value="tool-title-label" />
+                                       </styleClass>
                                     </Label>
-                                    <JFXTextArea fx:id="toolDescription1" editable="false" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="toolDescription1" editable="false" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
+                                       <styleClass>
+                                          <String fx:value="cards-text-area" />
+                                          <String fx:value="tool-text-area" />
+                                       </styleClass>
                                     </JFXTextArea>
-                                    <Label fx:id="favorPointsOnTool1" styleClass="tool-favor-points-label" stylesheets="@../css/style.css" />
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                               <VBox fx:id="toolCard2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="cards" />
-                                    <String fx:value="usable-cards" />
+                                    <String fx:value="tool-cards" />
                                  </styleClass>
                                  <children>
-                                    <Label fx:id="toolTitle2" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
+                                    <Label fx:id="toolTitle2" alignment="CENTER" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="cards-title-label" />
+                                          <String fx:value="tool-title-label" />
+                                       </styleClass>
                                     </Label>
-                                    <JFXTextArea fx:id="toolDescription2" editable="false" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="toolDescription2" editable="false" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
+                                       <styleClass>
+                                          <String fx:value="cards-text-area" />
+                                          <String fx:value="tool-text-area" />
+                                       </styleClass>
                                     </JFXTextArea>
-                                    <Label fx:id="favorPointsOnTool2" styleClass="tool-favor-points-label" stylesheets="@../css/style.css" />
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                               <VBox fx:id="toolCard3" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                                  <styleClass>
                                     <String fx:value="cards" />
-                                    <String fx:value="usable-cards" />
+                                    <String fx:value="tool-cards" />
                                  </styleClass>
                                  <children>
-                                    <Label fx:id="toolTitle3" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
+                                    <Label fx:id="toolTitle3" alignment="CENTER" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
+                                       <styleClass>
+                                          <String fx:value="cards-title-label" />
+                                          <String fx:value="tool-title-label" />
+                                       </styleClass>
                                     </Label>
-                                    <JFXTextArea fx:id="toolDescription3" editable="false" focusColor="#4d4d4d" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="toolDescription3" editable="false" focusColor="#4d4d4d" stylesheets="@../css/style.css">
                                        <VBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
+                                       <styleClass>
+                                          <String fx:value="cards-text-area" />
+                                          <String fx:value="tool-text-area" />
+                                       </styleClass>
                                     </JFXTextArea>
-                                    <Label fx:id="favorPointsOnTool3" styleClass="tool-favor-points-label" stylesheets="@../css/style.css" />
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                            </children>
                         </HBox>
                      </children>
@@ -331,7 +463,7 @@
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXTextArea fx:id="publicObjectiveDescription1" editable="false" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="publicObjectiveDescription1" editable="false" styleClass="cards-text-area" stylesheets="@../css/style.css">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
@@ -339,7 +471,10 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                     </JFXTextArea>
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                               <VBox fx:id="publicObjectiveCard2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
@@ -350,7 +485,7 @@
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXTextArea fx:id="publicObjectiveDescription2" editable="false" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="publicObjectiveDescription2" editable="false" styleClass="cards-text-area" stylesheets="@../css/style.css">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
@@ -358,7 +493,10 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                     </JFXTextArea>
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                               <VBox fx:id="publicObjectiveCard3" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
@@ -369,7 +507,7 @@
                                           <Insets bottom="10.0" top="10.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXTextArea fx:id="publicObjectiveDescription3" editable="false" styleClass="tool-public-objective-text-area" stylesheets="@../css/style.css">
+                                    <JFXTextArea fx:id="publicObjectiveDescription3" editable="false" styleClass="cards-text-area" stylesheets="@../css/style.css">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
@@ -377,7 +515,10 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" />
                                        </VBox.margin>
                                     </JFXTextArea>
-                                 </children></VBox>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect></VBox>
                            </children>
                         </HBox>
                      </children>

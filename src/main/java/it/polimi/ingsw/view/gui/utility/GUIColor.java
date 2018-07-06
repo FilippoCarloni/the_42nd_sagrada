@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.settings;
+package it.polimi.ingsw.view.gui.utility;
 
 import javafx.scene.paint.Color;
 
@@ -52,7 +52,8 @@ public enum GUIColor {
 
     /**
      * Getter for the Color value of a GUIColor enum.
-     * @return a Color value, used to color the private objective rectangle into main board.
+     * @return a Color value, used to color the private objective rectangles, into main board and into every screen
+     *          that shows a private objective card.
      */
     public Color getColor(){
         return this.color;

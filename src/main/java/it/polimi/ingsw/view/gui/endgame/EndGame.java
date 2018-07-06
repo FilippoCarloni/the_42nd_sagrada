@@ -1,8 +1,8 @@
 package it.polimi.ingsw.view.gui.endgame;
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,7 +59,6 @@ public class EndGame {
             resultsGrid.add(points, 1, i + 1);
         }
     }
-
 
     @FXML
     protected void initialize() throws ConnectException {

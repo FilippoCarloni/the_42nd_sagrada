@@ -2,12 +2,12 @@ package it.polimi.ingsw.view.gui.gameboard.cards.toolcards;
 
 
 import it.polimi.ingsw.model.utility.JSONTag;
-import it.polimi.ingsw.view.gui.GuiManager;
-import it.polimi.ingsw.view.gui.settings.GUIParameters;
+import it.polimi.ingsw.view.gui.utility.GuiManager;
+import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
@@ -26,13 +26,13 @@ public class ToolCardsManagement {
     /**
      * Main method to handle tool cards. It distinguish between the two tool cards that will need a new screen (Grozing Pliers
      * and Flux Remover) and the others, and then set the behaviour by setting methods on mouse clicked.
-     * @param toolCardContainer: the VBox containing the specific tool card, on which will be set the behaviour on click.
+     * @param toolCardTitle: the Label containing the specific tool card title, on which will be set the behaviour on click.
      * @param id: the tool card id, used to distinguish between Grozing Pliers, Flux Remover and others.
      */
-    public void toolBehaviourSetter(VBox toolCardContainer, int id){
+    public void toolBehaviourSetter(Label toolCardTitle, int id){
         if(id == 1){
             //Managing Grozing Pliers behaviour
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
@@ -42,7 +42,7 @@ public class ToolCardsManagement {
             });
         } else if (id == 11){
             //Managing Flux Remover behaviour
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                     fluxRemoverManagement();
@@ -52,7 +52,7 @@ public class ToolCardsManagement {
             });
         } else {
             //Other tool cards
-            toolCardContainer.setOnMouseClicked(e -> {
+            toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
                 } catch (ConnectException e1) {
@@ -87,9 +87,9 @@ public class ToolCardsManagement {
         openScreen(GUIParameters.FLUX_REMOVER_FXML_PATH, GUIParameters.FLUX_REMOVER_TITLE);
     }
 
-    private void openScreen(String FXMLFileToOpen, String title){
+    private void openScreen(String fxmlFileToOpen, String title){
         try{
-            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + FXMLFileToOpen));
+            Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + fxmlFileToOpen));
             Stage stage = new Stage();
             stage.setTitle(title + " - " + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent, GUIParameters.TOOL_CARDS_WIDTH, GUIParameters.TOOL_CARDS_HEIGHT));

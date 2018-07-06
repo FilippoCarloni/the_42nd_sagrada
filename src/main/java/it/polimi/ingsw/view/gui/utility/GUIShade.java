@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view.gui.settings;
+package it.polimi.ingsw.view.gui.utility;
 
 /**
  * Enum, used to draw dice on game board
