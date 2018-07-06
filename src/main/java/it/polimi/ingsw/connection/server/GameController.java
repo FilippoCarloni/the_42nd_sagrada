@@ -63,8 +63,8 @@ public class GameController extends Observable{
         this.windowChoices=new ArrayList<>();
         for(int i=0;i<this.players.size();i++)
             this.windowChoices.add(1);
-        getPreGameFrames(players.size());
-        for (OnLinePlayer p: players)
+        getPreGameFrames(this.players.size());
+        for (OnLinePlayer p: this.players)
             addObserver(p.getObserver());
         beeperHandle=null;
         disconnected= new ArrayList<>();

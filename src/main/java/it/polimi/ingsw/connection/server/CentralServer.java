@@ -107,7 +107,6 @@ public class CentralServer {
                     counterGame= gameControllers.size() + 1;
                     for(OnLinePlayer p: waiting)
                         logger.info(() -> p.getServerSession().getID() + ENTERING_MATCH+ counterGame);
-                    waiting.clear();
                 }
             }
             return currentGame(player.get(0));
