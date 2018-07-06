@@ -12,13 +12,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -81,7 +78,11 @@ public class WindowFramesChoice {
     @FXML
     private Label difficultyMap4;
     @FXML
-    private VBox privateObjectiveVBox;
+    private Label privateObjectiveTitle;
+    @FXML
+    private Rectangle privateObjectiveRectangle;
+    @FXML
+    private TextArea privateObjectiveDescription;
     @FXML
     private Button gameBoardButton;
 
@@ -122,7 +123,7 @@ public class WindowFramesChoice {
         JSONArray jsonMaps = (JSONArray) json.get(JSONTag.WINDOW_FRAMES);
         JSONObject card = (JSONObject) json.get(JSONTag.PRIVATE_OBJECTIVE);
 
-        privateObjectiveVBox.getChildren().add(CardsSetter.setPrivateCard(card));
+        CardsSetter.setPrivateCard(card, privateObjectiveTitle, privateObjectiveRectangle, privateObjectiveDescription);
         setMaps();
         setNames();
         setDifficulties();

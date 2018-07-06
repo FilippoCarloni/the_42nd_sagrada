@@ -42,7 +42,7 @@ public final class GUIParameters {
     public static final Color NUMBERS_DICE_COLOR = Color.BLACK;
     public static final String DEFAULT_DICE_COLOR = "white";
     public static final String BACKGROUND_COLOR = "#303642";
-    public static final String CLICKABLE_CANVAS = "clickable-canvas";
+    public static final String CLICKABLE = "clickable";
 
     //Dimensions to draw dice
     public static final double DICE_RADIUS = 12.5;
@@ -52,12 +52,6 @@ public final class GUIParameters {
     static final double[] OFFSET_DIE_4 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0};
     static final double[] OFFSET_DIE_5 = new double[]{15.0, 15.0, 45.0, 15.0, 45.0, 45.0, 15.0, 45.0, 30.0, 30.0};
     static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
-
-    //Directories for cards loading
-    public static final String DEFAULT_DIRECTORY = "src/main/java/res/images/cards/";
-    public static final String TOOL_DIRECTORY = "toolcards";
-    public static final String PUBOBJ_DIRECTORY = "pubobjcards";
-    public static final String PRIV_OBJ_DIRECTORY = "privobjcards";
 
     //Directories for fxml files loading
     public static final String DEFAULT_FXML_DIRECTORY = "/FXML_files/";
@@ -76,6 +70,7 @@ public final class GUIParameters {
     public static final String LOGIN_ERROR = "Username not valid, insert a new one";
     public static final String MAIN_PLAYER_NOT_FOUND = "Main player not found";
     public static final String DIE_VALUE_SMALL = "Shade of die must be at least 1";
+    public static final String DIE_VALUE_BIG = "Shade of die must be at most 6";
     public static final String MESSAGE_ERROR = "Message not supported!";
     static final String FIND_ERROR = " not valid, please insert a new one";
 
@@ -94,12 +89,6 @@ public final class GUIParameters {
     public static final String DECREASE = "decrease";
     public static final String NOW_PLAYING = "Now is playing: ";
     public static final String END_GAME = "\nGame Ended!\nPress Continue to see the score.";
-
-    //Card dimension
-    public static final double CARDS_ON_GAME_BOARD_WIDTH = 180;
-    public static final double CARDS_ON_GAME_BOARD_HEIGHT = 215;
-    public static final double CARD_ON_MAP_CHOICE_WIDTH = 240;
-    public static final double CARD_ON_MAP_CHOICE_HEIGHT = 300;
 
     //Other
     public static final String DIFFICULTY = "Difficulty: ";

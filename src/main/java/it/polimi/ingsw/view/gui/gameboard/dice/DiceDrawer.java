@@ -37,8 +37,6 @@ public class DiceDrawer {
             StackPane pane = new StackPane();
             gridToFill.add(pane, i, 0);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
-            canvas.getStyleClass().clear();
-            canvas.getStyleClass().add(GUIParameters.CLICKABLE_CANVAS);
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
             canvasOnDicePool.add(canvas);
@@ -69,13 +67,15 @@ public class DiceDrawer {
         }
         dicePoolDrawer(json, panesOnDicePool, canvasOnDicePool);
     }
-    private static void dicePoolDrawer(JSONObject jSon, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool) {
+    private static void dicePoolDrawer(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool) {
         int i = 0;
-        JSONArray dicePoolList = (JSONArray) jSon.get(JSONTag.DICE_POOL);
+        JSONArray dicePoolList = (JSONArray) json.get(JSONTag.DICE_POOL);
 
         for (Object o : dicePoolList) {
             StackPane pane = panesOnDicePool.get(i);
             Canvas canvas = canvasOnDicePool.get(i);
+            canvas.getStyleClass().clear();
+            canvas.getStyleClass().add(GUIParameters.CLICKABLE);
             String color = (String) ((JSONObject) o).get(JSONTag.COLOR);
             int shade = parseInt((((JSONObject) o).get(JSONTag.SHADE)).toString());
             dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane, 1);
@@ -94,6 +94,9 @@ public class DiceDrawer {
     public static void dicePointsDrawer(int value, String color, GraphicsContext gc, Node node, double scale) {
         if (value < 1)
             throw new IllegalArgumentException(GUIParameters.DIE_VALUE_SMALL);
+        if (value > 6)
+            throw new IllegalArgumentException(GUIParameters.DIE_VALUE_BIG);
+
         int numOfCoordinates = (value * 2) - 1;
         double[] coordinates = GUIShade.findByValue(value).getCoordinates();
         gc.setFill(GUIParameters.NUMBERS_DICE_COLOR);
