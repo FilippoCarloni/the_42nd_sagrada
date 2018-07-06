@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard.windowframes;
 
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.utility.GUIParameters;
@@ -34,7 +35,7 @@ class WindowEvents {
     void clickEventsOnWindowFrame(StackPane pane, int row, int column, boolean dieOnIt){
         if(dieOnIt){
             pane.setOnMouseClicked(e -> {
-                temporaryCommand = GUIParameters.MOVE + row + " " + column;
+                temporaryCommand = GUIParameters.MOVE + ConnectionCommands.COMMAND_SEPARATOR + row + ConnectionCommands.COMMAND_SEPARATOR + column;
                 try {
                     manageMoveEvents();
                 } catch (ConnectException e1) {
@@ -44,7 +45,7 @@ class WindowEvents {
         } else {
             pane.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.PLACE + row + " " + column);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.PLACE + ConnectionCommands.COMMAND_SEPARATOR + row + ConnectionCommands.COMMAND_SEPARATOR + column);
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
@@ -60,7 +61,7 @@ class WindowEvents {
             int tempColumn = WindowFrameDrawer.rowAndColumnFromListIndex(i)[1];
             panesOnMainWindowFrame.get(i).setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send(temporaryCommand + " " + tempRow + " " + tempColumn);
+                    GuiManager.getInstance().getConnectionController().send(temporaryCommand + ConnectionCommands.COMMAND_SEPARATOR + tempRow + ConnectionCommands.COMMAND_SEPARATOR + tempColumn);
                     resetPlaceAfterClick(panesOnMainWindowFrame);
                 } catch (ConnectException e1) {
                     print(e1.getMessage());

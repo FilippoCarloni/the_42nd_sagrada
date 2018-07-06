@@ -89,7 +89,7 @@ public class RoundTrackDrawer {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.ROUND_TRACK_DICE_FXML_PATH));
             Stage stage = new Stage();
-            stage.setTitle(GUIParameters.ROUND_TRACK_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setTitle(GUIParameters.ROUND_TRACK_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
             stage.setOnCloseRequest(e -> {
                 try {

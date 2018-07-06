@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard;
 
 import com.jfoenix.controls.JFXButton;
+import it.polimi.ingsw.connection.constraints.Commands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
@@ -237,10 +238,10 @@ public class GameBoardController {
     }
     private void fillFirstTimeMap(){
         int j = 0;
-        WindowFrameDrawer.frameFiller(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), windowFramePlayer1, 1, true);
+        WindowFrameDrawer.frameFiller(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), windowFramePlayer1, GUIParameters.NO_SCALE, true);
         for(int i = 0; i < players.size(); i++) {
             if(i != getMainPlayerByUsername(players)) {
-                WindowFrameDrawer.frameFiller(canvasOnGrids.get(i), panesOnGrids.get(i), playersGrids.get(j), GUIParameters.REDUCTION_SCALE, false);
+                WindowFrameDrawer.frameFiller(canvasOnGrids.get(i), panesOnGrids.get(i), playersGrids.get(j), GUIParameters.REDUCTION_FOR_OTHER_PLAYERS, false);
                 j++;
             }
         }
@@ -261,11 +262,11 @@ public class GameBoardController {
      * Method set on Action on the Private Objective Rectangle, it opens a screen containing the number of remaining
      * Favor Points, and the Private Objective Card.
      */
-    public void seePrivateObjective(){
+    public void seePrivateObjective()   {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
             Stage stage = new Stage();
-            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
             stage.show();
         } catch (IOException e){
@@ -291,13 +292,13 @@ public class GameBoardController {
      * </ol>
      */
     public void pass() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(GUIParameters.PASS);
+        GuiManager.getInstance().getConnectionController().send(Commands.PASS);
     }
     public void undo() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(GUIParameters.UNDO);
+        GuiManager.getInstance().getConnectionController().send(Commands.UNDO);
     }
     public void redo() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(GUIParameters.REDO);
+        GuiManager.getInstance().getConnectionController().send(Commands.REDO);
     }
 
     /**
@@ -312,15 +313,8 @@ public class GameBoardController {
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.END_GAME_FXML_PATH));
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setOnCloseRequest(e -> {
-                try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.EXIT);
-                } catch (ConnectException e1) {
-                    print(e1.getMessage());
-                }
-                System.exit(0);
-            });
-            stage.setTitle(GUIParameters.END_GAME_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            GuiManager.setOnCloseRequest(stage);
+            stage.setTitle(GUIParameters.END_GAME_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
             print(e.getMessage());
@@ -346,10 +340,10 @@ public class GameBoardController {
     //Updater support method
     private void updater(JSONObject json){
         int j = 0;
-        drawMapAndSetUsername(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), mainPlayer, labelPlayer1, 1, true);
+        drawMapAndSetUsername(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), mainPlayer, labelPlayer1, GUIParameters.NO_SCALE, true);
         for(int i = 0; i < players.size(); i++) {
             if(i != getMainPlayerByUsername(players)) {
-                drawMapAndSetUsername(canvasOnGrids.get(i), panesOnGrids.get(i), (JSONObject) players.get(i), playersNameLabels.get(j), GUIParameters.REDUCTION_SCALE, false);
+                drawMapAndSetUsername(canvasOnGrids.get(i), panesOnGrids.get(i), (JSONObject) players.get(i), playersNameLabels.get(j), GUIParameters.REDUCTION_FOR_OTHER_PLAYERS, false);
                 j++;
             }
         }

@@ -70,7 +70,7 @@ public class LoginController {
             Scene scene = new Scene(parent);
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setOnCloseRequest(e -> System.exit(0));
-            stage.setTitle(GUIParameters.LOBBY_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setTitle(GUIParameters.LOBBY_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(scene);
         } catch (IOException e) {
             print(e.getMessage());

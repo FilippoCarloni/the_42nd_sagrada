@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard.roundtrack;
 
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -58,7 +60,9 @@ public class RoundTrackVisualizer {
                 int finalIndex = index + 1;
                 stackPane.setOnMouseClicked(e -> {
                     try {
-                        GuiManager.getInstance().getConnectionController().send(GUIParameters.SELECT + finalIndex);
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.SELECT + ConnectionCommands.COMMAND_SEPARATOR + finalIndex);
+                        Stage stage = (Stage) allDiceOnRoundTrackGridPane.getScene().getWindow();
+                        stage.hide();
                     } catch (ConnectException e1) {
                         print(e1.getMessage());
                     }

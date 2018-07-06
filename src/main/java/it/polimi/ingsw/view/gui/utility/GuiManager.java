@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.utility;
 
 import it.polimi.ingsw.connection.client.ConnectionManager;
 import it.polimi.ingsw.connection.client.ConnectionType;
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.view.gui.gameboard.GameBoardController;
 import it.polimi.ingsw.view.gui.preliminarystages.LobbyController;
@@ -235,7 +236,7 @@ public class GuiManager {
     public static final void setOnCloseRequest(Stage stage){
         stage.setOnCloseRequest(e -> {
             try {
-                getInstance().connectionController.send(GUIParameters.EXIT);
+                getInstance().connectionController.send(ConnectionCommands.QUIT_COMMAND);
             } catch (ConnectException e1) {
                 print(e1.getMessage());
             }

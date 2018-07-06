@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard.cards.toolcards;
 
 
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.utility.GUIParameters;
@@ -34,7 +35,7 @@ public class ToolCardsManagement {
             //Managing Grozing Pliers behaviour
             toolCardTitle.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + ConnectionCommands.COMMAND_SEPARATOR + id);
                     if(GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE) != null) {
                         grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
                     }
@@ -46,7 +47,7 @@ public class ToolCardsManagement {
             //Managing Flux Remover behaviour
             toolCardTitle.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + ConnectionCommands.COMMAND_SEPARATOR + id);
                     if(GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE) != null)
                         fluxRemoverManagement();
                 } catch (ConnectException e1) {
@@ -57,7 +58,7 @@ public class ToolCardsManagement {
             //Other tool cards
             toolCardTitle.setOnMouseClicked(e -> {
                 try {
-                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
+                    GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + ConnectionCommands.COMMAND_SEPARATOR + id);
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
@@ -94,8 +95,8 @@ public class ToolCardsManagement {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + fxmlFileToOpen));
             Stage stage = new Stage();
-            stage.setTitle(title + " - " + GuiManager.getInstance().getUsernameMainPlayer());
-            stage.setScene(new Scene(parent, GUIParameters.TOOL_CARDS_WIDTH, GUIParameters.TOOL_CARDS_HEIGHT));
+            stage.setTitle(title + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
+            stage.setScene(new Scene(parent));
             stage.show();
         } catch (IOException e){
             print(e.getMessage());

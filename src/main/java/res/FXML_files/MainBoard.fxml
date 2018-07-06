@@ -232,6 +232,9 @@
                            <VBox.margin>
                               <Insets bottom="20.0" left="20.0" right="20.0" />
                            </VBox.margin>
+                           <effect>
+                              <DropShadow />
+                           </effect>
                         </GridPane>
                         <Label fx:id="labelPlayer1" alignment="CENTER" contentDisplay="RIGHT" prefHeight="58.0" prefWidth="300.0" stylesheets="@../css/style.css">
                            <graphic>
@@ -251,11 +254,11 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="200.0">
+                        <HBox alignment="CENTER" prefHeight="40.0" prefWidth="200.0">
                            <children>
                               <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Dice Pool:">
                                  <HBox.margin>
-                                    <Insets left="65.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
                            </children>
@@ -286,11 +289,11 @@
                               <Insets />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" prefHeight="30.0" prefWidth="200.0" styleClass="main-board-label" stylesheets="@../css/style.css">
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" styleClass="main-board-label" stylesheets="@../css/style.css">
                            <children>
                               <Label styleClass="main-board-label" stylesheets="@../css/style.css" text="Round Track:">
                                  <HBox.margin>
-                                    <Insets left="65.0" />
+                                    <Insets />
                                  </HBox.margin>
                               </Label>
                            </children>

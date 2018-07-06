@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.gameboard.cards.toolcards.FluxRemoverController">
@@ -15,7 +13,7 @@
          <center>
             <VBox alignment="CENTER" maxWidth="360.0" prefHeight="183.0" prefWidth="360.0" BorderPane.alignment="CENTER">
                <children>
-                  <GridPane fx:id="shadeChoiceGrid" prefHeight="100.0" prefWidth="360.0">
+                  <GridPane fx:id="shadeChoiceGrid" prefHeight="60.0" prefWidth="360.0">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -26,40 +24,7 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                     <children>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send1" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send2" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send3" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send4" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send5" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
-                           <children>
-                              <RadioButton contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#send6" prefHeight="17.0" prefWidth="0.0" text="RadioButton" />
-                           </children>
-                        </StackPane>
-                     </children>
                   </GridPane>
                </children>
             </VBox>

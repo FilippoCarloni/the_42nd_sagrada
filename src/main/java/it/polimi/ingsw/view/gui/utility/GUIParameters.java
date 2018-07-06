@@ -22,10 +22,6 @@ public final class GUIParameters {
     public static final String FLUX_REMOVER_TITLE = "Flux Remover Activated";
     public static final String END_GAME_TITLE = "Game Stats";
 
-    //Scenes dimensions
-    public static final double TOOL_CARDS_WIDTH = 400;
-    public static final double TOOL_CARDS_HEIGHT = 300;
-
     //Maps constraints
     public static final int NUM_MAPS_TO_CHOOSE = 4;
     public static final int MAX_WINDOW_FRAMES_ROWS = 4;
@@ -57,7 +53,8 @@ public final class GUIParameters {
     static final double[] OFFSET_DIE_6 = new double[]{15.0, 15.0, 45.0, 15.0, 15.0, 30.0, 45.0, 30.0, 15.0, 45.0, 45.0, 45.0};
 
     //Reduction scales for dice drawing
-    public static final double REDUCTION_SCALE = 0.67;
+    public static final double NO_SCALE = 1;
+    public static final double REDUCTION_FOR_OTHER_PLAYERS = 0.67;
     public static final double REDUCTION_FOR_ROUND_TRACK = 0.9;
     public static final double INCREMENT_FOR_DRAFTED_DIE = 1.5;
 
@@ -83,16 +80,11 @@ public final class GUIParameters {
     static final String FIND_ERROR = " not valid, please insert a new one";
 
     //Connection Controller messages
-    public static final String PLAY = "play";
-    public static final String EXIT = "quit";
-    public static final String WINDOW = "window ";
-    public static final String PASS = "pass";
-    public static final String UNDO = "undo";
-    public static final String REDO = "redo";
-    public static final String PICK = "pick ";
-    public static final String MOVE = "move ";
-    public static final String PLACE = "place ";
-    public static final String SELECT = "select ";
+    public static final String PICK = "pick";
+    public static final String MOVE = "move";
+    public static final String PLACE = "place";
+    public static final String TOOL = "tool";
+    public static final String SELECT = "select";
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
     static final String NOW_PLAYING = "Now is playing: ";
@@ -100,8 +92,8 @@ public final class GUIParameters {
 
     //Other
     public static final String DIFFICULTY = "Difficulty: ";
-    public static final String TOOL = "tool ";
     public static final String FAVOR_POINTS = "Favor Points: ";
+    public static final String SEPARATOR = " - ";
 
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.gameboard.dice;
 
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.utility.GUIParameters;
@@ -45,7 +46,7 @@ public class DiceDrawer {
                 int finalI = i + 1;
                 canvas.setOnMouseClicked(e -> {
                     try {
-                        GuiManager.getInstance().getConnectionController().send(GUIParameters.PICK + finalI);
+                        GuiManager.getInstance().getConnectionController().send(GUIParameters.PICK + ConnectionCommands.COMMAND_SEPARATOR + finalI);
                     } catch (ConnectException e1) {
                         print(e1.getMessage());
                     }

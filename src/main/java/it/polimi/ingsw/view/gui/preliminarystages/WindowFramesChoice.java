@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.preliminarystages;
 
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
@@ -107,7 +108,7 @@ public class WindowFramesChoice {
     //Support methods for map choice
     private void clicked(int idMapChosen) {
         try {
-            GuiManager.getInstance().getConnectionController().send(GUIParameters.WINDOW + idMapChosen);
+            GuiManager.getInstance().getConnectionController().send(ConnectionCommands.WINDOW_COMMAND + ConnectionCommands.COMMAND_SEPARATOR + idMapChosen);
         } catch (ConnectException e) {
             print(e.getMessage());
         }

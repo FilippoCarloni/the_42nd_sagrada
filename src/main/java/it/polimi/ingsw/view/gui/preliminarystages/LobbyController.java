@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.preliminarystages;
 
 import com.jfoenix.controls.JFXButton;
+import it.polimi.ingsw.connection.constraints.ConnectionCommands;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.utility.GUIParameters;
 import javafx.event.ActionEvent;
@@ -33,7 +34,7 @@ public class LobbyController {
      * Method that allows the player to enter the lobby, joining a new game.
       */
     public void enteredLobby() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(GUIParameters.PLAY);
+        GuiManager.getInstance().getConnectionController().send(ConnectionCommands.PLAY_COMMAND);
     }
 
     /**
@@ -72,7 +73,7 @@ public class LobbyController {
                 Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.MAP_CHOICE_FXML_PATH));
                 Scene scene = new Scene(parent);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + " - " + GuiManager.getInstance().getUsernameMainPlayer());
+                stage.setTitle(GUIParameters.MAP_CHOICE_SCENE_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
                 GuiManager.setOnCloseRequest(stage);
                 stage.setScene(scene);
                 stage.show();
