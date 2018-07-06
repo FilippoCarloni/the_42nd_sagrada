@@ -79,12 +79,12 @@ public final class GUIParameters {
     public static final String MAIN_PLAYER_NOT_FOUND = "Main player not found";
     public static final String DIE_VALUE_SMALL = "Shade of die must be at least 1";
     public static final String DIE_VALUE_BIG = "Shade of die must be at most 6";
-    public static final String MESSAGE_ERROR = "Message not supported!";
+    static final String MESSAGE_ERROR = "Message not supported!";
     static final String FIND_ERROR = " not valid, please insert a new one";
 
     //Connection Controller messages
     public static final String PLAY = "play";
-    public static final String EXIT = "exit";
+    public static final String EXIT = "quit";
     public static final String WINDOW = "window ";
     public static final String PASS = "pass";
     public static final String UNDO = "undo";
@@ -95,8 +95,8 @@ public final class GUIParameters {
     public static final String SELECT = "select ";
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
-    public static final String NOW_PLAYING = "Now is playing: ";
-    public static final String END_GAME = "\nGame Ended!\nPress Continue to see the score.";
+    static final String NOW_PLAYING = "Now is playing: ";
+    static final String END_GAME = "\nGame Ended!\nPress Continue to see the score.";
 
     //Other
     public static final String DIFFICULTY = "Difficulty: ";

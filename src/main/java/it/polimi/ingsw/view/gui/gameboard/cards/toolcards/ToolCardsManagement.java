@@ -35,7 +35,9 @@ public class ToolCardsManagement {
             toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
-                    grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
+                    if(GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE) != null) {
+                        grozingPliersManagement((JSONObject) GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE));
+                    }
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
@@ -45,7 +47,8 @@ public class ToolCardsManagement {
             toolCardTitle.setOnMouseClicked(e -> {
                 try {
                     GuiManager.getInstance().getConnectionController().send(GUIParameters.TOOL + id);
-                    fluxRemoverManagement();
+                    if(GuiManager.getInstance().getGameBoardMessage().get(JSONTag.PICKED_DIE) != null)
+                        fluxRemoverManagement();
                 } catch (ConnectException e1) {
                     print(e1.getMessage());
                 }
