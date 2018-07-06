@@ -7,10 +7,7 @@ import it.polimi.ingsw.connection.server.ServerSession;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 
 import java.io.*;
-import java.net.ConnectException;
-import java.net.Inet4Address;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -132,12 +129,19 @@ public class ConnectionManager implements RemoteObserver, Serializable {
 
     /**
      * Cofnigure correcty a connection over RMI.
-     * @throws ConnectException - throws an ConnectionExpetion if there are issues in RMI configuration.
+     * @throws ConnectException - throws an ConnectionException if there are issues in RMI configuration.
      */
     private void rmiConnection() throws ConnectException {
-
+        String clientIP;
         try {
-            System.setProperty("java.rmi.server.hostname", Inet4Address.getLocalHost().getHostAddress());
+            if (InetAddress.getLocalHost().isLoopbackAddress() && !InetAddress.getByName(new Settings().serverIP).isLoopbackAddress()) {
+                clientIP = new Settings().clientIP;
+                if (InetAddress.getByName(clientIP).isLoopbackAddress())
+                    throw new ConnectException(SERVER_DISCONNECTION_ERROR);
+            }
+            else
+                clientIP = InetAddress.getLocalHost().getHostAddress();
+            System.setProperty("java.rmi.server.hostname", clientIP);
         } catch (UnknownHostException e) {
             throw new ConnectException(e.getMessage());
         }

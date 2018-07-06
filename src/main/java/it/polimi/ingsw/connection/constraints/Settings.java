@@ -28,6 +28,7 @@ public  class Settings{
     public final int gameRefresh;
     public final int windowWaitingTime;
     public static final String LOBBY_RMI_ID = "Lobby";
+    public final String clientIP;
 
     private static final int DEFAULT_RMI_PORT=8002;
     private static final int DEFAULT_SOCKET_PORT=8001;
@@ -46,6 +47,8 @@ public  class Settings{
     private static final int DEFAULT_LOBBY_WAITING_TIME = 9000;
     private static final int DEFAULT_WINDOW_TIMER = 10000;
     private static final String WINDOW_WAITING_TIME = "WINDOW_WAITING_TIME";
+    private static final String IP_CLIENT_DEFAULT = "localhost";
+    private static final String IP_CLIENT_TAG = "IP_CLIENT";
     private static final Logger logger=Logger.getLogger(Settings.class.getName());
 
     public Settings() {
@@ -56,6 +59,7 @@ public  class Settings{
         int gameRefreshTime = DEFAULT_GAME_REFRESH;
         int lobbyTime = DEFAULT_LOBBY_WAITING_TIME;
         int windowTime = DEFAULT_WINDOW_TIMER;
+        String clientIPdefault = DEFAULT_SERVER_IP;
         Properties configFile;
         configFile = new java.util.Properties();
         FileReader reader;
@@ -89,10 +93,14 @@ public  class Settings{
             param = configFile.getProperty(WINDOW_WAITING_TIME);
             if (param != null)
                 windowTime = Integer.parseInt(param);
+            param = configFile.getProperty(IP_CLIENT_TAG);
+            if (param != null)
+                clientIPdefault = param;
             reader.close();
         } catch (Exception eta) {
             logger.warning(NOT_FOUND_CONFIG_FILE);
         }
+        clientIP = clientIPdefault;
         rmiPort= rmiPortConnection;
         windowWaitingTime = windowTime;
         serverIP = ipserver;
