@@ -22,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -265,6 +266,7 @@ public class GameBoardController {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.PRIVATE_OBJECTIVE_FXML_PATH));
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle(GUIParameters.PRIVATE_OBJECTIVE_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
             stage.show();

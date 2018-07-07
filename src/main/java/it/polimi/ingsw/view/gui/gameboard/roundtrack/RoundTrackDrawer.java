@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -88,6 +89,7 @@ public class RoundTrackDrawer {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + GUIParameters.ROUND_TRACK_DICE_FXML_PATH));
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle(GUIParameters.ROUND_TRACK_TITLE + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
             stage.show();

@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 
@@ -95,6 +96,7 @@ public class ToolCardsManagement {
         try{
             Parent parent = FXMLLoader.load(getClass().getResource(GUIParameters.DEFAULT_FXML_DIRECTORY + fxmlFileToOpen));
             Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle(title + GUIParameters.SEPARATOR + GuiManager.getInstance().getUsernameMainPlayer());
             stage.setScene(new Scene(parent));
             stage.show();
