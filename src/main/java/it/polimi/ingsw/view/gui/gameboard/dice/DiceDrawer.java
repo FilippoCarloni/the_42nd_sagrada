@@ -36,7 +36,7 @@ public class DiceDrawer {
     public static void diceFiller(GridPane gridToFill, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool, int numDice, boolean isDicePool){
         for(int i = 0; i < numDice; i++){
             StackPane pane = new StackPane();
-            gridToFill.add(pane, i, 0);
+            gridToFill.add(pane, i, GUIParameters.FIRST_COLUMN_ROW);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
             pane.getChildren().add(canvas);
             panesOnDicePool.add(pane);
@@ -64,7 +64,7 @@ public class DiceDrawer {
     public static void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
         for(int i = 0; i < panesOnDicePool.size(); i++){
             panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
-            canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(0,0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+            canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT_TO_CLEAR,GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
         }
         dicePoolDrawer(json, panesOnDicePool, canvasOnDicePool);
     }
@@ -76,7 +76,7 @@ public class DiceDrawer {
             StackPane pane = panesOnDicePool.get(i);
             Canvas canvas = canvasOnDicePool.get(i);
             canvas.getStyleClass().clear();
-            canvas.getStyleClass().add(GUIParameters.CLICKABLE);
+            canvas.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
             String color = (String) ((JSONObject) o).get(JSONTag.COLOR);
             int shade = parseInt((((JSONObject) o).get(JSONTag.SHADE)).toString());
             dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane, 1);

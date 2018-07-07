@@ -56,7 +56,7 @@ public class RoundTrackVisualizer {
                 String color = ((JSONObject)dice.get(index)).get(JSONTag.COLOR).toString();
                 DiceDrawer.dicePointsDrawer(value, color,  canvas.getGraphicsContext2D(), stackPane, GUIParameters.REDUCTION_FOR_ROUND_TRACK);
                 canvas.getStyleClass().clear();
-                canvas.getStyleClass().add(GUIParameters.CLICKABLE);
+                canvas.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
                 int finalIndex = index + 1;
                 stackPane.setOnMouseClicked(e -> {
                     try {

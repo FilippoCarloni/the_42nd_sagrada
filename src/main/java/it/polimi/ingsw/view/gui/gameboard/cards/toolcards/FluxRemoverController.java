@@ -38,7 +38,7 @@ public class FluxRemoverController {
 
         for(int i = 0; i < GUIParameters.NUM_SHADES; i++){
             canvasBetweenChoose.get(i).getStyleClass().clear();
-            canvasBetweenChoose.get(i).getStyleClass().add(GUIParameters.CLICKABLE);
+            canvasBetweenChoose.get(i).getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
             int value = i + 1;
             DiceDrawer.dicePointsDrawer(value, color, canvasBetweenChoose.get(i).getGraphicsContext2D(), panesBetweenChoose.get(i), GUIParameters.NO_SCALE);
             canvasBetweenChoose.get(i).setOnMouseClicked(e -> {

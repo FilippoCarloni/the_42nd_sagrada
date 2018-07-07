@@ -55,8 +55,8 @@ public class EndGame {
             Label points = new Label(((JSONObject)players.get(i)).get(JSONTag.SCORE).toString());
             username.setTextAlignment(TextAlignment.CENTER);
             points.setTextAlignment(TextAlignment.CENTER);
-            resultsGrid.add(username, 0, i + 1);
-            resultsGrid.add(points, 1, i + 1);
+            resultsGrid.add(username, GUIParameters.FIRST_COLUMN_ROW, i + 1);
+            resultsGrid.add(points, GUIParameters.SECOND_COLUMN_ROW, i + 1);
         }
     }
 

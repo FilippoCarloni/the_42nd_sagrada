@@ -32,7 +32,7 @@ public class CardsSetter {
         for (int i = 0; i < json.size(); i++) {
             drawCards((JSONObject) json.get(i), titles.get(i), descriptions.get(i));
             if(toolCards){
-                titles.get(i).getStyleClass().add(GUIParameters.CLICKABLE);
+                titles.get(i).getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
                 int id =parseInt(((JSONObject)json.get(i)).get(JSONTag.CARD_ID).toString());
                 new ToolCardsManagement().toolBehaviourSetter(titles.get(i), id);
             }

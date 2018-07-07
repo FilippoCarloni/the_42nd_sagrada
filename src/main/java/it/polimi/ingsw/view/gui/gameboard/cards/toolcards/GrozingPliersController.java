@@ -53,12 +53,12 @@ public class GrozingPliersController {
     }
     private void setClickableCanvas(){
         increaseCanvas.getStyleClass().clear();
-        increaseCanvas.getStyleClass().add(GUIParameters.CLICKABLE);
+        increaseCanvas.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
         increaseCanvas.setOnMouseClicked(e -> sendCommand(GUIParameters.INCREASE));
 
         decreaseCanvas.getStyleClass().clear();
-        decreaseCanvas.getStyleClass().add(GUIParameters.CLICKABLE);
-        decreaseCanvas.setOnMouseClicked(e -> sendCommand(GUIParameters.CLICKABLE));
+        decreaseCanvas.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
+        decreaseCanvas.setOnMouseClicked(e -> sendCommand(GUIParameters.DECREASE));
     }
 
     @FXML

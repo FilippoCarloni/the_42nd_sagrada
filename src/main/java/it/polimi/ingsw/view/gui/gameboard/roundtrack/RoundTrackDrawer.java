@@ -36,7 +36,7 @@ public class RoundTrackDrawer {
     public void roundTrackStartingFiller(GridPane roundTrackPane, List<StackPane> panesOnRoundTrack, List<Canvas> canvasOnRoundTrack){
         for(int i = 0; i < GUIParameters.MAX_NUM_TURNS; i++){
             StackPane stackPane = new StackPane();
-            roundTrackPane.add(stackPane, i, 0);
+            roundTrackPane.add(stackPane, i, GUIParameters.FIRST_COLUMN_ROW);
             Canvas canvas = new Canvas(GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             stackPane.getChildren().add(canvas);
             panesOnRoundTrack.add(stackPane);
@@ -62,12 +62,12 @@ public class RoundTrackDrawer {
 
         //Reset of round track draw
         for(int i = 0; i < panesOnRoundTrack.size(); i++){
-            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(0, 0, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK,
+            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK,
                     GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             panesOnRoundTrack.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
         }
 
-        int index = -1;
+        int index = GUIParameters.STARTING_INDEX_VALUE;
         for(int i = 0; i < turnNumber - 1; i++){
             //Index will represent the position into the JSONArray dice
             index += diceOnSlot[i];
@@ -76,7 +76,7 @@ public class RoundTrackDrawer {
             //With this call I will draw the last die of the specified turn on the round track
             DiceDrawer.dicePointsDrawer(value, color,  canvasOnRoundTrack.get(i).getGraphicsContext2D(), panesOnRoundTrack.get(i), GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             canvasOnRoundTrack.get(i).getStyleClass().clear();
-            canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE);
+            canvasOnRoundTrack.get(i).getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
         }
 
     }

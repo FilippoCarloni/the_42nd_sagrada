@@ -40,7 +40,7 @@ public final class GUIParameters {
     public static final String DEFAULT_DICE_COLOR = "white";
     public static final String BACKGROUND_COLOR = "#303642";
     public static final String BORDER_COLOR = "black";
-    public static final String CLICKABLE = "clickable";
+    public static final String CLICKABLE_STYLE = "clickable";
     public static final String USED_TOOL = "used-tool-title-label";
 
     //Dimensions to draw dice
@@ -95,6 +95,10 @@ public final class GUIParameters {
     public static final String DIFFICULTY = "Difficulty: ";
     public static final String FAVOR_POINTS = "Favor Points: ";
     public static final String SEPARATOR = " - ";
+    public static final int FIRST_COLUMN_ROW = 0;
+    public static final int SECOND_COLUMN_ROW = 1;
+    public static final int STARTING_POINT_TO_CLEAR = 0;
+    public static final int STARTING_INDEX_VALUE = -1;
 
 
 }

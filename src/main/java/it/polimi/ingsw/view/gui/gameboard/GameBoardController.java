@@ -254,14 +254,17 @@ public class GameBoardController {
     }
     private void setUsedToolCard(JSONArray json){
         for(int i = 0; i < toolsTitle.size(); i++){
-            if(parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString()) > 0 && !toolsTitle.get(i).getStyleClass().contains(GUIParameters.USED_TOOL))
+            if(parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString()) > 0 && !toolsTitle.get(i).getStyleClass().contains(GUIParameters.USED_TOOL)) {
                 toolsTitle.get(i).getStyleClass().add(GUIParameters.USED_TOOL);
+            } else if(parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString()) == 0) {
+                toolsTitle.get(i).getStyleClass().remove(GUIParameters.USED_TOOL);
+            }
         }
     }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
         int id = parseInt(privateObjectiveCard.get(JSONTag.CARD_ID).toString());
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
-        privateObjectiveRectangle.getStyleClass().add(GUIParameters.CLICKABLE);
+        privateObjectiveRectangle.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
     }
 
     /**
