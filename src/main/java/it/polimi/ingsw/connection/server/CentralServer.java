@@ -43,19 +43,17 @@ public class CentralServer {
      * @throws ServerException - Throws an RemoteException if the are issues in the login phase.
      */
     public synchronized String connect(String username,GameObserver obs) throws ServerException {
-            OnLinePlayer x;
-            String filtered=username.trim();
-            if(!Pattern.compile("^[a-zA-Z0-9_-]{"+USERNAME_MIN_LENGTH+","+USERNAME_MAX_LENGTH+"}$").asPredicate().test(filtered))
-                throw new ServerException(NOT_VALID_USERNAME);
-            for (OnLinePlayer s : players)
-                if (s.getUsername().compareToIgnoreCase((filtered))==0) {
-                    throw new ServerException(ALREADY_EXISTING_USERNAME);
-                }
-            x=new OnLinePlayer(filtered,obs);
-            players.add(x);
-            observable.addObserver(obs);
-            logger.info(() -> filtered+CONNECTED+x.getServerSession().getID());
-            return x.getServerSession().getID();
+        OnLinePlayer x;
+        String filtered=username.trim();
+        if(!Pattern.compile("^[a-zA-Z0-9_-]{"+USERNAME_MIN_LENGTH+","+USERNAME_MAX_LENGTH+"}$").asPredicate().test(filtered))
+            throw new ServerException(NOT_VALID_USERNAME);
+        if(!players.parallelStream().filter( p -> p.getUsername().compareToIgnoreCase(filtered) == 0).collect(Collectors.toList()).isEmpty())
+            throw new ServerException(ALREADY_EXISTING_USERNAME);
+        x=new OnLinePlayer(filtered,obs);
+        players.add(x);
+        observable.addObserver(obs);
+        logger.info(() -> filtered+CONNECTED+x.getServerSession().getID());
+        return x.getServerSession().getID();
     }
 
     /**

@@ -159,7 +159,7 @@ public class ConnectionManager implements RemoteObserver, Serializable {
     }
 
     /**
-     * Cofnigure correcty a connection over socket.
+     * Configure correctly a connection over socket.
      * @throws ConnectException - throws an ConnectionExpetion if there are issues in socket configuration.
      */
     private void socketConnection() throws ConnectException {

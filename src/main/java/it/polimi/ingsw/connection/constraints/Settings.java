@@ -37,16 +37,16 @@ public  class Settings{
     private static final String IP_SERVER_TAG="IP_SERVER";
     private static final String PORT_SOCKET_TAG="PORT_SOCKET";
     private static final String PORT_RMI_TAG="PORT_RMI";
-    private static final String LOBBY_REFRESH_TIMR_TAG="LOBBY_REFRESH_TIME";
+    private static final String LOBBY_REFRESH_TIMER_TAG="LOBBY_REFRESH_TIME";
     private static final int DEFAULT_LOBBY_REFRESH_TIME=500;
     private static final int DEFAULT_TURN_TIME=60000;
     private static final String TURN_TIME_TAG="TURN_TIME";
     private static final String GAME_REFRESH_TAG = "GAME_REFRESH";
     private static final int DEFAULT_GAME_REFRESH = 101;
-    private static final String LOBBY_WAITING_TIME = "LOBBY_WAITING_TIME";
+    private static final String LOBBY_WAITING_TIME_TAG = "LOBBY_WAITING_TIME";
     private static final int DEFAULT_LOBBY_WAITING_TIME = 9000;
     private static final int DEFAULT_WINDOW_TIMER = 10000;
-    private static final String WINDOW_WAITING_TIME = "WINDOW_WAITING_TIME";
+    private static final String WINDOW_WAITING_TIME_TAG = "WINDOW_WAITING_TIME";
     private static final String IP_CLIENT_DEFAULT = "localhost";
     private static final String IP_CLIENT_TAG = "IP_CLIENT";
     private static final Logger logger=Logger.getLogger(Settings.class.getName());
@@ -59,7 +59,7 @@ public  class Settings{
         int gameRefreshTime = DEFAULT_GAME_REFRESH;
         int lobbyTime = DEFAULT_LOBBY_WAITING_TIME;
         int windowTime = DEFAULT_WINDOW_TIMER;
-        String clientIPdefault = DEFAULT_SERVER_IP;
+        String clientIPdefault = IP_CLIENT_DEFAULT;
         Properties configFile;
         configFile = new java.util.Properties();
         FileReader reader;
@@ -77,7 +77,7 @@ public  class Settings{
             param = configFile.getProperty(PORT_RMI_TAG);
             if (param != null)
                 rmiPortConnection = Integer.parseInt(param);
-            param = configFile.getProperty(LOBBY_REFRESH_TIMR_TAG);
+            param = configFile.getProperty(LOBBY_REFRESH_TIMER_TAG);
             if (param != null)
                 lobbyRefresh = Integer.parseInt(param);
             param = configFile.getProperty(TURN_TIME_TAG);
@@ -86,11 +86,11 @@ public  class Settings{
             param = configFile.getProperty(GAME_REFRESH_TAG);
             if (param != null)
                 gameRefreshTime = Integer.parseInt(param);
-            param = configFile.getProperty(LOBBY_WAITING_TIME);
+            param = configFile.getProperty(LOBBY_WAITING_TIME_TAG);
             if (param != null)
                 lobbyTime = Integer.parseInt(param);
             reader.close();
-            param = configFile.getProperty(WINDOW_WAITING_TIME);
+            param = configFile.getProperty(WINDOW_WAITING_TIME_TAG);
             if (param != null)
                 windowTime = Integer.parseInt(param);
             param = configFile.getProperty(IP_CLIENT_TAG);
