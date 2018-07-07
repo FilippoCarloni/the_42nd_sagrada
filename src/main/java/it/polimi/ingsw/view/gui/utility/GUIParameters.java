@@ -99,6 +99,7 @@ public final class GUIParameters {
     public static final int SECOND_COLUMN_ROW = 1;
     public static final int STARTING_POINT = 0;
     public static final int STARTING_INDEX_VALUE = -1;
+    public static final int NUM_POINTS_DICE_POLYLINE = 5;
 
 
 }

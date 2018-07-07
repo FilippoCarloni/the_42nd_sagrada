@@ -107,7 +107,7 @@ public class DiceDrawer {
                         GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT},
                 new double[]{GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale,
                         GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT},
-                5);
+                GUIParameters.NUM_POINTS_DICE_POLYLINE);
         while (numOfCoordinates >= 0) {
             gc.fillOval((coordinates[numOfCoordinates - 1] - GUIParameters.DICE_RADIUS / 2) * scale, (coordinates[numOfCoordinates] - GUIParameters.DICE_RADIUS / 2) * scale,
                     GUIParameters.DICE_RADIUS * scale, GUIParameters.DICE_RADIUS * scale);

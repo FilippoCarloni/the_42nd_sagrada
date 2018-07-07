@@ -106,9 +106,11 @@ public class WindowFrameDrawer {
     private static void canvasOnWindowFrame(GraphicsContext gc, double scale){
         gc.setStroke(GUIParameters.NUMBERS_DICE_COLOR);
         gc.setLineWidth(4);
-        gc.strokePolyline(new double[]{0, 60 * scale, 60 * scale, 0, 0},
-                new double[]{0, 0, 60 * scale, 60 * scale, 0},
-                5);
+        gc.strokePolyline(new double[]{GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale,
+                        GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT},
+                new double[]{GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale,
+                        GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT},
+                GUIParameters.NUM_POINTS_DICE_POLYLINE);
     }
 
     /**
