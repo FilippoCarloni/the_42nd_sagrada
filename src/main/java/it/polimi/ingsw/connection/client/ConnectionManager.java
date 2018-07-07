@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.*;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -104,9 +105,13 @@ public class ConnectionManager implements RemoteObserver, Serializable {
                 try {
                     sessionID = lobby.restoreSession(status.getSession(), this);
                     logged = true;
-                } catch (RemoteException e) {
-                    // messages.add(e.getMessage()
+                }catch(java.rmi.ConnectException | UnmarshalException e) {
+                    throw new NoSuchElementException(e.getMessage());
+                 }
+                catch (RemoteException e) {
+                // e.printStackTrace()
                 }
+
             else if (connectionType == ConnectionType.SOCKET) {
                 this.out.println(RESTORE_COMMAND+ COMMAND_SEPARATOR + status.getSession());
                 this.out.flush();
@@ -254,9 +259,11 @@ public class ConnectionManager implements RemoteObserver, Serializable {
                     default:
                         action(cmd);
                 }
-            } catch (RemoteException e) {
+            }catch (java.rmi.ConnectException | UnmarshalException e) {
+                messages.add(MessageType.encodeMessage(SERVER_DISCONNECTION_ERROR, MessageType.ERROR_MESSAGE));
+            }
+            catch (RemoteException e) {
                 messages.add(e.getCause().getMessage());
-
             } catch (NoSuchElementException e) {
                 messages.add(MessageType.encodeMessage(e.getCause().getMessage(), MessageType.ERROR_MESSAGE));
             }
