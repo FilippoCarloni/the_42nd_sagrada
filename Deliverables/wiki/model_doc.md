@@ -9,7 +9,7 @@
   - [Command structure](#command-structure)
     - [The pick example](#the-pick-example)
     - [Why undos and redos](#why-undos-and-redos)
-    - [Some commands can't be undone](#some-commands-can't-be-undone)
+    - [Some commands can't be undone](#some-commands-cant-be-undone)
 - [Advanced Model classes](#advanced-model-classes)
   - [Public Objectives](#public-objectives)
     - [Public objective structure](#public-objective-structure)
@@ -45,6 +45,8 @@ This guide walks through the Model classes explaining how they interact in the g
 
 The Model implementation is based on a 1:1 correspondence with the JSON syntax in which it can be saved and from which it can be loaded. This serialization capability is particularly helpful with internet communication, as, once the server has serialized in JSON syntax the current game status, the serialization product can be sent (with some sensible information deletion) to the client which starts the parsing procedure in order to extract the information to be rendered. Every game status related class can be loaded from JSON syntax by a particular JSON factory, following a `Factory` design pattern.
 
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/2_gamedata.jpg)
+
 
 ## Model Classes Overview
 
@@ -69,6 +71,11 @@ The best example is probably the dice bag: at first it was implemented as a rand
   - Public objective cards: cards that evaluate score points on a particular window frame following a predetermined pattern (see [Public objectives](#public-objectives))
   - Tool cards: cards that, once activated, can sensibly change the status of the game (see [Tool Cards](#tool-cards))
   - Window frames (see above)
+  
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/1_utility_turns.jpg)
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/3_gameboard.jpg)
+
 
 ## Commands
 
@@ -89,6 +96,10 @@ The following list of commands is available only on particular tool card activat
 Commands are composed by a list of conditions and a list of instructions:
 - A **condition** is a particular boolean predicate that must be verified on the current game status id order to declare the command available
 - An **instruction** is a particular action that will be performed unconditionally on the current game status when all the command conditions are positively checked
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/6_commands.jpg)
+
 
 ### Command structure
 
@@ -114,7 +125,7 @@ As an example I bring the `pick` command with its JSON encoding:
 ```
 In this JSON we can see:
 - *reg_exp* is the regular expression that the passed command string must verify in order to be processed and eventually executed
-- *undoable* is a boolean that states if the command can be undone according to the rules by the player (see [Some commands can't be undone](#some-commands-can't-be-undone))
+- *undoable* is a boolean that states if the command can be undone according to the rules by the player (see [Some commands can't be undone](#some-commands-cant-be-undone))
 - *conditions* is the list of conditions (see [Conditions](#conditions)) that must be verified in order to execute the command (in this example a die shouldn't already be picked, a die shouldn't already be placed in a window frame, a tool card shouldn't currently be active and finally the first argument passed should be an integer between 0 and the size of the dice pool)
 - *instructions* is the list of actions (see [Instructions](#instructions)) that are effectively performed on the game status once the conditions are positively tested (in the example we have the effective die picking and the eventual shut down of passive tool cards)
 
@@ -163,6 +174,11 @@ The JSON that encodes the card information holds:
 #### Note on private objectives
 
 As a small side note on the objective-like cards, the **private objective cards** are pretty similar to their public relatives, but are easier to build, as they have a highly symmetrical structure based on the available dice colors. These cards are automatically generated through iteration on the `Color` *enum* values, so their analysis is analogous and easier than the previous one on the public cards.
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/4_cards.jpg)
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/5_publicobjectives.jpg)
 
 
 ### Tool Cards
@@ -329,6 +345,9 @@ REMINDER: every command string follows the structure `command_name [arguments]` 
 |`Place`   | Checks if the die can be placed in a particular position  | The rule check can be composed by three components: *placing rule*, *color rule* and *shade rule*  |`{"condition": "placing_rule_check", "placing": true, "color": true, "shade": true}`   |
 |`ValidCoordinates`   |Checks if even arguments are a legal row index and odd arguments a legal column index   | -  |`{"condition": "valid_coordinates"}`   |
 
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/7_conditions.jpg)
+
+
 ### Instructions
 
 Instructions are atomic actions that change the current game status. They are performed after several conditions check (see [Conditions](#conditions)).
@@ -352,3 +371,7 @@ REMINDER: every command string follows the structure `command_name [arguments]` 
 |`TearDown`   |Ends the effect of a Tool Card   |This shut down can be condition-driven   |`{"instruction": "tear_down", "condition": null}`; `{"instruction": "tear_down", "condition": {"condition": "num_of_dice_moved", "type_of_comparison": "equal_to", "bound": 2}}`  |
 |`TearDownPassiveTools`   | Ends the effect of a passive Tool Card; this is called by basic commands, in order to shut down automatically passive tools  |-   |`{"instruction": "tear_down_passive_tools"}`   |
 |`MoveDie`   |Moves unconditionally a die from a position of the window frame to another one   | -  |`{"instruction": "move_die"}`   |
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/model/8_instructions.jpg)
+
