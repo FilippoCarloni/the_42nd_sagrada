@@ -10,7 +10,7 @@ public final class ErrorMessage {
 
     static final String ERR_GENERIC_MESSAGE = "Command not executed: ";
     static final String ERR_COMMAND_NOT_EXISTS = "This command is not currently available. Try checking the syntax or activate a tool card.";
-    static final String ERR_NOT_YOUR_TURN = "It'n not your turn.";
+    static final String ERR_NOT_YOUR_TURN = "It's not your turn.";
     static final String GAME_FINISHED = "The game is ended. You can't perform any more actions.";
 
     public static final String ERR_DIE_NOT_PICKED = "You should pick a die.";
@@ -26,8 +26,8 @@ public final class ErrorMessage {
     public static final String ERR_SLOT_UNOCCUPIED = "Chosen slot is empty.";
     public static final String ERR_RULE_ERROR = "Picked die is not allowed to be placed in that position.";
     public static final String ERR_PLACING_ERROR = "Given position for the chosen die violates the placing rule.";
-    public static final String ERR_COLOR_ERROR = "Given position for the chosen de violates the color placing rule.";
-    public static final String ERR_SHADE_ERROR = "Given position for the chosen de violates the shade placing rule.";
+    public static final String ERR_COLOR_ERROR = "Given position for the chosen die violates the color placing rule.";
+    public static final String ERR_SHADE_ERROR = "Given position for the chosen die violates the shade placing rule.";
     public static final String ERR_FAVOR_POINTS = "You don't have enough favor points.";
     public static final String ERR_TOOL_ACTIVATED = "You are not allowed to use another tool card this turn.";
     public static final String ERR_CANNOT_INCREASE = "You can't increase the value of the picked die.";
