@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.gameboard;
 
 import com.jfoenix.controls.JFXButton;
-import it.polimi.ingsw.connection.constraints.Commands;
+import it.polimi.ingsw.connection.constraints.SpecialCommands;
 import it.polimi.ingsw.model.utility.JSONTag;
 import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
@@ -301,13 +301,13 @@ public class GameBoardController {
      * </ol>
      */
     public void pass() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(Commands.PASS);
+        GuiManager.getInstance().getConnectionController().send(SpecialCommands.PASS);
     }
     public void undo() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(Commands.UNDO);
+        GuiManager.getInstance().getConnectionController().send(SpecialCommands.UNDO);
     }
     public void redo() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(Commands.REDO);
+        GuiManager.getInstance().getConnectionController().send(SpecialCommands.REDO);
     }
 
     /**

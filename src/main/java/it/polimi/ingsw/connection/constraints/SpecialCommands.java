@@ -3,8 +3,8 @@ package it.polimi.ingsw.connection.constraints;
 /**
  * The Commands class contains the game commands that perform a particular action.
  */
-public class Commands {
-    private Commands(){}
+public class SpecialCommands {
+    private SpecialCommands(){}
 
     /**
      * Permits to pass turn, if it is possible.

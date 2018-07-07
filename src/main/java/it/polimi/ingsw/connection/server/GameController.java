@@ -1,6 +1,6 @@
 package it.polimi.ingsw.connection.server;
 
-import it.polimi.ingsw.connection.constraints.Commands;
+import it.polimi.ingsw.connection.constraints.SpecialCommands;
 import it.polimi.ingsw.connection.constraints.Settings;
 import it.polimi.ingsw.connection.server.messageencoder.MessageType;
 import it.polimi.ingsw.connection.server.serverexception.ServerException;
@@ -170,13 +170,13 @@ public class GameController extends Observable{
         }
         command=command.trim();
         switch (command) {
-            case Commands.UNDO:
+            case SpecialCommands.UNDO:
                 if(game.isUndoAvailable())
                     game.undoCommand();
                 else
                     throw new ServerException(NOT_UNDO);
                 break;
-            case Commands.REDO:
+            case SpecialCommands.REDO:
                 if(game.isRedoAvailable())
                     game.redoCommand();
                 else
@@ -188,7 +188,7 @@ public class GameController extends Observable{
                 } catch (IllegalCommandException e) {
                     throw new ServerException(e.getMessage());
                 }
-                if(command.equals(Commands.PASS)) {
+                if(command.equals(SpecialCommands.PASS)) {
                         if (game.isGameEnded()) {
                             printScore();
                             closeGame();
@@ -317,7 +317,7 @@ public class GameController extends Observable{
         boolean notPass=true;
         while(notPass) {
             try {
-                game.executeCommand(game.getCurrentPlayer(), Commands.PASS);
+                game.executeCommand(game.getCurrentPlayer(), SpecialCommands.PASS);
                 notPass=false;
             } catch (IllegalCommandException e) {
                 game.undoCommand();
