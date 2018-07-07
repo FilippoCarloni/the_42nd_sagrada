@@ -7,7 +7,6 @@ import it.polimi.ingsw.view.gui.utility.GuiManager;
 import it.polimi.ingsw.view.gui.gameboard.cards.CardsSetter;
 import it.polimi.ingsw.view.gui.gameboard.dice.DiceDrawer;
 import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackDrawer;
-import it.polimi.ingsw.view.gui.gameboard.roundtrack.RoundTrackVisualizer;
 import it.polimi.ingsw.view.gui.gameboard.windowframes.WindowFrameDrawer;
 import it.polimi.ingsw.view.gui.utility.GUIColor;
 import it.polimi.ingsw.view.gui.utility.GUIParameters;
@@ -72,7 +71,6 @@ public class GameBoardController {
 
     //Round Track references
     private RoundTrackDrawer rDrawer;
-    private RoundTrackVisualizer rVisualizer;
 
     @FXML
     private HBox roundTrackAnchorPane;
@@ -200,14 +198,6 @@ public class GameBoardController {
      */
     public JFXButton getContinueButton(){
         return continueButton;
-    }
-
-    /**
-     * Public setter for the RoundTrackVisualizer, used when the round track is open by a player.
-     * @param rVisualizer: a reference to the current RoundTrackVisualizer.
-     */
-    public void setrVisualizer(RoundTrackVisualizer rVisualizer) {
-        this.rVisualizer = rVisualizer;
     }
 
     /**
@@ -361,9 +351,6 @@ public class GameBoardController {
 
         JSONObject roundTrack = (JSONObject) json.get(JSONTag.ROUND_TRACK);
         rDrawer.roundTrackUpdate(roundTrack, panesOnRoundTrack, canvasOnRoundTrack);
-        if(rVisualizer != null){
-            rVisualizer.allDiceDrawer(roundTrack);
-        }
 
         setUsedToolCard(toolCards);
         manageDraftedDie(json);
@@ -418,7 +405,6 @@ public class GameBoardController {
         canvasOnRoundTrack = new ArrayList<>();
         panesOnDicePool = new ArrayList<>();
         canvasOnDicePool = new ArrayList<>();
-        rVisualizer = null;
     }
     private void callFirsFillers(JSONObject json){
         rDrawer.roundTrackStartingFiller(roundTrackGrid, panesOnRoundTrack, canvasOnRoundTrack);
