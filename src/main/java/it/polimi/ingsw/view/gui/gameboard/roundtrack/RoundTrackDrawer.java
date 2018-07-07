@@ -62,7 +62,7 @@ public class RoundTrackDrawer {
 
         //Reset of round track draw
         for(int i = 0; i < panesOnRoundTrack.size(); i++){
-            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK,
+            canvasOnRoundTrack.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK,
                     GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * GUIParameters.REDUCTION_FOR_ROUND_TRACK);
             panesOnRoundTrack.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
         }

@@ -62,7 +62,7 @@ public class WindowFrameDrawer {
     public static void frameReset(JSONObject windowFrame, List<Canvas> canvasOnWindowFrame, List<StackPane> panesOnWindowFrame, double scale, boolean clickable){
         for(int i = 0; i < GUIParameters.MAX_WINDOW_FRAMES_ROWS * GUIParameters.MAX_WINDOW_FRAMES_COLUMNS; i++){
             panesOnWindowFrame.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.DEFAULT_DICE_COLOR);
-            canvasOnWindowFrame.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale);
+            canvasOnWindowFrame.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale);
         }
         framePainterManager(windowFrame, canvasOnWindowFrame, panesOnWindowFrame, scale, clickable);
     }

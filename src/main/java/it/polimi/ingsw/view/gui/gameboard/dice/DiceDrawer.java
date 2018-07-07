@@ -64,7 +64,7 @@ public class DiceDrawer {
     public static void dicePoolReset(JSONObject json, List<StackPane> panesOnDicePool, List<Canvas> canvasOnDicePool){
         for(int i = 0; i < panesOnDicePool.size(); i++){
             panesOnDicePool.get(i).setStyle(GUIParameters.BACKGROUND_COLOR_STRING + GUIParameters.BACKGROUND_COLOR);
-            canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT_TO_CLEAR,GUIParameters.STARTING_POINT_TO_CLEAR, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
+            canvasOnDicePool.get(i).getGraphicsContext2D().clearRect(GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION);
         }
         dicePoolDrawer(json, panesOnDicePool, canvasOnDicePool);
     }
@@ -79,7 +79,7 @@ public class DiceDrawer {
             canvas.getStyleClass().add(GUIParameters.CLICKABLE_STYLE);
             String color = (String) ((JSONObject) o).get(JSONTag.COLOR);
             int shade = parseInt((((JSONObject) o).get(JSONTag.SHADE)).toString());
-            dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane, 1);
+            dicePointsDrawer(shade, color, canvas.getGraphicsContext2D(), pane, GUIParameters.NO_SCALE);
             i++;
         }
     }
@@ -103,8 +103,10 @@ public class DiceDrawer {
         gc.setFill(GUIParameters.NUMBERS_DICE_COLOR);
         gc.setStroke(GUIParameters.NUMBERS_DICE_COLOR);
         gc.setLineWidth(4 * scale);
-        gc.strokePolyline(new double[]{0, 60 * scale, 60 * scale, 0, 0},
-                new double[]{0, 0, 60 * scale, 60 * scale, 0},
+        gc.strokePolyline(new double[]{GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale,
+                        GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT},
+                new double[]{GUIParameters.STARTING_POINT, GUIParameters.STARTING_POINT, GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale,
+                        GUIParameters.SQUARE_PLAYER_1_GRID_DIMENSION * scale, GUIParameters.STARTING_POINT},
                 5);
         while (numOfCoordinates >= 0) {
             gc.fillOval((coordinates[numOfCoordinates - 1] - GUIParameters.DICE_RADIUS / 2) * scale, (coordinates[numOfCoordinates] - GUIParameters.DICE_RADIUS / 2) * scale,
