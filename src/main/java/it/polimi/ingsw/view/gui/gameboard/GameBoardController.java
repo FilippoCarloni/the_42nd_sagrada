@@ -252,6 +252,12 @@ public class GameBoardController {
         CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.TOOLS), toolsTitle, toolsDescription, true);
         CardsSetter.setPublicCards((JSONArray) json.get(JSONTag.PUBLIC_OBJECTIVES), publicObjectivesTitle, publicObjectivesDescription, false);
     }
+    private void setUsedToolCard(JSONArray json){
+        for(int i = 0; i < toolsTitle.size(); i++){
+            if(parseInt(((JSONObject)json.get(i)).get(JSONTag.FAVOR_POINTS).toString()) > 0 && !toolsTitle.get(i).getStyleClass().contains(GUIParameters.USED_TOOL))
+                toolsTitle.get(i).getStyleClass().add(GUIParameters.USED_TOOL);
+        }
+    }
     private void privateObjectiveRectangleFiller(JSONObject privateObjectiveCard){
         int id = parseInt(privateObjectiveCard.get(JSONTag.CARD_ID).toString());
         privateObjectiveRectangle.setFill(GUIColor.findById(id).getColor());
@@ -339,6 +345,8 @@ public class GameBoardController {
 
     //Updater support method
     private void updater(JSONObject json){
+        JSONArray toolCards = (JSONArray) json.get(JSONTag.TOOLS);
+
         int j = 0;
         drawMapAndSetUsername(canvasOnGrids.get(getMainPlayerByUsername(players)), panesOnGrids.get(getMainPlayerByUsername(players)), mainPlayer, labelPlayer1, GUIParameters.NO_SCALE, true);
         for(int i = 0; i < players.size(); i++) {
@@ -354,6 +362,7 @@ public class GameBoardController {
             rVisualizer.allDiceDrawer(roundTrack);
         }
 
+        setUsedToolCard(toolCards);
         manageDraftedDie(json);
         DiceDrawer.dicePoolReset(json, panesOnDicePool, canvasOnDicePool);
     }

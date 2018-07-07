@@ -86,6 +86,10 @@
     -fx-text-fill: #7e4a35;
 }
 
+.used-tool-title-label{
+    -fx-text-fill: #4f3222;
+}
+
 #toolCards {
     -fx-padding: 0 0 0 30;
 }

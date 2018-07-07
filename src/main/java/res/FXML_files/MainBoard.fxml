@@ -335,12 +335,12 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox fx:id="toolCardsHBox" alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
+                        <HBox alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
                            <children>
-                              <VBox fx:id="toolCard1" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets left="20.0" right="20.0" />
                                  </HBox.margin>
@@ -374,7 +374,7 @@
                                  <effect>
                                     <DropShadow />
                                  </effect></VBox>
-                              <VBox fx:id="toolCard2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
@@ -408,7 +408,7 @@
                                  <effect>
                                     <DropShadow />
                                  </effect></VBox>
-                              <VBox fx:id="toolCard3" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
@@ -451,12 +451,12 @@
                   </VBox>
                   <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <HBox fx:id="publicObjectiveHBox" alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
+                        <HBox alignment="CENTER" prefHeight="1000.0" prefWidth="2000.0">
                            <VBox.margin>
                               <Insets left="20.0" right="20.0" />
                            </VBox.margin>
                            <children>
-                              <VBox fx:id="publicObjectiveCard1" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets left="20.0" right="20.0" />
                                  </HBox.margin>
@@ -478,7 +478,7 @@
                                  <effect>
                                     <DropShadow />
                                  </effect></VBox>
-                              <VBox fx:id="publicObjectiveCard2" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
@@ -500,7 +500,7 @@
                                  <effect>
                                     <DropShadow />
                                  </effect></VBox>
-                              <VBox fx:id="publicObjectiveCard3" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
+                              <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="210.0" styleClass="cards" stylesheets="@../css/style.css">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>

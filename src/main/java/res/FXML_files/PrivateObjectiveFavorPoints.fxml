@@ -26,7 +26,7 @@
                         <Insets bottom="30.0" />
                      </VBox.margin>
                      <children>
-                        <VBox fx:id="privateObjectiveContainer" alignment="TOP_CENTER" prefHeight="243.0" prefWidth="200.0" styleClass="cards" stylesheets="@../css/style.css">
+                        <VBox alignment="TOP_CENTER" prefHeight="243.0" prefWidth="200.0" styleClass="cards" stylesheets="@../css/style.css">
                            <children>
                               <Label fx:id="privateObjectiveTitle" alignment="CENTER" styleClass="cards-title-label" stylesheets="@../css/style.css">
                                  <VBox.margin>

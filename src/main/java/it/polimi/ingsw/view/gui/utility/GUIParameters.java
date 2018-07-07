@@ -41,6 +41,7 @@ public final class GUIParameters {
     public static final String BACKGROUND_COLOR = "#303642";
     public static final String BORDER_COLOR = "black";
     public static final String CLICKABLE = "clickable";
+    public static final String USED_TOOL = "used-tool-title-label";
 
     //Dimensions to draw dice
     public static final double DICE_RADIUS = 12.5;
