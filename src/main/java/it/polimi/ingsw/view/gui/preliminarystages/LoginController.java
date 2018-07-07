@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.ConnectException;
+import java.util.NoSuchElementException;
 
 import static jdk.nashorn.internal.objects.Global.print;
 
@@ -58,9 +59,9 @@ public class LoginController {
                 loginToLobby(event);
             } else
                 usernameNotValid.setText(GUIParameters.LOGIN_ERROR);
-        } catch (ConnectException e) {
-            usernameNotValid.setText(GUIParameters.SERVER_ERROR);
-        }
+            } catch (NoSuchElementException | ConnectException e) {
+                usernameNotValid.setText(GUIParameters.SERVER_ERROR);
+            }
     }
 
     //Change scene Management

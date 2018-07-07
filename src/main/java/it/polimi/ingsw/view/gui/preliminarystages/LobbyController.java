@@ -33,8 +33,14 @@ public class LobbyController {
     /**
      * Method that allows the player to enter the lobby, joining a new game.
       */
-    public void enteredLobby() throws ConnectException {
-        GuiManager.getInstance().getConnectionController().send(ConnectionCommands.PLAY_COMMAND);
+    public void enteredLobby() {
+        new Thread(() -> {
+            try {
+                GuiManager.getInstance().getConnectionController().send(ConnectionCommands.PLAY_COMMAND);
+            } catch (ConnectException e) {
+                printConnectionOrDisconnection(GUIParameters.SERVER_ERROR);
+            }
+        }).start();
     }
 
     /**
