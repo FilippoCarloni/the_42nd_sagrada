@@ -1,10 +1,22 @@
 # Communication Protocol between Client and Server
 
+- [Description](#description)
+- [The server messages](#the-server-messages)
+- [Socket connection](#socket-connection)
+  -  [Default port number](#default-port-number)
+  -  [The socket messages send between client and server](#the-socket-messages-send-between-client-and-server)
+  -  [Game session over socket example](#game-session-over-socket-example)
+- [RMI connection](#rmi-connection)
+  -  [Default port number](#default-port-number)
+  -  [Communication through RMI](#communication-through-rmi)
+- [The SessionID](#the-sessionid-mechanism)
+- [Game actions](#game-actions)
+
 ## Description
 This document contains the description of the rules and the messages exchanged between clients and server.  
 This documentation start describing the messages that the server send to the client and continues with the explanation of the **socket** and **RMI** connection protocols.
 All the messages described after [The server messages](#the-server-messages) section are to be considered decoded. 
-For testing purposes it is possible to test the socket connection with the `telnet` command.  
+For testing purposes it is possible to test the **socket** connection with the `telnet` command.  
 
 ## The server messages
 Before starting the overview on the communication protocol is important to explain the messages sent by server to the clients for both che communication methods.  
@@ -34,7 +46,7 @@ Here is reported an **session** message example.
 ```
 ## Socket connection
 
-### Default Port number
+### Default port number
 
 The communication over **socket** connection uses by default the port number **8001**. It can be modified through `res/network_config/constraints.config` file.
 
@@ -55,7 +67,7 @@ The client can send this messages:
 
   *****`restore <SessionID><CR>`, the server restores the status of the player associated at the `<SessionID>`, and it generates a new **SessionID** of that player and it responds with a message `NewSessionID: <SessionID>`.
 
-## Game session over socket example
+### Game session over socket example
 In this paragraph we present an hypothetical start of communication between Client and Server over Telnet with two actors, Foo and Baz.
 ```
 +-----+                              +--------+                               +-----+
@@ -145,7 +157,7 @@ Now we present a `restore` example.
 ```
 ## RMI connection
 
-### Default Port number
+### Default port number
 
 The communication over **socket** connection uses by default the port number **8002**. It can be modified through `res/network_config/constraints.config` file.
 
