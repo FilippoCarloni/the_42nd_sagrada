@@ -23,7 +23,7 @@
 ## Introduction
 
 This guide explains how the **GUI** has been thought and realized, with implementation and graphical choices. 
-The **GUI* has been entirely wrote in FXML language, and later decorated with a stylesheet file; it is launched by a single file, and then, for every screen the user will see there is a specific controller class, with eventually support classes for drawing the needed elements. Everything in our GUI is generated and drown from .json files, without loading any image, to make our graphical aspect fully flexible to eventually future modifies to the game rules.
+The **GUI** has been entirely wrote in FXML language, and later decorated with a stylesheet file; it is launched by a single file, and then, for every screen the user will see, there is a specific controller class, with eventually support classes for drawing the needed elements. Everything in our GUI is **dynamically rendered** from .json files, without loading any image, to make our graphical aspect fully flexible to eventually future modifies to the game rules. Our **GUI** is by default set to a 1280x720 resolution, and is in width fully scalable. 
 
 
 
