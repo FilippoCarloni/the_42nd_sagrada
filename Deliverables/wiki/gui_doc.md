@@ -10,6 +10,16 @@
         - [Window Frame Choice](#window-frame-choice)
     - [End Game](#end-game)
 - [Main Board](#main-board)
+    - [Sections](#sections)
+        - [Main Player Section](#main-player-section)
+        - [Other Players Section](#other-players-section)
+        - [Game Elements Section](#game-elements-section) 
+        - [Other Main Board Images](#other-main-board-images)
+            - [With Picked Die](#with-picked-die)
+            - [With Private Objective Screen](#with-private-objective-screen)
+            - [With Round Track Screen](#with-round-track-screen)
+            - [With used Tool Card](#with-used-tool-card)
+            - [Game Ended](#game-ended)   
     - [Drawing Classes](#drawing-classes)
         - [Dice Drawer](#dice-drawer)
         - [Round Track Drawer](#round-track-drawer)
@@ -99,22 +109,80 @@ The *Return to Lobby* button, that allows the player to stay logged in and start
 
 ## Main Board
 
-The main board is the **GUI** main screen, the one in which the player is supposed to stay the most of the time he plays, so it has to be graphically pleasant, but also immediately understandable. In order to make this things real, the board has been divided into three main blocks:
-- MAIN_PLAYER: at the right of the board, there are all the things the main player needs:
-    - *Main Board TextArea*: the TextArea in which all messages will be showed
-    - *Action Buttons*: buttons that allow the player to make the UNDO, REDO and PASS actions
-    - *Drafted Die*: square in which will be showed the drafted die; it shows not only the main player drafted die, but also the drafted die of another player
-    - Main player username, private objective and window frame
-- OTHER_PLAYERS : at the left of the board; it contains all other players' window frames, up to four, with the empty slots set in a light grey color
-- GAME_ELEMENTS: the central part of the board contains everything is usable by the players:
-    - *Dice Pool*: containing all `Dice` usable in the current turn; to pick a die a player has just to click on it
-    - *Round Track*: containing all unused `Dice` of the previous turns; it shows only one `Die`, to see all of them the player has just to click on it
-    - *Tool Cards*: to use them a player has to click on their name; after the first usage the name will change color, to make understandable that this tool has been already used
-    - *Public Objective Cards*: not usable cards, if the tasks described into them are completed by a player, he will receive extra points
+The main board is the **GUI** main screen, the one in which the player is supposed to stay the most of the time he plays, so it has to be graphically pleasant, but also immediately understandable. 
+
+### Sections
+
+In order to make this things real, the board has been divided into three main blocks, that will be explained in the following paragraphs.
+
+
+
+#### Main Player Section 
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_main_player.png)
+
+
+At the right of the board, there are all the things the main player needs:
+- *Main Board TextArea*: the TextArea in which all messages will be showed
+- *Action Buttons*: buttons that allow the player to make the UNDO, REDO and PASS actions
+- *Drafted Die*: square in which will be showed the drafted die; it shows not only the main player drafted die, but also the drafted die of another player
+- Main player username, private objective and window frame
+
+
+#### Other Players Section
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_other_players.png)
+
+
+At the left of the board; it contains all other players' window frames, up to four, with the empty slots set in a light grey color
+
+
+
+#### Game Elements Section
+ 
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_game_elements.png)
+ 
+ 
+ The central part of the board contains everything is usable by the players:
+- *Dice Pool*: containing all `Dice` usable in the current turn; to pick a die a player has just to click on it
+- *Round Track*: containing all unused `Dice` of the previous turns; it shows only one `Die`, to see all of them the player has just to click on it
+- *Tool Cards*: to use them a player has to click on their name; after the first usage the name will change color, to make understandable that this tool has been already used
+- *Public Objective Cards*: not usable cards, if the tasks described into them are completed by a player, he will receive extra points
+
+
+#### Other Main Board Images
+
+
+##### With Picked Die
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_with_picked_die_screen.JPG)
+
+
+##### With Private Objective Screen
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_with_private_objective_screen.JPG)
+
+
+##### With Round Track Screen
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_with_round_track_screen.JPG)
+
+##### With used Tool Card
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_with_used_tool_card_screen.JPG)
+
+##### Game Ended
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/main_board_end_screen.JPG)
+
 
 ### Drawing Classes
 
-All [Main Board](#main-board) elements are dynamically drawn from .json files. For that reason there are a lot of drawing classes, strictly connected to the [Behaviour Management Classes](#behavioural-management-classes), that will draw everything the user can see and interact with. 
+All [Main Board](#main-board) elements are **dynamically drawn** from .json files. For that reason there are a lot of drawing classes, strictly connected to the [Behaviour Management Classes](#behavioural-management-classes), that will draw everything the user can see and interact with. 
 
 #### Dice Drawer
 
