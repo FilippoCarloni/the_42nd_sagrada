@@ -277,3 +277,5 @@ This permits a maximum parallelism in accord to ours multi-match implementation.
 We have overcame these issues in much of these case, forcing the IP of the client in client application with the file setting of it.  
 Also the **RMI** protocol permits to work in LAN only if the correctly **property** is configured.  
 the specific java property is: `"java.rmi.server.hostname"`  configured with the proper IP of the client or server, depends who is the server for the **RMI** object.
+Basically all the hosts over **RMI** communication have to set this properties with theirs IP. 
+
