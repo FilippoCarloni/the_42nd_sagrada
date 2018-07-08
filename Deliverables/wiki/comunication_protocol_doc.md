@@ -1,16 +1,42 @@
 # Communication Protocol between Client and Server
 
 ## Description
-This document contains the description of the rules and the messages exchanged between clients and server.
-For testing purposes it is possible to test the socket connection with the `telnet` command.
+This document contains the description of the rules and the messages exchanged between clients and server.  
+This documentation start describing the messages that the server send to the client and continues with the explanation of the **socket** and **RMI** connection protocols.
+All the messages described after [The server messages](#the-server-messages) section are to be considered decoded. 
+For testing purposes it is possible to test the socket connection with the `telnet` command.  
 
 ## The server messages
-Before starting the overview on the communication protocol is important to explain the messages sent by server to the clients for both che communication methods. So all the next paragraphs are explained with the decoded messages for simplify the explanation.  
+Before starting the overview on the communication protocol is important to explain the messages sent by server to the clients for both che communication methods.  
+So all the next paragraphs are explained with the decoded messages for simplify the explanation.  
+The server sends to clients messages codified with JSON standard.  Each of these messages are divided in seven types, this permits to have a standardized messages protocol.  
+The JSON messages contain the **message type** and it **content**.
+In the JSON there is under the TAG **tag** the message type and under the TAG **message_content** the content of the message.  
+Here are reported the Message type and theirs content:
+
+|Message Type| Explanation Of The Content|
+|:---|:---|
+|**generic_message**| Contains generic messages. For example information messages about you is connected to a lobby|
+|**error_message**| Contains error messages. All the server error are sent to the clients with this message type|
+|**game_board**| Contains a game board, it is send all the time there is an updated of the game board|
+|**game_stats**| Contains the points for each player. Sent at the end of one game|
+|**pre_game_choice**| Contains the windows to choose for each player enrolled in a game. Sent before initialize a new game|
+|**session**| Contains the new session of the player|
+|**current_player**| Contains the current player that can performs action in a specific turn of a game|
+
+
+Here is reported an **session** message example.
+```
+{
+  "message_content":"pluto15310494161114583816",
+  tag":"session"
+}
+```
 ## Socket connection
 
 ### Default Port number
 
-The communication over socket connection uses by default the port number **8001**. It can be modified through `res/network_config/constraints.config` file.
+The communication over **socket** connection uses by default the port number **8001**. It can be modified through `res/network_config/constraints.config` file.
 
 ### The socket messages send between client and server
 All the messages sent by the client and the server are terminated with `<CR>` (`\n`). All messages can generate an error response if incorrectly typed or sent while the session cannot accept that command.
@@ -25,7 +51,7 @@ The client can send this messages:
 |`play<CR>`   |`window_choices`   |If there are not enough players to start a match, sends a waiting message, otherwise sends a Game Board string|
 |`view<CR>`   |Send a string contains a game status, if the player is current playing   |The message contains the Game Board string|
 |`quit<CR>`   |  `nothing`  | Quit the connection with the server|
-|`window <n><CR>`   | `noting`  |  Set the <n> window before to start a game.  The <n> reppresent the number of the window shows before to start a game.  |
+|`window <n><CR>`   | `noting`  |  Sets the `<n>` window before starting a game.  The `<n>` represent the number of the shown windows before staring a game.  |
 
   *****`restore <SessionID><CR>`, the server restores the status of the player associated at the `<SessionID>`, and it generates a new **SessionID** of that player and it responds with a message `NewSessionID: <SessionID>`.
 
@@ -121,7 +147,7 @@ Now we present a `restore` example.
 
 ### Default Port number
 
-The communication over socket connection uses by default the port number **8002**. It can be modified through `res/network_config/constraints.config` file.
+The communication over **socket** connection uses by default the port number **8002**. It can be modified through `res/network_config/constraints.config` file.
 
 ### Communication through RMI
 **RMI** is based over remote calls to remote objects.  Thanks to this fact, the communication over **RMI** is managed by the Java environments and its protocols. So it necessary only to define the protocol for the name of the exposed objects.  In particular, the name of the exposed object in the **RMI** registry is `Lobby`. This object is directly bind directly on registry and so is visible by all the clients how a single point.
@@ -167,7 +193,6 @@ This permit to overcome the stateless of the remote calls.
 Also the clients exposed an remote object: `RemoteObserver`.  This remote object permits to the server to have a remote reference to all the clients and so it can send updates or to check if the are alive or not.  Obviously the clients do not exposed this object through an **RMI** registry but directly through the remote reference one random dynamic port. So only the server have the clients remote references.  
 This fact comports that booth the server and the clients have to do the role of the "server" for the exposed objects.  
 This architecture to works in **LAN** need to sets the `"java.rmi.server.hostname"` java property in the host that exposed one or more remote objects with its correct IP, so it must be set in the clients and in the server.
-Obviously, the
 ## The SessionID mechanism
 The **SessionID** is used to identify uniquely the client after it is logged. It is randomly generated and it is unique for each player.
 The SessionID is generated with a specific rule:
@@ -187,5 +212,6 @@ Only legal actions are executed by the game. Illegal actions are signaled to the
 |`place <n> <m>`   |A die should already be picked; a tool card should not be active   |Place the picked die in the current player's window frame in position (n-th row, m-th column)   |
 |`pass`   |If a die was picked, should be placed; if a tool was activated, its effect should already be terminated   |Passes the turn to the next player   |
 |`tool <n>`   |The legality of this command is determined by the n-th Tool Card in the Game Board; the player should have enough Favor Points   |Activates the n-th Tool Card   |
-|`increment`   |The Grozing Pliers Tool Card should be active   |Increments the value of the picked die   |
-|`decrement`   |The Grozing Pliers Tool Card should be active   |Decrements the value of the picked die   |
+|`increment`   |The correct Tool Card should be active   |Increments the value of the picked die   |
+|`decrement`   |The correct Tool Card should be active   |Decrements the value of the picked die   |
+|`select <n>`|The correct Tool Card should be active|Selects the n-th die on the round track or defines the shade of the picked die, depending on the active tool card |
