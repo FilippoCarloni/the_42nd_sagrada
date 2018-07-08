@@ -5,6 +5,9 @@
 - [The General Manager](#the-general-manager)
 - [Flux Overview](#flux-overview)
     - [Preliminary Stages](#preliminary-stages)
+        - [Connection and Login](#connection-and-login)
+        - [Lobby](#lobby)
+        - [Window Frame Choice](#window-frame-choice)
     - [End Game](#end-game)
 - [Main Board](#main-board)
     - [Drawing Classes](#drawing-classes)
@@ -50,19 +53,48 @@ In this section is explained how the screens flux has been thought, in order to 
 ### Preliminary stages
 
 Before the game starts, there are several steps that the user has to fulfill; for every step a new scene will be showed, and depending on which screen is now opened, the player will have to do some action in order to proceed, or simply wait for a specified time. 
-The preliminary stages are:
-- `Connection and Login`: first screen showed when a **GUI** client is started, it allows the player to choose his type of connection with the server side and then to login into the game.
-- `Lobby`: when the player clicks on the *Login* button, if the connection is established and the username chosen is valid, this screen will be open; here the player will be able to enter into the lobby clicking on the *Enter into Lobby* button: after that into the *Lobby TextArea* messages will be showed, saying who is connected. When a game is ready to start, the *Start* button, disabled, will be enabled
-- `Window Frame Choice`: last part of the preliminary stage part. In this stage the player will see his own *Private Objective* card, and four window frames with names and difficulties. The player will be able to choose which one between these four maps will be the map in the game, but there are two things to pay attention to: 
-    - the default map is the first one
-    - to choose a map different from the firs the player has to click on the *RadioButton* under the map
-    - the player has a limited time, set into the .config file, to choose the map; after that time the *Go to GameBoard* button will be enabled and the match will start with the chosen maps (the default one if the player has not chosen any map)
+
+#### Connection and Login
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/login_screen.JPG)
+
+
+First screen showed when a **GUI** client is started, it allows the player to choose his type of connection with the server side and then to login into the game.
+
+
+#### Lobby
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/lobby_screen.JPG)
+
+
+When the player clicks on the *Login* button, if the connection is established and the username chosen is valid, this screen will be open; here the player will be able to enter into the lobby clicking on the *Enter into Lobby* button: after that into the *Lobby TextArea* messages will be showed, saying who is connected. When a game is ready to start, the *Start* button, disabled, will be enabled
+
+
+
+#### Window Frame Choice
+
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/window_frame_choice_screen.JPG)
+
+
+Last part of the preliminary stage part. In this stage the player will see his own *Private Objective* card, and four window frames with names and difficulties. The player will be able to choose which one between these four maps will be the map in the game, but there are two things to pay attention to:
+
+- the default map is the first one
+- to choose a map different from the firs the player has to click on the *RadioButton* under the map
+- the player has a limited time, set into the .config file, to choose the map; after that time the *Go to GameBoard* button will be enabled and the match will start with the chosen maps (the default one if the player has not chosen any map)
+
 
 ### End Game
 
+
+![](https://github.com/FilippoCarloni/the_42nd_sagrada/blob/master/Deliverables/wiki/gui/game_stats_screen.JPG)
+
+
 After the GAME_STAT message arrives (see [The General Manager](#the-general-manager)), an hidden button on the game board, the *Continue* button, will be showed and enabled, and the player will be able to go to the end game screen, to see the final score.
 The score will be showed unordered: there will be players' username, with the points written. To print the points the class will take a .json file from [The General Manager](#the-general-manager), and will split it into a JSONArray of players, containing username and final score.
-In this screen there will be a *Return to Lobby* button, that allows the player to stay logged in and starting a new game.
+The *Return to Lobby* button, that allows the player to stay logged in and starting a new game.
 
 
 ## Main Board
