@@ -8,9 +8,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
@@ -51,12 +48,6 @@ public class CLI implements Runnable {
     private static final int NAME_LENGTH = 40;
     private static final int DESCRIPTION_LENGTH = 120;
     private static final int ROUND_TRACK_LENGTH = 44;
-    private static final int TOOL_IMAGE_LENGTH = 9;
-    private static final int OBJECTIVE_IMAGE_LENGTH = 15;
-    private static final String EXT = ".cliimage";
-    private static final String CLI_IMAGES_PATH = "src/main/java/res/cliimages/";
-    private static final String PRE_ID = "card";
-    private static final String DEFAULT_CLI_IMAGE = "default";
 
     private Scanner scanner;
     private ConnectionManager connectionController;
@@ -348,45 +339,12 @@ public class CLI implements Runnable {
 
     private String drawCard(JSONObject jsonObject) {
         int id = parseInt(jsonObject.get(JSONTag.CARD_ID).toString());
-        String image = loadImage(id);
         String name = "[" + id + "] " + jsonObject.get(JSONTag.NAME).toString();
         String description = jsonObject.get(JSONTag.DESCRIPTION).toString();
         Long points = (Long) jsonObject.get(JSONTag.FAVOR_POINTS);
         if (points != null)
             name = name + " (FP:" + points.intValue() + ")";
-        StringBuilder sb = new StringBuilder();
-        String[] splitImage = image.split("\n");
-        int imageLength;
-        if (splitImage.length == 3) {
-            sb.append("|");
-            for (int i = 0; i < PIXEL_WIDTH; i++) sb.append(" ");
-            sb.append("|\n");
-            imageLength = TOOL_IMAGE_LENGTH;
-        } else imageLength = OBJECTIVE_IMAGE_LENGTH;
-        for (String line : splitImage) {
-            sb.append("|");
-            for (int i = 0; i < (PIXEL_WIDTH - imageLength) / 2; i++) sb.append(" ");
-            sb.append(line);
-            for (int i = 0; i < PIXEL_WIDTH - imageLength - (PIXEL_WIDTH - imageLength) / 2; i++) sb.append(" ");
-            sb.append("|\n");
-        }
-        return getUpperCard() + sb.toString() + getLowerCard(name, description);
-    }
-
-    private String loadImage(int id) {
-        try {
-            return new String(Files.readAllBytes(Paths.get(CLI_IMAGES_PATH + PRE_ID + id + EXT)));
-        } catch (IOException e) {
-            return loadDefaultImage();
-        }
-    }
-
-    private String loadDefaultImage() {
-        try {
-            return new String(Files.readAllBytes(Paths.get(CLI_IMAGES_PATH + DEFAULT_CLI_IMAGE + EXT)));
-        } catch (IOException e) {
-            throw new IllegalArgumentException(IMAGE_NOT_FOUND);
-        }
+        return getUpperCard() + getLowerCard(name, description);
     }
 
     private String getUpperCard() {
