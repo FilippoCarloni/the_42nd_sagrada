@@ -10,10 +10,14 @@ With *The 42nd Sagrada* we want to bring to the multimedia world the tabletop ga
 
 As you all know, 42 is the answer to life, the universe and everything: we were so surprised and humbly amazed when we discovered that our team number was 42, that we decided that such an important burden deserved all the world attention. Our project's name then became **The 42nd Sagrada**.
 
+## Useful resources
+
+Usage guide and implementation choices are explained in our project's [wiki](https://github.com/FilippoCarloni/the_42nd_sagrada/wiki). 
+
 ## The authors
 
-| Picture | Name | Personal Code |
-|:---:|:---:|:---:|
-| ![archetti](./src/main/java/res/stained_glass_icons/stained_glass_archetti.jpg) | Archetti Alberto | 10534908 |
-| ![boffi](./src/main/java/res/stained_glass_icons/stained_glass_boffi.jpg) | Boffi Paolo | 10493663 |
-| ![carloni](./src/main/java/res/stained_glass_icons/stained_glass_carloni.jpg) | Carloni Filippo | 10541084 |
+| Picture | Name | Personal Code | Packages we worked on |
+|:---:|:---:|:---:|:---:|
+| ![archetti](./src/main/java/res/stained_glass_icons/stained_glass_archetti.jpg) | Archetti Alberto | 10534908 | model and cli |
+| ![boffi](./src/main/java/res/stained_glass_icons/stained_glass_boffi.jpg) | Boffi Paolo | 10493663 | gui |
+| ![carloni](./src/main/java/res/stained_glass_icons/stained_glass_carloni.jpg) | Carloni Filippo | 10541084 | connection and cli |
